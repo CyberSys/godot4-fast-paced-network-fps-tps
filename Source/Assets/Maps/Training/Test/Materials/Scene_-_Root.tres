@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://d26o7cubtckli"]
+
+[ext_resource type="Texture2D" uid="uid://dnmne35b2rne1" path="res://Assets/Maps/Training/Test/metal_plate/MetalPlates008_2K_Color.jpg" id="1_2wk4s"]
+[ext_resource type="Texture2D" uid="uid://dpg5gbt1575ys" path="res://Assets/Maps/Training/Test/metal_plate/MetalPlates008_2K_Displacement.jpg" id="2_dup7e"]
+[ext_resource type="Texture2D" uid="uid://du7625jvl4jvi" path="res://Assets/Maps/Training/Test/metal_plate/MetalPlates008_2K_Metalness.jpg" id="3_oxhq8"]
+[ext_resource type="Texture2D" uid="uid://bp3n7nqa4t5lu" path="res://Assets/Maps/Training/Test/metal_plate/MetalPlates008_2K_NormalGL.jpg" id="4_rdpma"]
+[ext_resource type="Texture2D" uid="uid://dnqpi0a6ruq3" path="res://Assets/Maps/Training/Test/metal_plate/MetalPlates008_2K_Roughness.jpg" id="5_jueig"]
+
+[resource]
+resource_name = "Scene_-_Root"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource( "1_2wk4s" )
+metallic = 1.0
+metallic_texture = ExtResource( "3_oxhq8" )
+roughness_texture = ExtResource( "5_jueig" )
+normal_enabled = true
+normal_texture = ExtResource( "4_rdpma" )
+heightmap_texture = ExtResource( "2_dup7e" )
+uv1_triplanar = true

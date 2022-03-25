@@ -1,0 +1,15 @@
+D:\Striked\Shooter\Thirdparty\LiteNetLib\bin\Debug\netstandard2.1\LiteNetLib.deps.json
+D:\Striked\Shooter\Thirdparty\LiteNetLib\bin\Debug\netstandard2.1\LiteNetLib.dll
+D:\Striked\Shooter\Thirdparty\LiteNetLib\bin\Debug\netstandard2.1\LiteNetLib.pdb
+D:\Striked\Shooter\Thirdparty\LiteNetLib\bin\Debug\netstandard2.1\LiteNetLib.xml
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.csproj.AssemblyReference.cache
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.GeneratedMSBuildEditorConfig.editorconfig
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.AssemblyInfoInputs.cache
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.AssemblyInfo.cs
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.csproj.CoreCompileInputs.cache
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.dll
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.xml
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.pdb
+D:\Striked\Shooter\Thirdparty\LiteNetLib\bin\Debug\netstandard2.1\PriorityQueue.dll
+D:\Striked\Shooter\Thirdparty\LiteNetLib\bin\Debug\netstandard2.1\PriorityQueue.pdb
+D:\Striked\Shooter\Thirdparty\LiteNetLib\obj\Debug\netstandard2.1\LiteNetLib.csproj.CopyComplete

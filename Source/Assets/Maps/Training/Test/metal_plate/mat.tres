@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://cllkeu35gmi3q"]
+
+[ext_resource type="Texture2D" uid="uid://cni34hvnl3jai" path="res://assets/level/metal_plate/MetalPlates008_2K_Color.jpg" id="1_wq1bi"]
+[ext_resource type="Texture2D" uid="uid://6g2sxdndacnx" path="res://assets/level/metal_plate/MetalPlates008_2K_Metalness.jpg" id="2_4i2vr"]
+[ext_resource type="Texture2D" uid="uid://c7wm033qkjexi" path="res://assets/level/metal_plate/MetalPlates008_2K_NormalGL.jpg" id="2_kfw12"]
+[ext_resource type="Texture2D" uid="uid://bn7tw2p6g0e6b" path="res://assets/level/metal_plate/MetalPlates008_2K_Roughness.jpg" id="3_t3bjx"]
+
+[resource]
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource( "1_wq1bi" )
+metallic = 1.0
+metallic_texture = ExtResource( "2_4i2vr" )
+roughness_texture = ExtResource( "3_t3bjx" )
+normal_enabled = true
+normal_texture = ExtResource( "2_kfw12" )
+uv1_scale = Vector3(10, 10, 10)

@@ -1,0 +1,15 @@
+# Godot 4+ specific ignores
+.godot/
+# Import cache
+.import/
+.vs/
+.mono/
+# Binaries
+bin/
+build/
+level/
+lib/
+git_api.gdnlib
+git_api.gdns
+.readthedocs.yml
+Blender/

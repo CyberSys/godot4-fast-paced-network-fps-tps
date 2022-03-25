@@ -1,0 +1,96 @@
+[gd_scene load_steps=3 format=3 uid="uid://xcpdj7getsgm"]
+
+[ext_resource type="Script" path="res://Client/UI/Welcome/DebugMenuComponent.cs" id="1_22dkm"]
+
+[sub_resource type="Theme" id="Theme_15dj5"]
+default_font_size = 10
+
+[node name="CanvasLayer" type="CanvasLayer"]
+layer = -1
+script = ExtResource( "1_22dkm" )
+LogMessagePath = NodePath("VBoxContainer/LogMessageContainer/LogMessage")
+FPSPath = NodePath("VBoxContainer/HBoxContainer/FPSContainer/FPS")
+PingPath = NodePath("VBoxContainer/HBoxContainer/PingContainer/Ping")
+PackageLoosePath = NodePath("VBoxContainer/HBoxContainer/PackageLooseContainer/PackageLoose")
+PackageDataPath = NodePath("VBoxContainer/HBoxContainer/PackageData/PackageData")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource( "Theme_15dj5" )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+offset_right = 122.0
+offset_bottom = 17.0
+
+[node name="FPSContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+offset_right = 22.0
+offset_bottom = 17.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/FPSContainer"]
+offset_right = 17.0
+offset_bottom = 17.0
+text = "FPS"
+
+[node name="FPS" type="Label" parent="VBoxContainer/HBoxContainer/FPSContainer"]
+offset_left = 21.0
+offset_top = 1.0
+offset_right = 22.0
+offset_bottom = 15.0
+
+[node name="PingContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+offset_left = 26.0
+offset_right = 52.0
+offset_bottom = 17.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PingContainer"]
+offset_right = 21.0
+offset_bottom = 17.0
+text = "Ping"
+
+[node name="Ping" type="Label" parent="VBoxContainer/HBoxContainer/PingContainer"]
+offset_left = 25.0
+offset_top = 1.0
+offset_right = 26.0
+offset_bottom = 15.0
+
+[node name="PackageLooseContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+offset_left = 56.0
+offset_right = 90.0
+offset_bottom = 17.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PackageLooseContainer"]
+offset_right = 29.0
+offset_bottom = 17.0
+text = "Loose"
+
+[node name="PackageLoose" type="Label" parent="VBoxContainer/HBoxContainer/PackageLooseContainer"]
+offset_left = 33.0
+offset_top = 1.0
+offset_right = 34.0
+offset_bottom = 15.0
+
+[node name="PackageData" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+offset_left = 94.0
+offset_right = 122.0
+offset_bottom = 17.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PackageData"]
+offset_right = 23.0
+offset_bottom = 17.0
+text = "Data"
+
+[node name="PackageData" type="Label" parent="VBoxContainer/HBoxContainer/PackageData"]
+offset_left = 27.0
+offset_top = 1.0
+offset_right = 28.0
+offset_bottom = 15.0
+
+[node name="LogMessageContainer" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 21.0
+offset_right = 122.0
+offset_bottom = 35.0
+
+[node name="LogMessage" type="Label" parent="VBoxContainer/LogMessageContainer"]
+offset_right = 1.0
+offset_bottom = 14.0

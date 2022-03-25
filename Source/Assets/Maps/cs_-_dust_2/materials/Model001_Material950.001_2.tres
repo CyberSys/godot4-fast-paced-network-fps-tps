@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dyg46wgnkw85c"]
+
+[ext_resource type="Texture2D" uid="uid://ckengnh0o64bp" path="res://Assets/Maps/cs_-_dust_2/textures/Model001_Material950.001_2_baseColor.png" id="1_tak77"]
+
+[resource]
+resource_name = "Model001_Material950.001_2"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource( "1_tak77" )
