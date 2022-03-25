@@ -1,6 +1,8 @@
 # The game framework your mother warned you about.
 
 Godot 4 Fast-Paced (Authoritative Server) Game + Network Framework for FPS and TPS Games
+Its in process (several changes on architecture incoming)!
+In the end it should be a complete framework including an open-source shooter. Including models.
 
 # Network features
 - Client-side prediction of player entities
