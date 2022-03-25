@@ -4,6 +4,8 @@ Godot 4 Fast-Paced (Authoritative Server) Game + Network Framework for FPS and T
 Its in process (several changes on architecture incoming)!
 In the end it should be a complete framework including an open-source shooter. Including models.
 
+Totaly written in c#. No gdscript, because its sucks hard for oop.
+
 # Network features
 - Client-side prediction of player entities
 - Client-side interpolation of remote entities
