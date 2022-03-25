@@ -5,11 +5,12 @@
 .vs/
 .mono/
 # Binaries
-bin/
-build/
-level/
-lib/
+bin
+build
+lib
 git_api.gdnlib
 git_api.gdns
 .readthedocs.yml
 Blender/
+bin
+obj
