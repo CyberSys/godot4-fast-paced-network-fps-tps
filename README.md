@@ -6,6 +6,8 @@ In the end it should be a complete framework including an open-source shooter. I
 
 Totaly written in c#. No gdscript, because its sucks hard for oop.
 
+![Network Test preview](Docs/net_preview.png?raw=true "Network Test preview")
+
 # Network features
 - Client-side prediction of player entities
 - Client-side interpolation of remote entities
