@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Godot;
-using Shooter.Shared;
-using Shooter.Client;
+using Framework;
 
 namespace Shooter.Client.UI.Welcome
 {
-    public partial class PreConnectComponent : CanvasLayer, IComponent<ClientGameLogic>
+    public partial class PreConnectComponent : CanvasLayer, IChildComponent
     {
-        public ClientGameLogic MainComponent { get; set; }
+        public IBaseComponent BaseComponent { get; set; }
 
         public override void _EnterTree()
         {
@@ -18,10 +14,8 @@ namespace Shooter.Client.UI.Welcome
 
         private void onConnectButtonPressed()
         {
-            if (this.MainComponent.CurrentWorld == null)
-            {
-                this.MainComponent.Connect();
-            }
+            var component = BaseComponent as MyClientLogic;
+            component.DoConnect();
         }
     }
 }

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteNetLib", "..\Thirdparty
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Priority Queue", "..\Thirdparty\PriorityQueue\Priority Queue.csproj", "{1531C1EA-BD53-41D1-A34B-CFCDF79D2651}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework", "..\Framework\Framework.csproj", "{5201D19C-4474-415A-B644-49BA2147F6E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{1531C1EA-BD53-41D1-A34B-CFCDF79D2651}.Release 4.5|Any CPU.Build.0 = Release 4.5|Any CPU
 		{1531C1EA-BD53-41D1-A34B-CFCDF79D2651}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1531C1EA-BD53-41D1-A34B-CFCDF79D2651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.Release 2.0|Any CPU.ActiveCfg = Debug|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.Release 2.0|Any CPU.Build.0 = Debug|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.Release 4.5|Any CPU.ActiveCfg = Debug|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.Release 4.5|Any CPU.Build.0 = Debug|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.Release|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{5201D19C-4474-415A-B644-49BA2147F6E5}.Release|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

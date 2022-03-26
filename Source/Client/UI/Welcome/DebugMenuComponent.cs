@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Godot;
-using Shooter.Shared;
-using Shooter.Client;
-using Shooter.Client.Services;
+using Framework;
+using Framework.Game;
+using Framework.Network.Services;
 namespace Shooter.Client.UI.Welcome
 {
-    public partial class DebugMenuComponent : CanvasLayer, IComponent<ClientGameLogic>
+    public partial class DebugMenuComponent : CanvasLayer, IChildComponent
     {
-        public ClientGameLogic MainComponent { get; set; }
+        public IBaseComponent BaseComponent { get; set; }
 
         [Export]
         public NodePath LogMessagePath { get; set; }
@@ -34,9 +32,9 @@ namespace Shooter.Client.UI.Welcome
         public override void _EnterTree()
         {
             Logger.OnLogMessage += (string message) =>
-            {
-                this.GetNode<Label>(this.LogMessagePath).Text = message;
-            };
+        {
+            this.GetNode<Label>(this.LogMessagePath).Text = message;
+        };
         }
 
 
@@ -46,7 +44,8 @@ namespace Shooter.Client.UI.Welcome
 
             if (currentUpdateTime >= updateTimeLabel)
             {
-                var netService = this.MainComponent.Services.Get<ClientNetworkService>();
+                var componnent = this.BaseComponent as IGameLogic;
+                var netService = componnent.Services.Get<ClientNetworkService>();
                 if (netService != null)
                 {
                     this.GetNode<Label>(this.PackageDataPath).Text = "Send: " + (netService.bytesSended / 1000) + "kB/s, " + "Rec: " + (netService.bytesReceived / 1000) + "kB/s";

@@ -13,6 +13,8 @@ public partial class Bootloader : Node
 	{
 		base._EnterTree();
 		this.setGuiInputs();
+		GD.Load<CSharpScript>("res://Shared/MyGameLevel.cs");
+
 	}
 
 	public override void _Input(InputEvent @event)

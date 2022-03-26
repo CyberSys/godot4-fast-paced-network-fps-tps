@@ -1,25 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using Godot;
-using Shooter.Shared;
-using Shooter.Client;
-using Shooter.Client.Services;
+using Framework;
+
 namespace Shooter.Client.UI.Welcome
 {
-	public partial class MenuComponent : CanvasLayer, IComponent<ClientGameLogic>
+	public partial class MenuComponent : CanvasLayer, IChildComponent
 	{
-		public ClientGameLogic MainComponent { get; set; }
+		public IBaseComponent BaseComponent { get; set; }
 
 		[Export]
 		public NodePath DisconnectPath { get; set; }
-
 
 		public override void _EnterTree()
 		{
 			this.GetNode<Button>(this.DisconnectPath).Pressed += () =>
 			{
-				this.MainComponent.Disconnect();
+				var component = BaseComponent as MyClientLogic;
+				component.Disconnect();
 			};
 		}
 

@@ -1,8 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://86rlft55s4q7"]
+[gd_scene load_steps=4 format=3 uid="uid://d1qdqf3kjk11e"]
 
-[ext_resource type="Script" path="res://Server/ServerGameLogic.cs" id="1_1aggm"]
+[ext_resource type="Script" path="res://Server/MyServerLogic.cs" id="1_1aggm"]
 [ext_resource type="Script" path="res://Bootloader.cs" id="1_4f88v"]
-[ext_resource type="Script" path="res://Client/ClientGameLogic.cs" id="2_t5ic5"]
+[ext_resource type="Script" path="res://Client/MyClientLogic.cs" id="2_t5ic5"]
 
 [node name="Node" type="Node"]
 script = ExtResource( "1_4f88v" )
