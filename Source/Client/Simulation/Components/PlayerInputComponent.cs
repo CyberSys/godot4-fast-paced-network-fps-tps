@@ -4,13 +4,11 @@ using System;
 
 namespace Shooter.Client.Simulation.Components
 {
-    public partial class PlayerInputComponent : Node, IComponent<PlayerSimulation>
+    public partial class PlayerInputComponent : Node, IComponent<NetworkPlayerSimulation>
     {
         public bool canExecute = true;
 
-        public PlayerSimulation MainComponent { get; set; }
-
-
+        public NetworkPlayerSimulation MainComponent { get; set; }
 
         public PlayerInputs GetPlayerInput()
         {

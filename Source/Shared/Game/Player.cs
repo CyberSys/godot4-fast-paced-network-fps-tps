@@ -7,5 +7,6 @@ namespace Shooter.Shared
         public ClientState State { get; set; }
         public ClientState PreviousState { get; set; }
         public PlayerTeam Team { get; set; }
+        public NetworkPlayerSimulation Simulation { get; set; }
     }
 }

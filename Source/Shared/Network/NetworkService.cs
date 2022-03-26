@@ -22,14 +22,20 @@ namespace Shooter.Shared
         public NetworkService()
         {
             this._netPacketProcessor.RegisterNestedType<PlayerInputCommand>();
-            this._netPacketProcessor.RegisterNestedType<PlayerStatePackage>();
-            this._netPacketProcessor.RegisterNestedType<PlayerUpdatePackage>();
+            this._netPacketProcessor.RegisterNestedType<PlayerState>();
+            this._netPacketProcessor.RegisterNestedType<PlayerUpdate>();
+            this._netPacketProcessor.RegisterNestedType<ClientInitializer>();
+            this._netPacketProcessor.RegisterNestedType<ClientWorldInitializer>();
+            this._netPacketProcessor.RegisterNestedType<ServerInitializer>();
 
             this._netPacketProcessor.RegisterNestedType(
                 NetExtensions.SerializeVector3, NetExtensions.DeserializeVector3);
 
             this._netPacketProcessor.RegisterNestedType(
                NetExtensions.SerializeQuaternion, NetExtensions.DeserializeQuaternion);
+
+            this._netPacketProcessor.RegisterNestedType(
+               NetExtensions.SerializeStringDictonary, NetExtensions.DeserializeStringDictonary);
         }
 
 
@@ -64,6 +70,21 @@ namespace Shooter.Shared
                 return;
             }
 
+            if (peer != null)
+            {
+                this._netPacketProcessor.SendNetSerializable(peer, ref command, method);
+            }
+        }
+
+
+        public void SendMessageSerialisable<T>(int peerId, T command, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : INetSerializable, new()
+        {
+            if (this.netManager == null)
+            {
+                return;
+            }
+
+            var peer = this.netManager.GetPeerById(peerId);
             if (peer != null)
             {
                 this._netPacketProcessor.SendNetSerializable(peer, ref command, method);

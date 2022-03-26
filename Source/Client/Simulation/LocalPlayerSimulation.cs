@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Shooter.Client.Simulation
 {
-    public partial class LocalPlayerSimulation : MoveablePlayerSimulation
+    public partial class LocalPlayerSimulation : PhysicsPlayerSimulation
     {
         public LocalPlayerSimulation() : base()
         {

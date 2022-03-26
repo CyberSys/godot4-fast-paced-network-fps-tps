@@ -7,11 +7,10 @@ using Shooter.Client.Simulation.Components;
 
 namespace Shooter.Shared
 {
-    public abstract partial class PlayerSimulation : Node
+    public abstract partial class NetworkPlayerSimulation : Node
     {
-        public ComponentRegistry<PlayerSimulation> Components { get; set; }
+        public ComponentRegistry<NetworkPlayerSimulation> Components { get; set; }
         public GameWorld GameWorld { get; set; }
-
         protected PlayerInputs inputs;
 
         public void SetPlayerInputs(PlayerInputs inputs)
@@ -19,22 +18,26 @@ namespace Shooter.Shared
             this.inputs = inputs;
         }
 
-        public PlayerSimulation() : base()
+        public NetworkPlayerSimulation() : base()
         {
-            this.Components = new ComponentRegistry<PlayerSimulation>(this);
+            this.Components = new ComponentRegistry<NetworkPlayerSimulation>(this);
         }
 
-        public virtual PlayerStatePackage ToNetworkState()
+        public virtual PlayerState ToNetworkState()
         {
-            return new PlayerStatePackage
+            return new PlayerState
             {
                 Id = int.Parse(this.Name),
             };
         }
 
-        public virtual void ApplyNetworkState(PlayerStatePackage state)
+        public virtual void ApplyNetworkState(PlayerState state)
         {
 
+        }
+
+        public virtual void Simulate(float delta)
+        {
         }
     }
 }

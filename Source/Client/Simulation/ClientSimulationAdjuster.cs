@@ -29,7 +29,7 @@ public class ClientSimulationAdjuster : ISimulationAdjuster
         return receivedServerTick + estimatedTickLead;
     }
 
-    public void NotifyActualTickLead(int actualTickLead, bool isDebug)
+    public void NotifyActualTickLead(int actualTickLead, bool isDebug, bool useLagReduction)
     {
         actualTickLeadAvg.Push(actualTickLead);
 
@@ -76,7 +76,7 @@ public class ClientSimulationAdjuster : ISimulationAdjuster
         {
             AdjustedInterval = 1.03125f;
         }
-        else if (avg >= 2 && Settings.UseAggressiveLagReduction)
+        else if (avg >= 2 && useLagReduction)
         {
             AdjustedInterval = 1.015625f;
         }

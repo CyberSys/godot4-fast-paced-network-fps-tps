@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://dfbfmu3cjx77k"]
 
-[ext_resource type="Script" path="res://Shared/GameLevel.cs" id="1_0efxa"]
+[ext_resource type="Script" path="res://Shared/Game/GameLevel.cs" id="1_0efxa"]
 [ext_resource type="ArrayMesh" uid="uid://mg4ijil0wc7s" path="res://Assets/Maps/Training/Test/Meshes/OSG_Scene_Cube408_0.res" id="2_faxh4"]
-[ext_resource type="Script" path="res://Shared/SpawnPoint.cs" id="3_g1lg5"]
+[ext_resource type="Script" path="res://Shared/Game/SpawnPoint.cs" id="3_g1lg5"]
 [ext_resource type="Shader" path="res://Assets/Maps/CloudShader.gdshader" id="119_rv3h4"]
 [ext_resource type="Texture2D" uid="uid://bd6gy3d8hp6rv" path="res://Assets/Maps/Clouds/weather.bmp" id="120_25u3h"]
 [ext_resource type="CompressedTexture3D" uid="uid://bju0vr8fw3guf" path="res://Assets/Maps/Clouds/perlworlnoise.tga" id="120_pxp57"]

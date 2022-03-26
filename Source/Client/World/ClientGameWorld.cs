@@ -7,23 +7,42 @@ using System;
 using Shooter.Shared.Network.Packages;
 using System.Collections.Generic;
 using LiteNetLib;
+using System.Linq;
 
-namespace Shooter.Client
+namespace Shooter.Client.World
 {
     public partial class ClientGameWorld : GameWorld
     {
         protected ClientNetworkService netService = null;
+
+        /// <summary>
+        /// Client adjuster
+        /// Handles server ticks and make them accuracy
+        /// </summary>
         public ClientSimulationAdjuster clientSimulationAdjuster;
 
+        /// <summary>
+        /// World Heartbeat Queue
+        /// </summary>
+        /// <typeparam name="WorldHeartbeat"></typeparam>
+        /// <returns></returns>
+        private Queue<WorldHeartbeat> worldStateQueue = new Queue<WorldHeartbeat>();
 
-        private uint[] localPlayerWorldTickSnapshots = new uint[1024];
-        private PlayerInputs[] localPlayerInputsSnapshots = new PlayerInputs[1024];
-        private PlayerStatePackage[] localPlayerStateSnapshots = new PlayerStatePackage[1024];
-        private Queue<WorldStatePackage> worldStateQueue = new Queue<WorldStatePackage>();
+        private MovingAverage excessWorldStateAvg = new MovingAverage(10);
 
-        public LocalPlayerSimulation localPlayer;
+        /// <summary>
+        /// Local player class
+        /// </summary>
+        public LocalPlayer localPlayer;
 
+        /// <summary>
+        /// Last executed server tick
+        /// </summary>
         public uint lastServerWorldTick = 0;
+
+        /// <summary>
+        /// Last replayed states
+        /// </summary>
         private int replayedStates;
 
         public override void _EnterTree()
@@ -31,36 +50,37 @@ namespace Shooter.Client
             base._EnterTree();
 
             this.netService = this.gameInstance.Services.Get<ClientNetworkService>();
-            this.netService.Subscribe<WorldStatePackage>(HandleWorldState);
-            this.netService.Subscribe<ServerInitializationPackage>(InitWorld);
+            this.netService.Subscribe<WorldHeartbeat>(HandleWorldState);
+            this.netService.SubscribeSerialisable<ClientInitializer>(InitWorld);
         }
 
-        private void InitWorld(ServerInitializationPackage cmd, NetPeer peer)
+        private void InitWorld(ClientInitializer cmd, NetPeer peer)
         {
-            Logger.LogDebug(this, "Init world with server user id " + cmd.PlayerId);
+            Logger.LogDebug(this, "Init world with server user id " + cmd.PlayerId + " => vars " + cmd.ServerVars?.Count);
             this.netService.MyId = cmd.PlayerId;
-            this?.Init(cmd.GameTick);
+            this?.Init(cmd.ServerVars, cmd.GameTick);
         }
 
-        private void HandleWorldState(WorldStatePackage cmd, NetPeer peed)
+        private void HandleWorldState(WorldHeartbeat cmd, NetPeer peed)
         {
             worldStateQueue.Enqueue(cmd);
         }
 
-        public override void Init(uint initalWorldTick)
+        public override void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
         {
-            base.Init(0);
+            base.Init(serverVars, 0);
 
             var simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
-
             lastServerWorldTick = initalWorldTick;
 
             this.simulationAdjuster = clientSimulationAdjuster = new ClientSimulationAdjuster(simTickRate / 2);
             WorldTick = clientSimulationAdjuster.GuessClientTick((float)this.GetPhysicsProcessDeltaTime(), initalWorldTick, this.netService.ping);
         }
 
-        private MovingAverage excessWorldStateAvg = new MovingAverage(10);
-
+        /// <summary>
+        /// After each physical frame
+        /// </summary>
+        /// <param name="interval"></param>
         protected override void PostUpdate()
         {
             // Process the remaining world states if there are any, though we expect this to be empty?
@@ -72,24 +92,29 @@ namespace Shooter.Client
             // Show some debug monitoring values.
             Logger.SetDebugUI("cl rewinds", replayedStates.ToString());
             Logger.SetDebugUI("incoming state excess", excessWorldStateAvg.Average().ToString());
+
             clientSimulationAdjuster.Monitoring();
         }
 
+        /// <summary>
+        /// Handle client tick
+        /// </summary>
+        /// <param name="interval"></param>
         public override void Tick(float interval)
         {
-            if (this.localPlayer != null)
+            if (this.localPlayer != null && this.localPlayer.Simulation != null)
             {
                 float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
                 var serverSendRate = simTickRate / 2;
 
                 var MaxStaleServerStateTicks = (int)MathF.Ceiling(
-                    Settings.MaxStaleServerStateAgeMs / serverSendRate);
+                   int.Parse(this.ServerVars["sv_max_stages_ms"]) / serverSendRate);
 
-                var inputHandler = this.localPlayer?.Components.Get<PlayerInputComponent>();
+                var inputHandler = this.localPlayer.Simulation.Components.Get<PlayerInputComponent>();
                 var inputs = (inputHandler != null && !this.gameInstance.GuiDisableInput) ? inputHandler.GetPlayerInput() : new PlayerInputs();
 
                 var lastTicks = WorldTick - lastServerWorldTick;
-                if (Settings.FreezeClientOnStaleServer && lastTicks >= MaxStaleServerStateTicks)
+                if (bool.Parse(this.ServerVars["sv_freze_client"]) && lastTicks >= MaxStaleServerStateTicks)
                 {
                     Logger.LogDebug(this, "Server state is too old (is the network connection dead?) - max ticks " + MaxStaleServerStateTicks + " - currentTicks => " + lastTicks);
                     inputs = new PlayerInputs();
@@ -97,9 +122,9 @@ namespace Shooter.Client
 
                 // Update our snapshot buffers.
                 uint bufidx = WorldTick % 1024;
-                localPlayerInputsSnapshots[bufidx] = inputs;
-                localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
-                localPlayerWorldTickSnapshots[bufidx] = lastServerWorldTick;
+                this.localPlayer.localPlayerInputsSnapshots[bufidx] = inputs;
+                this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.Simulation.ToNetworkState();
+                this.localPlayer.localPlayerWorldTickSnapshots[bufidx] = lastServerWorldTick;
 
                 // Send a command for all inputs not yet acknowledged from the server.
                 var unackedInputs = new List<PlayerInputs>();
@@ -107,8 +132,8 @@ namespace Shooter.Client
                 // TODO: lastServerWorldTick is technically not the same as lastAckedInputTick, fix this.
                 for (uint tick = lastServerWorldTick; tick <= WorldTick; ++tick)
                 {
-                    unackedInputs.Add(localPlayerInputsSnapshots[tick % 1024]);
-                    clientWorldTickDeltas.Add((short)(tick - localPlayerWorldTickSnapshots[tick % 1024]));
+                    unackedInputs.Add(this.localPlayer.localPlayerInputsSnapshots[tick % 1024]);
+                    clientWorldTickDeltas.Add((short)(tick - this.localPlayer.localPlayerWorldTickSnapshots[tick % 1024]));
                 }
 
                 var command = new PlayerInputCommand
@@ -122,41 +147,168 @@ namespace Shooter.Client
                 this.netService.SendMessageSerialisable(this.netService.ServerPeer, command, LiteNetLib.DeliveryMethod.Sequenced);
 
                 //SetPlayerInputs
-                this.localPlayer?.SetPlayerInputs(inputs);
+                this.localPlayer.Simulation.SetPlayerInputs(inputs);
 
-                // SimulateWorld(dt);
-                this.localPlayer?.Simulate(interval);
+                // SimulateWorld
+                this.localPlayer.Simulation.Simulate(interval);
             }
 
             //increase worldTick
             ++this.WorldTick;
 
-            if (this.localPlayer != null)
-            {
-                ProcessServerWorldState();
-            }
-        }
-
-
-        private void ProcessServerWorldState()
-        {
+            //run world state queue
             if (worldStateQueue.Count < 1)
             {
                 return;
             }
 
             var incomingState = worldStateQueue.Dequeue();
+
+            //update player list and values
+            this.ExecuteHeartbeat(incomingState);
+
+            //procese player inputs
+            this.ProcessServerWorldState(incomingState);
+        }
+
+        /// <summary>
+        /// Execute world heartbeat to initalize players and set values
+        /// </summary>
+        /// <param name="update"></param>
+        private void ExecuteHeartbeat(WorldHeartbeat update)
+        {
+            //check that the id is initialized
+            if (this.netService.MyId < 0)
+            {
+                return;
+            }
+
+            var playerUpdates = update.PlayerUpdates;
+            var playerStates = update.PlayerStates;
+            if (playerUpdates != null && playerUpdates.Length > 0)
+            {
+                // Logger.LogDebug(this, "Players heartbeat => Amount: " + playerUpdates.Length);
+                var currentPlayerId = this.netService.MyId;
+
+                //get player ids for delete selection
+                var playerIds = playerUpdates.Select(df => df.Id).ToArray();
+
+                //delete unused players
+                var playersToDelete = this._players?.Where(df => !playerIds.Contains(df.Key)).ToArray();
+                foreach (var player in playersToDelete)
+                {
+                    if (player.Value.Simulation != null)
+                    {
+                        this.RemovePlayerSimulation(player.Value.Simulation);
+                        player.Value.Simulation = null;
+                    }
+                    this._players.Remove(player.Key);
+
+                    if (player.Key == this.netService.MyId)
+                    {
+                        Logger.LogDebug(this, "Local player are realy disconnected!");
+                        (this.gameInstance as ClientGameLogic).Disconnect();
+                        return;
+                    }
+                }
+
+                //players
+                foreach (var playerUpdate in playerUpdates)
+                {
+                    //creat local player
+                    if (playerUpdate.Id == this.netService.MyId)
+                    {
+                        this.UpdateOrCreateLocalPlayer(playerUpdate, playerStates.FirstOrDefault(df => df.Id == playerUpdate.Id));
+                    }
+                    //create puppet player
+                    else
+                    {
+                        this.UpdateOrCreatePuppetPlayer(playerUpdate, playerStates.FirstOrDefault(df => df.Id == playerUpdate.Id));
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Update or create puppet player
+        /// </summary>
+        /// <param name="playerUpdate"></param>
+        /// <param name="playerState"></param>
+        private void UpdateOrCreatePuppetPlayer(PlayerUpdate playerUpdate, PlayerState playerState)
+        {
+            if (!this._players.ContainsKey(playerUpdate.Id))
+            {
+                this._players.Add(playerUpdate.Id, new PuppetPlayer());
+            }
+
+            var player = this._players[playerUpdate.Id];
+            this.updatePlayerValues(playerUpdate, player);
+
+            if (playerUpdate.State == ClientState.Initialized && player.Simulation == null)
+            {
+                var simulation = this.AddPlayerSimulation<PuppetPlayerSimulation>(playerUpdate.Id);
+                if (simulation != null)
+                {
+                    Logger.LogDebug(this, "Create puppet player with pos " + playerState.Position);
+                    var body = simulation.Components.AddComponent<PlayerBodyComponent>("res://Assets/Player/PlayerBody.tscn");
+                    simulation.ApplyNetworkState(playerState);
+                    player.Simulation = simulation;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update or create local player
+        /// </summary>
+        /// <param name="playerUpdate"></param>
+        /// <param name="playerState"></param>
+        private void UpdateOrCreateLocalPlayer(PlayerUpdate playerUpdate, PlayerState playerState)
+        {
+            if (!this._players.ContainsKey(playerUpdate.Id))
+            {
+                this._players.Add(playerUpdate.Id, new LocalPlayer());
+            }
+
+            var player = this._players[playerUpdate.Id];
+            this.updatePlayerValues(playerUpdate, player);
+
+            if (player.State == ClientState.Initialized && player.Simulation == null)
+            {
+                var playerSimulation = this.AddPlayerSimulation<LocalPlayerSimulation>(playerUpdate.Id);
+                if (playerSimulation != null)
+                {
+                    Logger.LogDebug(this, "Create local player with pos " + playerState.Position);
+                    //(this.currentWorld as ClientGameWorld).Init(worldTick);
+
+                    //add component
+                    playerSimulation.Components.AddComponent<PlayerCameraComponent>();
+                    playerSimulation.Components.AddComponent<PlayerInputComponent>();
+
+                    var body = playerSimulation.Components.AddComponent<PlayerBodyComponent>("res://Assets/Player/PlayerBody.tscn");
+                    playerSimulation.ApplyNetworkState(playerState);
+                    player.Simulation = playerSimulation;
+
+                    this.localPlayer = player as LocalPlayer;
+                }
+            }
+        }
+        /// <summary>
+        /// Compare inputs with current state and do client interpolation
+        /// </summary>
+        /// <param name="incomingState"></param>
+        private void ProcessServerWorldState(WorldHeartbeat incomingState)
+        {
+            //set the last server world tick
             lastServerWorldTick = incomingState.WorldTick;
 
             // Calculate our actual tick lead on the server perspective. We add one because the world
             // state the server sends to use is always 1 higher than the latest input that has been
             // processed.
-
             if (incomingState.YourLatestInputTick > 0)
             {
                 int actualTickLead = (int)incomingState.YourLatestInputTick - (int)lastServerWorldTick + 1;
-
-                this.clientSimulationAdjuster.NotifyActualTickLead(actualTickLead, false);
+                this.clientSimulationAdjuster.NotifyActualTickLead(actualTickLead, false, bool.Parse(this.ServerVars["sv_agressive_lag_reduction"]));
             }
 
             // For debugging purposes, log the local lead we're running at
@@ -173,63 +325,70 @@ namespace Shooter.Client
                 Logger.LogDebug(this, "Got a FUTURE tick somehow???");
             }
 
-            // Lookup the historical state for the world tick we got.
-            uint bufidx = incomingState.WorldTick % 1024;
-            var stateSnapshot = localPlayerStateSnapshots[bufidx];
-
             // Locate the data for our local player.
-            PlayerStatePackage incomingLocalPlayerState = new PlayerStatePackage();
+            PlayerState incomingLocalPlayerState = new PlayerState();
+
             foreach (var playerState in incomingState.PlayerStates)
             {
-                if (playerState.Id == int.Parse(this.localPlayer.Name))
+                if (playerState.Id == this.netService.MyId)
                 {
                     incomingLocalPlayerState = playerState;
                 }
                 else
                 {
                     var player = this.playerHolder.GetNodeOrNull<PuppetPlayerSimulation>(playerState.Id.ToString());
-                    player.ApplyNetworkState(playerState);
+                    player?.ApplyNetworkState(playerState);
                 }
             }
-            if (default(PlayerStatePackage).Equals(incomingLocalPlayerState))
+
+            if (default(PlayerState).Equals(incomingLocalPlayerState))
             {
                 Logger.LogDebug(this, "No local player state found!");
             }
 
-            // Compare the historical state to see how off it was.
-            var error = incomingLocalPlayerState.Position - stateSnapshot.Position;
-            if (error.LengthSquared() > 0.0001f)
+            if (this.localPlayer != null)
             {
-                if (!headState)
+                // Lookup the historical state for the world tick we got.
+                uint bufidx = incomingState.WorldTick % 1024;
+                var stateSnapshot = this.localPlayer.localPlayerStateSnapshots[bufidx];
+
+                // Compare the historical state to see how off it was.
+                if (this.localPlayer.Simulation != null)
                 {
-                    Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {incomingLocalPlayerState.Position.ToString()} ServerPos: {stateSnapshot.Position.ToString()} ");
-                    replayedStates++;
-                }
+                    var error = incomingLocalPlayerState.Position - stateSnapshot.Position;
+                    if (error.LengthSquared() > 0.0001f)
+                    {
+                        if (!headState)
+                        {
+                            Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {incomingLocalPlayerState.Position.ToString()} ServerPos: {stateSnapshot.Position.ToString()} ");
+                            replayedStates++;
+                        }
 
-                // Rewind local player state to the correct state from the server.
-                // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
-                this.localPlayer.ApplyNetworkState(incomingLocalPlayerState);
+                        // Rewind local player state to the correct state from the server.
+                        // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
+                        this.localPlayer.Simulation.ApplyNetworkState(incomingLocalPlayerState);
 
-                // Loop through and replay all captured input snapshots up to the current tick.
-                uint replayTick = incomingState.WorldTick;
+                        // Loop through and replay all captured input snapshots up to the current tick.
+                        uint replayTick = incomingState.WorldTick;
 
-                while (replayTick < WorldTick)
-                {
-                    // Grab the historical input.
-                    bufidx = replayTick % 1024;
-                    var inputSnapshot = localPlayerInputsSnapshots[bufidx];
+                        while (replayTick < WorldTick)
+                        {
+                            // Grab the historical input.
+                            bufidx = replayTick % 1024;
+                            var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
 
-                    // Rewrite the historical sate snapshot.
-                    localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
+                            // Rewrite the historical sate snapshot.
+                            this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.Simulation.ToNetworkState();
 
-                    // Apply inputs to the associated player controller and simulate the world.
-                    this.localPlayer.SetPlayerInputs(inputSnapshot);
-                    this.localPlayer.Simulate((float)this.GetPhysicsProcessDeltaTime());
+                            // Apply inputs to the associated player controller and simulate the world.
+                            this.localPlayer.Simulation.SetPlayerInputs(inputSnapshot);
+                            this.localPlayer.Simulation.Simulate((float)this.GetPhysicsProcessDeltaTime());
 
-                    ++replayTick;
+                            ++replayTick;
+                        }
+                    }
                 }
             }
         }
-
     }
 }

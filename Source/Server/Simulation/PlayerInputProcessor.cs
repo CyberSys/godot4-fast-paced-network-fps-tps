@@ -44,7 +44,7 @@ namespace Shooter.Server
                 }
             }
             averageInputQueueSize.Push(count);
-            Logger.LogDebug(this, "sv avg input queue => " + averageInputQueueSize);
+            Logger.SetDebugUI("sv_avg_input_queue", averageInputQueueSize.ToString());
         }
 
         public bool TryGetLatestInput(int playerId, out TickInput ret)

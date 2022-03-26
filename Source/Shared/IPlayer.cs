@@ -13,5 +13,6 @@ namespace Shooter.Shared
         public int Latency { get; set; }
         public ClientState State { get; set; }
         public PlayerTeam Team { get; set; }
+        public NetworkPlayerSimulation Simulation { get; set; }
     }
 }

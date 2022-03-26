@@ -7,7 +7,7 @@ using Shooter.Client.Simulation.Components;
 
 namespace Shooter.Shared
 {
-    public abstract partial class MoveablePlayerSimulation : PlayerSimulation
+    public abstract partial class PhysicsPlayerSimulation : NetworkPlayerSimulation
     {
         protected MovementCalculator calculator = new MovementCalculator();
 
@@ -16,12 +16,12 @@ namespace Shooter.Shared
             base._EnterTree();
         }
 
-        public override PlayerStatePackage ToNetworkState()
+        public override PlayerState ToNetworkState()
         {
             var component = this.Components.Get<PlayerBodyComponent>();
             if (component != null)
             {
-                return new PlayerStatePackage
+                return new PlayerState
                 {
                     Id = int.Parse(this.Name),
                     Position = component.Transform.origin,
@@ -32,14 +32,14 @@ namespace Shooter.Shared
             }
             else
             {
-                return new PlayerStatePackage
+                return new PlayerState
                 {
                     Id = int.Parse(this.Name),
                 };
             }
         }
 
-        public override void ApplyNetworkState(PlayerStatePackage state)
+        public override void ApplyNetworkState(PlayerState state)
         {
             var component = this.Components.Get<PlayerBodyComponent>();
             if (component != null)
@@ -58,7 +58,7 @@ namespace Shooter.Shared
             calculator.playerVelocity = state.Velocity;
         }
 
-        public void Simulate(float delta)
+        public override void Simulate(float delta)
         {
             var component = this.Components.Get<PlayerBodyComponent>();
             if (component != null)

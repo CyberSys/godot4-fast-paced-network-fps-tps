@@ -7,17 +7,17 @@ using Shooter.Client.Simulation.Components;
 
 namespace Shooter.Client.Simulation
 {
-    public partial class PuppetPlayerSimulation : PlayerSimulation
+    public partial class PuppetPlayerSimulation : NetworkPlayerSimulation
     {
-        private Queue<PlayerStatePackage> stateQueue = new Queue<PlayerStatePackage>();
-        private PlayerStatePackage? lastState = null;
+        private Queue<PlayerState> stateQueue = new Queue<PlayerState>();
+        private PlayerState? lastState = null;
         private float stateTimer = 0;
 
         public override void _PhysicsProcess(float delta)
         {
             base._PhysicsProcess(delta);
             var body = this.Components.Get<PlayerBodyComponent>();
-            if (!Settings.UseClientInterp)
+            if (!bool.Parse(this.GameWorld.ServerVars["sv_interpolate"]))
             {
                 return;
             }
@@ -60,9 +60,9 @@ namespace Shooter.Client.Simulation
                 body.Transform = transform;
             }
         }
-        public override void ApplyNetworkState(PlayerStatePackage state)
+        public override void ApplyNetworkState(PlayerState state)
         {
-            if (Settings.UseClientInterp)
+            if (bool.Parse(this.GameWorld.ServerVars["sv_interpolate"]))
             {
                 // TODO: This whole thing needs to be simplified a bit more, but at least make sure
                 // we're not buffering more than we should be.

@@ -13,9 +13,9 @@ namespace Shooter.Client.Simulation.Components
         Server,
         Dugeon
     }
-    public partial class PlayerCameraComponent : Camera3D, IComponent<PlayerSimulation>
+    public partial class PlayerCameraComponent : Camera3D, IComponent<NetworkPlayerSimulation>
     {
-        public PlayerSimulation MainComponent { get; set; }
+        public NetworkPlayerSimulation MainComponent { get; set; }
         public const float tpsDamping = 1;
         public float Sensitivity = 2f;
         private float rotX = 0.0f;

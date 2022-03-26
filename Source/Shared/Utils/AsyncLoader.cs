@@ -72,8 +72,6 @@ namespace Shooter.Shared
                 var mapLoaderProgress = new Godot.Collections.Array();
                 if (currentResource != null)
                 {
-                    Logger.LogDebug(this, "Loading " + currentResource.ResourceName);
-
                     var status = ResourceLoader.LoadThreadedGetStatus(currentResource.ResourceName, mapLoaderProgress);
                     if (status == ResourceLoader.ThreadLoadStatus.Loaded)
                     {

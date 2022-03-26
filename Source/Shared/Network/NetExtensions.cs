@@ -1,6 +1,7 @@
 using Godot;
 using LiteNetLib.Utils;
-
+using System.Collections.Generic;
+using System;
 namespace Shooter.Shared
 {
     public static class NetExtensions
@@ -31,14 +32,24 @@ namespace Shooter.Shared
         {
             SerializeQuaternion(writer, quaternion);
         }
+
         public static void Put(this NetDataWriter writer, Vector3 vector)
         {
             SerializeVector3(writer, vector);
         }
 
+        public static void Put(this NetDataWriter writer, Dictionary<string, string> dic)
+        {
+            SerializeStringDictonary(writer, dic);
+        }
+
         public static Vector3 GetVector3(this NetDataReader reader)
         {
             return DeserializeVector3(reader);
+        }
+        public static Dictionary<string, string> GetDictonaryString(this NetDataReader reader)
+        {
+            return DeserializeStringDictonary(reader);
         }
 
         public static Quaternion GetQuaternion(this NetDataReader reader)
@@ -62,6 +73,35 @@ namespace Shooter.Shared
             return v;
         }
 
+        public static void SerializeStringDictonary(NetDataWriter writer, Dictionary<string, string> dic)
+        {
+            if (dic != null)
+            {
+                writer.Put(dic.Count);
+
+                foreach (var va in dic)
+                {
+                    writer.Put(va.Key);
+                    writer.Put(va.Value);
+                }
+            }
+            else
+            {
+                writer.Put(0);
+            }
+        }
+
+        public static Dictionary<string, string> DeserializeStringDictonary(NetDataReader reader)
+        {
+            var dictonary = new Dictionary<string, string>();
+            var count = reader.GetInt();
+            for (int i = 0; i < count; i++)
+            {
+                dictonary.Add(reader.GetString(), reader.GetString());
+            }
+
+            return dictonary;
+        }
         public static void SerializeQuaternion(NetDataWriter writer, Quaternion quaternion)
         {
             // Utilize "Smallest three" strategy.

@@ -5,13 +5,14 @@ namespace Shooter.Shared
 {
     public interface IWorld
     {
-        public void Init(uint initalWorldTick);
+        public void Init(Dictionary<string, string> serverVars, uint initalWorldTick);
         public void Destroy();
-        public T AddPlayerSimulation<T>(int id) where T : PlayerSimulation;
-        public void RemovePlayerSimulation(int id);
-        public PlayerSimulation GetPlayerSimulation(int id);
+        public T AddPlayerSimulation<T>(int id) where T : NetworkPlayerSimulation;
+        public void RemovePlayerSimulation(NetworkPlayerSimulation simulation);
         public uint WorldTick { get; }
         public GameLevel Level { get; }
+
+        public Dictionary<int, IPlayer> Players { get; }
 
     }
 }

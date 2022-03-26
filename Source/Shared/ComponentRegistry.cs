@@ -12,6 +12,7 @@ namespace Shooter.Shared
         public Node[] All => _components.Values.ToArray();
         private T2 parentNode = null;
 
+        /// <inheritdoc />
         public ComponentRegistry(T2 node)
         {
             this.parentNode = node;
@@ -27,6 +28,7 @@ namespace Shooter.Shared
             };
         }
 
+        /// <inheritdoc />
         public void DeleteComponent<T>()
         {
             lock (_components)
@@ -42,6 +44,7 @@ namespace Shooter.Shared
             }
         }
 
+        /// <inheritdoc />
         public T AddComponent<T>() where T : Node, IComponent<T2>
         {
             lock (_components)
@@ -60,6 +63,7 @@ namespace Shooter.Shared
             }
         }
 
+        /// <inheritdoc />
         public T AddComponent<T>(string resourcePath) where T : Node, IComponent<T2>
         {
             lock (_components)

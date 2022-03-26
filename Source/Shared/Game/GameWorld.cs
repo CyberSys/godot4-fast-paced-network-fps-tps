@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Shooter.Shared.Network.Packages;
+
 namespace Shooter.Shared
 {
     public interface ISimulationAdjuster
@@ -16,9 +18,12 @@ namespace Shooter.Shared
 
     public abstract partial class GameWorld : Node3D, IWorld
     {
+
+        protected readonly Dictionary<int, IPlayer> _players = new Dictionary<int, IPlayer>();
+        public Dictionary<int, IPlayer> Players => _players;
+
         public uint WorldTick { get; protected set; } = 0;
         protected virtual void PostUpdate() { }
-
 
         private InterpolationController interpController = new InterpolationController();
 
@@ -31,6 +36,18 @@ namespace Shooter.Shared
 
         protected GameLevel level;
         public GameLevel Level => level;
+        protected bool isInit = false;
+
+        protected Dictionary<string, string> _serverVars = new Dictionary<string, string>();
+        public Dictionary<string, string> ServerVars => _serverVars;
+
+        protected void updatePlayerValues(PlayerUpdate playerUpdate, IPlayer player)
+        {
+            player.Team = playerUpdate.Team;
+            player.Latency = playerUpdate.Latency;
+            player.Name = playerUpdate.Name;
+            player.State = playerUpdate.State;
+        }
 
         public void InstanceLevel(PackedScene res)
         {
@@ -41,17 +58,20 @@ namespace Shooter.Shared
             this.level = node;
         }
 
-        public virtual void Init(uint initalWorldTick)
+        public virtual void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
         {
             this.isInit = true;
+            this._serverVars = serverVars;
+            foreach (var sv in serverVars)
+            {
+                Logger.LogDebug(this, "[Config] " + sv.Key + " => " + sv.Value);
+            }
         }
 
         public virtual void Tick(float interval)
         {
             ++this.WorldTick;
         }
-
-        protected bool isInit = false;
 
         public override void _Process(float delta)
         {
@@ -92,29 +112,22 @@ namespace Shooter.Shared
             this.AddChild(playerHolder);
         }
 
-        public T AddPlayerSimulation<T>(int id) where T : PlayerSimulation
+        public T AddPlayerSimulation<T>(int id) where T : NetworkPlayerSimulation
         {
-            if (!playerHolder.HasNode(id.ToString()))
-            {
-                T simulation = Activator.CreateInstance<T>();
-                simulation.Name = id.ToString();
-                simulation.GameWorld = this;
+            T simulation = Activator.CreateInstance<T>();
+            simulation.Name = id.ToString();
+            simulation.GameWorld = this;
 
-                playerHolder.AddChild(simulation);
+            playerHolder.AddChild(simulation);
 
-                return simulation;
-            }
-            else
-            {
-                return null;
-            }
+            return simulation;
         }
 
-        public void RemovePlayerSimulation(int id)
+        public void RemovePlayerSimulation(NetworkPlayerSimulation simulation)
         {
-            if (playerHolder.HasNode(id.ToString()))
+            if (playerHolder.HasNode(simulation.GetPath()))
             {
-                playerHolder.GetNode(id.ToString()).QueueFree();
+                playerHolder.GetNode(simulation.GetPath()).QueueFree();
             }
         }
 
@@ -122,19 +135,5 @@ namespace Shooter.Shared
         {
             this.QueueFree();
         }
-
-
-        public PlayerSimulation GetPlayerSimulation(int id)
-        {
-            if (playerHolder.HasNode(id.ToString()))
-            {
-                return playerHolder.GetNode<PlayerSimulation>(id.ToString());
-            }
-            else
-            {
-                return null;
-            }
-        }
-
     }
 }

@@ -1,6 +1,4 @@
-using System;
 using Godot;
-using System.Collections.Generic;
 
 namespace Shooter.Shared
 {
@@ -60,7 +58,7 @@ namespace Shooter.Shared
             base._ExitTree();
         }
 
-        public virtual void LoadWorld(string mapName, uint worldTick = 0)
+        protected virtual void LoadWorld(string path, uint worldTick = 0)
         {
             if (mapLoadInProcess)
             {
@@ -71,8 +69,7 @@ namespace Shooter.Shared
             this.OnMapDestroy();
             this.mapLoadInProcess = true;
 
-            GD.Load<CSharpScript>("res://Shared/GameLevel.cs");
-            var path = "res://Assets/Maps/" + mapName + ".tscn";
+            GD.Load<CSharpScript>("res://Shared/Game/GameLevel.cs");
 
             this.loader.LoadResource(path, (res) =>
             {

@@ -3,7 +3,7 @@ using Godot;
 using System;
 namespace Shooter.Client.Simulation.Components
 {
-	public partial class PlayerBodyComponent : CharacterBody3D, IComponent<PlayerSimulation>
+	public partial class PlayerBodyComponent : CharacterBody3D, IComponent<NetworkPlayerSimulation>
 	{
 		[Export]
 		public NodePath ColliderPath = null;
@@ -15,7 +15,7 @@ namespace Shooter.Client.Simulation.Components
 		[Export]
 		public NodePath groundCast = null;
 
-		public PlayerSimulation MainComponent { get; set; }
+		public NetworkPlayerSimulation MainComponent { get; set; }
 
 
 		public Vector3 previousPosition = Vector3.Zero;
