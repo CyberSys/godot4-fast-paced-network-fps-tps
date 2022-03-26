@@ -1,4 +1,4 @@
-# ♨️The game framework your mother warned you about. ♨️
+# ♨️ The game framework your mother warned you about. 
 
 Godot 4 Fast-Paced (Authoritative Server) Game + Network Framework for FPS and TPS Games
 
