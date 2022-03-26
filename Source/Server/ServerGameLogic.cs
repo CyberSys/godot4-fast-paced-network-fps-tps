@@ -12,6 +12,18 @@ namespace Shooter.Server
 
         [Export]
         /// <summary>
+        /// maximal possible connections
+        /// </summary>
+        public int MaxConnections = 15;
+
+        [Export]
+        /// <summary>
+        /// If clients can connect
+        /// </summary>
+        public bool AcceptClients = false;
+
+        [Export]
+        /// <summary>
         /// The dictonary with all server settings (vars);
         /// </summary>
         public Dictionary<string, string> ServerVars = new Dictionary<string, string>  {
@@ -32,17 +44,40 @@ namespace Shooter.Server
         public string DefaultMapName = "res://Assets/Maps/Test.tscn";
 
         /// <summary>
+        /// Network server port
+        /// </summary>
+        [Export]
+        public int NetworkPort = 27015;
+
+        /// <summary>
         /// Instance the server game logic and load the map from default settings
         /// </summary>
         public override void _EnterTree()
         {
-            this.netService = this._serviceRegistry.Create<Shooter.Server.Services.ServerNetworkService>();
+            this.netService = this.Services.Create<Shooter.Server.Services.ServerNetworkService>();
             this.netService.ConnectionEstablished += () =>
             {
+                Logger.LogDebug(this, "Server was started.");
                 this.LoadWorld(DefaultMapName, 0);
             };
 
+            this.netService.ConnectionRequest += (request) =>
+            {
+                if (this.netService.GetConnectionCount() < MaxConnections && AcceptClients)
+                {
+                    Logger.LogDebug(this, request.RemoteEndPoint.Address + ":" + request.RemoteEndPoint.Port + " established");
+                    request.AcceptIfKey(this.secureConnectionKey);
+                }
+                else
+                {
+                    Logger.LogDebug(this, request.RemoteEndPoint.Address + ":" + request.RemoteEndPoint.Port + " rejected");
+                    request.Reject();
+                }
+            };
+
             base._EnterTree();
+
+            this.netService.Bind(NetworkPort);
         }
 
         /// <summary>
@@ -52,7 +87,7 @@ namespace Shooter.Server
         /// <param name="worldTick"></param>
         protected override void LoadWorld(string mapName, uint worldTick)
         {
-            this.netService.acceptClients = false;
+            this.AcceptClients = false;
 
             //disconnect all clients
             foreach (var connectedClient in this.netService.GetConnectedPeers())
@@ -81,7 +116,7 @@ namespace Shooter.Server
             this.currentWorld?.Init(this.ServerVars, 0);
 
             //accept clients
-            this.netService.acceptClients = true;
+            this.AcceptClients = true;
         }
 
         /// <summary>
@@ -93,7 +128,7 @@ namespace Shooter.Server
             this.currentWorld = null;
 
             //reject clients
-            this.netService.acceptClients = false;
+            this.AcceptClients = false;
         }
     }
 }

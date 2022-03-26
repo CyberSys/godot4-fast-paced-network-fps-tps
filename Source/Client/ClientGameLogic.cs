@@ -1,22 +1,25 @@
-using System;
-using System.Linq;
 using Godot;
 using Shooter.Shared;
 using Shooter.Shared.Network.Packages;
 using Shooter.Client.World;
-using Shooter.Client.Simulation;
-using System.Collections.Generic;
 using LiteNetLib;
 using Shooter.Client.UI.Welcome;
-using Shooter.Client.Simulation.Components;
+
 namespace Shooter.Client
 {
     public partial class ClientGameLogic : CoreGameLogic
     {
+        [Export]
+        public int DefaultNetworkPort = 27015;
+
+        [Export]
+        public string DefaultNetworkHostname = "localhost";
+
         private Shooter.Client.Services.ClientNetworkService netService = null;
 
         private string loadedWorldName = null;
         public ComponentRegistry<ClientGameLogic> Components { get; set; }
+
 
         public ClientGameLogic() : base()
         {
@@ -89,12 +92,18 @@ namespace Shooter.Client
         {
             this.Components.DeleteComponent<PreConnectComponent>();
             this.Components.AddComponent<MapLoadingComponent>("res://Client/UI/Welcome/MapLoadingComponent.tscn");
-            this.netService.Connect("localhost");
+
+            this.netService.Connect(new Client.Services.ClientConnectionSettings
+            {
+                Port = DefaultNetworkPort,
+                Hostname = DefaultNetworkHostname,
+                SecureKey = this.secureConnectionKey
+            });
         }
 
         public override void _EnterTree()
         {
-            this.netService = this._serviceRegistry.Create<Shooter.Client.Services.ClientNetworkService>();
+            this.netService = this.Services.Create<Shooter.Client.Services.ClientNetworkService>();
             this.netService.OnDisconnect += this.onDisconnect;
 
             this.netService.SubscribeSerialisable<ClientWorldInitializer>((package, peer) =>
@@ -120,7 +129,6 @@ namespace Shooter.Client
             {
                 Logger.LogDebug(this, "Full disconnected");
                 this.OnMapDestroy();
-                this.netService.MyId = -1;
             }
         }
     }

@@ -241,7 +241,7 @@ namespace Shooter.Server.World
 				}
 			}
 
-			this.netService.SendMessageSerialisable<ClientInitializer>(peer,
+			this.netService.SendMessageSerialisable<ClientInitializer>(clientId,
 						new ClientInitializer
 						{
 							PlayerId = clientId,

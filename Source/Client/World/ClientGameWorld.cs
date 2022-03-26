@@ -45,6 +45,10 @@ namespace Shooter.Client.World
         /// </summary>
         private int replayedStates;
 
+        private int _myServerId = -1;
+
+        public int MyServerId => _myServerId;
+
         public override void _EnterTree()
         {
             base._EnterTree();
@@ -57,7 +61,7 @@ namespace Shooter.Client.World
         private void InitWorld(ClientInitializer cmd, NetPeer peer)
         {
             Logger.LogDebug(this, "Init world with server user id " + cmd.PlayerId + " => vars " + cmd.ServerVars?.Count);
-            this.netService.MyId = cmd.PlayerId;
+            this._myServerId = cmd.PlayerId;
             this?.Init(cmd.ServerVars, cmd.GameTick);
         }
 
@@ -144,7 +148,7 @@ namespace Shooter.Client.World
                 };
 
                 //send to server => command
-                this.netService.SendMessageSerialisable(this.netService.ServerPeer, command, LiteNetLib.DeliveryMethod.Sequenced);
+                this.netService.SendMessageSerialisable(this.netService.ServerPeer.Id, command, LiteNetLib.DeliveryMethod.Sequenced);
 
                 //SetPlayerInputs
                 this.localPlayer.Simulation.SetPlayerInputs(inputs);
@@ -178,7 +182,7 @@ namespace Shooter.Client.World
         private void ExecuteHeartbeat(WorldHeartbeat update)
         {
             //check that the id is initialized
-            if (this.netService.MyId < 0)
+            if (this.MyServerId < 0)
             {
                 return;
             }
@@ -188,7 +192,7 @@ namespace Shooter.Client.World
             if (playerUpdates != null && playerUpdates.Length > 0)
             {
                 // Logger.LogDebug(this, "Players heartbeat => Amount: " + playerUpdates.Length);
-                var currentPlayerId = this.netService.MyId;
+                var currentPlayerId = this.MyServerId;
 
                 //get player ids for delete selection
                 var playerIds = playerUpdates.Select(df => df.Id).ToArray();
@@ -204,7 +208,7 @@ namespace Shooter.Client.World
                     }
                     this._players.Remove(player.Key);
 
-                    if (player.Key == this.netService.MyId)
+                    if (player.Key == this.MyServerId)
                     {
                         Logger.LogDebug(this, "Local player are realy disconnected!");
                         (this.gameInstance as ClientGameLogic).Disconnect();
@@ -216,7 +220,7 @@ namespace Shooter.Client.World
                 foreach (var playerUpdate in playerUpdates)
                 {
                     //creat local player
-                    if (playerUpdate.Id == this.netService.MyId)
+                    if (playerUpdate.Id == this.MyServerId)
                     {
                         this.UpdateOrCreateLocalPlayer(playerUpdate, playerStates.FirstOrDefault(df => df.Id == playerUpdate.Id));
                     }
@@ -330,7 +334,7 @@ namespace Shooter.Client.World
 
             foreach (var playerState in incomingState.PlayerStates)
             {
-                if (playerState.Id == this.netService.MyId)
+                if (playerState.Id == this.MyServerId)
                 {
                     incomingLocalPlayerState = playerState;
                 }

@@ -12,10 +12,13 @@ namespace Shooter.Shared
 
     public abstract class NetworkService : IService
     {
-        public const int RefreshTime = 10;
-        public const string ConnectionKey = "Secure";
+        /// <summary>
+        /// Default server port
+        /// </summary>
+
         protected readonly NetPacketProcessor _netPacketProcessor = new NetPacketProcessor();
         protected NetManager netManager;
+
         public Dictionary<NetPeer, int> PeerLatency { get; private set; }
             = new Dictionary<NetPeer, int>();
 
@@ -38,7 +41,10 @@ namespace Shooter.Shared
                NetExtensions.SerializeStringDictonary, NetExtensions.DeserializeStringDictonary);
         }
 
-
+        /// <summary>
+        /// Send an network message to all clients
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public void SentMessageToAll<T>(T obj, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
             if (this.netManager == null)
@@ -49,6 +55,13 @@ namespace Shooter.Shared
             this._netPacketProcessor.Send<T>(this.netManager, obj, method);
         }
 
+        /// <summary>
+        /// Send an message to an specific client (non serialized)
+        /// </summary>
+        /// <param name="peerId"></param>
+        /// <param name="obj"></param>
+        /// <param name="method"></param>
+        /// <typeparam name="T"></typeparam>
         public void SendMessage<T>(int peerId, T obj, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
             if (this.netManager == null)
@@ -63,20 +76,13 @@ namespace Shooter.Shared
             }
         }
 
-        public void SendMessageSerialisable<T>(NetPeer peer, T command, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : INetSerializable, new()
-        {
-            if (this.netManager == null)
-            {
-                return;
-            }
-
-            if (peer != null)
-            {
-                this._netPacketProcessor.SendNetSerializable(peer, ref command, method);
-            }
-        }
-
-
+        /// <summary>
+        /// Send an network message to an specific client by id (serialized)
+        /// </summary>
+        /// <param name="peerId"></param>
+        /// <param name="command"></param>
+        /// <param name="method"></param>
+        /// <typeparam name="T"></typeparam>
         public void SendMessageSerialisable<T>(int peerId, T command, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : INetSerializable, new()
         {
             if (this.netManager == null)

@@ -9,38 +9,62 @@ namespace Shooter.Server.Services
     {
         [Signal]
         public event ClientConnectedHandler ClientConnected;
-        public delegate void ClientConnectedHandler(int clientId);
+
         [Signal]
         public event ClientLatencyUpdateHandler ClientLatencyUpdate;
-        public delegate void ClientLatencyUpdateHandler(int clientId, int latency);
 
         [Signal]
         public event ClientDisconnectHandler ClientDisconnect;
-        public delegate void ClientDisconnectHandler(int clientId, DisconnectReason reason);
 
         [Signal]
         public event ConnectionEstablishedHandler ConnectionEstablished;
-        public delegate void ConnectionEstablishedHandler();
 
         [Signal]
         public event ConnectionShutdownHandler ConnectionShutdown;
+
+        [Signal]
+        public event ConnectionRequestHandler ConnectionRequest;
+
+        public delegate void ConnectionRequestHandler(ConnectionRequest request);
         public delegate void ConnectionShutdownHandler();
+        public delegate void ConnectionEstablishedHandler();
+        public delegate void ClientDisconnectHandler(int clientId, DisconnectReason reason);
+        public delegate void ClientLatencyUpdateHandler(int clientId, int latency);
+        public delegate void ClientConnectedHandler(int clientId);
 
-        public const int Port = 27015;
-        public int MaxConnections = 15;
-        public bool acceptClients = false;
 
-
+        /// <summary>
+        /// Get all connected clients
+        /// </summary>
+        /// <returns></returns>
         public List<NetPeer> GetConnectedPeers()
         {
             return this.netManager.ConnectedPeerList;
         }
 
+        /// <summary>
+        /// Get count of current active connections
+        /// </summary>
+        /// <returns></returns>
+        public int GetConnectionCount()
+        {
+            return this.netManager.ConnectedPeersCount;
+        }
+
+        /// <summary>
+        /// Register the service
+        /// </summary>
         public override void Register()
         {
-
             base.Register();
+        }
 
+        /// <summary>
+        /// Bind server on specific port
+        /// </summary>
+        /// <param name="port"></param>
+        public void Bind(int port)
+        {
             EventBasedNetListener listener = new EventBasedNetListener();
             this.netManager = new NetManager(listener);
             this.netManager.BroadcastReceiveEnabled = true;
@@ -56,16 +80,7 @@ namespace Shooter.Server.Services
 
             listener.ConnectionRequestEvent += (request) =>
             {
-                if (this.netManager.ConnectedPeersCount < MaxConnections && acceptClients)
-                {
-                    Logger.LogDebug(this, request.RemoteEndPoint.Address + ":" + request.RemoteEndPoint.Port + " established");
-                    request.AcceptIfKey(ConnectionKey);
-                }
-                else
-                {
-                    Logger.LogDebug(this, request.RemoteEndPoint.Address + ":" + request.RemoteEndPoint.Port + " rejected");
-                    request.Reject();
-                }
+                ConnectionRequest?.Invoke(request);
             };
 
             listener.PeerConnectedEvent += peer =>
@@ -91,16 +106,19 @@ namespace Shooter.Server.Services
                 this.ClientLatencyUpdate?.Invoke(peer.Id, latency);
             };
 
-            Logger.LogDebug(this, "Try to start on port " + Port);
+            Logger.LogDebug(this, "Try to start on port " + port);
 
-            var result = this.netManager.Start(Port);
+            var result = this.netManager.Start(port);
             if (result)
             {
-                Logger.LogDebug(this, "Bind on port " + Port);
+                Logger.LogDebug(this, "Bind on port " + port);
                 ConnectionEstablished?.Invoke();
             }
         }
 
+        /// <summary>
+        /// Unregister the service
+        /// </summary>
         public override void Unregister()
         {
 
