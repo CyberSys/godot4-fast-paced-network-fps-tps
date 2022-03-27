@@ -1,5 +1,7 @@
 # IBaseComponent.IsInsideTree method
 
+Check if the component is already inside an tree
+
 ```csharp
 public bool IsInsideTree()
 ```

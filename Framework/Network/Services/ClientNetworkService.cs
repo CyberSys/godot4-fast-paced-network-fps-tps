@@ -163,7 +163,7 @@ namespace Framework.Network.Services
                 this.currentPeer = this.netManager.Connect(settings.Hostname, settings.Port, settings.SecureKey);
                 if (this.currentPeer != null)
                 {
-                    Logger.LogDebug(this, "Connected with remote id " + this.currentPeer.RemoteId);
+                    Logger.LogDebug(this, "Receive server handshake");
                     Connected?.Invoke();
                 }
             });

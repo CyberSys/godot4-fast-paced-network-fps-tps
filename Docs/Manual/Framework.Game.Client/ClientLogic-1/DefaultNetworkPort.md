@@ -1,7 +1,9 @@
-# ClientLogic&lt;T&gt;.DefaultNetworkPort field
+# ClientLogic&lt;T&gt;.DefaultNetworkPort property
+
+The default port of the server
 
 ```csharp
-public int DefaultNetworkPort;
+public int DefaultNetworkPort { get; set; }
 ```
 
 ## See Also

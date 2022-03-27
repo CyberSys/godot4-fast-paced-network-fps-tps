@@ -1,5 +1,7 @@
 # ClientWorld.MyServerId property
 
+The current client player id the server
+
 ```csharp
 public int MyServerId { get; }
 ```

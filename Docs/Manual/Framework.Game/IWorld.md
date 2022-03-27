@@ -12,10 +12,13 @@ public interface IWorld
 | --- | --- |
 | [Level](IWorld/Level.md) { get; } | The loaded game level of the world |
 | [Players](IWorld/Players.md) { get; } | All players of the world |
+| [ResourceWorldPath](IWorld/ResourceWorldPath.md) { get; } | Path of the world resource |
 | [ServerVars](IWorld/ServerVars.md) { get; } | The server vars of the world |
 | [WorldTick](IWorld/WorldTick.md) { get; } | The current tick of the world |
 | [Destroy](IWorld/Destroy.md)() | Destroy the game world |
 | [Init](IWorld/Init.md)(…) | Init the server world (first time) |
+| [OnPlayerInitilaized](IWorld/OnPlayerInitilaized.md)(…) | Calls when an player is initialized and the map was loaded sucessfulll |
+| [Tick](IWorld/Tick.md)(…) | The physics and network related tick process method |
 
 ## See Also
 

@@ -1,14 +1,8 @@
 # GameLogic._Process method
 
-Update all regisered services
-
 ```csharp
 public override void _Process(float delta)
 ```
-
-| parameter | description |
-| --- | --- |
-| delta |  |
 
 ## See Also
 

@@ -1,5 +1,7 @@
 # ServerWorld.ActiveGameRule property
 
+Set or get the active game rule
+
 ```csharp
 public IGameRule ActiveGameRule { get; set; }
 ```

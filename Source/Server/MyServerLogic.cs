@@ -18,11 +18,6 @@ namespace Shooter.Server
             this.LoadWorld(DefaultMapName, 0);
         }
 
-        public override void _EnterTree()
-        {
-            base._EnterTree();
-        }
-
         public override void AfterMapInstance()
         {
             var deathmatch = new DeathmatchGameRule(this.currentWorld as MyServerWorld);

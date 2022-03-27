@@ -49,7 +49,7 @@ namespace Framework
         /// Get an registered service by given type
         /// </summary>
         /// <typeparam name="T">Type of service</typeparam>
-        public T? Get<T>() where T : class, T2
+        public T Get<T>() where T : class, T2
         {
             if (!TryGetService(typeof(T), out T2 service))
             {

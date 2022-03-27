@@ -1,29 +1,31 @@
 # ServerLogic&lt;T&gt; class
 
+The core server logic
+
 ```csharp
 public abstract class ServerLogic<T> : GameLogic
     where T : ServerWorld
 ```
 
+| parameter | description |
+| --- | --- |
+| T | The type of the server world |
+
 ## Public Members
 
 | name | description |
 | --- | --- |
-| [AcceptClients](ServerLogic-1/AcceptClients.md) |  |
-| [MaxConnections](ServerLogic-1/MaxConnections.md) |  |
-| [NetworkPort](ServerLogic-1/NetworkPort.md) | Network server port |
-| virtual [OnPreConnect](ServerLogic-1/OnPreConnect.md)(…) |  |
-| virtual [OnServerStarted](ServerLogic-1/OnServerStarted.md)() |  |
-| override [_EnterTree](ServerLogic-1/_EnterTree.md)() | Instance the server game logic and load the map from default settings |
+| [AcceptClients](ServerLogic-1/AcceptClients.md) { get; set; } | If clients can connect |
+| [MaxConnections](ServerLogic-1/MaxConnections.md) { get; set; } | maximal possible connections |
+| [NetworkPort](ServerLogic-1/NetworkPort.md) { get; set; } | Network server port |
+| virtual [OnPreConnect](ServerLogic-1/OnPreConnect.md)(…) | Called when client connected |
+| virtual [OnServerStarted](ServerLogic-1/OnServerStarted.md)() | Called when after server started succeffull |
 
 ## Protected Members
 
 | name | description |
 | --- | --- |
 | [ServerLogic](ServerLogic-1/ServerLogic.md)() | The default constructor. |
-| override [LoadWorld](ServerLogic-1/LoadWorld.md)(…) | Loading the game world (async) |
-| override [OnMapDestroy](ServerLogic-1/OnMapDestroy.md)() | Destroy the game world |
-| override [OnMapInstance](ServerLogic-1/OnMapInstance.md)(…) | Instancing the game world |
 
 ## See Also
 

@@ -1,8 +1,15 @@
 # Player constructor
 
+Base player class
+
 ```csharp
 public Player(int id, IWorld world)
 ```
+
+| parameter | description |
+| --- | --- |
+| id | Server remote id |
+| world | World instance |
 
 ## See Also
 

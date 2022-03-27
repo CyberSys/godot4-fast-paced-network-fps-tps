@@ -8,6 +8,7 @@ namespace Framework.Physics
 {
     public abstract partial class PhysicsPlayer : NetworkPlayer
     {
+        /// <inheritdoc />
         public PhysicsPlayer(int id, IWorld world) : base(id, world)
         {
         }

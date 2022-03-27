@@ -15,9 +15,9 @@ public class ComponentRegistry
 | [AddComponent&lt;T&gt;](ComponentRegistry/AddComponent.md)() | Add an new component to base component |
 | [AddComponent&lt;T&gt;](ComponentRegistry/AddComponent.md)(…) | Add an new component to base component by given resource path |
 | [AddComponentAsync&lt;T&gt;](ComponentRegistry/AddComponentAsync.md)(…) | Add an new component to base component by given resource path (async) |
+| [Clear](ComponentRegistry/Clear.md)() | Delete all exist components and remove them from base component |
 | [DeleteComponent&lt;T&gt;](ComponentRegistry/DeleteComponent.md)() | Delete a given componentn from base component |
 | [Get&lt;T&gt;](ComponentRegistry/Get.md)() | Get an existing component of the base component |
-| [Reset](ComponentRegistry/Reset.md)() |  |
 
 ## See Also
 

@@ -38,9 +38,16 @@ namespace Framework.Game
         /// <value></value>
         public PlayerTeam Team { get; set; }
 
-
+        /// <summary>
+        /// Execute each server tick
+        /// </summary>
+        /// <param name="delta"></param>
         public void Tick(float delta);
 
+        /// <summary>
+        /// Contains possible components
+        /// </summary>
+        /// <value></value>
         public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents { get; }
     }
 }

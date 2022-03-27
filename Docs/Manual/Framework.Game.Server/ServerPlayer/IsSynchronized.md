@@ -1,7 +1,9 @@
-# ServerPlayer.synchronized field
+# ServerPlayer.IsSynchronized property
+
+Return if the player is syncronized with server.
 
 ```csharp
-public bool synchronized;
+public bool IsSynchronized { get; set; }
 ```
 
 ## See Also

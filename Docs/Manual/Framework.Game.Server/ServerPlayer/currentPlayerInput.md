@@ -1,7 +1,9 @@
-# ServerPlayer.currentPlayerInput property
+# ServerPlayer.CurrentPlayerInput property
+
+The active tick based input
 
 ```csharp
-public TickInput currentPlayerInput { get; set; }
+public TickInput CurrentPlayerInput { get; set; }
 ```
 
 ## See Also

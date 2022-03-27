@@ -13,23 +13,32 @@ namespace Framework.Game.Server
 {
     public abstract class ServerWorld : World
     {
-        private const float deleteTimeForPlayer = 10;
-
-        private ServerNetworkService netService = null;
-        private FixedTimer worldStateBroadcastTimer;
-        private HashSet<int> unprocessedPlayerIds = new HashSet<int>();
-        public PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
-
-        private int missedInputs;
-
-        public string worldPath = null;
 
         /// <summary>
-        /// Instancing the server game world
+        /// Time after player totaly deleted (0 means directly)
         /// </summary>
-        public override void _EnterTree()
+        public float deleteTimeForPlayer = 10;
+
+        private ServerNetworkService netService = null;
+
+        /// <inheritdoc />
+        private FixedTimer worldStateBroadcastTimer;
+
+        /// <inheritdoc />
+        private HashSet<int> unprocessedPlayerIds = new HashSet<int>();
+
+        /// <inheritdoc />
+        private PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
+
+        /// <inheritdoc />
+        private int missedInputs;
+
+
+
+        /// <inheritdoc />
+        internal override void InternalTreeEntered()
         {
-            base._EnterTree();
+            base.InternalTreeEntered();
 
             this.netService = this.gameInstance.Services.Get<ServerNetworkService>();
             this.netService.ClientConnected += this.OnPlayerConnected;
@@ -102,7 +111,7 @@ namespace Framework.Game.Server
             }
 
             var message = new ClientWorldInitializer();
-            message.WorldName = worldPath;
+            message.WorldName = ResourceWorldPath;
             message.WorldTick = this.WorldTick;
 
             this.netService.SendMessageSerialisable<ClientWorldInitializer>(clientId, message);
@@ -144,7 +153,7 @@ namespace Framework.Game.Server
                 if (this._players.ContainsKey(clientId))
                 {
                     var player = this._players[clientId] as ServerPlayer;
-                    player.latestInputTick = package.StartWorldTick + (uint)package.Inputs.Length - 1;
+                    player.LatestInputTick = package.StartWorldTick + (uint)package.Inputs.Length - 1;
                 }
             }
         }
@@ -178,7 +187,7 @@ namespace Framework.Game.Server
                 var cmd = new WorldHeartbeat
                 {
                     WorldTick = WorldTick,
-                    YourLatestInputTick = player.latestInputTick,
+                    YourLatestInputTick = player.LatestInputTick,
                     PlayerStates = states.ToArray(),
                     PlayerUpdates = heartbeatUpdateList,
                 };
@@ -187,9 +196,10 @@ namespace Framework.Game.Server
             }
         }
 
-        public override void _Process(float delta)
+        /// <inheritdoc />  
+        internal override void InternalProcess(float delta)
         {
-            base._Process(delta);
+            base.InternalProcess(delta);
 
             //check if players are realy disconnected and delete them totaly
             foreach (var player in this._players.Where(df => df.Value.State == PlayerConnectionState.Disconnected).ToArray())
@@ -229,8 +239,8 @@ namespace Framework.Game.Server
                             GameTick = this.WorldTick
                         });
         }
-
-        public override void Tick(float interval)
+        /// <inheritdoc />  
+        internal override void InternalTick(float interval)
         {
             this._activeGameRule?.Tick(interval);
 
@@ -249,11 +259,11 @@ namespace Framework.Game.Server
                     var serverPlayer = this._players[tickInput.PlayerId] as ServerPlayer;
 
                     serverPlayer.SetPlayerInputs(tickInput.Inputs);
-                    serverPlayer.currentPlayerInput = tickInput;
+                    serverPlayer.CurrentPlayerInput = tickInput;
                     unprocessedPlayerIds.Remove(tickInput.PlayerId);
 
                     // Mark the player as synchronized.
-                    serverPlayer.synchronized = true;
+                    serverPlayer.IsSynchronized = true;
                 }
             }
 
@@ -263,7 +273,7 @@ namespace Framework.Game.Server
             {
                 // If the player is not yet synchronized, this isn't an error.
                 if (!this._players.ContainsKey(playerId) ||
-                    !(this._players[playerId] as ServerPlayer).synchronized)
+                    !(this._players[playerId] as ServerPlayer).IsSynchronized)
                 {
                     continue;
                 }
@@ -303,9 +313,12 @@ namespace Framework.Game.Server
 
             // Update post-tick timers.
             worldStateBroadcastTimer.Update(interval);
+
+            this.Tick(interval);
         }
 
-        public void SimulateWorld(float dt)
+        /// <inheritdoc />
+        private void SimulateWorld(float dt)
         {
             foreach (var player in this._players.
                 Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is NetworkPlayer).
@@ -317,6 +330,9 @@ namespace Framework.Game.Server
 
         private IGameRule _activeGameRule = null;
 
+        /// <summary>
+        /// Set or get the active game rule
+        /// </summary>
         public IGameRule ActiveGameRule
         {
             get
@@ -337,7 +353,7 @@ namespace Framework.Game.Server
             foreach (var player in _players.Where(df => df.Value is Player).Select(df => df.Value as Player))
             {
                 //clear previous components
-                player.Components.Reset();
+                player.Components.Clear();
 
                 if (this._activeGameRule != null)
                 {

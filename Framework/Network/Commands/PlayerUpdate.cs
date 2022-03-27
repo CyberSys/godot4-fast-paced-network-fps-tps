@@ -18,7 +18,7 @@ namespace Framework.Network.Commands
         public float DisconnectTime { get; set; }
 
         [IgnoreDataMemberAttribute]
-        public uint latestInputTick { get; set; }
+        public uint LatestInputTick { get; set; }
 
         public void Serialize(NetDataWriter writer)
         {

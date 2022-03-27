@@ -1,5 +1,7 @@
 # ClientLogic&lt;T&gt;.DefaultNetworkHostname field
 
+The default hostname for the client
+
 ```csharp
 public string DefaultNetworkHostname;
 ```

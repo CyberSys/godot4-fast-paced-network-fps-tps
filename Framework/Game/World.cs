@@ -19,20 +19,63 @@ namespace Framework.Game
         public float AdjustedInterval { get; } = 1.0f;
     }
 
+    /// <summary>
+    /// The core world class for server and client worlds
+    /// </summary>
     public abstract partial class World : Node3D, IWorld
     {
+        /// <inheritdoc />
+        public override void _Notification(int what)
+        {
+            if (what == (int)Godot.Node.NotificationEnterTree)
+            {
+                this.InternalTreeEntered();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void _Process(float delta)
+        {
+            this.InternalProcess(delta);
+        }
+
+        /// <inheritdoc />
+        public override void _PhysicsProcess(float delta)
+        {
+            this.InternalPhysicsProcess(delta);
+        }
+
+        /// <inheritdoc />
         public virtual void OnPlayerInitilaized(IPlayer p)
         {
 
         }
 
+        /// <inheritdoc />
+        internal virtual void InternalTreeEntered()
+        {
+            playerHolder.Name = "playerHolder";
+            this.gameInstance = this.GetParent<GameLogic>();
+
+            this.AddChild(playerHolder);
+        }
+
+        /// <inheritdoc />
         public uint WorldTick { get; protected set; } = 0;
 
-        protected readonly Dictionary<int, IPlayer> _players = new Dictionary<int, IPlayer>();
+        /// <inheritdoc />
+        internal readonly Dictionary<int, IPlayer> _players = new Dictionary<int, IPlayer>();
+
+        /// <inheritdoc />
         public Dictionary<int, IPlayer> Players => _players;
 
+        /// <inheritdoc />
+        internal string _resourceWorldPath { get; set; }
 
-        protected virtual void PostUpdate() { }
+        /// <inheritdoc />
+        public string ResourceWorldPath => _resourceWorldPath;
+
+        internal virtual void PostUpdate() { }
 
         private InterpolationController interpController = new InterpolationController();
 
@@ -59,7 +102,8 @@ namespace Framework.Game
             player.State = playerUpdate.State;
         }
 
-        public void InstanceLevel(PackedScene res)
+        /// <inheritdoc />
+        internal void InstanceLevel(PackedScene res)
         {
             var node = res.Instantiate<Level>();
             node.Name = "level";
@@ -68,6 +112,7 @@ namespace Framework.Game
             this.level = node;
         }
 
+        /// <inheritdoc />
         public virtual void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
         {
             this.isInit = true;
@@ -78,20 +123,28 @@ namespace Framework.Game
             }
         }
 
+        /// <inheritdoc />
         public virtual void Tick(float interval)
         {
-            ++this.WorldTick;
         }
 
-        public override void _Process(float delta)
-        {
-            base._Process(delta);
 
+        /// <inheritdoc />
+        internal virtual void InternalTick(float interval)
+        {
+            ++this.WorldTick;
+            this.Tick(interval);
+        }
+
+        /// <inheritdoc />
+        internal virtual void InternalProcess(float delta)
+        {
             //async loader
             this.loader.Tick();
         }
 
-        public override void _PhysicsProcess(float delta)
+        /// <inheritdoc />
+        internal virtual void InternalPhysicsProcess(float delta)
         {
             if (this.isInit == true)
             {
@@ -112,16 +165,7 @@ namespace Framework.Game
             }
         }
 
-        public override void _EnterTree()
-        {
-            playerHolder.Name = "playerHolder";
-
-            base._EnterTree();
-            this.gameInstance = this.GetParent<GameLogic>();
-
-            this.AddChild(playerHolder);
-        }
-
+        /// <inheritdoc />
         public void Destroy()
         {
             this.QueueFree();

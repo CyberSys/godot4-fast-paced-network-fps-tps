@@ -17,18 +17,34 @@ namespace Framework.Game
         /// <inheritdoc />
         private bool mapLoadInProcess = false;
 
-        /// <summary>
-        /// Instance an map by given PackedScene and WorldTick
-        /// </summary>
-        protected virtual void OnMapInstance(PackedScene level, uint worldTick)
+        /// <inheritdoc />
+        public override void _Notification(int what)
+        {
+            if (what == (int)Godot.Node.NotificationEnterTree)
+            {
+                this.InternalTreeEntered();
+            }
+
+            if (what == (int)Godot.Node.NotificationExitTree)
+            {
+                this.InternalTreeExit();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void _Process(float delta)
+        {
+            this.InternalProcess(delta);
+        }
+
+        /// <inheritdoc />
+        internal virtual void OnMapInstanceInternal(PackedScene level, uint worldTick)
         {
 
         }
 
-        /// <summary>
-        /// On destroy map
-        /// </summary>
-        protected virtual void OnMapDestroy()
+        /// <inheritdoc />
+        internal virtual void DestroyMapInternal()
         {
 
         }
@@ -43,8 +59,7 @@ namespace Framework.Game
         /// <summary>
         /// Secure passphrase for network connection
         /// </summary>
-        protected readonly string secureConnectionKey = "ConnectionKey";
-
+        public string secureConnectionKey = "ConnectionKey";
 
         /// <summary>
         /// The async loader for eg. maps
@@ -78,10 +93,8 @@ namespace Framework.Game
         /// <summary>
         /// On tree enter
         /// </summary>
-        public override void _EnterTree()
+        internal virtual void InternalTreeEntered()
         {
-            base._EnterTree();
-
             var origSize = this.GetParent<SubViewportContainer>().Size;
             this.Size = new Vector2i((int)origSize.x, (int)origSize.y);
 
@@ -93,14 +106,10 @@ namespace Framework.Game
             }
         }
 
-        /// <summary>
-        /// Update all regisered services
-        /// </summary>
-        /// <param name="delta"></param>
-        public override void _Process(float delta)
-        {
-            base._Process(delta);
 
+        /// <inheritdoc />
+        internal virtual void InternalProcess(float delta)
+        {
             foreach (var service in _serviceRegistry.All)
             {
                 service.Update(delta);
@@ -109,17 +118,13 @@ namespace Framework.Game
             this.loader.Tick();
         }
 
-        /// <summary>
-        /// After exit tree
-        /// </summary>
-        public override void _ExitTree()
+        /// <inheritdoc />
+        internal virtual void InternalTreeExit()
         {
             foreach (var service in _serviceRegistry.All)
             {
                 service.Unregister();
             }
-
-            base._ExitTree();
         }
 
         /// <summary>
@@ -127,7 +132,14 @@ namespace Framework.Game
         /// </summary>
         /// <param name="path"></param>
         /// <param name="worldTick"></param>
-        protected virtual void LoadWorld(string path, uint worldTick = 0)
+        /// 
+        public void LoadWorld(string path, uint worldTick = 0)
+        {
+            this.LoadWorldInternal(path, worldTick);
+        }
+
+        /// <inheritdoc />
+        internal virtual void LoadWorldInternal(string path, uint worldTick = 0)
         {
             if (mapLoadInProcess)
             {
@@ -135,13 +147,13 @@ namespace Framework.Game
                 return;
             }
 
-            this.OnMapDestroy();
+            this.DestroyMapInternal();
             this.mapLoadInProcess = true;
 
             this.loader.LoadResource(path, (res) =>
             {
                 this.mapLoadInProcess = false;
-                this.OnMapInstance((PackedScene)res, worldTick);
+                this.OnMapInstanceInternal((PackedScene)res, worldTick);
             });
         }
 
@@ -151,10 +163,6 @@ namespace Framework.Game
         }
 
         public virtual void AfterMapDestroy()
-        {
-
-        }
-        public virtual void AfterInit()
         {
 
         }

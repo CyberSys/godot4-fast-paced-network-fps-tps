@@ -15,6 +15,7 @@ namespace Framework.Game.Client
 {
     public abstract class ClientWorld : World
     {
+        /// <inheritdoc />
         protected ClientNetworkService netService = null;
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace Framework.Game.Client
         /// <returns></returns>
         private Queue<WorldHeartbeat> worldStateQueue = new Queue<WorldHeartbeat>();
 
+        /// <inheritdoc />
         private MovingAverage excessWorldStateAvg = new MovingAverage(10);
 
         /// <summary>
@@ -47,15 +49,18 @@ namespace Framework.Game.Client
         /// </summary>
         private int replayedStates;
 
+        /// <inheritdoc />
         private int _myServerId = -1;
 
+        /// <summary>
+        /// The current client player id  the server
+        /// </summary>
         public int MyServerId => _myServerId;
 
-
-
-        public override void _EnterTree()
+        /// <inheritdoc />
+        internal override void InternalTreeEntered()
         {
-            base._EnterTree();
+            base.InternalTreeEntered();
 
             this.netService = this.gameInstance.Services.Get<ClientNetworkService>();
             this.netService.Subscribe<WorldHeartbeat>(HandleWorldState);
@@ -74,6 +79,7 @@ namespace Framework.Game.Client
             worldStateQueue.Enqueue(cmd);
         }
 
+        /// <inheritdoc />
         public override void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
         {
             base.Init(serverVars, 0);
@@ -85,11 +91,8 @@ namespace Framework.Game.Client
             WorldTick = clientSimulationAdjuster.GuessClientTick((float)this.GetPhysicsProcessDeltaTime(), initalWorldTick, this.netService.ping);
         }
 
-        /// <summary>
-        /// After each physical frame
-        /// </summary>
-        /// <param name="interval"></param>
-        protected override void PostUpdate()
+        /// <inheritdoc />
+        internal override void PostUpdate()
         {
             // Process the remaining world states if there are any, though we expect this to be empty?
             // TODO: This is going to need to be structured pretty differently with other players.
@@ -104,11 +107,8 @@ namespace Framework.Game.Client
             clientSimulationAdjuster.Monitoring();
         }
 
-        /// <summary>
-        /// Handle client tick
-        /// </summary>
-        /// <param name="interval"></param>
-        public override void Tick(float interval)
+        /// <inheritdoc />  
+        internal override void InternalTick(float interval)
         {
             if (this.localPlayer != null && this.localPlayer.Inputable != null)
             {
@@ -177,6 +177,8 @@ namespace Framework.Game.Client
 
             //procese player inputs
             this.ProcessServerWorldState(incomingState);
+
+            this.Tick(interval);
         }
 
         /// <summary>

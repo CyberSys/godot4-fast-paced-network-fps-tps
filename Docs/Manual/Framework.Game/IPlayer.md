@@ -10,13 +10,13 @@ public interface IPlayer : IBaseComponent
 
 | name | description |
 | --- | --- |
-| [AvaiablePlayerComponents](IPlayer/AvaiablePlayerComponents.md) { get; } |  |
+| [AvaiablePlayerComponents](IPlayer/AvaiablePlayerComponents.md) { get; } | Contains possible components |
 | [Id](IPlayer/Id.md) { get; set; } | Id of player |
 | [Latency](IPlayer/Latency.md) { get; set; } | Current latency (ping) |
 | [PlayerName](IPlayer/PlayerName.md) { get; set; } | Name of player |
 | [State](IPlayer/State.md) { get; set; } | Current connection state |
 | [Team](IPlayer/Team.md) { get; set; } | Assigned team of player |
-| [Tick](IPlayer/Tick.md)(…) |  |
+| [Tick](IPlayer/Tick.md)(…) | Execute each server tick |
 
 ## See Also
 

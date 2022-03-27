@@ -1,9 +1,9 @@
-# ServerLogic&lt;T&gt;.NetworkPort field
+# ServerLogic&lt;T&gt;.NetworkPort property
 
 Network server port
 
 ```csharp
-public int NetworkPort;
+public int NetworkPort { get; set; }
 ```
 
 ## See Also

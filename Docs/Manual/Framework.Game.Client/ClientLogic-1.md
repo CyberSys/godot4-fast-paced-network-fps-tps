@@ -1,29 +1,26 @@
 # ClientLogic&lt;T&gt; class
 
+Is the base class for any client (SubViewport)
+
 ```csharp
-public abstract class ClientLogic<T> : GameLogic
+public class ClientLogic<T> : GameLogic
     where T : ClientWorld
 ```
+
+| parameter | description |
+| --- | --- |
+| T |  |
 
 ## Public Members
 
 | name | description |
 | --- | --- |
-| [DefaultNetworkHostname](ClientLogic-1/DefaultNetworkHostname.md) |  |
-| [DefaultNetworkPort](ClientLogic-1/DefaultNetworkPort.md) |  |
+| [ClientLogic](ClientLogic-1/ClientLogic.md)() | The default constructor. |
+| [DefaultNetworkPort](ClientLogic-1/DefaultNetworkPort.md) { get; set; } | The default port of the server |
+| [DefaultNetworkHostname](ClientLogic-1/DefaultNetworkHostname.md) | The default hostname for the client |
 | [Disconnect](ClientLogic-1/Disconnect.md)() |  |
 | [DoConnect](ClientLogic-1/DoConnect.md)() |  |
 | virtual [OnConnect](ClientLogic-1/OnConnect.md)() |  |
-| override [_EnterTree](ClientLogic-1/_EnterTree.md)() |  |
-
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [ClientLogic](ClientLogic-1/ClientLogic.md)() | The default constructor. |
-| [onDisconnect](ClientLogic-1/onDisconnect.md)(…) |  |
-| override [OnMapDestroy](ClientLogic-1/OnMapDestroy.md)() |  |
-| override [OnMapInstance](ClientLogic-1/OnMapInstance.md)(…) |  |
 
 ## See Also
 

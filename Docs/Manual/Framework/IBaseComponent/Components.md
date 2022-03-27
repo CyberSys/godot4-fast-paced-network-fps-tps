@@ -1,5 +1,7 @@
 # IBaseComponent.Components property
 
+Contains the component registry class
+
 ```csharp
 public ComponentRegistry Components { get; }
 ```

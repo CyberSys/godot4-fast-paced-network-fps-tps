@@ -1,7 +1,9 @@
-# ComponentRegistry.Reset method
+# ComponentRegistry.Clear method
+
+Delete all exist components and remove them from base component
 
 ```csharp
-public void Reset()
+public void Clear()
 ```
 
 ## See Also

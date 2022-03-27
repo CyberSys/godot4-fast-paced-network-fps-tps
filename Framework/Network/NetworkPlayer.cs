@@ -9,6 +9,7 @@ namespace Framework.Network
 {
     public abstract partial class NetworkPlayer : Player, IBaseComponent
     {
+        /// <inheritdoc />
         public NetworkPlayer(int id, IWorld world) : base(id, world)
         {
         }

@@ -1,5 +1,7 @@
 # IBaseComponent interface
 
+The base component interface required for root components
+
 ```csharp
 public interface IBaseComponent
 ```
@@ -8,11 +10,11 @@ public interface IBaseComponent
 
 | name | description |
 | --- | --- |
-| [Components](IBaseComponent/Components.md) { get; } |  |
-| event [TreeEntered](IBaseComponent/TreeEntered.md) |  |
-| [AddChild](IBaseComponent/AddChild.md)(…) |  |
-| [IsInsideTree](IBaseComponent/IsInsideTree.md)() |  |
-| [RemoveChild](IBaseComponent/RemoveChild.md)(…) |  |
+| [Components](IBaseComponent/Components.md) { get; } | Contains the component registry class |
+| event [TreeEntered](IBaseComponent/TreeEntered.md) | Handle the tree events of godot node tree |
+| [AddChild](IBaseComponent/AddChild.md)(…) | Add an child to the base component |
+| [IsInsideTree](IBaseComponent/IsInsideTree.md)() | Check if the component is already inside an tree |
+| [RemoveChild](IBaseComponent/RemoveChild.md)(…) | Delete an child form the base component |
 
 ## See Also
 

@@ -1,5 +1,7 @@
 # ServerPlayer.states field
 
+Archived player states
+
 ```csharp
 public PlayerState[] states;
 ```

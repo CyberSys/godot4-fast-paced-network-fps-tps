@@ -1,5 +1,7 @@
 # IBaseComponent.TreeEntered event
 
+Handle the tree events of godot node tree
+
 ```csharp
 public event TreeEnteredHandler TreeEntered;
 ```

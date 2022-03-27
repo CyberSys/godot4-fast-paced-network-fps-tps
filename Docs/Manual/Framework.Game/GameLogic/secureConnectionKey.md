@@ -3,7 +3,7 @@
 Secure passphrase for network connection
 
 ```csharp
-protected readonly string secureConnectionKey;
+public string secureConnectionKey;
 ```
 
 ## See Also

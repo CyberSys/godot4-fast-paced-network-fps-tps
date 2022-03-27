@@ -12,7 +12,7 @@ namespace Shooter.Client
     {
         private bool showMenu = false;
 
-        public override void AfterInit()
+        public override void _EnterTree()
         {
             this.Components.AddComponent<DebugMenuComponent>("res://Client/UI/Welcome/DebugMenuComponent.tscn");
             this.Components.AddComponent<PreConnectComponent>("res://Client/UI/Welcome/PreConnectComponent.tscn");

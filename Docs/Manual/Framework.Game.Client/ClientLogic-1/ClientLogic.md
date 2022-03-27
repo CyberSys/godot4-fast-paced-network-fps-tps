@@ -3,7 +3,7 @@
 The default constructor.
 
 ```csharp
-protected ClientLogic()
+public ClientLogic()
 ```
 
 ## See Also

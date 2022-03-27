@@ -8,17 +8,12 @@ public abstract class ServerWorld : World
 
 | name | description |
 | --- | --- |
-| [ActiveGameRule](ServerWorld/ActiveGameRule.md) { get; set; } |  |
-| [playerInputProcessor](ServerWorld/playerInputProcessor.md) |  |
-| [worldPath](ServerWorld/worldPath.md) |  |
+| [ActiveGameRule](ServerWorld/ActiveGameRule.md) { get; set; } | Set or get the active game rule |
+| [deleteTimeForPlayer](ServerWorld/deleteTimeForPlayer.md) | Time after player totaly deleted (0 means directly) |
 | [AddPlayer&lt;T&gt;](ServerWorld/AddPlayer.md)(…) |  |
 | [DeletePlayer](ServerWorld/DeletePlayer.md)(…) |  |
 | virtual [OnPlayerConnected](ServerWorld/OnPlayerConnected.md)(…) | Event called after client is connected to server |
 | virtual [OnPlayerDisconnect](ServerWorld/OnPlayerDisconnect.md)(…) | Event called after client is disconnected from server |
-| [SimulateWorld](ServerWorld/SimulateWorld.md)(…) |  |
-| override [Tick](ServerWorld/Tick.md)(…) |  |
-| override [_EnterTree](ServerWorld/_EnterTree.md)() | Instancing the server game world |
-| override [_Process](ServerWorld/_Process.md)(…) |  |
 
 ## Protected Members
 

@@ -46,7 +46,7 @@ namespace Framework.Extensions
         /// Get an registered service by given type
         /// </summary>
         /// <typeparam name="T">Type of service</typeparam>
-        public T? Get<T>(string name) where T : class, T2
+        public T Get<T>(string name) where T : class, T2
         {
             if (!TryGetService(name, out T2 service))
             {

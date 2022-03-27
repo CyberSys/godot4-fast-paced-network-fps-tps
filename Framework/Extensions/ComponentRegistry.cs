@@ -10,9 +10,23 @@ namespace Framework
     /// </summary>
     public class ComponentRegistry
     {
+        /// <inheritdoc />
         private readonly Dictionary<Type, Node> _components = new();
 
-        public void Reset()
+        /// <inheritdoc />
+        private IBaseComponent baseComponent = null;
+
+        /// <summary>
+        /// Get all avaiable components
+        /// </summary>
+        /// <returns></returns>
+        public Node[] All => _components.Values.ToArray();
+
+
+        /// <summary>
+        /// Delete all exist components and remove them from base component
+        /// </summary>
+        public void Clear()
         {
             lock (_components)
             {
@@ -27,14 +41,6 @@ namespace Framework
                 }
             }
         }
-
-        /// <summary>
-        /// Get all avaiable components
-        /// </summary>
-        /// <returns></returns>
-        public Node[] All => _components.Values.ToArray();
-
-        private IBaseComponent baseComponent = null;
 
         /// <summary>
         /// Create a component registry by given base component
@@ -163,13 +169,12 @@ namespace Framework
             }
         }
 
-
         /// <summary>
         /// Get an existing component of the base component
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T? Get<T>() where T : Node, IChildComponent
+        public T Get<T>() where T : Node, IChildComponent
         {
             if (!TryGetService(typeof(T), out Node service))
             {

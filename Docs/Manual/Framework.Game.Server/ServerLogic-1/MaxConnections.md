@@ -1,7 +1,9 @@
-# ServerLogic&lt;T&gt;.MaxConnections field
+# ServerLogic&lt;T&gt;.MaxConnections property
+
+maximal possible connections
 
 ```csharp
-public int MaxConnections;
+public int MaxConnections { get; set; }
 ```
 
 ## See Also

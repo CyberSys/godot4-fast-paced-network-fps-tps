@@ -1,7 +1,9 @@
-# ServerPlayer.latestInputTick field
+# ServerPlayer.LatestInputTick property
+
+Get the last tick of the last input
 
 ```csharp
-public uint latestInputTick;
+public uint LatestInputTick { get; set; }
 ```
 
 ## See Also

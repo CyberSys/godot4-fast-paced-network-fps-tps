@@ -1,8 +1,14 @@
 # ServerLogic&lt;T&gt;.OnPreConnect method
 
+Called when client connected
+
 ```csharp
 public virtual bool OnPreConnect(ConnectionRequest request)
 ```
+
+| parameter | description |
+| --- | --- |
+| request | boolean for rejected or accepted |
 
 ## See Also
 

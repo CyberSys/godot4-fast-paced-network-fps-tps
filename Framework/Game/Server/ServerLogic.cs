@@ -7,26 +7,31 @@ using System;
 
 namespace Framework.Game.Server
 {
+    /// <summary>
+    /// The core server logic
+    /// </summary>
+    /// <typeparam name="T">The type of the server world</typeparam>
     public abstract class ServerLogic<T> : GameLogic where T : ServerWorld
     {
-        private ServerNetworkService netService = null;
+        /// <inheritdoc />
+        internal ServerNetworkService netService = null;
 
-        [Export]
         /// <summary>
         /// maximal possible connections
         /// </summary>
-        public int MaxConnections = 15;
-
         [Export]
+        public int MaxConnections { get; set; } = 15;
+
         /// <summary>
         /// If clients can connect
         /// </summary>
-        public bool AcceptClients = false;
-
         [Export]
+        public bool AcceptClients { get; set; } = false;
+
         /// <summary>
         /// The dictonary with all server settings (vars);
         /// </summary>
+        [Export]
         private Dictionary<string, string> ServerVars = new Dictionary<string, string>  {
             // enable or disable interpolation
             { "sv_interpolate", "true" },
@@ -38,25 +43,24 @@ namespace Framework.Game.Server
             { "sv_freze_client", "false" }
         };
 
-
-
         /// <summary>
         /// Network server port
         /// </summary>
         [Export]
-        public int NetworkPort = 27015;
+        public int NetworkPort { get; set; } = 27015;
 
+        /// <summary>
+        /// Called when after server started succeffull
+        /// </summary>
         public virtual void OnServerStarted()
         {
 
         }
 
-
-        /// <summary>
-        /// Instance the server game logic and load the map from default settings
-        /// </summary>
-        public override void _EnterTree()
+        /// <inheritdoc />
+        internal override void InternalTreeEntered()
         {
+            base.InternalTreeEntered();
             this.netService = this.Services.Create<ServerNetworkService>();
             this.netService.ConnectionEstablished += () =>
             {
@@ -89,18 +93,18 @@ namespace Framework.Game.Server
             this.netService.Bind(NetworkPort);
         }
 
-
+        /// <summary>
+        /// Called when client connected 
+        /// </summary>
+        /// <param name="request">boolean for rejected or accepted</param>
+        /// <returns></returns>
         public virtual bool OnPreConnect(LiteNetLib.ConnectionRequest request)
         {
             return true;
         }
 
-        /// <summary>
-        /// Loading the game world (async)
-        /// </summary>
-        /// <param name="mapName"></param>
-        /// <param name="worldTick"></param>
-        protected override void LoadWorld(string mapName, uint worldTick)
+        /// <inheritdoc />  
+        internal override void LoadWorldInternal(string mapName, uint worldTick)
         {
             this.AcceptClients = false;
 
@@ -110,21 +114,16 @@ namespace Framework.Game.Server
                 connectedClient.Disconnect();
             }
 
-            base.LoadWorld(mapName, worldTick);
+            base.LoadWorldInternal(mapName, worldTick);
         }
 
-        /// <summary>
-        /// Instancing the game world
-        /// </summary>
-        /// <param name="res"></param>
-        /// <param name="worldTick"></param>
-        protected override void OnMapInstance(PackedScene res, uint worldTick)
+        /// <inheritdoc />
+        internal override void OnMapInstanceInternal(PackedScene res, uint worldTick)
         {
             T newWorld = Activator.CreateInstance<T>();
             newWorld.Name = "world";
             this.AddChild(newWorld);
-            newWorld.worldPath = res.ResourcePath;
-
+            newWorld._resourceWorldPath = res.ResourcePath;
             newWorld.InstanceLevel(res);
 
             this.currentWorld = newWorld;
@@ -135,10 +134,8 @@ namespace Framework.Game.Server
             this.AfterMapInstance();
         }
 
-        /// <summary>
-        /// Destroy the game world
-        /// </summary>
-        protected override void OnMapDestroy()
+        /// <inheritdoc />
+        internal override void DestroyMapInternal()
         {
             this.currentWorld?.Destroy();
             this.currentWorld = null;

@@ -1,7 +1,9 @@
-# ServerPlayer.DisconnectTime field
+# ServerPlayer.DisconnectTime property
+
+Time since last disconnect
 
 ```csharp
-public float DisconnectTime;
+public float DisconnectTime { get; set; }
 ```
 
 ## See Also

@@ -1,5 +1,7 @@
 # ServerPlayer class
 
+Core class for server player
+
 ```csharp
 public class ServerPlayer : PhysicsPlayer
 ```
@@ -9,11 +11,11 @@ public class ServerPlayer : PhysicsPlayer
 | name | description |
 | --- | --- |
 | [ServerPlayer](ServerPlayer/ServerPlayer.md)(…) |  |
-| [currentPlayerInput](ServerPlayer/currentPlayerInput.md) { get; set; } |  |
-| [DisconnectTime](ServerPlayer/DisconnectTime.md) |  |
-| [latestInputTick](ServerPlayer/latestInputTick.md) |  |
-| [states](ServerPlayer/states.md) |  |
-| [synchronized](ServerPlayer/synchronized.md) |  |
+| [CurrentPlayerInput](ServerPlayer/CurrentPlayerInput.md) { get; set; } | The active tick based input |
+| [DisconnectTime](ServerPlayer/DisconnectTime.md) { get; set; } | Time since last disconnect |
+| [IsSynchronized](ServerPlayer/IsSynchronized.md) { get; set; } | Return if the player is syncronized with server. |
+| [LatestInputTick](ServerPlayer/LatestInputTick.md) { get; set; } | Get the last tick of the last input |
+| [states](ServerPlayer/states.md) | Archived player states |
 
 ## See Also
 

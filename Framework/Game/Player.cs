@@ -27,7 +27,10 @@ namespace Framework.Game
         /// <inheritdoc />
         public IWorld GameWorld { get; private set; }
 
+        /// <inheritdoc />
         private readonly ComponentRegistry _components;
+
+        /// <inheritdoc />
         public ComponentRegistry Components => _components;
 
         /// <summary>
@@ -36,6 +39,12 @@ namespace Framework.Game
         /// <value></value>
         public PlayerConnectionState PreviousState { get; set; }
 
+        /// <summary>
+        /// Base player class
+        /// </summary>
+        /// <param name="id">Server remote id</param>
+        /// <param name="world">World instance</param>
+        /// <returns></returns>
         public Player(int id, IWorld world) : base()
         {
             this.Id = id;
@@ -43,12 +52,15 @@ namespace Framework.Game
             this._components = new ComponentRegistry(this);
         }
 
+        /// <inheritdoc />
         public virtual void Tick(float delta)
         {
         }
 
+        /// <inheritdoc />
         private readonly Dictionary<string, RegisteredComonent> avaiableComponents = new Dictionary<string, RegisteredComonent>();
 
+        /// <inheritdoc />
         public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents => avaiableComponents;
     }
 }

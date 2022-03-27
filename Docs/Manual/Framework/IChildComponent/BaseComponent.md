@@ -1,5 +1,7 @@
 # IChildComponent.BaseComponent property
 
+The base component of the child component
+
 ```csharp
 public IBaseComponent BaseComponent { get; set; }
 ```

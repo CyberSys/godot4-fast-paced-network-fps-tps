@@ -5,8 +5,8 @@
 | public type | description |
 | --- | --- |
 | class [ComponentRegistry](./Framework/ComponentRegistry.md) | Component registry class |
-| interface [IBaseComponent](./Framework/IBaseComponent.md) |  |
-| interface [IChildComponent](./Framework/IChildComponent.md) |  |
+| interface [IBaseComponent](./Framework/IBaseComponent.md) | The base component interface required for root components |
+| interface [IChildComponent](./Framework/IChildComponent.md) | The child component interface for childs of an base component |
 | interface [IService](./Framework/IService.md) | Required interface for service classes |
 | interface [ITeam](./Framework/ITeam.md) |  |
 | static class [Logger](./Framework/Logger.md) |  |
@@ -37,13 +37,13 @@
 | abstract class [Player](./Framework.Game/Player.md) | The general player class |
 | struct [RegisteredComonent](./Framework.Game/RegisteredComonent.md) |  |
 | abstract class [SpawnPoint](./Framework.Game/SpawnPoint.md) | The gernal spawn point class |
-| abstract class [World](./Framework.Game/World.md) |  |
+| abstract class [World](./Framework.Game/World.md) | The core world class for server and client worlds |
 
 ## Framework.Game.Client namespace
 
 | public type | description |
 | --- | --- |
-| abstract class [ClientLogic&lt;T&gt;](./Framework.Game.Client/ClientLogic-1.md) |  |
+| class [ClientLogic&lt;T&gt;](./Framework.Game.Client/ClientLogic-1.md) | Is the base class for any client (SubViewport) |
 | abstract class [ClientWorld](./Framework.Game.Client/ClientWorld.md) |  |
 | class [LocalPlayer](./Framework.Game.Client/LocalPlayer.md) |  |
 | class [PuppetPlayer](./Framework.Game.Client/PuppetPlayer.md) |  |
@@ -52,8 +52,8 @@
 
 | public type | description |
 | --- | --- |
-| abstract class [ServerLogic&lt;T&gt;](./Framework.Game.Server/ServerLogic-1.md) |  |
-| class [ServerPlayer](./Framework.Game.Server/ServerPlayer.md) |  |
+| abstract class [ServerLogic&lt;T&gt;](./Framework.Game.Server/ServerLogic-1.md) | The core server logic |
+| class [ServerPlayer](./Framework.Game.Server/ServerPlayer.md) | Core class for server player |
 | abstract class [ServerWorld](./Framework.Game.Server/ServerWorld.md) |  |
 
 ## Framework.Input namespace

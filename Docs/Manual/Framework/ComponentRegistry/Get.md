@@ -3,7 +3,7 @@
 Get an existing component of the base component
 
 ```csharp
-public T? Get<T>()
+public T Get<T>()
     where T : Node, IChildComponent
 ```
 

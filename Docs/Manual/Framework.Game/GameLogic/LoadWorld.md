@@ -3,7 +3,7 @@
 Load an world by given resource path
 
 ```csharp
-protected virtual void LoadWorld(string path, uint worldTick = 0)
+public void LoadWorld(string path, uint worldTick = 0)
 ```
 
 | parameter | description |

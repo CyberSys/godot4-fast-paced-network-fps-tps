@@ -1,5 +1,7 @@
 # IPlayer.AvaiablePlayerComponents property
 
+Contains possible components
+
 ```csharp
 public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents { get; }
 ```

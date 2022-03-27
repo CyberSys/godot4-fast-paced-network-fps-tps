@@ -8,13 +8,11 @@ public abstract class ClientWorld : World
 
 | name | description |
 | --- | --- |
-| [MyServerId](ClientWorld/MyServerId.md) { get; } |  |
+| [MyServerId](ClientWorld/MyServerId.md) { get; } | The current client player id the server |
 | [clientSimulationAdjuster](ClientWorld/clientSimulationAdjuster.md) | Client adjuster Handles server ticks and make them accuracy |
 | [lastServerWorldTick](ClientWorld/lastServerWorldTick.md) | Last executed server tick |
 | [localPlayer](ClientWorld/localPlayer.md) | Local player class |
 | override [Init](ClientWorld/Init.md)(…) |  |
-| override [Tick](ClientWorld/Tick.md)(…) | Handle client tick |
-| override [_EnterTree](ClientWorld/_EnterTree.md)() |  |
 
 ## Protected Members
 
@@ -22,7 +20,6 @@ public abstract class ClientWorld : World
 | --- | --- |
 | [ClientWorld](ClientWorld/ClientWorld.md)() | The default constructor. |
 | [netService](ClientWorld/netService.md) |  |
-| override [PostUpdate](ClientWorld/PostUpdate.md)() | After each physical frame |
 
 ## See Also
 

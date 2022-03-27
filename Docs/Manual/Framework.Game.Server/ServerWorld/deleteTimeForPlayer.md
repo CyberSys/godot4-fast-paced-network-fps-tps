@@ -1,9 +1,9 @@
-# ServerWorld._EnterTree method
+# ServerWorld.deleteTimeForPlayer field
 
-Instancing the server game world
+Time after player totaly deleted (0 means directly)
 
 ```csharp
-public override void _EnterTree()
+public float deleteTimeForPlayer;
 ```
 
 ## See Also

@@ -8,21 +8,33 @@ using System;
 
 namespace Framework.Game.Client
 {
-    public abstract class ClientLogic<T> : GameLogic where T : ClientWorld
+    /// <summary>
+    /// Is the base class for any client (SubViewport)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ClientLogic<T> : GameLogic where T : ClientWorld
     {
-        [Export]
-        public int DefaultNetworkPort = 27015;
 
+        /// <inheritdoc />
+        private ClientNetworkService netService = null;
+
+        /// <inheritdoc />
+        private string loadedWorldName = null;
+
+        /// <summary>
+        /// The default port of the server
+        /// </summary>
+        [Export]
+        public int DefaultNetworkPort { get; set; } = 27015;
+
+        /// <summary>
+        /// The default hostname for the client
+        /// </summary>
         [Export]
         public string DefaultNetworkHostname = "localhost";
 
-        private ClientNetworkService netService = null;
-
-
-        private string loadedWorldName = null;
-
-
-        protected override void OnMapInstance(PackedScene res, uint worldTick)
+        /// <inheritdoc />
+        internal override void OnMapInstanceInternal(PackedScene res, uint worldTick)
         {
             T newWorld = Activator.CreateInstance<T>();
             newWorld.Name = "world";
@@ -38,7 +50,8 @@ namespace Framework.Game.Client
             this.AfterMapInstance();
         }
 
-        protected override void OnMapDestroy()
+        /// <inheritdoc />        
+        internal override void DestroyMapInternal()
         {
             this.currentWorld?.Destroy();
             this.currentWorld = null;
@@ -49,10 +62,9 @@ namespace Framework.Game.Client
 
         public void Disconnect()
         {
-            this.OnMapDestroy();
+            this.DestroyMapInternal();
             this.netService.Disconnect();
         }
-
 
         public void DoConnect()
         {
@@ -72,7 +84,8 @@ namespace Framework.Game.Client
 
         }
 
-        public override void _EnterTree()
+        /// <inheritdoc />  
+        internal override void InternalTreeEntered()
         {
             this.netService = this.Services.Create<ClientNetworkService>();
             this.netService.OnDisconnect += this.onDisconnect;
@@ -82,22 +95,21 @@ namespace Framework.Game.Client
                 if (this.loadedWorldName != package.WorldName)
                 {
                     this.loadedWorldName = package.WorldName;
-                    this.LoadWorld(package.WorldName, package.WorldTick);
+                    this.LoadWorldInternal(package.WorldName, package.WorldTick);
                 }
             });
 
 
-            base._EnterTree();
-
-            this.AfterInit();
+            base.InternalTreeEntered();
         }
 
-        protected void onDisconnect(DisconnectReason reason, bool fullDisconnect)
+        /// <inheritdoc />  
+        internal void onDisconnect(DisconnectReason reason, bool fullDisconnect)
         {
             if (fullDisconnect)
             {
                 Logger.LogDebug(this, "Full disconnected");
-                this.OnMapDestroy();
+                this.DestroyMapInternal();
             }
         }
     }

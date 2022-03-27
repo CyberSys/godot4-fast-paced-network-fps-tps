@@ -3,7 +3,7 @@
 Get an registered service by given type
 
 ```csharp
-public T? Get<T>(string name)
+public T Get<T>(string name)
     where T : class, T2
 ```
 

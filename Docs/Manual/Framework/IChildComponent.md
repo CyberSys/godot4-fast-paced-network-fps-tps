@@ -1,5 +1,7 @@
 # IChildComponent interface
 
+The child component interface for childs of an base component
+
 ```csharp
 public interface IChildComponent
 ```
@@ -8,7 +10,7 @@ public interface IChildComponent
 
 | name | description |
 | --- | --- |
-| [BaseComponent](IChildComponent/BaseComponent.md) { get; set; } |  |
+| [BaseComponent](IChildComponent/BaseComponent.md) { get; set; } | The base component of the child component |
 
 ## See Also
 

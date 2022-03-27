@@ -1,5 +1,7 @@
 # ServerLogic&lt;T&gt;.OnServerStarted method
 
+Called when after server started succeffull
+
 ```csharp
 public virtual void OnServerStarted()
 ```

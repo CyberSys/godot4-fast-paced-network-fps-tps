@@ -1,8 +1,14 @@
 # IBaseComponent.RemoveChild method
 
+Delete an child form the base component
+
 ```csharp
 public void RemoveChild(Node path)
 ```
+
+| parameter | description |
+| --- | --- |
+| path |  |
 
 ## See Also
 

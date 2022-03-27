@@ -5,6 +5,5 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework\Framework.csproj" />
-    <ProjectReference Include="..\Thirdparty\LiteNetLib\LiteNetLib.csproj" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,9 @@
-# ServerLogic&lt;T&gt;.AcceptClients field
+# ServerLogic&lt;T&gt;.AcceptClients property
+
+If clients can connect
 
 ```csharp
-public bool AcceptClients;
+public bool AcceptClients { get; set; }
 ```
 
 ## See Also

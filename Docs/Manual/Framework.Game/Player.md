@@ -10,7 +10,7 @@ public abstract class Player : Node, IPlayer
 
 | name | description |
 | --- | --- |
-| [Player](Player/Player.md)(…) |  |
+| [Player](Player/Player.md)(…) | Base player class |
 | [AvaiablePlayerComponents](Player/AvaiablePlayerComponents.md) { get; } |  |
 | [Components](Player/Components.md) { get; } |  |
 | [GameWorld](Player/GameWorld.md) { get; } |  |

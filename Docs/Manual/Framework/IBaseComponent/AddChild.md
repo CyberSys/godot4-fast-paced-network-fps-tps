@@ -1,9 +1,17 @@
 # IBaseComponent.AddChild method
 
+Add an child to the base component
+
 ```csharp
 public void AddChild(Node node, bool legibleUniqueName = false, 
     InternalMode @internal = InternalMode.Disabled)
 ```
+
+| parameter | description |
+| --- | --- |
+| node |  |
+| legibleUniqueName |  |
+| internal |  |
 
 ## See Also
 

@@ -1,5 +1,7 @@
 # World class
 
+The core world class for server and client worlds
+
 ```csharp
 public abstract class World : Node3D, IWorld
 ```
@@ -10,14 +12,14 @@ public abstract class World : Node3D, IWorld
 | --- | --- |
 | [Level](World/Level.md) { get; } |  |
 | [Players](World/Players.md) { get; } |  |
+| [ResourceWorldPath](World/ResourceWorldPath.md) { get; } |  |
 | [ServerVars](World/ServerVars.md) { get; } |  |
 | [WorldTick](World/WorldTick.md) { get; protected set; } |  |
 | [Destroy](World/Destroy.md)() |  |
 | virtual [Init](World/Init.md)(…) |  |
-| [InstanceLevel](World/InstanceLevel.md)(…) |  |
 | virtual [OnPlayerInitilaized](World/OnPlayerInitilaized.md)(…) |  |
 | virtual [Tick](World/Tick.md)(…) |  |
-| override [_EnterTree](World/_EnterTree.md)() |  |
+| override [_Notification](World/_Notification.md)(…) |  |
 | override [_PhysicsProcess](World/_PhysicsProcess.md)(…) |  |
 | override [_Process](World/_Process.md)(…) |  |
 
@@ -33,9 +35,7 @@ public abstract class World : Node3D, IWorld
 | [loader](World/loader.md) |  |
 | [playerHolder](World/playerHolder.md) |  |
 | [simulationAdjuster](World/simulationAdjuster.md) |  |
-| readonly [_players](World/_players.md) |  |
 | [_serverVars](World/_serverVars.md) |  |
-| virtual [PostUpdate](World/PostUpdate.md)() |  |
 | [updatePlayerValues](World/updatePlayerValues.md)(…) |  |
 
 ## See Also
