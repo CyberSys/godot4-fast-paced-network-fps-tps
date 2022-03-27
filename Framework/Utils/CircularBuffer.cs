@@ -18,18 +18,7 @@ using System.Collections;
 namespace Framework.Utils
 {
     /// <inheritdoc/>
-    /// <summary>
-    /// Circular buffer.
-    /// 
-    /// When writing to a full buffer:
-    /// PushBack -> removes this[0] / Front()
-    /// PushFront -> removes this[Size-1] / Back()
-    /// 
-    /// this implementation is inspired by
-    /// http://www.boost.org/doc/libs/1_53_0/libs/circular_buffer/doc/circular_buffer.html
-    /// because I liked their interface.
-    /// </summary>
-    public class CircularBuffer<T> : IEnumerable<T>
+    internal class CircularBuffer<T> : IEnumerable<T>
     {
         private readonly T[] _buffer;
 

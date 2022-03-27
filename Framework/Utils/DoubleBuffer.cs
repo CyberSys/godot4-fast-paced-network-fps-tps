@@ -1,6 +1,7 @@
 namespace Framework.Utils
 {
-    public class DoubleBuffer<T>
+    /// <inheritdoc/>
+    internal class DoubleBuffer<T>
     {
         private T[] values = new T[2];
         private int swapIndex = 0;

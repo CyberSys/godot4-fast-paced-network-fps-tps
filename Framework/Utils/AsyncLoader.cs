@@ -4,17 +4,20 @@ using Godot;
 
 namespace Framework.Utils
 {
-    internal class LoadingRequest
-    {
-        public string ResourceName { get; set; }
-        public Action<Resource> OnSucess { get; set; }
-    }
+
 
     /// <summary>
     /// Helper class to load resources in background
     /// </summary>
     public class AsyncLoader
     {
+        /// <inheritdoc/>
+        internal class LoadingRequest
+        {
+            public string ResourceName { get; set; }
+            public Action<Resource> OnSucess { get; set; }
+        }
+
         [Signal]
         public event ProgressHandler OnProgress;
         public delegate void ProgressHandler(string filename, float percent);

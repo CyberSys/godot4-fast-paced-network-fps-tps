@@ -1,11 +1,9 @@
 using System;
 
-/// Simple timer which executes a callback at an exactly even rate. For accurate
-/// physics simulations.
-/// i.e. a "Fixed time step" implementation.
 namespace Framework.Utils
 {
-    public class FixedTimer
+    /// <inheritdoc/>
+    internal class FixedTimer
     {
         private float accumulator;
         private readonly Action<float> callback;

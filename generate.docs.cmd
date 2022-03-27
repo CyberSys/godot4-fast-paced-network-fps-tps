@@ -1,0 +1,1 @@
+xmldocmd Framework\bin\Debug\netstandard2.1\Framework.dll Docs\Manual 
