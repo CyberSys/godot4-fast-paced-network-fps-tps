@@ -4,16 +4,8 @@ using Framework.Game;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-
-using Shooter.Share.Components;
-
 using Framework.Game.Server;
 using Framework;
-using Framework.Game;
-
-using Framework.Input;
-using Framework.Physics;
-
 namespace Shooter.Server
 {
     public class DeathmatchGameRule : GameRule
@@ -24,7 +16,6 @@ namespace Shooter.Server
         {
 
         }
-
 
         public override void OnNewPlayerJoined(IPlayer player)
         {
@@ -49,7 +40,13 @@ namespace Shooter.Server
             var serverPlayer = player as ServerPlayer;
 
             this.AddComponentToPlayer(player, "body");
+            this.AddComponentToPlayer(player, "camera");
+
             this.AddRemoteComponentToPlayer(player, "body");
+            this.AddRemoteComponentToPlayer(player, "camera");
+            this.AddRemoteComponentToPlayer(player, "input");
+
+            this.AddPuppetComponentToPlayer(player, "body");
 
             serverPlayer.DoTeleport(origin);
         }

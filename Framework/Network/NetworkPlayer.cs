@@ -34,9 +34,5 @@ namespace Framework.Network
         {
 
         }
-
-        public virtual void Tick(float delta)
-        {
-        }
     }
 }

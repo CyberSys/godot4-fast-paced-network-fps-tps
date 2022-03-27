@@ -37,6 +37,9 @@ namespace Framework.Network
 
             this._netPacketProcessor.RegisterNestedType(
                NetExtensions.SerializeStringDictonary, NetExtensions.DeserializeStringDictonary);
+
+
+            this._netPacketProcessor.RegisterNestedType<WorldHeartbeat>();
         }
 
         /// <summary>

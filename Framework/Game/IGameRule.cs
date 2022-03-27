@@ -14,94 +14,59 @@ using System.Reflection;
 
 namespace Framework.Game
 {
-    public class GameRule : IGameRule
-    {
-        public ServerWorld GameWorld { get; private set; }
-
-        public GameRule(ServerWorld gameWorld)
-        {
-            GameWorld = gameWorld;
-        }
-
-        public void AddPlayerComponent(IPlayer player, string name)
-        {
-
-        }
-
-        public virtual void OnNewPlayerJoined(IPlayer player)
-        {
-
-        }
-
-        public virtual void OnPlayerRejoined(IPlayer player)
-        {
-
-        }
-
-        public virtual void OnPlayerLeaveTemporary(IPlayer player)
-        {
-
-        }
-        public virtual void OnPlayerLeave(IPlayer player)
-        {
-
-        }
-
-        public virtual void Tick(float delta)
-        {
-
-        }
-
-        public void AddComponentToPlayer(IPlayer player, string component)
-        {
-            if (player is Player)
-            {
-                var components = (player as Player).AvaiablePlayerComponents;
-                if (components.ContainsKey(component) && player is Player)
-                {
-                    var componentRegistry = components[component];
-                    Logger.LogDebug(this, "Found registry component: " + componentRegistry.NodeType.ToString() + " => " + componentRegistry.ResourcePath);
-
-                    var playerInstance = player as Player;
-                    var playerComponents = playerInstance.Components;
-
-                    var method = typeof(ComponentRegistry).GetMethods().Single(
-                m =>
-                    m.Name == "AddComponent" &&
-                    m.GetGenericArguments().Length == 1 &&
-                    m.GetParameters().Length == 1 &&
-                    m.GetParameters()[0].ParameterType == typeof(string));
-
-                    MethodInfo generic = method.MakeGenericMethod(componentRegistry.NodeType);
-                    var createdObject = generic.Invoke(player.Components, new object[]
-                    {
-                    componentRegistry.ResourcePath
-                    });
-
-                    if (createdObject is IMoveable && player is PhysicsPlayer)
-                    {
-                        (player as PhysicsPlayer).Body = (IMoveable)createdObject;
-                    }
-                }
-            }
-        }
-
-        public void AddRemoteComponentToPlayer(IPlayer player, string component)
-        {
-
-        }
-    }
-
+    /// <summary>
+    /// Required interface for game rules
+    /// </summary>
     public interface IGameRule
     {
+        /// <summary>
+        /// The server world
+        /// </summary>
+        /// <value></value>
         public ServerWorld GameWorld { get; }
 
+        /// <summary>
+        /// Called on new player joined the game
+        /// </summary>
+        /// <param name="player"></param>
         public void OnNewPlayerJoined(IPlayer player);
+
+        /// <summary>
+        /// Called when player are rejoined the game (after previous disconnect)
+        /// </summary>
+        /// <param name="player"></param>
         public void OnPlayerRejoined(IPlayer player);
 
+        /// <summary>
+        /// Called when players are disconnected (as eg. timeouts)
+        /// </summary>
+        /// <param name="player"></param>
         public void OnPlayerLeaveTemporary(IPlayer player);
+
+        /// <summary>
+        /// Called when players finanly leave the game
+        /// </summary>
+        /// <param name="player"></param>
         public void OnPlayerLeave(IPlayer player);
 
+        /// <summary>
+        /// Execute on each server tick
+        /// </summary>
+        /// <param name="delta"></param>
         public void Tick(float delta);
+
+        /// <summary>
+        /// Add an component to an client player instance
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="component"></param>
+        public void AddRemoteComponentToPlayer(IPlayer player, string component);
+
+        /// <summary>
+        /// Add an component to an server player instance
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="component"></param>
+        public void AddComponentToPlayer(IPlayer player, string component);
     }
 }

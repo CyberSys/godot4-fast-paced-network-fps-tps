@@ -50,7 +50,7 @@
         public const ushort HalfMaxSequence = MaxSequence / 2;
 
         //protocol
-        internal const int ProtocolId = 12;
+        internal const int ProtocolId = 13;
         internal const int MaxUdpHeaderSize = 68;
         internal const int ChannelTypeCount = 4;
 
@@ -65,7 +65,8 @@
             1500 - MaxUdpHeaderSize  //Ethernet II (RFC 1191)
         };
 
-        internal static readonly int MaxPacketSize = PossibleMtu[PossibleMtu.Length - 1];
+        //Max possible single packet size
+        public static readonly int MaxPacketSize = PossibleMtu[PossibleMtu.Length - 1];
 
         //peer specific
         public const byte MaxConnectionNumber = 4;

@@ -49,5 +49,11 @@ namespace Framework.Game
         /// </summary>
         /// <value></value>
         public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents { get; }
+
+        /// <summary>
+        /// List of required components for this player instance
+        /// </summary>
+        /// <value></value>
+        public string[] RequiredComponents { get; set; }
     }
 }

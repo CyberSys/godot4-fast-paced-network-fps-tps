@@ -5,7 +5,8 @@ namespace Framework.Network.Commands
 {
     public struct ServerInitializer : INetSerializable
     {
-        public int handshake { get; set; }
+        public int handshake;
+
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(this.handshake);

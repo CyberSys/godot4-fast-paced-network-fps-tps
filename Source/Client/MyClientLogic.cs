@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using Framework.Game.Server;
 using Framework.Game;
-using Shooter.Share.Components;
 using Godot;
 using Framework.Game.Client;
 using Shooter.Client.UI.Welcome;
@@ -34,7 +33,7 @@ namespace Shooter.Client
             this.Components.AddComponent<PreConnectComponent>("res://Client/UI/Welcome/PreConnectComponent.tscn");
         }
 
-        public override void OnConnect()
+        public override void OnDisconnect()
         {
             this.Components.DeleteComponent<PreConnectComponent>();
             this.Components.AddComponent<MapLoadingComponent>("res://Client/UI/Welcome/MapLoadingComponent.tscn");

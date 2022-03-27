@@ -2,7 +2,7 @@ using Framework.Game;
 using Framework.Network.Commands;
 using Framework.Input;
 using Framework.Physics;
-
+using System.Collections.Generic;
 namespace Framework.Game.Server
 {
     /// <summary>
@@ -37,7 +37,7 @@ namespace Framework.Game.Server
         /// <summary>
         /// Archived player states
         /// </summary>
-        public PlayerState[] states = new PlayerState[1024];
+        public PlayerState[] States = new PlayerState[1024];
 
 
         /// <summary>
@@ -48,6 +48,10 @@ namespace Framework.Game.Server
         // This is only needed because the ProcessAttack delegate flow is a bit too complicated.
         // TODO: Simplify this.
         public TickInput CurrentPlayerInput { get; set; }
+
+        /// <inheritdoc />
+        public string[] RequiredPuppetComponents { get; set; } = new string[0];
+
 
     }
 }

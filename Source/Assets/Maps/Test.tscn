@@ -101,19 +101,17 @@ directional_shadow_max_distance = 250.0
 environment = SubResource( "Environment_56wcm" )
 
 [node name="Position3D" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.2688, -18.9645, 20.4383)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.2688, 7.47778, 20.4383)
 script = ExtResource( "5_fxw5y" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Position3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19.1586, 0)
 shape = SubResource( "BoxShape3D_a3fs1" )
 
 [node name="Position3D2" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.2688, -18.9645, 20.4383)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.6279, 7.48125, 20.4383)
 script = ExtResource( "5_fxw5y" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Position3D2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.00723, 19.1586, 0)
 shape = SubResource( "BoxShape3D_b5as3" )
 
 [node name="Cube408_0" type="MeshInstance3D" parent="."]

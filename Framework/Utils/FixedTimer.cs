@@ -3,7 +3,7 @@ using System;
 namespace Framework.Utils
 {
     /// <inheritdoc/>
-    internal class FixedTimer
+    public class FixedTimer
     {
         private float accumulator;
         private readonly Action<float> callback;

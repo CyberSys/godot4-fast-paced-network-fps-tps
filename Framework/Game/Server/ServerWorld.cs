@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using System.Linq;
 using Framework.Game;
 using System;
@@ -8,6 +9,7 @@ using Framework.Network.Commands;
 using Framework.Network;
 using Framework.Network.Services;
 using Framework.Input;
+using LiteNetLib.Utils;
 
 namespace Framework.Game.Server
 {
@@ -19,7 +21,11 @@ namespace Framework.Game.Server
         /// </summary>
         public float deleteTimeForPlayer = 10;
 
-        private ServerNetworkService netService = null;
+        /// <summary>
+        /// The network service for the server world
+        /// </summary>
+        /// <value></value>
+        public ServerNetworkService netService { get; set; } = null;
 
         /// <inheritdoc />
         private FixedTimer worldStateBroadcastTimer;
@@ -32,8 +38,6 @@ namespace Framework.Game.Server
 
         /// <inheritdoc />
         private int missedInputs;
-
-
 
         /// <inheritdoc />
         internal override void InternalTreeEntered()
@@ -162,7 +166,7 @@ namespace Framework.Game.Server
         /// Send an heartbeat to all players
         /// Hearbeat contains player informations, server latency, states, etc
         /// </summary>
-        private void BroadcastWorldHearbeat(float dt)
+        public void BroadcastWorldHearbeat(float dt)
         {
             //get player states
             var states = new List<PlayerState>();
@@ -172,27 +176,30 @@ namespace Framework.Game.Server
             }
 
             //get player updates
-            var heartbeatUpdateList = this._players.
+            var heartbeatUpdateList = this._players.Where(df => df.Value is ServerPlayer).
                                 Select(df => new PlayerUpdate
                                 {
                                     Id = df.Key,
                                     Team = df.Value.Team,
                                     State = df.Value.State,
+                                    RequiredComponents = df.Value.RequiredComponents.ToArray(),
+                                    RequiredPuppetComponents = (df.Value as ServerPlayer).RequiredComponents.ToArray(),
                                     Latency = df.Value.Latency
                                 }).ToArray();
 
+
             //send to each player data package
-            foreach (var player in this._players.Where(df => df.Value is ServerPlayer).Select(df => df.Value as ServerPlayer).ToArray())
+            foreach (var player in this._players.Where(df => df.Value is ServerPlayer).Select(df => df.Value as ServerPlayer).Where(df => df.State == PlayerConnectionState.Initialized).ToArray())
             {
                 var cmd = new WorldHeartbeat
                 {
                     WorldTick = WorldTick,
                     YourLatestInputTick = player.LatestInputTick,
                     PlayerStates = states.ToArray(),
-                    PlayerUpdates = heartbeatUpdateList,
+                    PlayerUpdates = heartbeatUpdateList.ToArray(),
                 };
 
-                this.netService.SendMessage<WorldHeartbeat>(player.Id, cmd, LiteNetLib.DeliveryMethod.Sequenced);
+                this.netService.SendMessageSerialisable<WorldHeartbeat>(player.Id, cmd, LiteNetLib.DeliveryMethod.Sequenced);
             }
         }
 
@@ -219,25 +226,27 @@ namespace Framework.Game.Server
         private void InitializeClient(ServerInitializer package, NetPeer peer)
         {
             var clientId = peer.Id;
+
             if (this._players.ContainsKey(clientId))
             {
                 var player = this._players[clientId];
+                Logger.LogDebug(this, "[" + clientId + "] " + " Initialize player with previous state: " + player.State.ToString());
+
                 var oldState = player.State;
                 if (oldState != PlayerConnectionState.Initialized)
                 {
-                    Logger.LogDebug(this, "[" + clientId + "] " + " Initialize player.");
                     player.State = PlayerConnectionState.Initialized;
                     this.OnPlayerInitilaized(player);
                 }
-            }
 
-            this.netService.SendMessageSerialisable<ClientInitializer>(clientId,
-                        new ClientInitializer
-                        {
-                            PlayerId = clientId,
-                            ServerVars = this.ServerVars,
-                            GameTick = this.WorldTick
-                        });
+                this.netService.SendMessageSerialisable<ClientInitializer>(clientId,
+                            new ClientInitializer
+                            {
+                                PlayerId = clientId,
+                                ServerVars = this.ServerVars,
+                                GameTick = this.WorldTick
+                            });
+            }
         }
         /// <inheritdoc />  
         internal override void InternalTick(float interval)
@@ -308,7 +317,7 @@ namespace Framework.Game.Server
             foreach (var player in this._players.Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is ServerPlayer)
             .Select(df => df.Value as ServerPlayer).ToArray())
             {
-                player.states[bufidx] = player.ToNetworkState();
+                player.States[bufidx] = player.ToNetworkState();
             }
 
             // Update post-tick timers.
@@ -321,7 +330,7 @@ namespace Framework.Game.Server
         private void SimulateWorld(float dt)
         {
             foreach (var player in this._players.
-                Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is NetworkPlayer).
+                Where(df => df.Value.State == PlayerConnectionState.Initialized).
                 Select(df => df.Value).ToArray())
             {
                 player.Tick(dt);
@@ -354,6 +363,8 @@ namespace Framework.Game.Server
             {
                 //clear previous components
                 player.Components.Clear();
+                (player as ServerPlayer).RequiredPuppetComponents = new string[0];
+                (player as ServerPlayer).RequiredComponents = new string[0];
 
                 if (this._activeGameRule != null)
                 {

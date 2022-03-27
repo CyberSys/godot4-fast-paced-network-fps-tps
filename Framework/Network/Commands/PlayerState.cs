@@ -5,10 +5,10 @@ namespace Framework.Network.Commands
 {
     public struct PlayerState : INetSerializable
     {
-        public int Id { get; set; }
-        public Vector3 Position { get; set; }
-        public Quaternion Rotation { get; set; }
-        public Vector3 Velocity { get; set; }
+        public int Id;
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public Vector3 Velocity;
         public bool Grounded;
 
         public void Serialize(NetDataWriter writer)

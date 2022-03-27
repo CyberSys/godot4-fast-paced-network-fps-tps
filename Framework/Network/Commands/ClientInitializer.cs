@@ -5,9 +5,9 @@ namespace Framework.Network.Commands
 {
     public struct ClientInitializer : INetSerializable
     {
-        public uint GameTick { get; set; }
-        public int PlayerId { get; set; }
-        public Dictionary<string, string> ServerVars { get; set; }
+        public uint GameTick;
+        public int PlayerId;
+        public Dictionary<string, string> ServerVars;
 
         public void Serialize(NetDataWriter writer)
         {

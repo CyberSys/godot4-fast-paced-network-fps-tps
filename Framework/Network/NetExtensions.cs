@@ -8,6 +8,10 @@ namespace Framework
     public static class NetExtensions
     {
         private const float QUAT_FLOAT_PRECISION_MULT = 32767f;
+        public static T ToEnum<T>(this string enumString)
+        {
+            return (T)Enum.Parse(typeof(T), enumString);
+        }
 
         public static void PutArray<T>(this NetDataWriter writer, T[] array) where T : INetSerializable
         {
@@ -43,6 +47,8 @@ namespace Framework
         {
             SerializeStringDictonary(writer, dic);
         }
+
+
 
         public static Vector3 GetVector3(this NetDataReader reader)
         {
@@ -92,6 +98,7 @@ namespace Framework
             }
         }
 
+
         public static Dictionary<string, string> DeserializeStringDictonary(NetDataReader reader)
         {
             var dictonary = new Dictionary<string, string>();
@@ -103,6 +110,7 @@ namespace Framework
 
             return dictonary;
         }
+
         public static void SerializeQuaternion(NetDataWriter writer, Quaternion quaternion)
         {
             // Utilize "Smallest three" strategy.

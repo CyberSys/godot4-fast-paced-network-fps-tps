@@ -87,6 +87,28 @@ namespace Framework
             }
         }
 
+        /// <summary>
+        /// Delete a given componentn from base component by given type
+        /// </summary>
+        /// <typeparam name="type"></typeparam>
+        public void DeleteComponent(Type type)
+        {
+            lock (_components)
+            {
+                if (this._components.ContainsKey(type))
+                {
+                    var node = this._components[type];
+
+                    if (node.IsInsideTree())
+                    {
+                        this.baseComponent.RemoveChild(node);
+                    }
+
+                    this._components.Remove(type);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Add an new component to base component by given resource path (async)
@@ -99,7 +121,6 @@ namespace Framework
         {
 
         }
-
 
         /// <summary>
         /// Add an new component to base component
@@ -124,6 +145,74 @@ namespace Framework
 
                 return component;
             }
+        }
+
+        /// <summary>
+        /// Add an new component to base component
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public Node AddComponent(Type type)
+        {
+            lock (_components)
+            {
+                object createdObject = Activator.CreateInstance(type);
+                if (createdObject is IChildComponent && createdObject is Node)
+                {
+                    _components[type] = createdObject as Node;
+
+                    (createdObject as Node).Name = type.Name;
+                    (createdObject as IChildComponent).BaseComponent = this.baseComponent;
+
+                    if (this.baseComponent.IsInsideTree())
+                    {
+                        this.baseComponent.AddChild(createdObject as Node);
+                    }
+
+                    return createdObject as Node;
+                }
+                else return null;
+            }
+        }
+
+        /// <summary>
+        /// Add an new component to base component from resource path
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public Node AddComponent(Type type, string resourcePath)
+        {
+            lock (_components)
+            {
+                var scene = GD.Load<PackedScene>(resourcePath);
+                scene.ResourceLocalToScene = true;
+                var createdObject = scene.Instantiate();
+                if (createdObject is IChildComponent && createdObject is Node)
+                {
+                    _components[type] = createdObject as Node;
+
+                    (createdObject as Node).Name = type.Name;
+                    (createdObject as IChildComponent).BaseComponent = this.baseComponent;
+
+                    if (this.baseComponent.IsInsideTree())
+                    {
+                        this.baseComponent.AddChild(createdObject as Node);
+                    }
+
+                    return createdObject as Node;
+                }
+                else return null;
+            }
+        }
+
+        /// <summary>
+        /// Check if component exist
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public bool HasComponent(Type type)
+        {
+            return this._components.ContainsKey(type);
         }
 
         /// <summary>

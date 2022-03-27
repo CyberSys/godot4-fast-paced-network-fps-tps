@@ -94,13 +94,6 @@ namespace Framework.Game
         protected Dictionary<string, string> _serverVars = new Dictionary<string, string>();
         public Dictionary<string, string> ServerVars => _serverVars;
 
-        protected void updatePlayerValues(PlayerUpdate playerUpdate, IPlayer player)
-        {
-            player.Team = playerUpdate.Team;
-            player.Latency = playerUpdate.Latency;
-            player.PlayerName = playerUpdate.PlayerName;
-            player.State = playerUpdate.State;
-        }
 
         /// <inheritdoc />
         internal void InstanceLevel(PackedScene res)
@@ -157,7 +150,7 @@ namespace Framework.Game
                     accumulator -= adjustedTickInterval;
                     interpController.ExplicitFixedUpdate(adjustedTickInterval);
 
-                    Tick(tickInterval);
+                    InternalTick(tickInterval);
                 }
 
                 interpController.ExplicitUpdate(delta);

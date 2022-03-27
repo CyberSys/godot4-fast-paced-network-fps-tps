@@ -21,18 +21,6 @@ namespace Framework.Game.Client
         /// <inheritdoc />
         private string loadedWorldName = null;
 
-        /// <summary>
-        /// The default port of the server
-        /// </summary>
-        [Export]
-        public int DefaultNetworkPort { get; set; } = 27015;
-
-        /// <summary>
-        /// The default hostname for the client
-        /// </summary>
-        [Export]
-        public string DefaultNetworkHostname = "localhost";
-
         /// <inheritdoc />
         internal override void OnMapInstanceInternal(PackedScene res, uint worldTick)
         {
@@ -60,26 +48,45 @@ namespace Framework.Game.Client
             this.AfterMapDestroy();
         }
 
+        /// <summary>
+        /// Disconnect the client
+        /// </summary>
         public void Disconnect()
         {
             this.DestroyMapInternal();
             this.netService.Disconnect();
         }
 
-        public void DoConnect()
+        /// <summary>
+        /// Connect with an server
+        /// </summary>
+        /// <param name="hostname"></param>
+        /// <param name="port"></param>
+        public void Connect(string hostname, int port)
         {
             if (this.CurrentWorld == null)
             {
                 this.netService.Connect(new ClientConnectionSettings
                 {
-                    Port = DefaultNetworkPort,
-                    Hostname = DefaultNetworkHostname,
+                    Port = port,
+                    Hostname = hostname,
                     SecureKey = this.secureConnectionKey
                 });
             }
         }
 
-        public virtual void OnConnect()
+        /// <summary>
+        /// On local client is connected
+        /// </summary>
+        public virtual void OnConnected()
+        {
+
+        }
+
+        /// <summary>
+        /// On local client are disconneted
+        /// </summary>
+        public virtual void OnDisconnect()
         {
 
         }
@@ -88,7 +95,8 @@ namespace Framework.Game.Client
         internal override void InternalTreeEntered()
         {
             this.netService = this.Services.Create<ClientNetworkService>();
-            this.netService.OnDisconnect += this.onDisconnect;
+            this.netService.OnDisconnect += this.OnInternalDisconnect;
+            this.netService.Connected += this.OnConnected;
 
             this.netService.SubscribeSerialisable<ClientWorldInitializer>((package, peer) =>
             {
@@ -104,12 +112,13 @@ namespace Framework.Game.Client
         }
 
         /// <inheritdoc />  
-        internal void onDisconnect(DisconnectReason reason, bool fullDisconnect)
+        private void OnInternalDisconnect(DisconnectReason reason, bool fullDisconnect)
         {
             if (fullDisconnect)
             {
                 Logger.LogDebug(this, "Full disconnected");
                 this.DestroyMapInternal();
+                this.OnDisconnect();
             }
         }
     }

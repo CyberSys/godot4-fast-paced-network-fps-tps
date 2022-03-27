@@ -6,9 +6,9 @@ namespace Framework.Network
 {
     public enum PlayerConnectionState
     {
-        Unknown,
-        Connected,
-        Initialized,
-        Disconnected
+        Unknown = 0,
+        Connected = 1,
+        Initialized = 2,
+        Disconnected = 3
     }
 }

@@ -52,6 +52,14 @@ namespace Framework.Game
             this._components = new ComponentRegistry(this);
         }
 
+        /// <summary>
+        /// Base player class
+        /// </summary>
+        /// <returns></returns>
+        public Player() : base()
+        {
+
+        }
         /// <inheritdoc />
         public virtual void Tick(float delta)
         {
@@ -62,5 +70,8 @@ namespace Framework.Game
 
         /// <inheritdoc />
         public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents => avaiableComponents;
+
+        /// <inheritdoc />
+        public string[] RequiredComponents { get; set; } = new string[0];
     }
 }

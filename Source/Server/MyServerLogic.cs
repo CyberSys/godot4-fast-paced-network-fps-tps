@@ -1,6 +1,5 @@
 using Framework.Game.Server;
 using Framework.Game;
-using Shooter.Share.Components;
 using Godot;
 
 namespace Shooter.Server

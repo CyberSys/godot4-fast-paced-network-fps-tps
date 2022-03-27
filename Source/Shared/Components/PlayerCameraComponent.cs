@@ -4,7 +4,7 @@ using Godot;
 
 using Framework.Game.Client;
 
-namespace Shooter.Share.Components
+namespace Shooter.Shared.Components
 {
     public enum CameraMode
     {

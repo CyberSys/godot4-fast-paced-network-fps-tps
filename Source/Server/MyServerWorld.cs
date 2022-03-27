@@ -18,5 +18,10 @@ namespace Shooter.Server
             // playerServerCamera.cameraMode = CameraMode.Server;
         }
         */
+
+        public override void OnPlayerConnected(int clientId)
+        {
+            this.AddPlayer<MyServerPlayer>(clientId);
+        }
     }
 }

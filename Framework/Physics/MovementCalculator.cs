@@ -62,6 +62,7 @@ namespace Framework.Physics
 
         public void Tick(IMoveable component, PlayerInputs inputs, float dt)
         {
+
             if (component == null)
             {
                 return;

@@ -10,6 +10,7 @@ using Framework.Input;
 using Framework.Utils;
 using Framework.Network;
 using Framework.Network.Services;
+using Framework.Physics;
 
 namespace Framework.Game.Client
 {
@@ -63,7 +64,7 @@ namespace Framework.Game.Client
             base.InternalTreeEntered();
 
             this.netService = this.gameInstance.Services.Get<ClientNetworkService>();
-            this.netService.Subscribe<WorldHeartbeat>(HandleWorldState);
+            this.netService.SubscribeSerialisable<WorldHeartbeat>(HandleWorldState);
             this.netService.SubscribeSerialisable<ClientInitializer>(InitWorld);
         }
 
@@ -185,7 +186,7 @@ namespace Framework.Game.Client
         /// Execute world heartbeat to initalize players and set values
         /// </summary>
         /// <param name="update"></param>
-        private void ExecuteHeartbeat(WorldHeartbeat update)
+        internal void ExecuteHeartbeat(WorldHeartbeat update)
         {
             //check that the id is initialized
             if (this.MyServerId < 0)
@@ -228,7 +229,7 @@ namespace Framework.Game.Client
                         if (playerUpdate.Id == this.MyServerId)
                         {
                             Logger.LogDebug(this, "Attach new local player");
-                            var localPlayer = new LocalPlayer(playerUpdate.Id, this);
+                            var localPlayer = this.CreateLocalPlayer(playerUpdate.Id, this);
 
                             localPlayer.Name = playerUpdate.Id.ToString();
                             this.playerHolder.AddChild(localPlayer);
@@ -240,7 +241,7 @@ namespace Framework.Game.Client
                         else
                         {
                             Logger.LogDebug(this, "Attach new puppet player");
-                            var puppetPlayer = new PuppetPlayer(playerUpdate.Id, this);
+                            var puppetPlayer = this.CreatePuppetPlayer(playerUpdate.Id, this);
 
                             puppetPlayer.Name = playerUpdate.Id.ToString();
                             this.playerHolder.AddChild(puppetPlayer);
@@ -258,6 +259,78 @@ namespace Framework.Game.Client
                     this.updatePlayerValues(playerUpdate, player);
                 }
             }
+        }
+
+        private void updatePlayerValues(PlayerUpdate playerUpdate, IPlayer player)
+        {
+            player.Id = playerUpdate.Id;
+            player.Team = playerUpdate.Team;
+            player.Latency = playerUpdate.Latency;
+            player.PlayerName = playerUpdate.PlayerName;
+            player.State = playerUpdate.State;
+            player.RequiredComponents = (player is LocalPlayer) ? playerUpdate.RequiredComponents : playerUpdate.RequiredPuppetComponents;
+
+            if (playerUpdate.State == PlayerConnectionState.Initialized)
+            {
+                //check if we have to remove some components
+                foreach (var avaiableComponents in player.AvaiablePlayerComponents)
+                {
+                    var componentExist = player.Components.HasComponent(avaiableComponents.Value.NodeType);
+                    var isRequired = player.RequiredComponents.Contains(avaiableComponents.Key);
+
+                    if (componentExist && !isRequired)
+                    {
+                        player.Components.DeleteComponent(avaiableComponents.Value.NodeType);
+                    }
+
+                    else if (isRequired && !componentExist)
+                    {
+                        Node result = null;
+
+                        if (avaiableComponents.Value.ResourcePath != null)
+                        {
+                            result = player.Components.AddComponent(avaiableComponents.Value.NodeType, avaiableComponents.Value.ResourcePath);
+                        }
+                        else
+                        {
+                            result = player.Components.AddComponent(avaiableComponents.Value.NodeType);
+                        }
+
+                        if (result != null && result is IMoveable && player is PhysicsPlayer)
+                        {
+                            (player as PhysicsPlayer).Body = result as IMoveable;
+                        }
+
+                        if (result != null && result is IInputable && player is LocalPlayer)
+                        {
+                            (player as LocalPlayer).Inputable = result as IInputable;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Create an puppet player
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="world"></param>
+        /// <returns></returns>
+        public virtual PuppetPlayer CreatePuppetPlayer(int id, IWorld world)
+        {
+            return new PuppetPlayer(id, this);
+        }
+
+        /// <summary>
+        /// Create an local player
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="world"></param>
+        /// <returns></returns>
+        public virtual LocalPlayer CreateLocalPlayer(int id, IWorld world)
+        {
+            return new LocalPlayer(id, this);
         }
 
         /// <summary>

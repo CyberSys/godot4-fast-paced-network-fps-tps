@@ -6,8 +6,8 @@ namespace Framework.Network.Commands
 {
     public struct ClientWorldInitializer : INetSerializable
     {
-        public string WorldName { get; set; }
-        public uint WorldTick { get; set; }
+        public string WorldName;
+        public uint WorldTick;
 
         public void Serialize(NetDataWriter writer)
         {

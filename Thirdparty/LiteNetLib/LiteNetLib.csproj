@@ -26,9 +26,5 @@
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PriorityQueue\Priority Queue.csproj" />
-  </ItemGroup>
-
 
 </Project>

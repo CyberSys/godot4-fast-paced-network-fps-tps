@@ -5,6 +5,20 @@ namespace Shooter.Client.UI.Welcome
 {
     public partial class PreConnectComponent : CanvasLayer, IChildComponent
     {
+
+        /// <summary>
+        /// The default port of the server
+        /// </summary>
+        [Export]
+        public int DefaultNetworkPort { get; set; } = 27015;
+
+        /// <summary>
+        /// The default hostname for the client
+        /// </summary>
+        [Export]
+        public string DefaultNetworkHostname = "localhost";
+
+
         public IBaseComponent BaseComponent { get; set; }
 
         public override void _EnterTree()
@@ -15,7 +29,7 @@ namespace Shooter.Client.UI.Welcome
         private void onConnectButtonPressed()
         {
             var component = BaseComponent as MyClientLogic;
-            component.DoConnect();
+            component.Connect(this.DefaultNetworkHostname, this.DefaultNetworkPort);
         }
     }
 }

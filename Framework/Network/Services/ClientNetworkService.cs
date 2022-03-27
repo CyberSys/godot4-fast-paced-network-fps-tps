@@ -76,7 +76,7 @@ namespace Framework.Network.Services
             this.netManager.AutoRecycle = true;
             this.netManager.EnableStatistics = true;
             this.netManager.UnconnectedMessagesEnabled = true;
-            this.netManager.MtuOverride = 8096;
+            //this.netManager.MtuOverride = 8096;
 
             listener.NetworkReceiveEvent += (peer, reader, channel, deliveryMethod) =>
             {
@@ -135,6 +135,8 @@ namespace Framework.Network.Services
                 }
             }
 
+            base.Update(delta);
+
             if (nextStaticsUpdate >= 1f)
             {
                 nextStaticsUpdate = 0f;
@@ -143,16 +145,18 @@ namespace Framework.Network.Services
                 this._packageLoss = this.Statistics.PacketLoss;
                 this._packageLossPercent = this.Statistics.PacketLossPercent;
 
-                this.Statistics.Reset();
+                //    this.Statistics.Reset();
             }
             else
             {
                 nextStaticsUpdate += delta;
             }
-
-            base.Update(delta);
         }
 
+        /// <summary>
+        /// Connect to an server
+        /// </summary>
+        /// <param name="settings">The connection settings eg. hostname, port, secure</param>
         public void Connect(ClientConnectionSettings settings)
         {
             var task = new System.Threading.Tasks.Task(() =>

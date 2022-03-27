@@ -4,7 +4,7 @@ using Framework.Physics;
 using Godot;
 using System;
 
-namespace Shooter.Share.Components
+namespace Shooter.Shared.Components
 {
 	public partial class PlayerBodyComponent : CharacterBody3D, IMoveable
 	{
@@ -51,7 +51,6 @@ namespace Shooter.Share.Components
 			this.shapeHeight = shape.Height;
 			this.currentCouchLevel = shape.Height;
 			this.previousCrouchLevel = shape.Height;
-
 		}
 
 

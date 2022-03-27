@@ -3,7 +3,7 @@ using Framework.Input;
 using Framework.Network;
 using Framework;
 
-namespace Shooter.Share.Components
+namespace Shooter.Shared.Components
 {
     public partial class PlayerInputComponent : Node, IInputable
     {
