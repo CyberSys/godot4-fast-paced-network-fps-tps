@@ -311,7 +311,7 @@ namespace Framework.Game.Server
                 Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is NetworkPlayer).
                 Select(df => df.Value).ToArray())
             {
-                player.Simulate(dt);
+                player.Tick(dt);
             }
         }
 

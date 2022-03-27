@@ -158,7 +158,7 @@ namespace Framework.Game.Client
                 this.localPlayer.SetPlayerInputs(inputs);
 
                 // SimulateWorld
-                this.localPlayer.Simulate(interval);
+                this.localPlayer.Tick(interval);
             }
 
             //increase worldTick
@@ -353,7 +353,7 @@ namespace Framework.Game.Client
 
                         // Apply inputs to the associated player controller and simulate the world.
                         this.localPlayer.SetPlayerInputs(inputSnapshot);
-                        this.localPlayer.Simulate((float)this.GetPhysicsProcessDeltaTime());
+                        this.localPlayer.Tick((float)this.GetPhysicsProcessDeltaTime());
 
                         ++replayTick;
                     }

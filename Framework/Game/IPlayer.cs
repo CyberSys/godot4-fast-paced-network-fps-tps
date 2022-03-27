@@ -39,7 +39,7 @@ namespace Framework.Game
         public PlayerTeam Team { get; set; }
 
 
-        public void Simulate(float delta);
+        public void Tick(float delta);
 
         public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents { get; }
     }

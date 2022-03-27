@@ -34,7 +34,7 @@ namespace Framework.Network
 
         }
 
-        public virtual void Simulate(float delta)
+        public virtual void Tick(float delta)
         {
         }
     }

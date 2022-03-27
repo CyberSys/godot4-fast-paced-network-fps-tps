@@ -4,7 +4,14 @@ using Framework.Input;
 
 namespace Framework.Physics
 {
-    public class MovementCalculator
+    public interface IMovementCalculator
+    {
+        public void Execute(float delta, Vector3 velocity);
+        public void Tick(IMoveable component, PlayerInputs inputs, float dt);
+
+        public Vector3 Velocity { get; set; }
+    }
+    public class MovementCalculator : IMovementCalculator
     {        // Frame occuring factors
         public float gravity = 20.0f;
         public float friction = 6;
@@ -29,7 +36,12 @@ namespace Framework.Physics
         public bool holdJumpToBhop = false;           // When enabled allows player to just hold jump button to keep on bhopping
         private bool wishJump = false;
 
-        public Vector3 playerVelocity = Vector3.Zero;
+        public Vector3 _velocity = Vector3.Zero;
+        public Vector3 Velocity
+        {
+            get { return _velocity; }
+            set { _velocity = value; }
+        }
         private IMoveable component;
         private PlayerInputs inputs;
 
@@ -48,7 +60,7 @@ namespace Framework.Physics
             component.Move(delta, velocity);
         }
 
-        public void Simulate(IMoveable component, PlayerInputs inputs, float dt)
+        public void Tick(IMoveable component, PlayerInputs inputs, float dt)
         {
             if (component == null)
             {
@@ -80,7 +92,7 @@ namespace Framework.Physics
                 this.AirMove(dt);
 
             // Apply the final velocity to the character controller.
-            this.Execute(dt, playerVelocity);
+            this.Execute(dt, Velocity);
 
 
 
@@ -100,7 +112,7 @@ namespace Framework.Physics
             if (transform.origin.y < -100)
             {
                 transform.origin = Vector3.Zero;
-                playerVelocity = Vector3.Zero;
+                Velocity = Vector3.Zero;
             }
 
             component.Transform = transform;
@@ -111,7 +123,7 @@ namespace Framework.Physics
 	   */
         private void ApplyFriction(float t, float dt)
         {
-            Vector3 vec = playerVelocity; // Equivalent to: VectorCopy();
+            Vector3 vec = Velocity; // Equivalent to: VectorCopy();
             float speed;
             float newspeed;
             float control;
@@ -136,8 +148,8 @@ namespace Framework.Physics
             if (speed > 0)
                 newspeed /= speed;
 
-            playerVelocity.x *= newspeed;
-            playerVelocity.z *= newspeed;
+            _velocity.x *= newspeed;
+            _velocity.z *= newspeed;
         }
         private void QueueJump()
         {
@@ -159,29 +171,29 @@ namespace Framework.Physics
             // Can't control movement if not moving forward or backward
             if (Mathf.Abs(inputs.ForwardAxis) < 0.001 || Mathf.Abs(wishspeed) < 0.001)
                 return;
-            zspeed = playerVelocity.y;
-            playerVelocity.y = 0;
+            zspeed = _velocity.y;
+            _velocity.y = 0;
             /* Next two lines are equivalent to idTech's VectorNormalize() */
-            speed = playerVelocity.Length();
-            playerVelocity = playerVelocity.Normalized();
+            speed = _velocity.Length();
+            _velocity = _velocity.Normalized();
 
-            dot = playerVelocity.Dot(wishdir);
+            dot = _velocity.Dot(wishdir);
             k = 32;
             k *= airControl * dot * dot * dt;
 
             // Change direction while slowing down
             if (dot > 0)
             {
-                playerVelocity.x = playerVelocity.x * speed + wishdir.x * k;
-                playerVelocity.y = playerVelocity.y * speed + wishdir.y * k;
-                playerVelocity.z = playerVelocity.z * speed + wishdir.z * k;
+                _velocity.x = _velocity.x * speed + wishdir.x * k;
+                _velocity.y = _velocity.y * speed + wishdir.y * k;
+                _velocity.z = _velocity.z * speed + wishdir.z * k;
 
-                playerVelocity = playerVelocity.Normalized();
+                _velocity = _velocity.Normalized();
             }
 
-            playerVelocity.x *= speed;
-            playerVelocity.y = zspeed; // Note this line
-            playerVelocity.z *= speed;
+            _velocity.x *= speed;
+            _velocity.y = zspeed; // Note this line
+            _velocity.z *= speed;
         }
         /**
 		 * Execs when the player is in the air
@@ -203,7 +215,7 @@ namespace Framework.Physics
 
             // CPM: Aircontrol
             float wishspeed2 = wishspeed;
-            if (playerVelocity.Dot(wishdir) < 0)
+            if (_velocity.Dot(wishdir) < 0)
                 accel = airDecceleration;
             else
                 accel = airAcceleration;
@@ -221,7 +233,7 @@ namespace Framework.Physics
             // !CPM: Aircontrol
 
             // Apply gravity
-            playerVelocity.y -= gravity * dt;
+            _velocity.y -= gravity * dt;
         }
 
         private void Accelerate(Vector3 wishdir, float wishspeed, float accel, float dt)
@@ -230,7 +242,7 @@ namespace Framework.Physics
             float accelspeed;
             float currentspeed;
 
-            currentspeed = playerVelocity.Dot(wishdir);
+            currentspeed = _velocity.Dot(wishdir);
             addspeed = wishspeed - currentspeed;
             if (addspeed <= 0)
                 return;
@@ -238,9 +250,10 @@ namespace Framework.Physics
             if (accelspeed > addspeed)
                 accelspeed = addspeed;
 
-            playerVelocity.x += accelspeed * wishdir.x;
-            playerVelocity.z += accelspeed * wishdir.z;
+            _velocity.x += accelspeed * wishdir.x;
+            _velocity.z += accelspeed * wishdir.z;
         }
+
         private void GroundMove(float dt)
         {
             Vector3 wishdir;
@@ -261,11 +274,11 @@ namespace Framework.Physics
             Accelerate(wishdir, wishspeed, (inputs.Crouch) ? crouchAcceleration : runAcceleration, dt);
 
             // Reset the gravity velocity
-            playerVelocity.y = -gravity * dt;
+            _velocity.y = -gravity * dt;
 
             if (wishJump)
             {
-                playerVelocity.y = jumpSpeed;
+                _velocity.y = jumpSpeed;
                 wishJump = false;
             }
         }

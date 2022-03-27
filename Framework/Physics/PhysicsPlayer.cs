@@ -12,7 +12,8 @@ namespace Framework.Physics
         {
         }
 
-        protected MovementCalculator calculator = new MovementCalculator();
+        public IMovementCalculator calculator { get; set; } = new MovementCalculator();
+
         public IMoveable Body { get; set; }
 
         public override void _EnterTree()
@@ -40,7 +41,7 @@ namespace Framework.Physics
                     Id = this.Id,
                     Position = Body.Transform.origin,
                     Rotation = Body.Transform.basis.GetRotationQuaternion(),
-                    Velocity = calculator.playerVelocity,
+                    Velocity = calculator.Velocity,
                     Grounded = Body.isOnGround(),
                 };
             }
@@ -68,14 +69,14 @@ namespace Framework.Physics
                 Body.activateColliderShape(true);
             }
 
-            calculator.playerVelocity = state.Velocity;
+            calculator.Velocity = state.Velocity;
         }
 
-        public override void Simulate(float delta)
+        public override void Tick(float delta)
         {
             if (Body != null)
             {
-                this.calculator.Simulate(Body, this.inputs, delta);
+                this.calculator.Tick(Body, this.inputs, delta);
             }
         }
     }

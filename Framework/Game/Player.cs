@@ -43,7 +43,7 @@ namespace Framework.Game
             this._components = new ComponentRegistry(this);
         }
 
-        public virtual void Simulate(float delta)
+        public virtual void Tick(float delta)
         {
         }
 
