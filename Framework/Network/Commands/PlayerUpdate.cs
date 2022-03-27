@@ -10,7 +10,7 @@ namespace Framework.Network.Commands
     {
         public PlayerTeam Team { get; set; }
         public PlayerConnectionState State { get; set; }
-        public string Name { get; set; }
+        public string PlayerName { get; set; }
         public int Id { get; set; }
         public int Latency { get; set; }
 
@@ -24,7 +24,7 @@ namespace Framework.Network.Commands
         {
             writer.Put((int)this.Team);
             writer.Put((int)this.State);
-            writer.Put(this.Name);
+            writer.Put(this.PlayerName);
             writer.Put(this.Id);
             writer.Put(this.Latency);
         }
@@ -33,7 +33,7 @@ namespace Framework.Network.Commands
         {
             this.Team = (PlayerTeam)reader.GetInt();
             this.State = (PlayerConnectionState)reader.GetInt();
-            this.Name = reader.GetString();
+            this.PlayerName = reader.GetString();
             this.Id = reader.GetInt();
             this.Latency = reader.GetInt();
         }

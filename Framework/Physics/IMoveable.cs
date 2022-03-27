@@ -1,7 +1,7 @@
 namespace Framework.Physics
 {
 
-    public interface IMoveable
+    public interface IMoveable : IChildComponent
     {
         public void setCrouchingLevel(float level);
         public void activateColliderShape(bool isColiderActive);

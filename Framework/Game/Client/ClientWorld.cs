@@ -10,7 +10,6 @@ using Framework.Input;
 using Framework.Utils;
 using Framework.Network;
 using Framework.Network.Services;
-using Framework.Network;
 
 namespace Framework.Game.Client
 {
@@ -51,6 +50,8 @@ namespace Framework.Game.Client
         private int _myServerId = -1;
 
         public int MyServerId => _myServerId;
+
+
 
         public override void _EnterTree()
         {
@@ -109,7 +110,7 @@ namespace Framework.Game.Client
         /// <param name="interval"></param>
         public override void Tick(float interval)
         {
-            if (this.localPlayer != null && this.localPlayer.Simulation != null)
+            if (this.localPlayer != null && this.localPlayer.Inputable != null)
             {
                 float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
                 var serverSendRate = simTickRate / 2;
@@ -117,7 +118,7 @@ namespace Framework.Game.Client
                 var MaxStaleServerStateTicks = (int)MathF.Ceiling(
                    int.Parse(this.ServerVars["sv_max_stages_ms"]) / serverSendRate);
 
-                var inputHandler = this.localPlayer.Simulation.Inputable;
+                var inputHandler = this.localPlayer.Inputable;
                 var inputs = (inputHandler != null && !this.gameInstance.GuiDisableInput) ? inputHandler.GetPlayerInput() : new PlayerInputs();
 
                 var lastTicks = WorldTick - lastServerWorldTick;
@@ -130,7 +131,7 @@ namespace Framework.Game.Client
                 // Update our snapshot buffers.
                 uint bufidx = WorldTick % 1024;
                 this.localPlayer.localPlayerInputsSnapshots[bufidx] = inputs;
-                this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.Simulation.ToNetworkState();
+                this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
                 this.localPlayer.localPlayerWorldTickSnapshots[bufidx] = lastServerWorldTick;
 
                 // Send a command for all inputs not yet acknowledged from the server.
@@ -154,10 +155,10 @@ namespace Framework.Game.Client
                 this.netService.SendMessageSerialisable(this.netService.ServerPeer.Id, command, LiteNetLib.DeliveryMethod.Sequenced);
 
                 //SetPlayerInputs
-                this.localPlayer.Simulation.SetPlayerInputs(inputs);
+                this.localPlayer.SetPlayerInputs(inputs);
 
                 // SimulateWorld
-                this.localPlayer.Simulation.Simulate(interval);
+                this.localPlayer.Simulate(interval);
             }
 
             //increase worldTick
@@ -202,18 +203,14 @@ namespace Framework.Game.Client
 
                 //delete unused players
                 var playersToDelete = this._players?.Where(df => !playerIds.Contains(df.Key))
-                    .Where(df => df.Value is Player<NetworkPlayerSimulation>).ToArray();
+                    .Where(df => df.Value is Player).ToArray();
                 foreach (var player in playersToDelete)
                 {
-                    var networkPlayer = player.Value as Player<NetworkPlayerSimulation>;
-                    if (networkPlayer.Simulation != null)
-                    {
-                        this.RemovePlayerSimulation(networkPlayer.Simulation);
-                        networkPlayer.Simulation = null;
-                    }
+                    var networkPlayer = player.Value as Player;
+                    networkPlayer.QueueFree();
                     this._players.Remove(player.Key);
 
-                    if (player.Key == this.MyServerId)
+                    if (networkPlayer.Id == this.MyServerId)
                     {
                         Logger.LogDebug(this, "Local player are realy disconnected!");
                         (this.gameInstance as ClientLogic<ClientWorld>).Disconnect();
@@ -224,97 +221,43 @@ namespace Framework.Game.Client
                 //players
                 foreach (var playerUpdate in playerUpdates)
                 {
-                    //creat local player
-                    if (playerUpdate.Id == this.MyServerId)
+                    if (!this._players.ContainsKey(playerUpdate.Id))
                     {
-                        this.UpdateOrCreateLocalPlayer(playerUpdate, playerStates.FirstOrDefault(df => df.Id == playerUpdate.Id));
+                        if (playerUpdate.Id == this.MyServerId)
+                        {
+                            Logger.LogDebug(this, "Attach new local player");
+                            var localPlayer = new LocalPlayer(playerUpdate.Id, this);
+
+                            localPlayer.Name = playerUpdate.Id.ToString();
+                            this.playerHolder.AddChild(localPlayer);
+                            this._players.Add(playerUpdate.Id, localPlayer);
+
+                            //set local player
+                            this.localPlayer = localPlayer;
+                        }
+                        else
+                        {
+                            Logger.LogDebug(this, "Attach new puppet player");
+                            var puppetPlayer = new PuppetPlayer(playerUpdate.Id, this);
+
+                            puppetPlayer.Name = playerUpdate.Id.ToString();
+                            this.playerHolder.AddChild(puppetPlayer);
+                            this._players.Add(playerUpdate.Id, puppetPlayer);
+                        }
+
+                        if (playerUpdate.State != PlayerConnectionState.Initialized
+                            && localPlayer.State == PlayerConnectionState.Initialized)
+                        {
+                            this.OnPlayerInitilaized(localPlayer);
+                        }
                     }
-                    //create puppet player
-                    else
-                    {
-                        this.UpdateOrCreatePuppetPlayer(playerUpdate, playerStates.FirstOrDefault(df => df.Id == playerUpdate.Id));
-                    }
+
+                    var player = this._players[playerUpdate.Id] as Player;
+                    this.updatePlayerValues(playerUpdate, player);
                 }
             }
         }
 
-
-        /// <summary>
-        /// Update or create puppet player
-        /// </summary>
-        /// <param name="playerUpdate"></param>
-        /// <param name="playerState"></param>
-        private void UpdateOrCreatePuppetPlayer(PlayerUpdate playerUpdate, PlayerState playerState)
-        {
-            if (!this._players.ContainsKey(playerUpdate.Id))
-            {
-                this._players.Add(playerUpdate.Id, new PuppetPlayer());
-            }
-
-            var player = this._players[playerUpdate.Id];
-            this.updatePlayerValues(playerUpdate, player);
-
-            if (player is PuppetPlayer)
-            {
-                var puppet = player as PuppetPlayer;
-                if (playerUpdate.State == PlayerConnectionState.Initialized && puppet.Simulation == null)
-                {
-                    var simulation = this.AddPlayerSimulation<PuppetPlayerSimulation>(playerUpdate.Id);
-                    if (simulation != null)
-                    {
-                        Logger.LogDebug(this, "Create puppet player with pos " + playerState.Position);
-                        simulation.ApplyNetworkState(playerState);
-                        puppet.Simulation = simulation;
-
-                        this.OnClientPlayerCreation(player);
-                    }
-                }
-            }
-
-        }
-
-        public virtual void OnClientPlayerCreation(IPlayer p)
-        {
-
-        }
-
-        /// <summary>
-        /// Update or create local player
-        /// </summary>
-        /// <param name="playerUpdate"></param>
-        /// <param name="playerState"></param>
-        private void UpdateOrCreateLocalPlayer(PlayerUpdate playerUpdate, PlayerState playerState)
-        {
-            if (!this._players.ContainsKey(playerUpdate.Id))
-            {
-                this._players.Add(playerUpdate.Id, new LocalPlayer());
-            }
-
-            var player = this._players[playerUpdate.Id];
-            this.updatePlayerValues(playerUpdate, player);
-
-            if (player is LocalPlayer)
-            {
-                var localPlayer = player as LocalPlayer;
-
-                if (player.State == PlayerConnectionState.Initialized && localPlayer.Simulation == null)
-                {
-                    var playerSimulation = this.AddPlayerSimulation<LocalPlayerSimulation>(playerUpdate.Id);
-                    if (playerSimulation != null)
-                    {
-                        Logger.LogDebug(this, "Create local player with pos " + playerState.Position);
-                        //(this.currentWorld as ClientGameWorld).Init(worldTick);
-
-                        playerSimulation.ApplyNetworkState(playerState);
-                        localPlayer.Simulation = playerSimulation;
-
-                        this.OnClientPlayerCreation(localPlayer);
-
-                        this.localPlayer = player as LocalPlayer;
-                    }
-                }
-            }
-        }
         /// <summary>
         /// Compare inputs with current state and do client interpolation
         /// </summary>
@@ -348,66 +291,71 @@ namespace Framework.Game.Client
             }
 
             // Locate the data for our local player.
-            PlayerState incomingLocalPlayerState = new PlayerState();
+
 
             foreach (var playerState in incomingState.PlayerStates)
             {
                 if (playerState.Id == this.MyServerId)
                 {
-                    incomingLocalPlayerState = playerState;
+                    //send state to local
+                    if (this.localPlayer != null)
+                    {
+                        this.localPlayer.incomingLocalPlayerState = playerState;
+                    }
                 }
                 else
                 {
-                    var player = this.playerHolder.GetNodeOrNull<PuppetPlayerSimulation>(playerState.Id.ToString());
-                    player?.ApplyNetworkState(playerState);
+                    //send states to puppets
+                    foreach (var player in _players.Where(df => df.Value is PuppetPlayer).Select(df => df.Value as PuppetPlayer).ToArray())
+                    {
+                        player.ApplyNetworkState(playerState);
+                    }
                 }
             }
 
-            if (default(PlayerState).Equals(incomingLocalPlayerState))
-            {
-                Logger.LogDebug(this, "No local player state found!");
-            }
 
-            if (this.localPlayer != null)
+            if (this.localPlayer != null && this.localPlayer.Body != null)
             {
+                if (default(PlayerState).Equals(this.localPlayer.incomingLocalPlayerState))
+                {
+                    Logger.LogDebug(this, "No local player state found!");
+                }
+
                 // Lookup the historical state for the world tick we got.
                 uint bufidx = incomingState.WorldTick % 1024;
                 var stateSnapshot = this.localPlayer.localPlayerStateSnapshots[bufidx];
 
                 // Compare the historical state to see how off it was.
-                if (this.localPlayer.Simulation != null)
+                var error = this.localPlayer.incomingLocalPlayerState.Position - stateSnapshot.Position;
+                if (error.LengthSquared() > 0.0001f)
                 {
-                    var error = incomingLocalPlayerState.Position - stateSnapshot.Position;
-                    if (error.LengthSquared() > 0.0001f)
+                    if (!headState)
                     {
-                        if (!headState)
-                        {
-                            Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {incomingLocalPlayerState.Position.ToString()} ServerPos: {stateSnapshot.Position.ToString()} ");
-                            replayedStates++;
-                        }
+                        Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {this.localPlayer.incomingLocalPlayerState.Position.ToString()} ServerPos: {stateSnapshot.Position.ToString()} ");
+                        replayedStates++;
+                    }
 
-                        // Rewind local player state to the correct state from the server.
-                        // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
-                        this.localPlayer.Simulation.ApplyNetworkState(incomingLocalPlayerState);
+                    // Rewind local player state to the correct state from the server.
+                    // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
+                    this.localPlayer.ApplyNetworkState(this.localPlayer.incomingLocalPlayerState);
 
-                        // Loop through and replay all captured input snapshots up to the current tick.
-                        uint replayTick = incomingState.WorldTick;
+                    // Loop through and replay all captured input snapshots up to the current tick.
+                    uint replayTick = incomingState.WorldTick;
 
-                        while (replayTick < WorldTick)
-                        {
-                            // Grab the historical input.
-                            bufidx = replayTick % 1024;
-                            var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
+                    while (replayTick < WorldTick)
+                    {
+                        // Grab the historical input.
+                        bufidx = replayTick % 1024;
+                        var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
 
-                            // Rewrite the historical sate snapshot.
-                            this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.Simulation.ToNetworkState();
+                        // Rewrite the historical sate snapshot.
+                        this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
 
-                            // Apply inputs to the associated player controller and simulate the world.
-                            this.localPlayer.Simulation.SetPlayerInputs(inputSnapshot);
-                            this.localPlayer.Simulation.Simulate((float)this.GetPhysicsProcessDeltaTime());
+                        // Apply inputs to the associated player controller and simulate the world.
+                        this.localPlayer.SetPlayerInputs(inputSnapshot);
+                        this.localPlayer.Simulate((float)this.GetPhysicsProcessDeltaTime());
 
-                            ++replayTick;
-                        }
+                        ++replayTick;
                     }
                 }
             }

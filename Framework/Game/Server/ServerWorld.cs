@@ -37,6 +37,7 @@ namespace Framework.Game.Server
 
             this.netService.SubscribeSerialisable<ServerInitializer>(this.InitializeClient);
             this.netService.SubscribeSerialisable<PlayerInputCommand>(this.OnPlayerInput);
+
             this.netService.ClientLatencyUpdate += (clientId, latency) =>
             {
                 if (this._players.ContainsKey(clientId))
@@ -45,6 +46,7 @@ namespace Framework.Game.Server
                 }
             };
 
+
             float SimulationTickRate = 1 / (float)this.GetPhysicsProcessDeltaTime();
             float ServerSendRate = SimulationTickRate / 2;
 
@@ -52,11 +54,8 @@ namespace Framework.Game.Server
             worldStateBroadcastTimer.Start();
         }
 
-        /// <summary>
-        /// Event called after client is disconnected from server
-        /// </summary>
-        /// <param name="clientId"></param>
-        private void OnPlayerDisconnect(int clientId, DisconnectReason reason)
+
+        public void DeletePlayer(int clientId, bool withDelay = true)
         {
             if (this._players.ContainsKey(clientId))
             {
@@ -64,28 +63,42 @@ namespace Framework.Game.Server
 
                 serverPlayer.PreviousState = serverPlayer.State;
                 serverPlayer.State = PlayerConnectionState.Disconnected;
-                serverPlayer.DisconnectTime = deleteTimeForPlayer;
+
+                if (withDelay)
+                {
+                    serverPlayer.DisconnectTime = deleteTimeForPlayer;
+                    this.ActiveGameRule?.OnPlayerLeaveTemporary(serverPlayer);
+                }
+                else
+                {
+                    serverPlayer.QueueFree();
+                    this._players.Remove(clientId);
+                    this.ActiveGameRule?.OnPlayerLeave(serverPlayer);
+                }
             }
         }
 
-        /// <summary>
-        /// Event called after client is connected to server
-        /// </summary>
-        /// <param name="clientId"></param>
-        private void OnPlayerConnected(int clientId)
+        public void AddPlayer<T>(int clientId) where T : ServerPlayer
         {
             if (!this._players.ContainsKey(clientId))
             {
-                this._players.Add(clientId, new ServerPlayer
-                {
-                    Team = PlayerTeam.SPECTATOR,
-                    State = PlayerConnectionState.Connected
-                });
+                T serverPlayer = Activator.CreateInstance(typeof(T), new object[] { clientId, this }) as T;
+                serverPlayer.Name = clientId.ToString();
+                serverPlayer.Id = clientId;
+                serverPlayer.Team = PlayerTeam.SPECTATOR;
+                serverPlayer.State = PlayerConnectionState.Connected;
+
+                this.playerHolder.AddChild(serverPlayer);
+                this._players.Add(clientId, serverPlayer);
+
+                this.ActiveGameRule?.OnNewPlayerJoined(serverPlayer);
             }
             else
             {
                 var serverPlayer = this._players[clientId] as ServerPlayer;
                 serverPlayer.State = serverPlayer.PreviousState;
+
+                this.ActiveGameRule?.OnPlayerRejoined(serverPlayer);
             }
 
             var message = new ClientWorldInitializer();
@@ -94,6 +107,27 @@ namespace Framework.Game.Server
 
             this.netService.SendMessageSerialisable<ClientWorldInitializer>(clientId, message);
         }
+
+        /// <summary>
+        /// Event called after client is connected to server
+        /// </summary>
+        /// <param name="clientId"></param>
+        public virtual void OnPlayerConnected(int clientId)
+        {
+            Logger.LogDebug(this, "[" + clientId + "] Connected");
+            this.AddPlayer<ServerPlayer>(clientId);
+        }
+
+        /// <summary>
+        /// Event called after client is disconnected from server
+        /// </summary>
+        /// <param name="clientId"></param>
+        public virtual void OnPlayerDisconnect(int clientId, DisconnectReason reason)
+        {
+            Logger.LogDebug(this, "[" + clientId + "] Disconnected");
+            this.DeletePlayer(clientId, true);
+        }
+
 
         /// <summary>
         /// Enqueue new player input
@@ -123,12 +157,9 @@ namespace Framework.Game.Server
         {
             //get player states
             var states = new List<PlayerState>();
-            foreach (var client in this._players.Where(df => df.Value is ServerPlayer).Select(df => df.Value as ServerPlayer).ToArray())
+            foreach (var client in this._players.Where(df => df.Value is NetworkPlayer).Select(df => df.Value as NetworkPlayer).ToArray())
             {
-                if (client.Simulation != null)
-                {
-                    states.Add(client.Simulation.ToNetworkState());
-                }
+                states.Add(client.ToNetworkState());
             }
 
             //get player updates
@@ -142,19 +173,17 @@ namespace Framework.Game.Server
                                 }).ToArray();
 
             //send to each player data package
-            foreach (var player in this._players.ToArray())
+            foreach (var player in this._players.Where(df => df.Value is ServerPlayer).Select(df => df.Value as ServerPlayer).ToArray())
             {
-                var serverPlayer = player.Value as ServerPlayer;
-
                 var cmd = new WorldHeartbeat
                 {
                     WorldTick = WorldTick,
-                    YourLatestInputTick = serverPlayer.latestInputTick,
+                    YourLatestInputTick = player.latestInputTick,
                     PlayerStates = states.ToArray(),
                     PlayerUpdates = heartbeatUpdateList,
                 };
 
-                this.netService.SendMessage<WorldHeartbeat>(player.Key, cmd, LiteNetLib.DeliveryMethod.Sequenced);
+                this.netService.SendMessage<WorldHeartbeat>(player.Id, cmd, LiteNetLib.DeliveryMethod.Sequenced);
             }
         }
 
@@ -168,22 +197,7 @@ namespace Framework.Game.Server
                 var serverPlayer = player.Value as ServerPlayer;
                 if (serverPlayer.DisconnectTime <= 0)
                 {
-                    //Free spawn point
-                    var spawnpoint = serverPlayer.SpawnPoint;
-                    if (spawnpoint != null)
-                    {
-                        spawnpoint.inUsage = false;
-                    }
-
-                    //free player simulation node
-                    if (serverPlayer.Simulation != null)
-                    {
-                        this.RemovePlayerSimulation(serverPlayer.Simulation);
-                        serverPlayer.Simulation = null;
-                    }
-
-                    var id = player.Key;
-                    this._players.Remove(id);
+                    this.DeletePlayer(player.Key, false);
                 }
                 else
                 {
@@ -192,48 +206,18 @@ namespace Framework.Game.Server
             }
         }
 
-        public virtual void OnServerPlayerCreated(ServerPlayer p)
-        {
-
-        }
-
         private void InitializeClient(ServerInitializer package, NetPeer peer)
         {
             var clientId = peer.Id;
             if (this._players.ContainsKey(clientId))
             {
-                var oldState = this._players[clientId].State;
+                var player = this._players[clientId];
+                var oldState = player.State;
                 if (oldState != PlayerConnectionState.Initialized)
                 {
                     Logger.LogDebug(this, "[" + clientId + "] " + " Initialize player.");
-
-                    var serverPlayer = this._players[clientId] as ServerPlayer;
-                    if (serverPlayer.Simulation == null)
-                    {
-                        serverPlayer.Simulation = this.AddPlayerSimulation<ServerPlayerSimulation>(clientId);
-                        serverPlayer.State = PlayerConnectionState.Initialized;
-
-                        var spawnPoint = serverPlayer.SpawnPoint;
-                        if (spawnPoint == null)
-                        {
-                            spawnPoint = this.Level.GetFreeSpawnPoint();
-                        }
-
-                        if (spawnPoint != null)
-                        {
-                            spawnPoint.inUsage = true;
-                            Logger.LogDebug(this, "[" + clientId + "] " + " Set spawnpoint to " + spawnPoint.Transform.origin);
-                            serverPlayer.SpawnPoint = spawnPoint;
-
-                            this.OnServerPlayerCreated(serverPlayer);
-                        }
-                        else
-                        {
-                            //todo mby disconnect?
-                            Logger.LogDebug(this, "[" + clientId + "] " + " Cant find free spawn point");
-                            peer.Disconnect();
-                        }
-                    }
+                    player.State = PlayerConnectionState.Initialized;
+                    this.OnPlayerInitilaized(player);
                 }
             }
 
@@ -248,11 +232,13 @@ namespace Framework.Game.Server
 
         public override void Tick(float interval)
         {
+            this._activeGameRule?.Tick(interval);
+
             var now = DateTime.Now;
 
             // Apply inputs to each player.
             unprocessedPlayerIds.Clear();
-            unprocessedPlayerIds.UnionWith(this.Players.Where(df => df.Value.State == PlayerConnectionState.Initialized).Select(df => df.Key).ToArray());
+            unprocessedPlayerIds.UnionWith(this.Players.Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is ServerPlayer).Select(df => df.Key).ToArray());
 
             var tickInputs = this.playerInputProcessor.DequeueInputsForTick(WorldTick);
 
@@ -261,15 +247,13 @@ namespace Framework.Game.Server
                 if (this._players.ContainsKey(tickInput.PlayerId))
                 {
                     var serverPlayer = this._players[tickInput.PlayerId] as ServerPlayer;
-                    if (serverPlayer.Simulation != null)
-                    {
-                        serverPlayer.Simulation.SetPlayerInputs(tickInput.Inputs);
-                        serverPlayer.currentPlayerInput = tickInput;
-                        unprocessedPlayerIds.Remove(tickInput.PlayerId);
 
-                        // Mark the player as synchronized.
-                        serverPlayer.synchronized = true;
-                    }
+                    serverPlayer.SetPlayerInputs(tickInput.Inputs);
+                    serverPlayer.currentPlayerInput = tickInput;
+                    unprocessedPlayerIds.Remove(tickInput.PlayerId);
+
+                    // Mark the player as synchronized.
+                    serverPlayer.synchronized = true;
                 }
             }
 
@@ -284,8 +268,8 @@ namespace Framework.Game.Server
                     continue;
                 }
 
-                var player = this.playerHolder.GetNodeOrNull<ServerPlayerSimulation>(playerId.ToString());
-                if (player != null)
+                var serverPlayer = this._players[playerId] as ServerPlayer;
+                if (serverPlayer != null)
                 {
                     ++missedInputs;
                     Logger.SetDebugUI("sv missed inputs", missedInputs.ToString());
@@ -293,7 +277,7 @@ namespace Framework.Game.Server
                     TickInput latestInput;
                     if (playerInputProcessor.TryGetLatestInput(playerId, out latestInput))
                     {
-                        player.SetPlayerInputs(latestInput.Inputs);
+                        serverPlayer.SetPlayerInputs(latestInput.Inputs);
                     }
                     else
                     {
@@ -311,13 +295,10 @@ namespace Framework.Game.Server
             // Snapshot everything.
             var bufidx = WorldTick % 1024;
 
-            foreach (var player in this._players.ToArray())
+            foreach (var player in this._players.Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is ServerPlayer)
+            .Select(df => df.Value as ServerPlayer).ToArray())
             {
-                var serverPlayer = player.Value as ServerPlayer;
-                if (serverPlayer.Simulation != null)
-                {
-                    serverPlayer.states[bufidx] = serverPlayer.Simulation.ToNetworkState();
-                }
+                player.states[bufidx] = player.ToNetworkState();
             }
 
             // Update post-tick timers.
@@ -326,15 +307,43 @@ namespace Framework.Game.Server
 
         public void SimulateWorld(float dt)
         {
-            foreach (var player in this._players.ToArray())
+            foreach (var player in this._players.
+                Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is NetworkPlayer).
+                Select(df => df.Value).ToArray())
             {
-                var serverPlayer = player.Value as ServerPlayer;
-                if (serverPlayer.Simulation != null)
-                {
-                    serverPlayer.Simulation.Simulate(dt);
-                }
+                player.Simulate(dt);
             }
         }
 
+        private IGameRule _activeGameRule = null;
+
+        public IGameRule ActiveGameRule
+        {
+            get
+            {
+                return _activeGameRule;
+            }
+            set
+            {
+                this.activateGameRule(value);
+            }
+        }
+
+        private void activateGameRule(IGameRule rule)
+        {
+            Logger.LogDebug(this, "Activate game rule " + rule.GetType().Name.ToString());
+
+            this._activeGameRule = rule;
+            foreach (var player in _players.Where(df => df.Value is Player).Select(df => df.Value as Player))
+            {
+                //clear previous components
+                player.Components.Reset();
+
+                if (this._activeGameRule != null)
+                {
+                    rule.OnNewPlayerJoined(player);
+                }
+            }
+        }
     }
 }

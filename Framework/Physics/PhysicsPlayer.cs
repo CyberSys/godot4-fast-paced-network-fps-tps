@@ -2,16 +2,33 @@ using Godot;
 using Framework.Network.Commands;
 using Framework.Network;
 using Framework.Input;
+using Framework.Game;
 
 namespace Framework.Physics
 {
-    public abstract partial class PhysicsPlayerSimulation : NetworkPlayerSimulation
+    public abstract partial class PhysicsPlayer : NetworkPlayer
     {
+        public PhysicsPlayer(int id, IWorld world) : base(id, world)
+        {
+        }
+
         protected MovementCalculator calculator = new MovementCalculator();
+        public IMoveable Body { get; set; }
 
         public override void _EnterTree()
         {
             base._EnterTree();
+        }
+
+        public void DoTeleport(Godot.Vector3 origin)
+        {
+            if (Body != null)
+            {
+                var bodyNode = Body as Node3D;
+                var gt = bodyNode.GlobalTransform;
+                gt.origin = origin;
+                bodyNode.GlobalTransform = gt;
+            }
         }
 
         public override PlayerState ToNetworkState()
@@ -20,7 +37,7 @@ namespace Framework.Physics
             {
                 return new PlayerState
                 {
-                    Id = int.Parse(this.Name),
+                    Id = this.Id,
                     Position = Body.Transform.origin,
                     Rotation = Body.Transform.basis.GetRotationQuaternion(),
                     Velocity = calculator.playerVelocity,
@@ -31,7 +48,7 @@ namespace Framework.Physics
             {
                 return new PlayerState
                 {
-                    Id = int.Parse(this.Name),
+                    Id = this.Id,
                 };
             }
         }

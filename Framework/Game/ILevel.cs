@@ -11,6 +11,8 @@ namespace Framework.Game
         /// List of avaible spawn points
         /// </summary>
         /// <returns></returns>
-        public SpawnPoint GetFreeSpawnPoint();
+        public SpawnPoint[] GetAllSpawnPoints();
+
+        public SpawnPoint[] GetFreeSpawnPoints();
     }
 }

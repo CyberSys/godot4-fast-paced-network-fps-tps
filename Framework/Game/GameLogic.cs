@@ -12,7 +12,7 @@ namespace Framework.Game
         private ComponentRegistry _components;
 
         /// <inheritdoc />
-        private readonly ServiceRegistry _serviceRegistry = new ServiceRegistry();
+        private readonly TypeDictonary<IService> _serviceRegistry = new TypeDictonary<IService>();
 
         /// <inheritdoc />
         private bool mapLoadInProcess = false;
@@ -55,7 +55,7 @@ namespace Framework.Game
         /// <summary>
         /// Service Registry (Contains all services)
         /// </summary>
-        public ServiceRegistry Services => _serviceRegistry;
+        public TypeDictonary<IService> Services => _serviceRegistry;
 
         /// <summary>
         /// The active game world

@@ -90,7 +90,7 @@ namespace Shooter.Share.Components
                 }
             }
 
-            if (@event.IsActionReleased("camera") && this.BaseComponent is LocalPlayerSimulation)
+            if (@event.IsActionReleased("camera") && this.BaseComponent is LocalPlayer)
             {
                 if (this.cameraMode == CameraMode.FPS)
                 {

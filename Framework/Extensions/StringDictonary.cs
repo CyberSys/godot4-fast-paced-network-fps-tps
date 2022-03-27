@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Framework
+namespace Framework.Extensions
 {
     /// <summary>
     /// Service registry /service holder of component
     /// </summary>
-    public class TypeDictonary<T2>
+    public class StringDictonary<T2>
     {
-        private readonly Dictionary<Type, T2> _registeredServices = new();
+        private readonly Dictionary<string, T2> _registeredServices = new();
 
         /// <summary>
         /// Get a full list of registered services
@@ -18,30 +18,27 @@ namespace Framework
         /// <returns></returns>
         public T2[] All => _registeredServices.Values.ToArray();
 
-
         /// <summary>
         /// Create and register service by given type
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
-        public T Create<T>() where T : class, T2
+        public T Create<T>(string name) where T : class, T2
         {
             lock (_registeredServices)
             {
                 T newService = Activator.CreateInstance<T>();
-                _registeredServices.Add(typeof(T), newService);
+                _registeredServices.Add(name, newService);
 
                 return newService;
             }
         }
 
         /// <inheritdoc />
-        private bool TryGetService(Type type, out T2 service)
+        private bool TryGetService(string name, out T2 service)
         {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-
             lock (_registeredServices)
             {
-                return _registeredServices.TryGetValue(type, out service);
+                return _registeredServices.TryGetValue(name, out service);
             }
         }
 
@@ -49,9 +46,9 @@ namespace Framework
         /// Get an registered service by given type
         /// </summary>
         /// <typeparam name="T">Type of service</typeparam>
-        public T? Get<T>() where T : class, T2
+        public T? Get<T>(string name) where T : class, T2
         {
-            if (!TryGetService(typeof(T), out T2 service))
+            if (!TryGetService(name, out T2 service))
             {
                 return null;
             }

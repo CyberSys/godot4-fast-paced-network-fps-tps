@@ -1,4 +1,6 @@
+using System.Linq;
 using Godot;
+using System;
 
 namespace Framework.Game
 {
@@ -8,19 +10,15 @@ namespace Framework.Game
     public abstract class Level : Node3D, ILevel
     {
         /// <inheritdoc />
-        public SpawnPoint GetFreeSpawnPoint()
+        public SpawnPoint[] GetAllSpawnPoints()
         {
-            foreach (var point in GetChildren())
-            {
-                if (point is SpawnPoint)
-                {
-                    var sp = point as SpawnPoint;
-                    if (sp.inUsage == false)
-                        return sp;
-                }
-            }
+            return GetChildren().OfType<SpawnPoint>().ToArray<SpawnPoint>();
+        }
 
-            return null;
+        /// <inheritdoc />
+        public SpawnPoint[] GetFreeSpawnPoints()
+        {
+            return GetAllSpawnPoints().Where(df => df.isFree()).ToArray();
         }
     }
 }

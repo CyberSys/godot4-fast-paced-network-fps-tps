@@ -1,17 +1,24 @@
 using Framework.Network;
+using System.Collections.Generic;
 
 namespace Framework.Game
 {
     /// <summary>
     /// Required interface for players
     /// </summary>
-    public interface IPlayer
+    public interface IPlayer : IBaseComponent
     {
+        /// <summary>
+        /// Id of player
+        /// </summary>
+        /// <value></value>
+        public int Id { get; set; }
+
         /// <summary>
         /// Name of player
         /// </summary>
         /// <value></value>
-        public string Name { get; set; }
+        public string PlayerName { get; set; }
 
         /// <summary>
         /// Current latency (ping)
@@ -30,5 +37,10 @@ namespace Framework.Game
         /// </summary>
         /// <value></value>
         public PlayerTeam Team { get; set; }
+
+
+        public void Simulate(float delta);
+
+        public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents { get; }
     }
 }

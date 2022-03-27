@@ -27,7 +27,7 @@ namespace Framework.Game.Server
         /// <summary>
         /// The dictonary with all server settings (vars);
         /// </summary>
-        public Dictionary<string, string> ServerVars = new Dictionary<string, string>  {
+        private Dictionary<string, string> ServerVars = new Dictionary<string, string>  {
             // enable or disable interpolation
             { "sv_interpolate", "true" },
             // force for soft or hard lag reduction
@@ -38,17 +38,19 @@ namespace Framework.Game.Server
             { "sv_freze_client", "false" }
         };
 
-        [Export]
-        /// <summary>
-        /// The default map name which is loaded after startup
-        /// </summary>
-        public string DefaultMapName = "res://Assets/Maps/Test.tscn";
+
 
         /// <summary>
         /// Network server port
         /// </summary>
         [Export]
         public int NetworkPort = 27015;
+
+        public virtual void OnServerStarted()
+        {
+
+        }
+
 
         /// <summary>
         /// Instance the server game logic and load the map from default settings
@@ -59,26 +61,38 @@ namespace Framework.Game.Server
             this.netService.ConnectionEstablished += () =>
             {
                 Logger.LogDebug(this, "Server was started.");
-                this.LoadWorld(DefaultMapName, 0);
+                this.OnServerStarted();
             };
 
             this.netService.ConnectionRequest += (request) =>
             {
-                if (this.netService.GetConnectionCount() < MaxConnections && AcceptClients)
+                if (this.currentWorld == null)
                 {
-                    Logger.LogDebug(this, request.RemoteEndPoint.Address + ":" + request.RemoteEndPoint.Port + " established");
-                    request.AcceptIfKey(this.secureConnectionKey);
+                    request.Reject();
                 }
                 else
                 {
-                    Logger.LogDebug(this, request.RemoteEndPoint.Address + ":" + request.RemoteEndPoint.Port + " rejected");
-                    request.Reject();
+                    if (this.netService.GetConnectionCount() < MaxConnections && AcceptClients && this.OnPreConnect(request))
+                    {
+                        Logger.LogDebug(this, request.RemoteEndPoint.Address + ":" + request.RemoteEndPoint.Port + " established");
+                        request.AcceptIfKey(this.secureConnectionKey);
+                    }
+                    else
+                    {
+                        Logger.LogDebug(this, request.RemoteEndPoint.Address + ":" + request.RemoteEndPoint.Port + " rejected");
+                        request.Reject();
+                    }
                 }
             };
 
             base._EnterTree();
-
             this.netService.Bind(NetworkPort);
+        }
+
+
+        public virtual bool OnPreConnect(LiteNetLib.ConnectionRequest request)
+        {
+            return true;
         }
 
         /// <summary>

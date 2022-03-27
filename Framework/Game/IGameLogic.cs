@@ -13,7 +13,7 @@ namespace Framework.Game
         /// Service registry (which contains the service of the game logic)
         /// </summary>
         /// <value></value>
-        public ServiceRegistry Services { get; }
+        public TypeDictonary<IService> Services { get; }
         public AsyncLoader MapLoader { get; }
     }
 }

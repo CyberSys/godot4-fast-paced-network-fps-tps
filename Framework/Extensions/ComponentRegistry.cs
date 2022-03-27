@@ -12,6 +12,22 @@ namespace Framework
     {
         private readonly Dictionary<Type, Node> _components = new();
 
+        public void Reset()
+        {
+            lock (_components)
+            {
+                foreach (var comp in this._components.ToArray())
+                {
+                    if (comp.Value.IsInsideTree())
+                    {
+                        this.baseComponent.RemoveChild(comp.Value);
+                    }
+
+                    this._components.Remove(comp.Key);
+                }
+            }
+        }
+
         /// <summary>
         /// Get all avaiable components
         /// </summary>

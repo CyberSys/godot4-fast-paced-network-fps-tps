@@ -6,7 +6,7 @@ using System;
 
 namespace Shooter.Share.Components
 {
-	public partial class PlayerBodyComponent : CharacterBody3D, IChildComponent, IMoveable
+	public partial class PlayerBodyComponent : CharacterBody3D, IMoveable
 	{
 		[Export]
 		public NodePath ColliderPath = null;

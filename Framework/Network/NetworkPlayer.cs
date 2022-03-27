@@ -7,25 +7,19 @@ using Framework.Physics;
 
 namespace Framework.Network
 {
-    public abstract partial class NetworkPlayerSimulation : Node, IBaseComponent
+    public abstract partial class NetworkPlayer : Player, IBaseComponent
     {
-        private readonly ComponentRegistry _components;
-        public ComponentRegistry Components => _components;
-
-        public IWorld GameWorld { get; set; }
+        public NetworkPlayer(int id, IWorld world) : base(id, world)
+        {
+        }
 
         protected PlayerInputs inputs;
-        public IMoveable Body { get; set; }
 
         public void SetPlayerInputs(PlayerInputs inputs)
         {
             this.inputs = inputs;
         }
 
-        public NetworkPlayerSimulation() : base()
-        {
-            this._components = new ComponentRegistry(this);
-        }
 
         public virtual PlayerState ToNetworkState()
         {

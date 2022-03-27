@@ -5,6 +5,7 @@ using Framework.Network.Commands;
 using Framework.Network;
 using Framework.Physics;
 using Framework.Utils;
+using Framework.Extensions;
 
 namespace Framework.Game
 {
@@ -20,11 +21,17 @@ namespace Framework.Game
 
     public abstract partial class World : Node3D, IWorld
     {
+        public virtual void OnPlayerInitilaized(IPlayer p)
+        {
+
+        }
+
+        public uint WorldTick { get; protected set; } = 0;
 
         protected readonly Dictionary<int, IPlayer> _players = new Dictionary<int, IPlayer>();
         public Dictionary<int, IPlayer> Players => _players;
 
-        public uint WorldTick { get; protected set; } = 0;
+
         protected virtual void PostUpdate() { }
 
         private InterpolationController interpController = new InterpolationController();
@@ -48,7 +55,7 @@ namespace Framework.Game
         {
             player.Team = playerUpdate.Team;
             player.Latency = playerUpdate.Latency;
-            player.Name = playerUpdate.Name;
+            player.PlayerName = playerUpdate.PlayerName;
             player.State = playerUpdate.State;
         }
 
@@ -113,25 +120,6 @@ namespace Framework.Game
             this.gameInstance = this.GetParent<GameLogic>();
 
             this.AddChild(playerHolder);
-        }
-
-        public T AddPlayerSimulation<T>(int id) where T : NetworkPlayerSimulation
-        {
-            T simulation = Activator.CreateInstance<T>();
-            simulation.Name = id.ToString();
-            simulation.GameWorld = this;
-
-            playerHolder.AddChild(simulation);
-
-            return simulation;
-        }
-
-        public void RemovePlayerSimulation(NetworkPlayerSimulation simulation)
-        {
-            if (playerHolder.HasNode(simulation.GetPath()))
-            {
-                playerHolder.GetNode(simulation.GetPath()).QueueFree();
-            }
         }
 
         public void Destroy()

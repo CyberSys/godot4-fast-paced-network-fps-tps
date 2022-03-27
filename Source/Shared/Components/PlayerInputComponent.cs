@@ -5,7 +5,7 @@ using Framework;
 
 namespace Shooter.Share.Components
 {
-    public partial class PlayerInputComponent : Node, IChildComponent, IInputable
+    public partial class PlayerInputComponent : Node, IInputable
     {
         public bool canExecute = true;
 
