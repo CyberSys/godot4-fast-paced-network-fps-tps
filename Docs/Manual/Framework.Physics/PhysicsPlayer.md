@@ -1,6 +1,6 @@
 # PhysicsPlayer class
 
-The base class for physics based players (kinetmatic, rigid..)
+The base class for physics based players (kinematic, rigid..)
 
 ```csharp
 public abstract class PhysicsPlayer : NetworkPlayer
@@ -11,7 +11,7 @@ public abstract class PhysicsPlayer : NetworkPlayer
 | name | description |
 | --- | --- |
 | [PhysicsPlayer](PhysicsPlayer/PhysicsPlayer.md)(…) |  |
-| [Body](PhysicsPlayer/Body.md) { get; set; } | The body attachted to the physics player simulation (eg. kinetmatic, rigid..) |
+| [Body](PhysicsPlayer/Body.md) { get; set; } | The body attachted to the physics player simulation (eg. kinematic, rigid..) |
 | [MovementProcessor](PhysicsPlayer/MovementProcessor.md) { get; set; } | The movement processor for physics player movement |
 | override [ApplyNetworkState](PhysicsPlayer/ApplyNetworkState.md)(…) | Apply an network state |
 | [DoTeleport](PhysicsPlayer/DoTeleport.md)(…) | Teleport player to an given position |

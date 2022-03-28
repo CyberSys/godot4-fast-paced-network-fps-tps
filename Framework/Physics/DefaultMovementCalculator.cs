@@ -28,7 +28,10 @@ using Framework.Game.Server;
 
 namespace Framework.Physics
 {
-    public interface IMovementCalculator
+    /// <summary>
+    /// The required interface for movement processors
+    /// </summary>
+    public interface IMovementProcessor
     {
         /// <summary>
         /// Calls on each tick for produce movement
@@ -50,7 +53,7 @@ namespace Framework.Physics
     /// An default movement calculator
     /// Handles friction, air control, jumping and accelerate
     /// </summary>
-    public class DefaultMovementCalculator : IMovementCalculator
+    public class DefaultMovementProcessor : IMovementProcessor
     {
         private bool wishJump = false;
 

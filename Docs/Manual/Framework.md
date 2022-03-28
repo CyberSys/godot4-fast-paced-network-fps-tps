@@ -101,11 +101,11 @@
 
 | public type | description |
 | --- | --- |
-| class [DefaultMovementCalculator](./Framework.Physics/DefaultMovementCalculator.md) | An default movement calculator Handles friction, air control, jumping and accelerate |
+| class [DefaultMovementProcessor](./Framework.Physics/DefaultMovementProcessor.md) | An default movement calculator Handles friction, air control, jumping and accelerate |
 | interface [IMoveable](./Framework.Physics/IMoveable.md) |  |
-| interface [IMovementCalculator](./Framework.Physics/IMovementCalculator.md) |  |
+| interface [IMovementProcessor](./Framework.Physics/IMovementProcessor.md) | The required interface for movement processors |
 | class [InterpolationController](./Framework.Physics/InterpolationController.md) |  |
-| abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) | The base class for physics based players (kinetmatic, rigid..) |
+| abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) | The base class for physics based players (kinematic, rigid..) |
 
 ## Framework.Utils namespace
 

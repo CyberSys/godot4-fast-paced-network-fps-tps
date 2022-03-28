@@ -3,12 +3,12 @@
 The movement processor for physics player movement
 
 ```csharp
-public IMovementCalculator MovementProcessor { get; set; }
+public IMovementProcessor MovementProcessor { get; set; }
 ```
 
 ## See Also
 
-* interface [IMovementCalculator](../IMovementCalculator.md)
+* interface [IMovementProcessor](../IMovementProcessor.md)
 * class [PhysicsPlayer](../PhysicsPlayer.md)
 * namespace [Framework.Physics](../../Framework.md)
 

@@ -29,7 +29,7 @@ using System;
 namespace Framework.Physics
 {
     /// <summary>
-    /// The base class for physics based players (kinetmatic, rigid..)
+    /// The base class for physics based players (kinematic, rigid..)
     /// </summary>
     public abstract partial class PhysicsPlayer : NetworkPlayer
     {
@@ -42,10 +42,10 @@ namespace Framework.Physics
         /// The movement processor for physics player movement
         /// </summary>
         /// <returns></returns>
-        public IMovementCalculator MovementProcessor { get; set; } = new DefaultMovementCalculator();
+        public IMovementProcessor MovementProcessor { get; set; } = new DefaultMovementProcessor();
 
         /// <summary>
-        /// The body attachted to the physics player simulation (eg.  kinetmatic, rigid..)
+        /// The body attachted to the physics player simulation (eg.  kinematic, rigid..)
         /// </summary>
         /// <value></value>
         public IMoveable Body { get; set; }
