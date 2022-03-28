@@ -16,7 +16,7 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Server-side lag compensation
 - (TODO) Hitscan weapons
 - (TODO) Projectile weapons
-- Master server in godot (without 3d)
+- Full godot server implementation with disabled 3d
 - Master and multi clients in one project (split screen)
 - Optimized netcode (Quake, Overwatch, Valve methods)
 - Remote de(activation) of player components
