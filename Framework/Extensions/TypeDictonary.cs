@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Framework
+namespace Framework.Extensions
 {
     /// <summary>
     /// TypeDictonary contains an generic type as key and an generic object as value

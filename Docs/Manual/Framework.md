@@ -12,13 +12,13 @@
 | static class [Logger](./Framework/Logger.md) |  |
 | static class [NetExtensions](./Framework/NetExtensions.md) |  |
 | enum [PlayerTeam](./Framework/PlayerTeam.md) |  |
-| class [TypeDictonary&lt;T2&gt;](./Framework/TypeDictonary-1.md) | Service registry /service holder of component |
 
 ## Framework.Extensions namespace
 
 | public type | description |
 | --- | --- |
-| class [StringDictonary&lt;T2&gt;](./Framework.Extensions/StringDictonary-1.md) | Service registry /service holder of component |
+| class [StringDictonary&lt;T2&gt;](./Framework.Extensions/StringDictonary-1.md) | String Dictonary contains an string key and an generic object value |
+| class [TypeDictonary&lt;T2&gt;](./Framework.Extensions/TypeDictonary-1.md) | TypeDictonary contains an generic type as key and an generic object as value |
 
 ## Framework.Game namespace
 

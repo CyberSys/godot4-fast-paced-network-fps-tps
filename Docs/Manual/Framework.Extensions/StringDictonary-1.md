@@ -1,6 +1,6 @@
 # StringDictonary&lt;T2&gt; class
 
-Service registry /service holder of component
+String Dictonary contains an string key and an generic object value
 
 ```csharp
 public class StringDictonary<T2>

@@ -21,6 +21,7 @@
 
 using Godot;
 using Framework.Utils;
+using Framework.Extensions;
 
 namespace Framework.Game
 {
