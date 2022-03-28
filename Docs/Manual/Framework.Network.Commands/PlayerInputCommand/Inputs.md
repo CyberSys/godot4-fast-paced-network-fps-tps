@@ -1,12 +1,12 @@
 # PlayerInputCommand.Inputs field
 
 ```csharp
-public PlayerInputs[] Inputs;
+public IPlayerInput[] Inputs;
 ```
 
 ## See Also
 
-* struct [PlayerInputs](../../Framework.Input/PlayerInputs.md)
+* interface [IPlayerInput](../../Framework.Input/IPlayerInput.md)
 * struct [PlayerInputCommand](../PlayerInputCommand.md)
 * namespace [Framework.Network.Commands](../../Framework.md)
 

@@ -1,12 +1,12 @@
 # TickInput.Inputs field
 
 ```csharp
-public PlayerInputs Inputs;
+public IPlayerInput Inputs;
 ```
 
 ## See Also
 
-* struct [PlayerInputs](../PlayerInputs.md)
+* interface [IPlayerInput](../IPlayerInput.md)
 * struct [TickInput](../TickInput.md)
 * namespace [Framework.Input](../../Framework.md)
 

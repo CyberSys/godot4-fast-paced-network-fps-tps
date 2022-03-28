@@ -1,5 +1,7 @@
 # IGameRule.GameWorld property
 
+The server world
+
 ```csharp
 public ServerWorld GameWorld { get; }
 ```

@@ -1,7 +1,7 @@
-# ClientInitializer.GameTick property
+# ClientInitializer.GameTick field
 
 ```csharp
-public uint GameTick { get; set; }
+public uint GameTick;
 ```
 
 ## See Also

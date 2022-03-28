@@ -4,6 +4,17 @@
 public interface IPlayerInput
 ```
 
+## Members
+
+| name | description |
+| --- | --- |
+| [ForwardBackwardAxis](IPlayerInput/ForwardBackwardAxis.md) { get; } |  |
+| [LeftRightAxis](IPlayerInput/LeftRightAxis.md) { get; } |  |
+| [ViewDirection](IPlayerInput/ViewDirection.md) { get; set; } |  |
+| [ApplyKeyBitfield](IPlayerInput/ApplyKeyBitfield.md)(…) |  |
+| [GetInput](IPlayerInput/GetInput.md)(…) |  |
+| [GetKeyBitfield](IPlayerInput/GetKeyBitfield.md)() |  |
+
 ## See Also
 
 * namespace [Framework.Input](../Framework.md)

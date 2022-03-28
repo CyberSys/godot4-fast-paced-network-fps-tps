@@ -41,7 +41,6 @@ namespace Framework.Network.Commands
 
         public void Deserialize(NetDataReader reader)
         {
-
             this.StartWorldTick = reader.GetUInt();
             var length = reader.GetInt();
 

@@ -1,7 +1,7 @@
-# PlayerUpdate.State property
+# PlayerUpdate.State field
 
 ```csharp
-public PlayerConnectionState State { get; set; }
+public PlayerConnectionState State;
 ```
 
 ## See Also

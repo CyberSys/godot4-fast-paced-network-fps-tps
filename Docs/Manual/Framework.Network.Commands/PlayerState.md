@@ -8,11 +8,11 @@ public struct PlayerState : INetSerializable
 
 | name | description |
 | --- | --- |
-| [Id](PlayerState/Id.md) { get; set; } |  |
-| [Position](PlayerState/Position.md) { get; set; } |  |
-| [Rotation](PlayerState/Rotation.md) { get; set; } |  |
-| [Velocity](PlayerState/Velocity.md) { get; set; } |  |
 | [Grounded](PlayerState/Grounded.md) |  |
+| [Id](PlayerState/Id.md) |  |
+| [Position](PlayerState/Position.md) |  |
+| [Rotation](PlayerState/Rotation.md) |  |
+| [Velocity](PlayerState/Velocity.md) |  |
 | [Deserialize](PlayerState/Deserialize.md)(…) |  |
 | [Serialize](PlayerState/Serialize.md)(…) |  |
 

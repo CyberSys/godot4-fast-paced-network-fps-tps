@@ -1,8 +1,14 @@
 # IGameRule.OnPlayerLeaveTemporary method
 
+Called when players are disconnected (as eg. timeouts)
+
 ```csharp
 public void OnPlayerLeaveTemporary(IPlayer player)
 ```
+
+| parameter | description |
+| --- | --- |
+| player |  |
 
 ## See Also
 

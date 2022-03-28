@@ -1,10 +1,15 @@
-# ClientLogic&lt;T&gt;.DefaultNetworkPort property
+# ClientLogic&lt;T&gt;.Connect method
 
-The default port of the server
+Connect with an server
 
 ```csharp
-public int DefaultNetworkPort { get; set; }
+public void Connect(string hostname, int port)
 ```
+
+| parameter | description |
+| --- | --- |
+| hostname |  |
+| port |  |
 
 ## See Also
 

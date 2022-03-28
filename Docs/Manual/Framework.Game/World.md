@@ -36,7 +36,6 @@ public abstract class World : Node3D, IWorld
 | [playerHolder](World/playerHolder.md) |  |
 | [simulationAdjuster](World/simulationAdjuster.md) |  |
 | [_serverVars](World/_serverVars.md) |  |
-| [updatePlayerValues](World/updatePlayerValues.md)(…) |  |
 
 ## See Also
 

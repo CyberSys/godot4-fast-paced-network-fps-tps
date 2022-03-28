@@ -8,9 +8,9 @@ public struct ClientInitializer : INetSerializable
 
 | name | description |
 | --- | --- |
-| [GameTick](ClientInitializer/GameTick.md) { get; set; } |  |
-| [PlayerId](ClientInitializer/PlayerId.md) { get; set; } |  |
-| [ServerVars](ClientInitializer/ServerVars.md) { get; set; } |  |
+| [GameTick](ClientInitializer/GameTick.md) |  |
+| [PlayerId](ClientInitializer/PlayerId.md) |  |
+| [ServerVars](ClientInitializer/ServerVars.md) |  |
 | [Deserialize](ClientInitializer/Deserialize.md)(…) |  |
 | [Serialize](ClientInitializer/Serialize.md)(…) |  |
 

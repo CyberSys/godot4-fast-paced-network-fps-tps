@@ -7,10 +7,11 @@ namespace Framework.Physics
     public interface IMovementCalculator
     {
         public void Execute(float delta, Vector3 velocity);
-        public void Tick(IMoveable component, PlayerInputs inputs, float dt);
+        public void Tick(IMoveable component, IPlayerInput inputs, float dt);
 
         public Vector3 Velocity { get; set; }
     }
+
     public class MovementCalculator : IMovementCalculator
     {        // Frame occuring factors
         public float gravity = 20.0f;
@@ -43,7 +44,7 @@ namespace Framework.Physics
             set { _velocity = value; }
         }
         private IMoveable component;
-        private PlayerInputs inputs;
+        private IPlayerInput inputs;
 
         private float attackCooldownTimer = 0f;
 
@@ -53,17 +54,17 @@ namespace Framework.Physics
         public void Execute(float delta, Vector3 velocity)
         {
             //set crouching
-            var couchLevel = delta * (inputs.Crouch ? crouchDownSpeed : crouchUpSpeed);
-            component.setCrouchingLevel(inputs.Crouch ? couchLevel * -1 : couchLevel);
+            var couchLevel = delta * (inputs.GetInput("Crouch") ? crouchDownSpeed : crouchUpSpeed);
+            component.setCrouchingLevel(inputs.GetInput("Crouch") ? couchLevel * -1 : couchLevel);
 
             component.Velocity = velocity;
             component.Move(delta, velocity);
         }
 
-        public void Tick(IMoveable component, PlayerInputs inputs, float dt)
+        public void Tick(IMoveable component, IPlayerInput inputs, float dt)
         {
 
-            if (component == null)
+            if (component == null || inputs == null)
             {
                 return;
             }
@@ -73,7 +74,7 @@ namespace Framework.Physics
 
             var transform = component.Transform;
             // Set orientation based on the view direction.
-            if (inputs.ViewDirection == new Quaternion(0, 0, 0, 0))
+            if (inputs.ViewDirection == null || inputs.ViewDirection == new Quaternion(0, 0, 0, 0))
             {
                 inputs.ViewDirection = Quaternion.Identity;
             }
@@ -101,7 +102,7 @@ namespace Framework.Physics
 
             // Process attacks.
             attackCooldownTimer -= dt;
-            if (inputs.Fire && attackCooldownTimer <= 0)
+            if (inputs.GetInput("Fire") && attackCooldownTimer <= 0)
             {
                 attackCooldownTimer = 1f;
                 // attackDelegate(
@@ -137,10 +138,10 @@ namespace Framework.Physics
             /* Only if the player is on the ground then apply friction */
             if (this.component.isOnGround())
             {
-                var deaccl = inputs.Crouch ? crouchDeaceleration : runDeacceleration;
+                var deaccl = inputs.GetInput("Crouch") ? crouchDeaceleration : runDeacceleration;
 
                 control = speed < deaccl ? deaccl : speed;
-                drop = control * (inputs.Crouch ? crouchFrinction : friction) * dt * t;
+                drop = control * (inputs.GetInput("Crouch") ? crouchFrinction : friction) * dt * t;
             }
 
             newspeed = speed - drop;
@@ -154,7 +155,7 @@ namespace Framework.Physics
         }
         private void QueueJump()
         {
-            wishJump = inputs.Jump;
+            wishJump = inputs.GetInput("Jump");
         }
 
         /**
@@ -170,7 +171,7 @@ namespace Framework.Physics
             float k;
 
             // Can't control movement if not moving forward or backward
-            if (Mathf.Abs(inputs.ForwardAxis) < 0.001 || Mathf.Abs(wishspeed) < 0.001)
+            if (Mathf.Abs(inputs.ForwardBackwardAxis) < 0.001 || Mathf.Abs(wishspeed) < 0.001)
                 return;
             zspeed = _velocity.y;
             _velocity.y = 0;
@@ -206,11 +207,11 @@ namespace Framework.Physics
             float wishvel = airAcceleration;
             float accel;
 
-            wishdir = new Vector3(inputs.RightAxis, 0, inputs.ForwardAxis);
+            wishdir = new Vector3(inputs.LeftRightAxis, 0, inputs.ForwardBackwardAxis);
             wishdir = component.Transform.basis.Xform(wishdir);
 
             float wishspeed = wishdir.Length();
-            wishspeed *= (inputs.Crouch) ? crouchSpeed : moveSpeed;
+            wishspeed *= (inputs.GetInput("Crouch")) ? crouchSpeed : moveSpeed;
 
             wishdir = wishdir.Normalized();
 
@@ -221,7 +222,7 @@ namespace Framework.Physics
             else
                 accel = airAcceleration;
             // If the player is ONLY strafing left or right
-            if (inputs.ForwardAxis == 0 && inputs.RightAxis != 0)
+            if (inputs.ForwardBackwardAxis == 0 && inputs.LeftRightAxis != 0)
             {
                 if (wishspeed > sideStrafeSpeed)
                     wishspeed = sideStrafeSpeed;
@@ -265,14 +266,14 @@ namespace Framework.Physics
             else
                 ApplyFriction(0, dt);
 
-            wishdir = new Vector3(inputs.RightAxis, 0, inputs.ForwardAxis);
+            wishdir = new Vector3(inputs.LeftRightAxis, 0, inputs.ForwardBackwardAxis);
             wishdir = component.Transform.basis.Xform(wishdir);
             wishdir = wishdir.Normalized();
 
             var wishspeed = wishdir.Length();
-            wishspeed *= (inputs.Crouch) ? crouchSpeed : moveSpeed;
+            wishspeed *= (inputs.GetInput("Crouch")) ? crouchSpeed : moveSpeed;
 
-            Accelerate(wishdir, wishspeed, (inputs.Crouch) ? crouchAcceleration : runAcceleration, dt);
+            Accelerate(wishdir, wishspeed, (inputs.GetInput("Crouch")) ? crouchAcceleration : runAcceleration, dt);
 
             // Reset the gravity velocity
             _velocity.y = -gravity * dt;

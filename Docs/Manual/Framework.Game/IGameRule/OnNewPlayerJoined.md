@@ -1,8 +1,14 @@
 # IGameRule.OnNewPlayerJoined method
 
+Called on new player joined the game
+
 ```csharp
 public void OnNewPlayerJoined(IPlayer player)
 ```
+
+| parameter | description |
+| --- | --- |
+| player |  |
 
 ## See Also
 

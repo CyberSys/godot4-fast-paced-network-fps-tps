@@ -1,8 +1,14 @@
 # GameRule constructor
 
+Game rule constructor
+
 ```csharp
 public GameRule(ServerWorld gameWorld)
 ```
+
+| parameter | description |
+| --- | --- |
+| gameWorld | Game world |
 
 ## See Also
 

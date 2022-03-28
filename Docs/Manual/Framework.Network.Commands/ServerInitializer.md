@@ -8,7 +8,7 @@ public struct ServerInitializer : INetSerializable
 
 | name | description |
 | --- | --- |
-| [handshake](ServerInitializer/handshake.md) { get; set; } |  |
+| [handshake](ServerInitializer/handshake.md) |  |
 | [Deserialize](ServerInitializer/Deserialize.md)(…) |  |
 | [Serialize](ServerInitializer/Serialize.md)(…) |  |
 

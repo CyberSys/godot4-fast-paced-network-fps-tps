@@ -19,7 +19,7 @@ public class ClientNetworkService : NetworkService
 | [MaxRetriesPerConnection](ClientNetworkService/MaxRetriesPerConnection.md) |  |
 | event [Connected](ClientNetworkService/Connected.md) |  |
 | event [OnDisconnect](ClientNetworkService/OnDisconnect.md) |  |
-| [Connect](ClientNetworkService/Connect.md)(…) |  |
+| [Connect](ClientNetworkService/Connect.md)(…) | Connect to an server |
 | [Disconnect](ClientNetworkService/Disconnect.md)() |  |
 | override [Register](ClientNetworkService/Register.md)() |  |
 | override [Unregister](ClientNetworkService/Unregister.md)() |  |

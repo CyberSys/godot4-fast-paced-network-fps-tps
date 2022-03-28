@@ -16,11 +16,10 @@ public class ClientLogic<T> : GameLogic
 | name | description |
 | --- | --- |
 | [ClientLogic](ClientLogic-1/ClientLogic.md)() | The default constructor. |
-| [DefaultNetworkPort](ClientLogic-1/DefaultNetworkPort.md) { get; set; } | The default port of the server |
-| [DefaultNetworkHostname](ClientLogic-1/DefaultNetworkHostname.md) | The default hostname for the client |
-| [Disconnect](ClientLogic-1/Disconnect.md)() |  |
-| [DoConnect](ClientLogic-1/DoConnect.md)() |  |
-| virtual [OnConnect](ClientLogic-1/OnConnect.md)() |  |
+| [Connect](ClientLogic-1/Connect.md)(…) | Connect with an server |
+| [Disconnect](ClientLogic-1/Disconnect.md)() | Disconnect the client |
+| virtual [OnConnected](ClientLogic-1/OnConnected.md)() | On local client is connected |
+| virtual [OnDisconnect](ClientLogic-1/OnDisconnect.md)() | On local client are disconneted |
 
 ## See Also
 

@@ -1,7 +1,7 @@
-# ClientInitializer.ServerVars property
+# ClientInitializer.ServerVars field
 
 ```csharp
-public Dictionary<string, string> ServerVars { get; set; }
+public Dictionary<string, string> ServerVars;
 ```
 
 ## See Also

@@ -1,7 +1,7 @@
-# PlayerUpdate.Id property
+# PlayerUpdate.Id field
 
 ```csharp
-public int Id { get; set; }
+public int Id;
 ```
 
 ## See Also

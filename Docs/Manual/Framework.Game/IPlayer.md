@@ -14,6 +14,7 @@ public interface IPlayer : IBaseComponent
 | [Id](IPlayer/Id.md) { get; set; } | Id of player |
 | [Latency](IPlayer/Latency.md) { get; set; } | Current latency (ping) |
 | [PlayerName](IPlayer/PlayerName.md) { get; set; } | Name of player |
+| [RequiredComponents](IPlayer/RequiredComponents.md) { get; set; } | List of required components for this player instance |
 | [State](IPlayer/State.md) { get; set; } | Current connection state |
 | [Team](IPlayer/Team.md) { get; set; } | Assigned team of player |
 | [Tick](IPlayer/Tick.md)(…) | Execute each server tick |

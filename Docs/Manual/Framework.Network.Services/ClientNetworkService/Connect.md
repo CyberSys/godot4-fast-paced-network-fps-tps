@@ -1,8 +1,14 @@
 # ClientNetworkService.Connect method
 
+Connect to an server
+
 ```csharp
 public void Connect(ClientConnectionSettings settings)
 ```
+
+| parameter | description |
+| --- | --- |
+| settings | The connection settings eg. hostname, port, secure |
 
 ## See Also
 

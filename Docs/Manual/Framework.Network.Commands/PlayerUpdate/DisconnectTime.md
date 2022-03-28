@@ -1,7 +1,7 @@
-# PlayerUpdate.DisconnectTime property
+# PlayerUpdate.DisconnectTime field
 
 ```csharp
-public float DisconnectTime { get; set; }
+public float DisconnectTime;
 ```
 
 ## See Also

@@ -1,5 +1,7 @@
 # ClientLogic&lt;T&gt;.Disconnect method
 
+Disconnect the client
+
 ```csharp
 public void Disconnect()
 ```

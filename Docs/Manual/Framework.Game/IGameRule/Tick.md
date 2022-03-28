@@ -1,8 +1,14 @@
 # IGameRule.Tick method
 
+Execute on each server tick
+
 ```csharp
 public void Tick(float delta)
 ```
+
+| parameter | description |
+| --- | --- |
+| delta |  |
 
 ## See Also
 

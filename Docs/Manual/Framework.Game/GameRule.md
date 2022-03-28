@@ -1,5 +1,7 @@
 # GameRule class
 
+Basic class for an game rule
+
 ```csharp
 public class GameRule : IGameRule
 ```
@@ -8,15 +10,17 @@ public class GameRule : IGameRule
 
 | name | description |
 | --- | --- |
-| [GameRule](GameRule/GameRule.md)(…) |  |
+| [GameRule](GameRule/GameRule.md)(…) | Game rule constructor |
 | [GameWorld](GameRule/GameWorld.md) { get; } |  |
 | [AddComponentToPlayer](GameRule/AddComponentToPlayer.md)(…) |  |
-| [AddPlayerComponent](GameRule/AddPlayerComponent.md)(…) |  |
+| [AddPuppetComponentToPlayer](GameRule/AddPuppetComponentToPlayer.md)(…) |  |
 | [AddRemoteComponentToPlayer](GameRule/AddRemoteComponentToPlayer.md)(…) |  |
 | virtual [OnNewPlayerJoined](GameRule/OnNewPlayerJoined.md)(…) |  |
 | virtual [OnPlayerLeave](GameRule/OnPlayerLeave.md)(…) |  |
 | virtual [OnPlayerLeaveTemporary](GameRule/OnPlayerLeaveTemporary.md)(…) |  |
 | virtual [OnPlayerRejoined](GameRule/OnPlayerRejoined.md)(…) |  |
+| [RemoveRemoteComponentFromPlayer](GameRule/RemoveRemoteComponentFromPlayer.md)(…) |  |
+| [RemoveRemoteComponentFromPuppet](GameRule/RemoveRemoteComponentFromPuppet.md)(…) |  |
 | virtual [Tick](GameRule/Tick.md)(…) |  |
 
 ## See Also

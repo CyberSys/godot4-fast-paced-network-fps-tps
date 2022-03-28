@@ -1,7 +1,7 @@
-# PlayerState.Position property
+# PlayerState.Position field
 
 ```csharp
-public Vector3 Position { get; set; }
+public Vector3 Position;
 ```
 
 ## See Also

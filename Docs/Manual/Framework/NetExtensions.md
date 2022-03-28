@@ -20,6 +20,7 @@ public static class NetExtensions
 | static [SerializeQuaternion](NetExtensions/SerializeQuaternion.md)(…) |  |
 | static [SerializeStringDictonary](NetExtensions/SerializeStringDictonary.md)(…) |  |
 | static [SerializeVector3](NetExtensions/SerializeVector3.md)(…) |  |
+| static [ToEnum&lt;T&gt;](NetExtensions/ToEnum.md)(…) |  |
 
 ## See Also
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dfbfmu3cjx77k"]
+[gd_scene load_steps=14 format=3 uid="uid://dxstef34ebnbc"]
 
 [ext_resource type="Script" path="res://Shared/MyGameLevel.cs" id="1_8h6sn"]
 [ext_resource type="Script" path="res://Shared/MyGameSpawnPoint.cs" id="5_fxw5y"]

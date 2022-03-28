@@ -15,7 +15,8 @@ public class ServerPlayer : PhysicsPlayer
 | [DisconnectTime](ServerPlayer/DisconnectTime.md) { get; set; } | Time since last disconnect |
 | [IsSynchronized](ServerPlayer/IsSynchronized.md) { get; set; } | Return if the player is syncronized with server. |
 | [LatestInputTick](ServerPlayer/LatestInputTick.md) { get; set; } | Get the last tick of the last input |
-| [states](ServerPlayer/states.md) | Archived player states |
+| [RequiredPuppetComponents](ServerPlayer/RequiredPuppetComponents.md) { get; set; } |  |
+| [States](ServerPlayer/States.md) | Archived player states |
 
 ## See Also
 

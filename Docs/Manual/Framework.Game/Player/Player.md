@@ -1,4 +1,19 @@
-# Player constructor
+# Player constructor (1 of 2)
+
+Base player class
+
+```csharp
+public Player()
+```
+
+## See Also
+
+* class [Player](../Player.md)
+* namespace [Framework.Game](../../Framework.md)
+
+---
+
+# Player constructor (2 of 2)
 
 Base player class
 

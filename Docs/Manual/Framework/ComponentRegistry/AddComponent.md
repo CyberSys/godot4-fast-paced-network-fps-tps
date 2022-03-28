@@ -1,4 +1,42 @@
-# ComponentRegistry.AddComponent&lt;T&gt; method (1 of 2)
+# ComponentRegistry.AddComponent method (1 of 4)
+
+Add an new component to base component
+
+```csharp
+public Node AddComponent(Type type)
+```
+
+| parameter | description |
+| --- | --- |
+| T |  |
+
+## See Also
+
+* class [ComponentRegistry](../ComponentRegistry.md)
+* namespace [Framework](../../Framework.md)
+
+---
+
+# ComponentRegistry.AddComponent method (2 of 4)
+
+Add an new component to base component from resource path
+
+```csharp
+public Node AddComponent(Type type, string resourcePath)
+```
+
+| parameter | description |
+| --- | --- |
+| T |  |
+
+## See Also
+
+* class [ComponentRegistry](../ComponentRegistry.md)
+* namespace [Framework](../../Framework.md)
+
+---
+
+# ComponentRegistry.AddComponent&lt;T&gt; method (3 of 4)
 
 Add an new component to base component
 
@@ -19,7 +57,7 @@ public T AddComponent<T>()
 
 ---
 
-# ComponentRegistry.AddComponent&lt;T&gt; method (2 of 2)
+# ComponentRegistry.AddComponent&lt;T&gt; method (4 of 4)
 
 Add an new component to base component by given resource path
 

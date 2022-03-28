@@ -11,7 +11,6 @@ public abstract class NetworkPlayer : Player
 | [NetworkPlayer](NetworkPlayer/NetworkPlayer.md)(…) |  |
 | virtual [ApplyNetworkState](NetworkPlayer/ApplyNetworkState.md)(…) |  |
 | [SetPlayerInputs](NetworkPlayer/SetPlayerInputs.md)(…) |  |
-| virtual [Tick](NetworkPlayer/Tick.md)(…) |  |
 | virtual [ToNetworkState](NetworkPlayer/ToNetworkState.md)() |  |
 
 ## Protected Members

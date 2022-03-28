@@ -1,7 +1,7 @@
-# ServerInitializer.handshake property
+# ServerInitializer.handshake field
 
 ```csharp
-public int handshake { get; set; }
+public int handshake;
 ```
 
 ## See Also

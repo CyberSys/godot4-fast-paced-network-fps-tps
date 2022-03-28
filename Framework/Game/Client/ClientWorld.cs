@@ -136,7 +136,7 @@ namespace Framework.Game.Client
                 this.localPlayer.localPlayerWorldTickSnapshots[bufidx] = lastServerWorldTick;
 
                 // Send a command for all inputs not yet acknowledged from the server.
-                var unackedInputs = new List<PlayerInputs>();
+                var unackedInputs = new List<IPlayerInput>();
                 var clientWorldTickDeltas = new List<short>();
                 // TODO: lastServerWorldTick is technically not the same as lastAckedInputTick, fix this.
                 for (uint tick = lastServerWorldTick; tick <= WorldTick; ++tick)
@@ -268,7 +268,7 @@ namespace Framework.Game.Client
             player.Latency = playerUpdate.Latency;
             player.PlayerName = playerUpdate.PlayerName;
             player.State = playerUpdate.State;
-            player.RequiredComponents = (player is LocalPlayer) ? playerUpdate.RequiredComponents : playerUpdate.RequiredPuppetComponents;
+            player.RequiredComponents = (player is LocalPlayer) ? playerUpdate.RequiredComponents : playerUpdate.RequiredComponents;
 
             if (playerUpdate.State == PlayerConnectionState.Initialized)
             {

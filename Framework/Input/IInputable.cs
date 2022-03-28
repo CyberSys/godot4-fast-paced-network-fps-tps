@@ -5,6 +5,6 @@ namespace Framework.Input
 {
     public interface IInputable : IChildComponent
     {
-        public PlayerInputs GetPlayerInput();
+        public IPlayerInput GetPlayerInput();
     }
 }

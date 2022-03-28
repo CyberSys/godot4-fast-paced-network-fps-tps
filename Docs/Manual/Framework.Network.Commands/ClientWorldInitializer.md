@@ -8,8 +8,8 @@ public struct ClientWorldInitializer : INetSerializable
 
 | name | description |
 | --- | --- |
-| [WorldName](ClientWorldInitializer/WorldName.md) { get; set; } |  |
-| [WorldTick](ClientWorldInitializer/WorldTick.md) { get; set; } |  |
+| [WorldName](ClientWorldInitializer/WorldName.md) |  |
+| [WorldTick](ClientWorldInitializer/WorldTick.md) |  |
 | [Deserialize](ClientWorldInitializer/Deserialize.md)(…) |  |
 | [Serialize](ClientWorldInitializer/Serialize.md)(…) |  |
 

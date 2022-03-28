@@ -1,7 +1,7 @@
-# PlayerUpdate.Latency property
+# PlayerUpdate.Latency field
 
 ```csharp
-public int Latency { get; set; }
+public int Latency;
 ```
 
 ## See Also

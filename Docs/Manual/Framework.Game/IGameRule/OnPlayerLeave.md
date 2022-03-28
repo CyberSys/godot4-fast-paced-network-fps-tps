@@ -1,8 +1,14 @@
 # IGameRule.OnPlayerLeave method
 
+Called when players finanly leave the game
+
 ```csharp
 public void OnPlayerLeave(IPlayer player)
 ```
+
+| parameter | description |
+| --- | --- |
+| player |  |
 
 ## See Also
 

@@ -17,7 +17,7 @@ namespace Framework.Input
 
         public int PlayerId;
 
-        public PlayerInputs Inputs;
+        public IPlayerInput Inputs;
     }
 
     public class PlayerInputProcessor

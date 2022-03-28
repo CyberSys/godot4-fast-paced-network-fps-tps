@@ -1,7 +1,9 @@
-# ClientLogic&lt;T&gt;.OnConnect method
+# ClientLogic&lt;T&gt;.OnDisconnect method
+
+On local client are disconneted
 
 ```csharp
-public virtual void OnConnect()
+public virtual void OnDisconnect()
 ```
 
 ## See Also

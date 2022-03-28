@@ -1,7 +1,7 @@
-# PlayerState.Velocity property
+# PlayerState.Velocity field
 
 ```csharp
-public Vector3 Velocity { get; set; }
+public Vector3 Velocity;
 ```
 
 ## See Also

@@ -8,8 +8,9 @@ public struct PlayerInputs : IPlayerInput
 
 | name | description |
 | --- | --- |
-| [ForwardAxis](PlayerInputs/ForwardAxis.md) { get; } |  |
-| [RightAxis](PlayerInputs/RightAxis.md) { get; } |  |
+| [ForwardBackwardAxis](PlayerInputs/ForwardBackwardAxis.md) { get; } |  |
+| [LeftRightAxis](PlayerInputs/LeftRightAxis.md) { get; } |  |
+| [ViewDirection](PlayerInputs/ViewDirection.md) { get; set; } |  |
 | [Back](PlayerInputs/Back.md) |  |
 | [Crouch](PlayerInputs/Crouch.md) |  |
 | [Fire](PlayerInputs/Fire.md) |  |
@@ -18,8 +19,8 @@ public struct PlayerInputs : IPlayerInput
 | [Left](PlayerInputs/Left.md) |  |
 | [Right](PlayerInputs/Right.md) |  |
 | [Shifting](PlayerInputs/Shifting.md) |  |
-| [ViewDirection](PlayerInputs/ViewDirection.md) |  |
 | [ApplyKeyBitfield](PlayerInputs/ApplyKeyBitfield.md)(…) |  |
+| [GetInput](PlayerInputs/GetInput.md)(…) |  |
 | [GetKeyBitfield](PlayerInputs/GetKeyBitfield.md)() |  |
 
 ## See Also

@@ -11,7 +11,7 @@ namespace Shooter.Shared.Components
 
         public IBaseComponent BaseComponent { get; set; }
 
-        public PlayerInputs GetPlayerInput()
+        public IPlayerInput GetPlayerInput()
         {
             var camera = this.BaseComponent.Components.Get<PlayerCameraComponent>();
 

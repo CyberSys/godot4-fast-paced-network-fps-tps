@@ -1,5 +1,7 @@
 # IGameRule interface
 
+Required interface for game rules
+
 ```csharp
 public interface IGameRule
 ```
@@ -8,12 +10,14 @@ public interface IGameRule
 
 | name | description |
 | --- | --- |
-| [GameWorld](IGameRule/GameWorld.md) { get; } |  |
-| [OnNewPlayerJoined](IGameRule/OnNewPlayerJoined.md)(…) |  |
-| [OnPlayerLeave](IGameRule/OnPlayerLeave.md)(…) |  |
-| [OnPlayerLeaveTemporary](IGameRule/OnPlayerLeaveTemporary.md)(…) |  |
-| [OnPlayerRejoined](IGameRule/OnPlayerRejoined.md)(…) |  |
-| [Tick](IGameRule/Tick.md)(…) |  |
+| [GameWorld](IGameRule/GameWorld.md) { get; } | The server world |
+| [AddComponentToPlayer](IGameRule/AddComponentToPlayer.md)(…) | Add an component to an server player instance |
+| [AddRemoteComponentToPlayer](IGameRule/AddRemoteComponentToPlayer.md)(…) | Add an component to an client player instance |
+| [OnNewPlayerJoined](IGameRule/OnNewPlayerJoined.md)(…) | Called on new player joined the game |
+| [OnPlayerLeave](IGameRule/OnPlayerLeave.md)(…) | Called when players finanly leave the game |
+| [OnPlayerLeaveTemporary](IGameRule/OnPlayerLeaveTemporary.md)(…) | Called when players are disconnected (as eg. timeouts) |
+| [OnPlayerRejoined](IGameRule/OnPlayerRejoined.md)(…) | Called when player are rejoined the game (after previous disconnect) |
+| [Tick](IGameRule/Tick.md)(…) | Execute on each server tick |
 
 ## See Also
 

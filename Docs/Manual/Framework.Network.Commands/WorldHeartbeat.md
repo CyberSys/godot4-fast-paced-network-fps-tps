@@ -1,18 +1,19 @@
-# WorldHeartbeat class
+# WorldHeartbeat structure
 
 ```csharp
-public class WorldHeartbeat
+public struct WorldHeartbeat : INetSerializable
 ```
 
 ## Public Members
 
 | name | description |
 | --- | --- |
-| [WorldHeartbeat](WorldHeartbeat/WorldHeartbeat.md)() | The default constructor. |
-| [PlayerStates](WorldHeartbeat/PlayerStates.md) { get; set; } |  |
-| [PlayerUpdates](WorldHeartbeat/PlayerUpdates.md) { get; set; } |  |
-| [WorldTick](WorldHeartbeat/WorldTick.md) { get; set; } |  |
-| [YourLatestInputTick](WorldHeartbeat/YourLatestInputTick.md) { get; set; } |  |
+| [PlayerStates](WorldHeartbeat/PlayerStates.md) |  |
+| [PlayerUpdates](WorldHeartbeat/PlayerUpdates.md) |  |
+| [WorldTick](WorldHeartbeat/WorldTick.md) |  |
+| [YourLatestInputTick](WorldHeartbeat/YourLatestInputTick.md) |  |
+| [Deserialize](WorldHeartbeat/Deserialize.md)(…) |  |
+| [Serialize](WorldHeartbeat/Serialize.md)(…) |  |
 
 ## See Also
 

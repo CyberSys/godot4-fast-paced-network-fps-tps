@@ -1,7 +1,7 @@
-# ClientWorldInitializer.WorldName property
+# ClientWorldInitializer.WorldName field
 
 ```csharp
-public string WorldName { get; set; }
+public string WorldName;
 ```
 
 ## See Also

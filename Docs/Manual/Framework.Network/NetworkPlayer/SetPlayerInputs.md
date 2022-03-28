@@ -1,12 +1,12 @@
 # NetworkPlayer.SetPlayerInputs method
 
 ```csharp
-public void SetPlayerInputs(PlayerInputs inputs)
+public void SetPlayerInputs(IPlayerInput inputs)
 ```
 
 ## See Also
 
-* struct [PlayerInputs](../../Framework.Input/PlayerInputs.md)
+* interface [IPlayerInput](../../Framework.Input/IPlayerInput.md)
 * class [NetworkPlayer](../NetworkPlayer.md)
 * namespace [Framework.Network](../../Framework.md)
 

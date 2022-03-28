@@ -1,4 +1,23 @@
-# ComponentRegistry.DeleteComponent&lt;T&gt; method
+# ComponentRegistry.DeleteComponent method (1 of 2)
+
+Delete a given componentn from base component by given type
+
+```csharp
+public void DeleteComponent(Type type)
+```
+
+| parameter | description |
+| --- | --- |
+| type |  |
+
+## See Also
+
+* class [ComponentRegistry](../ComponentRegistry.md)
+* namespace [Framework](../../Framework.md)
+
+---
+
+# ComponentRegistry.DeleteComponent&lt;T&gt; method (2 of 2)
 
 Delete a given componentn from base component
 

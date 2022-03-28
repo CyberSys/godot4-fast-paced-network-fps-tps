@@ -1,7 +1,7 @@
-# PlayerState.Rotation property
+# PlayerState.Rotation field
 
 ```csharp
-public Quaternion Rotation { get; set; }
+public Quaternion Rotation;
 ```
 
 ## See Also

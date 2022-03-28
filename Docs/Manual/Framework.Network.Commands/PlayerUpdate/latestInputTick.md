@@ -1,7 +1,7 @@
-# PlayerUpdate.LatestInputTick property
+# PlayerUpdate.LatestInputTick field
 
 ```csharp
-public uint LatestInputTick { get; set; }
+public uint LatestInputTick;
 ```
 
 ## See Also

@@ -1,7 +1,7 @@
-# ClientInitializer.PlayerId property
+# ClientInitializer.PlayerId field
 
 ```csharp
-public int PlayerId { get; set; }
+public int PlayerId;
 ```
 
 ## See Also

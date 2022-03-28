@@ -1,8 +1,14 @@
 # IGameRule.OnPlayerRejoined method
 
+Called when player are rejoined the game (after previous disconnect)
+
 ```csharp
 public void OnPlayerRejoined(IPlayer player)
 ```
+
+| parameter | description |
+| --- | --- |
+| player |  |
 
 ## See Also
 

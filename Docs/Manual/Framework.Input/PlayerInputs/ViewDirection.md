@@ -1,7 +1,7 @@
-# PlayerInputs.ViewDirection field
+# PlayerInputs.ViewDirection property
 
 ```csharp
-public Quaternion ViewDirection;
+public Quaternion ViewDirection { get; set; }
 ```
 
 ## See Also

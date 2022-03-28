@@ -1,7 +1,7 @@
-# PlayerUpdate.PlayerName property
+# PlayerUpdate.PlayerName field
 
 ```csharp
-public string PlayerName { get; set; }
+public string PlayerName;
 ```
 
 ## See Also

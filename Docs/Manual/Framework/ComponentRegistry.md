@@ -12,12 +12,15 @@ public class ComponentRegistry
 | --- | --- |
 | [ComponentRegistry](ComponentRegistry/ComponentRegistry.md)(…) | Create a component registry by given base component |
 | [All](ComponentRegistry/All.md) { get; } | Get all avaiable components |
+| [AddComponent](ComponentRegistry/AddComponent.md)(…) | Add an new component to base component (2 methods) |
 | [AddComponent&lt;T&gt;](ComponentRegistry/AddComponent.md)() | Add an new component to base component |
 | [AddComponent&lt;T&gt;](ComponentRegistry/AddComponent.md)(…) | Add an new component to base component by given resource path |
 | [AddComponentAsync&lt;T&gt;](ComponentRegistry/AddComponentAsync.md)(…) | Add an new component to base component by given resource path (async) |
 | [Clear](ComponentRegistry/Clear.md)() | Delete all exist components and remove them from base component |
+| [DeleteComponent](ComponentRegistry/DeleteComponent.md)(…) | Delete a given componentn from base component by given type |
 | [DeleteComponent&lt;T&gt;](ComponentRegistry/DeleteComponent.md)() | Delete a given componentn from base component |
 | [Get&lt;T&gt;](ComponentRegistry/Get.md)() | Get an existing component of the base component |
+| [HasComponent](ComponentRegistry/HasComponent.md)(…) | Check if component exist |
 
 ## See Also
 

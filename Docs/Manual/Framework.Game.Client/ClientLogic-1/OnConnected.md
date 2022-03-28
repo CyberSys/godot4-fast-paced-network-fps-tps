@@ -1,9 +1,9 @@
-# ClientLogic&lt;T&gt;.DefaultNetworkHostname field
+# ClientLogic&lt;T&gt;.OnConnected method
 
-The default hostname for the client
+On local client is connected
 
 ```csharp
-public string DefaultNetworkHostname;
+public virtual void OnConnected()
 ```
 
 ## See Also

@@ -8,13 +8,15 @@ public struct PlayerUpdate : INetSerializable
 
 | name | description |
 | --- | --- |
-| [DisconnectTime](PlayerUpdate/DisconnectTime.md) { get; set; } |  |
-| [Id](PlayerUpdate/Id.md) { get; set; } |  |
-| [Latency](PlayerUpdate/Latency.md) { get; set; } |  |
-| [LatestInputTick](PlayerUpdate/LatestInputTick.md) { get; set; } |  |
-| [PlayerName](PlayerUpdate/PlayerName.md) { get; set; } |  |
-| [State](PlayerUpdate/State.md) { get; set; } |  |
-| [Team](PlayerUpdate/Team.md) { get; set; } |  |
+| [DisconnectTime](PlayerUpdate/DisconnectTime.md) |  |
+| [Id](PlayerUpdate/Id.md) |  |
+| [Latency](PlayerUpdate/Latency.md) |  |
+| [LatestInputTick](PlayerUpdate/LatestInputTick.md) |  |
+| [PlayerName](PlayerUpdate/PlayerName.md) |  |
+| [RequiredComponents](PlayerUpdate/RequiredComponents.md) |  |
+| [RequiredPuppetComponents](PlayerUpdate/RequiredPuppetComponents.md) |  |
+| [State](PlayerUpdate/State.md) |  |
+| [Team](PlayerUpdate/Team.md) |  |
 | [Deserialize](PlayerUpdate/Deserialize.md)(…) |  |
 | [Serialize](PlayerUpdate/Serialize.md)(…) |  |
 

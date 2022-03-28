@@ -13,7 +13,7 @@ namespace Framework.Game.Client
         public PlayerState incomingLocalPlayerState = new PlayerState();
         public IInputable Inputable { get; set; }
 
-        public PlayerInputs[] localPlayerInputsSnapshots = new PlayerInputs[1024];
+        public IPlayerInput[] localPlayerInputsSnapshots = new IPlayerInput[1024];
         public PlayerState[] localPlayerStateSnapshots = new PlayerState[1024];
         public uint[] localPlayerWorldTickSnapshots = new uint[1024];
     }

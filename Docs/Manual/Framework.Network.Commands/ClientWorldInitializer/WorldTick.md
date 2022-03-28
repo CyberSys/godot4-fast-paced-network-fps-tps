@@ -1,7 +1,7 @@
-# ClientWorldInitializer.WorldTick property
+# ClientWorldInitializer.WorldTick field
 
 ```csharp
-public uint WorldTick { get; set; }
+public uint WorldTick;
 ```
 
 ## See Also

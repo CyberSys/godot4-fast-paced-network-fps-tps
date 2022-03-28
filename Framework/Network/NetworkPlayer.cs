@@ -14,9 +14,9 @@ namespace Framework.Network
         {
         }
 
-        protected PlayerInputs inputs;
+        protected IPlayerInput inputs;
 
-        public void SetPlayerInputs(PlayerInputs inputs)
+        public void SetPlayerInputs(IPlayerInput inputs)
         {
             this.inputs = inputs;
         }

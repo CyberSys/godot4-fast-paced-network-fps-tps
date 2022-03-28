@@ -1,7 +1,7 @@
-# PlayerUpdate.Team property
+# PlayerUpdate.Team field
 
 ```csharp
-public PlayerTeam Team { get; set; }
+public PlayerTeam Team;
 ```
 
 ## See Also

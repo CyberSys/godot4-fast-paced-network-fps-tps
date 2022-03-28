@@ -1,9 +1,9 @@
-# ServerPlayer.states field
+# ServerPlayer.States field
 
 Archived player states
 
 ```csharp
-public PlayerState[] states;
+public PlayerState[] States;
 ```
 
 ## See Also

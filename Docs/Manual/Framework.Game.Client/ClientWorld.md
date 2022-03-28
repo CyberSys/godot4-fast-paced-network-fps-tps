@@ -12,6 +12,8 @@ public abstract class ClientWorld : World
 | [clientSimulationAdjuster](ClientWorld/clientSimulationAdjuster.md) | Client adjuster Handles server ticks and make them accuracy |
 | [lastServerWorldTick](ClientWorld/lastServerWorldTick.md) | Last executed server tick |
 | [localPlayer](ClientWorld/localPlayer.md) | Local player class |
+| virtual [CreateLocalPlayer](ClientWorld/CreateLocalPlayer.md)(…) | Create an local player |
+| virtual [CreatePuppetPlayer](ClientWorld/CreatePuppetPlayer.md)(…) | Create an puppet player |
 | override [Init](ClientWorld/Init.md)(…) |  |
 
 ## Protected Members
