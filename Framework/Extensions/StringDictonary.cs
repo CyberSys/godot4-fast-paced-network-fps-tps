@@ -26,17 +26,17 @@ using System.Linq;
 namespace Framework.Extensions
 {
     /// <summary>
-    /// Service registry /service holder of component
+    /// String Dictonary contains an string key and an generic object value
     /// </summary>
     public class StringDictonary<T2>
     {
-        private readonly Dictionary<string, T2> _registeredServices = new();
+        private readonly Dictionary<string, T2> _values = new();
 
         /// <summary>
         /// Get a full list of registered services
         /// </summary>
         /// <returns></returns>
-        public T2[] All => _registeredServices.Values.ToArray();
+        public T2[] All => _values.Values.ToArray();
 
         /// <summary>
         /// Create and register service by given type
@@ -44,10 +44,10 @@ namespace Framework.Extensions
         /// <typeparam name="T">Service type</typeparam>
         public T Create<T>(string name) where T : class, T2
         {
-            lock (_registeredServices)
+            lock (_values)
             {
                 T newService = Activator.CreateInstance<T>();
-                _registeredServices.Add(name, newService);
+                _values.Add(name, newService);
 
                 return newService;
             }
@@ -56,9 +56,9 @@ namespace Framework.Extensions
         /// <inheritdoc />
         private bool TryGetService(string name, out T2 service)
         {
-            lock (_registeredServices)
+            lock (_values)
             {
-                return _registeredServices.TryGetValue(name, out service);
+                return _values.TryGetValue(name, out service);
             }
         }
 

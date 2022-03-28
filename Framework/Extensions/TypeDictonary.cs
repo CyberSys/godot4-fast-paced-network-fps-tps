@@ -27,17 +27,17 @@ using System.Linq;
 namespace Framework
 {
     /// <summary>
-    /// Service registry /service holder of component
+    /// TypeDictonary contains an generic type as key and an generic object as value
     /// </summary>
     public class TypeDictonary<T2>
     {
-        private readonly Dictionary<Type, T2> _registeredServices = new();
+        private readonly Dictionary<Type, T2> _values = new();
 
         /// <summary>
         /// Get a full list of registered services
         /// </summary>
         /// <returns></returns>
-        public T2[] All => _registeredServices.Values.ToArray();
+        public T2[] All => _values.Values.ToArray();
 
 
         /// <summary>
@@ -46,10 +46,10 @@ namespace Framework
         /// <typeparam name="T">Service type</typeparam>
         public T Create<T>() where T : class, T2
         {
-            lock (_registeredServices)
+            lock (_values)
             {
                 T newService = Activator.CreateInstance<T>();
-                _registeredServices.Add(typeof(T), newService);
+                _values.Add(typeof(T), newService);
 
                 return newService;
             }
@@ -60,9 +60,9 @@ namespace Framework
         {
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
-            lock (_registeredServices)
+            lock (_values)
             {
-                return _registeredServices.TryGetValue(type, out service);
+                return _values.TryGetValue(type, out service);
             }
         }
 
