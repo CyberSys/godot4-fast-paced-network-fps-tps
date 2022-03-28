@@ -14,8 +14,6 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Backwards reconciliation and replay
 - Real-time adjustment of client simulation speed to optimize server's input buffer (Overwatch's method).
 - Server-side lag compensation
-- (TODO) Hitscan weapons
-- (TODO) Projectile weapons
 - Full godot server implementation with disabled 3d
 - Master and multi clients in one project (split screen)
 - Optimized netcode (Quake, Overwatch, Valve methods)
@@ -31,6 +29,13 @@ Check [documentation here](Docs/Manual/Framework.md)
 - (TODO) Shifting
 - (TODO) Lieing
 - (TODO) Animation network sync
+
+# Extensions
+- (TODO) Hitscan weapons
+- (TODO) Projectile weapons
+- (TODO) Weapon Handler
+- (TODO) Vehicle Handler
+- (TODO) Bot Handler 
 
 # Helpers
 - Component system (for extending characters and game world)
