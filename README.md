@@ -25,7 +25,7 @@ Check [documentation here](Docs/Manual/Framework.md)
 # Physics
 - Full implemented TPS and FPS Movement (Quake style)
 - Crouching
-- Customizeable movement
+- Customizeable and extendable movement
 - (TODO) Shifting
 - (TODO) Lieing
 - (TODO) Animation network sync
