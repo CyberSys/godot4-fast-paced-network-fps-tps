@@ -41,5 +41,5 @@ Check [documentation here](Docs/Manual/Framework.md)
 # Utils
 - Simple logging
 
-![Network Test preview](Docs/net_preview.png?raw=true "Network Test preview")
+![Network Test preview](https://i.ibb.co/CKZ8nLj/net-preview.png "Network Test preview")
 
