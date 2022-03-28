@@ -1,11 +1,12 @@
 # World._serverVars field
 
 ```csharp
-protected Dictionary<string, string> _serverVars;
+protected ServerVars _serverVars;
 ```
 
 ## See Also
 
+* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
 * class [World](../World.md)
 * namespace [Framework.Game](../../Framework.md)
 

@@ -1,5 +1,7 @@
 # LocalPlayer.Inputable property
 
+The component which handles the outgoing inputs
+
 ```csharp
 public IInputable Inputable { get; set; }
 ```

@@ -1,5 +1,7 @@
 # WorldHeartbeat.WorldTick field
 
+The world tick this data represents.
+
 ```csharp
 public uint WorldTick;
 ```

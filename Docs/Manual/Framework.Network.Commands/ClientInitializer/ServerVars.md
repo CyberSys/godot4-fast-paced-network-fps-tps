@@ -1,11 +1,12 @@
 # ClientInitializer.ServerVars field
 
 ```csharp
-public Dictionary<string, string> ServerVars;
+public ServerVars ServerVars;
 ```
 
 ## See Also
 
+* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
 * struct [ClientInitializer](../ClientInitializer.md)
 * namespace [Framework.Network.Commands](../../Framework.md)
 

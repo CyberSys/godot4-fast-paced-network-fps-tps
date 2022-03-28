@@ -8,7 +8,7 @@ public Node AddComponent(Type type)
 
 | parameter | description |
 | --- | --- |
-| T |  |
+| type | Type of the component which have to be added |
 
 ## See Also
 
@@ -19,7 +19,7 @@ public Node AddComponent(Type type)
 
 # ComponentRegistry.AddComponent method (2 of 4)
 
-Add an new component to base component from resource path
+Add an new component to base component by given resource name
 
 ```csharp
 public Node AddComponent(Type type, string resourcePath)
@@ -27,7 +27,8 @@ public Node AddComponent(Type type, string resourcePath)
 
 | parameter | description |
 | --- | --- |
-| T |  |
+| type | Type of the component which have to be added |
+| resourcePath | Path to the godot resource |
 
 ## See Also
 

@@ -1,5 +1,7 @@
 # WorldHeartbeat.YourLatestInputTick field
 
+The last world tick the server acknowledged for you. The client should use this to determine the last acked input, as well as to compute its relative simulation offset.
+
 ```csharp
 public uint YourLatestInputTick;
 ```

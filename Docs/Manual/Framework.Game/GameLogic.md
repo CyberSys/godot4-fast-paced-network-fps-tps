@@ -16,8 +16,8 @@ public class GameLogic : SubViewport, IGameLogic
 | [MapLoader](GameLogic/MapLoader.md) { get; } | The async loader for eg. maps |
 | [Services](GameLogic/Services.md) { get; } | Service Registry (Contains all services) |
 | [secureConnectionKey](GameLogic/secureConnectionKey.md) | Secure passphrase for network connection |
-| virtual [AfterMapDestroy](GameLogic/AfterMapDestroy.md)() |  |
-| virtual [AfterMapInstance](GameLogic/AfterMapInstance.md)() |  |
+| virtual [AfterMapDestroy](GameLogic/AfterMapDestroy.md)() | Called when an map unloaded |
+| virtual [AfterMapLoaded](GameLogic/AfterMapLoaded.md)() | Call when an map loaded succesfully |
 | [LoadWorld](GameLogic/LoadWorld.md)(…) | Load an world by given resource path |
 | override [_Notification](GameLogic/_Notification.md)(…) |  |
 | override [_Process](GameLogic/_Process.md)(…) |  |

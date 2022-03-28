@@ -8,6 +8,7 @@ namespace Framework.Game
     /// </summary>
     public partial class GameLogic : SubViewport, IGameLogic, IBaseComponent
     {
+        /// <inheritdoc />
         public ComponentRegistry Components => _components;
         private ComponentRegistry _components;
 
@@ -157,11 +158,17 @@ namespace Framework.Game
             });
         }
 
-        public virtual void AfterMapInstance()
+        /// <summary>
+        /// Call when an map loaded succesfully
+        /// </summary>
+        public virtual void AfterMapLoaded()
         {
 
         }
 
+        /// <summary>
+        /// Called when an map unloaded
+        /// </summary>
         public virtual void AfterMapDestroy()
         {
 

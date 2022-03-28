@@ -44,9 +44,9 @@
 | public type | description |
 | --- | --- |
 | class [ClientLogic&lt;T&gt;](./Framework.Game.Client/ClientLogic-1.md) | Is the base class for any client (SubViewport) |
-| abstract class [ClientWorld](./Framework.Game.Client/ClientWorld.md) |  |
-| class [LocalPlayer](./Framework.Game.Client/LocalPlayer.md) |  |
-| class [PuppetPlayer](./Framework.Game.Client/PuppetPlayer.md) |  |
+| abstract class [ClientWorld](./Framework.Game.Client/ClientWorld.md) | Base class for the client world |
+| class [LocalPlayer](./Framework.Game.Client/LocalPlayer.md) | The base class for local players |
+| class [PuppetPlayer](./Framework.Game.Client/PuppetPlayer.md) | The base class of an puppet player |
 
 ## Framework.Game.Server namespace
 
@@ -54,17 +54,18 @@
 | --- | --- |
 | abstract class [ServerLogic&lt;T&gt;](./Framework.Game.Server/ServerLogic-1.md) | The core server logic |
 | class [ServerPlayer](./Framework.Game.Server/ServerPlayer.md) | Core class for server player |
+| struct [ServerVars](./Framework.Game.Server/ServerVars.md) | Core class for server variables |
 | abstract class [ServerWorld](./Framework.Game.Server/ServerWorld.md) |  |
 
 ## Framework.Input namespace
 
 | public type | description |
 | --- | --- |
+| struct [GeneralPlayerInput](./Framework.Input/GeneralPlayerInput.md) |  |
 | interface [IInputable](./Framework.Input/IInputable.md) |  |
 | interface [IPlayerInput](./Framework.Input/IPlayerInput.md) |  |
 | class [PlayerInputAttribute](./Framework.Input/PlayerInputAttribute.md) |  |
 | class [PlayerInputProcessor](./Framework.Input/PlayerInputProcessor.md) |  |
-| struct [PlayerInputs](./Framework.Input/PlayerInputs.md) |  |
 | [Flags] enum [PlayerKeys](./Framework.Input/PlayerKeys.md) |  |
 | struct [TickInput](./Framework.Input/TickInput.md) |  |
 
@@ -84,10 +85,10 @@
 | struct [ClientInitializer](./Framework.Network.Commands/ClientInitializer.md) |  |
 | struct [ClientWorldInitializer](./Framework.Network.Commands/ClientWorldInitializer.md) |  |
 | struct [PlayerInputCommand](./Framework.Network.Commands/PlayerInputCommand.md) |  |
-| struct [PlayerState](./Framework.Network.Commands/PlayerState.md) |  |
+| struct [PlayerState](./Framework.Network.Commands/PlayerState.md) | The player states structures Contains all player realted informations eg. position, rotation, velocity |
 | struct [PlayerUpdate](./Framework.Network.Commands/PlayerUpdate.md) |  |
 | struct [ServerInitializer](./Framework.Network.Commands/ServerInitializer.md) |  |
-| struct [WorldHeartbeat](./Framework.Network.Commands/WorldHeartbeat.md) |  |
+| struct [WorldHeartbeat](./Framework.Network.Commands/WorldHeartbeat.md) | The world heartbeat structure for network syncronisation |
 
 ## Framework.Network.Services namespace
 
@@ -101,11 +102,11 @@
 
 | public type | description |
 | --- | --- |
+| class [DefaultMovementCalculator](./Framework.Physics/DefaultMovementCalculator.md) | An default movement calculator Handles friction, air control, jumping and accelerate |
 | interface [IMoveable](./Framework.Physics/IMoveable.md) |  |
 | interface [IMovementCalculator](./Framework.Physics/IMovementCalculator.md) |  |
 | class [InterpolationController](./Framework.Physics/InterpolationController.md) |  |
-| class [MovementCalculator](./Framework.Physics/MovementCalculator.md) |  |
-| abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) |  |
+| abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) | The base class for physics based players (kinetmatic, rigid..) |
 
 ## Framework.Utils namespace
 

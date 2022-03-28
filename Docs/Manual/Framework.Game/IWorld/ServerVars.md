@@ -3,11 +3,12 @@
 The server vars of the world
 
 ```csharp
-public Dictionary<string, string> ServerVars { get; }
+public ServerVars ServerVars { get; }
 ```
 
 ## See Also
 
+* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
 * interface [IWorld](../IWorld.md)
 * namespace [Framework.Game](../../Framework.md)
 

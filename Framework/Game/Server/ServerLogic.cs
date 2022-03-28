@@ -33,6 +33,7 @@ namespace Framework.Game.Server
         /// </summary>
         [Export]
         private Dictionary<string, string> ServerVars = new Dictionary<string, string>  {
+
             // enable or disable interpolation
             { "sv_interpolate", "true" },
             // force for soft or hard lag reduction
@@ -40,7 +41,36 @@ namespace Framework.Game.Server
             // maximal input stages per ms
             { "sv_max_stages_ms", "500" },
             // force freeze client in case of lags
-            { "sv_freze_client", "false" }
+            { "sv_freze_client", "false" },
+
+            // crouching
+            { "sv_crouching", "true" },
+            { "sv_crouching_down_speed", "9.0" },
+            { "sv_crouching_up_speed", "4.0" },
+            { "sv_crouching_accel", "8.0" },
+            { "sv_crouching_deaccel", "4.0" },
+            { "sv_crouching_friction", "3.0" },
+            { "sv_crouching_speed", "4.0" },
+
+            // walking
+            { "sv_walk_accel", "14.0" },
+            { "sv_walk_deaccel", "10.0" },
+
+            { "sv_walk_speed", "7.0" },
+            { "sv_walk_friction", "6.0" },
+
+            // air control
+            { "sv_air_control", "0.4" },
+            { "sv_air_accel", "12.0" },
+            { "sv_air_deaccel", "2.0" },
+
+            // gravity and jump
+            { "sv_gravity", "20.0" },
+            { "sv_jumpspeed", "6.5" },
+
+            // side movement
+            { "sv_strafe_speed", "1.0" },
+            { "sv_strafe_accel", "50.0" },
         };
 
         /// <summary>
@@ -127,11 +157,11 @@ namespace Framework.Game.Server
             newWorld.InstanceLevel(res);
 
             this.currentWorld = newWorld;
-            this.currentWorld?.Init(this.ServerVars, 0);
+            this.currentWorld?.Init(new ServerVars(this.ServerVars), 0);
 
             //accept clients
             this.AcceptClients = true;
-            this.AfterMapInstance();
+            this.AfterMapLoaded();
         }
 
         /// <inheritdoc />

@@ -1,5 +1,7 @@
 # GameLogic.AfterMapDestroy method
 
+Called when an map unloaded
+
 ```csharp
 public virtual void AfterMapDestroy()
 ```

@@ -1,12 +1,12 @@
 # IInputable.GetPlayerInput method
 
 ```csharp
-public IPlayerInput GetPlayerInput()
+public GeneralPlayerInput GetPlayerInput()
 ```
 
 ## See Also
 
-* interface [IPlayerInput](../IPlayerInput.md)
+* struct [GeneralPlayerInput](../GeneralPlayerInput.md)
 * interface [IInputable](../IInputable.md)
 * namespace [Framework.Input](../../Framework.md)
 

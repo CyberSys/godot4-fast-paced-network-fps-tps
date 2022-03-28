@@ -3,7 +3,7 @@
 Init the server world (first time)
 
 ```csharp
-public void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
+public void Init(ServerVars serverVars, uint initalWorldTick)
 ```
 
 | parameter | description |
@@ -13,6 +13,7 @@ public void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
 
 ## See Also
 
+* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
 * interface [IWorld](../IWorld.md)
 * namespace [Framework.Game](../../Framework.md)
 

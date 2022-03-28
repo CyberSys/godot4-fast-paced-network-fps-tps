@@ -1,5 +1,7 @@
 # PuppetPlayer class
 
+The base class of an puppet player
+
 ```csharp
 public class PuppetPlayer : PhysicsPlayer
 ```
@@ -10,7 +12,6 @@ public class PuppetPlayer : PhysicsPlayer
 | --- | --- |
 | [PuppetPlayer](PuppetPlayer/PuppetPlayer.md)(…) |  |
 | override [ApplyNetworkState](PuppetPlayer/ApplyNetworkState.md)(…) |  |
-| override [_PhysicsProcess](PuppetPlayer/_PhysicsProcess.md)(…) |  |
 
 ## See Also
 

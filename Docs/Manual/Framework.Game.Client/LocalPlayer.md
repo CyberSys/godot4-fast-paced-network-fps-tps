@@ -1,5 +1,7 @@
 # LocalPlayer class
 
+The base class for local players
+
 ```csharp
 public class LocalPlayer : PhysicsPlayer
 ```
@@ -9,11 +11,11 @@ public class LocalPlayer : PhysicsPlayer
 | name | description |
 | --- | --- |
 | [LocalPlayer](LocalPlayer/LocalPlayer.md)(…) |  |
-| [Inputable](LocalPlayer/Inputable.md) { get; set; } |  |
-| [incomingLocalPlayerState](LocalPlayer/incomingLocalPlayerState.md) |  |
-| [localPlayerInputsSnapshots](LocalPlayer/localPlayerInputsSnapshots.md) |  |
-| [localPlayerStateSnapshots](LocalPlayer/localPlayerStateSnapshots.md) |  |
-| [localPlayerWorldTickSnapshots](LocalPlayer/localPlayerWorldTickSnapshots.md) |  |
+| [Inputable](LocalPlayer/Inputable.md) { get; set; } | The component which handles the outgoing inputs |
+| [incomingLocalPlayerState](LocalPlayer/incomingLocalPlayerState.md) | The last incoming local player state |
+| [localPlayerInputsSnapshots](LocalPlayer/localPlayerInputsSnapshots.md) | The local player input snapshots |
+| [localPlayerStateSnapshots](LocalPlayer/localPlayerStateSnapshots.md) | The local player states |
+| [localPlayerWorldTickSnapshots](LocalPlayer/localPlayerWorldTickSnapshots.md) | The last world player ticks related to the state snapshots |
 
 ## See Also
 

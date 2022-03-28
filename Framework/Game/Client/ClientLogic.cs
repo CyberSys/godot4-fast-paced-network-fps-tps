@@ -35,7 +35,7 @@ namespace Framework.Game.Client
 
             //send server map loading was completed
             this.netService.SendMessageSerialisable<ServerInitializer>(0, new ServerInitializer());
-            this.AfterMapInstance();
+            this.AfterMapLoaded();
         }
 
         /// <inheritdoc />        

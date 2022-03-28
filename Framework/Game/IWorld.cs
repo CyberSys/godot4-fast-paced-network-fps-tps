@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Framework.Network;
 using Framework.Extensions;
+using Framework.Game.Server;
 
 namespace Framework.Game
 {
@@ -14,7 +15,7 @@ namespace Framework.Game
         /// </summary>
         /// <param name="serverVars">List of avaible server vars</param>
         /// <param name="initalWorldTick">Staring game time</param>
-        public void Init(Dictionary<string, string> serverVars, uint initalWorldTick);
+        public void Init(ServerVars serverVars, uint initalWorldTick);
 
         /// <summary>
         /// Destroy the game world
@@ -42,7 +43,7 @@ namespace Framework.Game
         /// The server vars of the world
         /// </summary>
         /// <value></value>
-        public Dictionary<string, string> ServerVars { get; }
+        public ServerVars ServerVars { get; }
 
         /// <summary>
         /// All players of the world

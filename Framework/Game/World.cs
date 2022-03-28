@@ -6,6 +6,7 @@ using Framework.Network;
 using Framework.Physics;
 using Framework.Utils;
 using Framework.Extensions;
+using Framework.Game.Server;
 
 namespace Framework.Game
 {
@@ -91,8 +92,8 @@ namespace Framework.Game
 
         protected bool isInit = false;
 
-        protected Dictionary<string, string> _serverVars = new Dictionary<string, string>();
-        public Dictionary<string, string> ServerVars => _serverVars;
+        protected ServerVars _serverVars = new ServerVars();
+        public ServerVars ServerVars => _serverVars;
 
 
         /// <inheritdoc />
@@ -106,11 +107,11 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public virtual void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
+        public virtual void Init(ServerVars serverVars, uint initalWorldTick)
         {
             this.isInit = true;
             this._serverVars = serverVars;
-            foreach (var sv in serverVars)
+            foreach (var sv in serverVars.AllVariables)
             {
                 Logger.LogDebug(this, "[Config] " + sv.Key + " => " + sv.Value);
             }

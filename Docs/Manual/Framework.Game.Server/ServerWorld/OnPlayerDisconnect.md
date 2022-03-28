@@ -8,7 +8,8 @@ public virtual void OnPlayerDisconnect(int clientId, DisconnectReason reason)
 
 | parameter | description |
 | --- | --- |
-| clientId |  |
+| clientId | he client id of the network player |
+| reason | The reason why the player are disconnted |
 
 ## See Also
 

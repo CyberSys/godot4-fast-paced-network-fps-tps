@@ -1,5 +1,7 @@
 # PlayerState structure
 
+The player states structures Contains all player realted informations eg. position, rotation, velocity
+
 ```csharp
 public struct PlayerState : INetSerializable
 ```

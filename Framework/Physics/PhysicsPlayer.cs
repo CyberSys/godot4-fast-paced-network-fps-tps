@@ -7,6 +7,9 @@ using System;
 
 namespace Framework.Physics
 {
+    /// <summary>
+    /// The base class for physics based players (kinetmatic, rigid..)
+    /// </summary>
     public abstract partial class PhysicsPlayer : NetworkPlayer
     {
         /// <inheritdoc />
@@ -14,15 +17,23 @@ namespace Framework.Physics
         {
         }
 
-        public IMovementCalculator calculator { get; set; } = new MovementCalculator();
+        /// <summary>
+        /// The movement processor for physics player movement
+        /// </summary>
+        /// <returns></returns>
+        public IMovementCalculator MovementProcessor { get; set; } = new DefaultMovementCalculator();
 
+        /// <summary>
+        /// The body attachted to the physics player simulation (eg.  kinetmatic, rigid..)
+        /// </summary>
+        /// <value></value>
         public IMoveable Body { get; set; }
 
-        public override void _EnterTree()
-        {
-            base._EnterTree();
-        }
 
+        /// <summary>
+        /// Teleport player to an given position
+        /// </summary>
+        /// <param name="origin">New position of the player</param>
         public void DoTeleport(Godot.Vector3 origin)
         {
             if (Body != null)
@@ -34,6 +45,10 @@ namespace Framework.Physics
             }
         }
 
+        /// <summary>
+        /// Get the current network state
+        /// </summary>
+        /// <returns></returns>
         public override PlayerState ToNetworkState()
         {
             if (Body != null)
@@ -43,7 +58,7 @@ namespace Framework.Physics
                     Id = this.Id,
                     Position = Body.Transform.origin,
                     Rotation = Body.Transform.basis.GetRotationQuaternion(),
-                    Velocity = calculator.Velocity,
+                    Velocity = MovementProcessor.Velocity,
                     Grounded = Body.isOnGround(),
                 };
             }
@@ -56,6 +71,10 @@ namespace Framework.Physics
             }
         }
 
+        /// <summary>
+        /// Apply an network state
+        /// </summary>
+        /// <param name="state">The network state to applied</param>
         public override void ApplyNetworkState(PlayerState state)
         {
             if (Body != null)
@@ -71,14 +90,17 @@ namespace Framework.Physics
                 Body.activateColliderShape(true);
             }
 
-            calculator.Velocity = state.Velocity;
+            MovementProcessor.Velocity = state.Velocity;
         }
 
-        public override void Tick(float delta)
+        /// <inheritdoc />
+        internal override void InternalTick(float delta)
         {
+            base.InternalTick(delta);
+
             if (Body != null)
             {
-                this.calculator.Tick(Body, this.inputs, delta);
+                this.MovementProcessor.Tick(Body, this.GameWorld.ServerVars, this.inputs, delta);
             }
         }
     }

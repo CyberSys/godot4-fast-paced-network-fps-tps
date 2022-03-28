@@ -1,5 +1,7 @@
 # IMovementCalculator.Velocity property
 
+The current velocity of the moveable object
+
 ```csharp
 public Vector3 Velocity { get; set; }
 ```

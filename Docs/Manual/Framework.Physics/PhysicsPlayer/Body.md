@@ -1,5 +1,7 @@
 # PhysicsPlayer.Body property
 
+The body attachted to the physics player simulation (eg. kinetmatic, rigid..)
+
 ```csharp
 public IMoveable Body { get; set; }
 ```

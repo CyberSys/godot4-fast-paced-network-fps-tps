@@ -65,6 +65,11 @@ namespace Framework.Game
         {
         }
 
+        internal virtual void InternalTick(float delta)
+        {
+            this.Tick(delta);
+        }
+
         /// <inheritdoc />
         private readonly Dictionary<string, RegisteredComonent> avaiableComponents = new Dictionary<string, RegisteredComonent>();
 

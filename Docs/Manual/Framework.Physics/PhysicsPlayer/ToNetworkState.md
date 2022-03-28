@@ -1,5 +1,7 @@
 # PhysicsPlayer.ToNetworkState method
 
+Get the current network state
+
 ```csharp
 public override PlayerState ToNetworkState()
 ```

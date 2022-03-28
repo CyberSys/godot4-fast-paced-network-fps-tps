@@ -1,5 +1,7 @@
 # LocalPlayer.localPlayerWorldTickSnapshots field
 
+The last world player ticks related to the state snapshots
+
 ```csharp
 public uint[] localPlayerWorldTickSnapshots;
 ```

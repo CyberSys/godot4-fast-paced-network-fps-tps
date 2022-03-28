@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LiteNetLib.Utils;
+using Framework.Game.Server;
 
 namespace Framework.Network.Commands
 {
@@ -7,20 +8,24 @@ namespace Framework.Network.Commands
     {
         public uint GameTick;
         public int PlayerId;
-        public Dictionary<string, string> ServerVars;
+        public ServerVars ServerVars;
 
+
+        /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(this.GameTick);
             writer.Put(this.PlayerId);
-            writer.Put(this.ServerVars);
+            this.ServerVars.Serialize(writer);
         }
 
+
+        /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
             this.GameTick = reader.GetUInt();
             this.PlayerId = reader.GetInt();
-            this.ServerVars = reader.GetDictonaryString();
+            this.ServerVars.Deserialize(reader);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Framework.Network.Commands
         public uint StartWorldTick;
 
         // An array of inputs, one entry for tick.  Ticks are guaranteed to be contiguous.
-        public PlayerInputs[] Inputs;
+        public GeneralPlayerInput[] Inputs;
 
         // For each input:
         // Delta between the input world tick and the tick the server was at for that input.
@@ -44,7 +44,7 @@ namespace Framework.Network.Commands
             this.StartWorldTick = reader.GetUInt();
             var length = reader.GetInt();
 
-            this.Inputs = new PlayerInputs[length];
+            this.Inputs = new GeneralPlayerInput[length];
             this.ClientWorldTickDeltas = new short[length];
 
             for (int i = 0; i < length; i++)

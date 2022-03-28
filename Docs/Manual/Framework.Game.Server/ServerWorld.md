@@ -11,9 +11,9 @@ public abstract class ServerWorld : World
 | [ActiveGameRule](ServerWorld/ActiveGameRule.md) { get; set; } | Set or get the active game rule |
 | [netService](ServerWorld/netService.md) { get; set; } | The network service for the server world |
 | [deleteTimeForPlayer](ServerWorld/deleteTimeForPlayer.md) | Time after player totaly deleted (0 means directly) |
-| [AddPlayer&lt;T&gt;](ServerWorld/AddPlayer.md)(…) |  |
+| [AddPlayer&lt;T&gt;](ServerWorld/AddPlayer.md)(…) | Add an player to the server world |
 | [BroadcastWorldHearbeat](ServerWorld/BroadcastWorldHearbeat.md)(…) | Send an heartbeat to all players Hearbeat contains player informations, server latency, states, etc |
-| [DeletePlayer](ServerWorld/DeletePlayer.md)(…) |  |
+| [DeletePlayer](ServerWorld/DeletePlayer.md)(…) | Delete an player from the server world |
 | virtual [OnPlayerConnected](ServerWorld/OnPlayerConnected.md)(…) | Event called after client is connected to server |
 | virtual [OnPlayerDisconnect](ServerWorld/OnPlayerDisconnect.md)(…) | Event called after client is disconnected from server |
 

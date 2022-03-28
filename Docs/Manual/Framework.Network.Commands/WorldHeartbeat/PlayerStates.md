@@ -1,5 +1,7 @@
 # WorldHeartbeat.PlayerStates field
 
+States of all players
+
 ```csharp
 public PlayerState[] PlayerStates;
 ```

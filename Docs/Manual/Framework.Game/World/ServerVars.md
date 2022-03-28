@@ -1,11 +1,12 @@
 # World.ServerVars property
 
 ```csharp
-public Dictionary<string, string> ServerVars { get; }
+public ServerVars ServerVars { get; }
 ```
 
 ## See Also
 
+* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
 * class [World](../World.md)
 * namespace [Framework.Game](../../Framework.md)
 

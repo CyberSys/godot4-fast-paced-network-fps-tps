@@ -1,5 +1,7 @@
 # ClientWorld class
 
+Base class for the client world
+
 ```csharp
 public abstract class ClientWorld : World
 ```

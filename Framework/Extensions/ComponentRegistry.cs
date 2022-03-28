@@ -90,21 +90,22 @@ namespace Framework
         /// <summary>
         /// Delete a given componentn from base component by given type
         /// </summary>
-        /// <typeparam name="type"></typeparam>
-        public void DeleteComponent(Type type)
+        /// <param name="componentType">Type of component which have to be deleted</param>
+        /// 
+        public void DeleteComponent(Type componentType)
         {
             lock (_components)
             {
-                if (this._components.ContainsKey(type))
+                if (this._components.ContainsKey(componentType))
                 {
-                    var node = this._components[type];
+                    var node = this._components[componentType];
 
                     if (node.IsInsideTree())
                     {
                         this.baseComponent.RemoveChild(node);
                     }
 
-                    this._components.Remove(type);
+                    this._components.Remove(componentType);
                 }
             }
         }
@@ -150,7 +151,7 @@ namespace Framework
         /// <summary>
         /// Add an new component to base component
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="type">Type of the component which have to be added</param>
         /// <returns></returns>
         public Node AddComponent(Type type)
         {
@@ -176,9 +177,10 @@ namespace Framework
         }
 
         /// <summary>
-        /// Add an new component to base component from resource path
+        /// Add an new component to base component by given resource name
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="type">Type of the component which have to be added</param>
+        /// <param name="resourcePath">Path to the godot resource</param>
         /// <returns></returns>
         public Node AddComponent(Type type, string resourcePath)
         {

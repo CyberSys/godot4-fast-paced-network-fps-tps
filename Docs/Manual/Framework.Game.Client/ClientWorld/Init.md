@@ -1,11 +1,12 @@
 # ClientWorld.Init method
 
 ```csharp
-public override void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
+public override void Init(ServerVars serverVars, uint initalWorldTick)
 ```
 
 ## See Also
 
+* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
 * class [ClientWorld](../ClientWorld.md)
 * namespace [Framework.Game.Client](../../Framework.md)
 

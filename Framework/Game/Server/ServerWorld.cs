@@ -10,6 +10,7 @@ using Framework.Network;
 using Framework.Network.Services;
 using Framework.Input;
 using LiteNetLib.Utils;
+using Framework.Physics;
 
 namespace Framework.Game.Server
 {
@@ -67,7 +68,11 @@ namespace Framework.Game.Server
             worldStateBroadcastTimer.Start();
         }
 
-
+        /// <summary>
+        /// Delete an player from the server world
+        /// </summary>
+        /// <param name="clientId">player id</param>
+        /// <param name="withDelay">use an delay for deletion</param>
         public void DeletePlayer(int clientId, bool withDelay = true)
         {
             if (this._players.ContainsKey(clientId))
@@ -91,6 +96,11 @@ namespace Framework.Game.Server
             }
         }
 
+        /// <summary>
+        /// Add an player to the server world
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <typeparam name="T">Type of the server player</typeparam>
         public void AddPlayer<T>(int clientId) where T : ServerPlayer
         {
             if (!this._players.ContainsKey(clientId))
@@ -134,13 +144,13 @@ namespace Framework.Game.Server
         /// <summary>
         /// Event called after client is disconnected from server
         /// </summary>
-        /// <param name="clientId"></param>
+        /// <param name="clientId">he client id of the network player</param>
+        /// <param name="reason">The reason why the player are disconnted</param>
         public virtual void OnPlayerDisconnect(int clientId, DisconnectReason reason)
         {
             Logger.LogDebug(this, "[" + clientId + "] Disconnected");
             this.DeletePlayer(clientId, true);
         }
-
 
         /// <summary>
         /// Enqueue new player input
@@ -333,7 +343,7 @@ namespace Framework.Game.Server
                 Where(df => df.Value.State == PlayerConnectionState.Initialized).
                 Select(df => df.Value).ToArray())
             {
-                player.Tick(dt);
+                (player as Player).InternalTick(dt);
             }
         }
 

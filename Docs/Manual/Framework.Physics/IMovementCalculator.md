@@ -8,9 +8,8 @@ public interface IMovementCalculator
 
 | name | description |
 | --- | --- |
-| [Velocity](IMovementCalculator/Velocity.md) { get; set; } |  |
-| [Execute](IMovementCalculator/Execute.md)(…) |  |
-| [Tick](IMovementCalculator/Tick.md)(…) |  |
+| [Velocity](IMovementCalculator/Velocity.md) { get; set; } | The current velocity of the moveable object |
+| [Tick](IMovementCalculator/Tick.md)(…) | Calls on each tick for produce movement |
 
 ## See Also
 

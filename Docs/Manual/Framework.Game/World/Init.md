@@ -1,11 +1,12 @@
 # World.Init method
 
 ```csharp
-public virtual void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
+public virtual void Init(ServerVars serverVars, uint initalWorldTick)
 ```
 
 ## See Also
 
+* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
 * class [World](../World.md)
 * namespace [Framework.Game](../../Framework.md)
 

@@ -3,6 +3,10 @@ using LiteNetLib.Utils;
 
 namespace Framework.Network.Commands
 {
+    /// <summary>
+    /// The player states structures
+    /// Contains all player realted informations eg. position, rotation, velocity
+    /// </summary>
     public struct PlayerState : INetSerializable
     {
         public int Id;

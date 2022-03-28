@@ -1,5 +1,7 @@
 # LocalPlayer.localPlayerStateSnapshots field
 
+The local player states
+
 ```csharp
 public PlayerState[] localPlayerStateSnapshots;
 ```

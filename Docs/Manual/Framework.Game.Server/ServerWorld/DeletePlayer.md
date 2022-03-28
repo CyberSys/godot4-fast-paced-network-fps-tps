@@ -1,8 +1,15 @@
 # ServerWorld.DeletePlayer method
 
+Delete an player from the server world
+
 ```csharp
 public void DeletePlayer(int clientId, bool withDelay = true)
 ```
+
+| parameter | description |
+| --- | --- |
+| clientId | player id |
+| withDelay | use an delay for deletion |
 
 ## See Also
 

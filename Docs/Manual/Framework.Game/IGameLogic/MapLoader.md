@@ -1,5 +1,7 @@
 # IGameLogic.MapLoader property
 
+The async map loader
+
 ```csharp
 public AsyncLoader MapLoader { get; }
 ```

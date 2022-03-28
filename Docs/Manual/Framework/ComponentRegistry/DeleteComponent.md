@@ -3,12 +3,12 @@
 Delete a given componentn from base component by given type
 
 ```csharp
-public void DeleteComponent(Type type)
+public void DeleteComponent(Type componentType)
 ```
 
 | parameter | description |
 | --- | --- |
-| type |  |
+| componentType | Type of component which have to be deleted |
 
 ## See Also
 

@@ -1,9 +1,16 @@
 # ServerWorld.AddPlayer&lt;T&gt; method
 
+Add an player to the server world
+
 ```csharp
 public void AddPlayer<T>(int clientId)
     where T : ServerPlayer
 ```
+
+| parameter | description |
+| --- | --- |
+| T | Type of the server player |
+| clientId |  |
 
 ## See Also
 

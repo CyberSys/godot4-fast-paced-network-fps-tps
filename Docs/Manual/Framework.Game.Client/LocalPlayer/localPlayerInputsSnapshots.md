@@ -1,12 +1,14 @@
 # LocalPlayer.localPlayerInputsSnapshots field
 
+The local player input snapshots
+
 ```csharp
-public IPlayerInput[] localPlayerInputsSnapshots;
+public GeneralPlayerInput[] localPlayerInputsSnapshots;
 ```
 
 ## See Also
 
-* interface [IPlayerInput](../../Framework.Input/IPlayerInput.md)
+* struct [GeneralPlayerInput](../../Framework.Input/GeneralPlayerInput.md)
 * class [LocalPlayer](../LocalPlayer.md)
 * namespace [Framework.Game.Client](../../Framework.md)
 

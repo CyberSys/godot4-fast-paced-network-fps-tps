@@ -1,5 +1,7 @@
 # WorldHeartbeat.PlayerUpdates field
 
+Contains all player related informations as eg. name, team, etc
+
 ```csharp
 public PlayerUpdate[] PlayerUpdates;
 ```

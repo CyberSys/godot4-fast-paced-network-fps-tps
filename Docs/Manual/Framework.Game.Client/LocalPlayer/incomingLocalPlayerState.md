@@ -1,5 +1,7 @@
 # LocalPlayer.incomingLocalPlayerState field
 
+The last incoming local player state
+
 ```csharp
 public PlayerState incomingLocalPlayerState;
 ```

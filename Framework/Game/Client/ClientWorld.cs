@@ -11,9 +11,13 @@ using Framework.Utils;
 using Framework.Network;
 using Framework.Network.Services;
 using Framework.Physics;
+using Framework.Game.Server;
 
 namespace Framework.Game.Client
 {
+    /// <summary>
+    /// Base class for the client world
+    /// </summary>
     public abstract class ClientWorld : World
     {
         /// <inheritdoc />
@@ -25,10 +29,11 @@ namespace Framework.Game.Client
         /// </summary>
         public ClientSimulationAdjuster clientSimulationAdjuster;
 
+
         /// <summary>
         /// World Heartbeat Queue
         /// </summary>
-        /// <typeparam name="WorldHeartbeat"></typeparam>
+        /// <typeparam name="WorldHeartbeat">The heartbeat structure</typeparam>
         /// <returns></returns>
         private Queue<WorldHeartbeat> worldStateQueue = new Queue<WorldHeartbeat>();
 
@@ -70,7 +75,8 @@ namespace Framework.Game.Client
 
         private void InitWorld(ClientInitializer cmd, NetPeer peer)
         {
-            Logger.LogDebug(this, "Init world with server user id " + cmd.PlayerId + " => vars " + cmd.ServerVars?.Count);
+            Logger.LogDebug(this, "Init world with server user id " + cmd.PlayerId);
+
             this._myServerId = cmd.PlayerId;
             this?.Init(cmd.ServerVars, cmd.GameTick);
         }
@@ -81,7 +87,7 @@ namespace Framework.Game.Client
         }
 
         /// <inheritdoc />
-        public override void Init(Dictionary<string, string> serverVars, uint initalWorldTick)
+        public override void Init(ServerVars serverVars, uint initalWorldTick)
         {
             base.Init(serverVars, 0);
 
@@ -116,17 +122,16 @@ namespace Framework.Game.Client
                 float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
                 var serverSendRate = simTickRate / 2;
 
-                var MaxStaleServerStateTicks = (int)MathF.Ceiling(
-                   int.Parse(this.ServerVars["sv_max_stages_ms"]) / serverSendRate);
+                var MaxStaleServerStateTicks = (int)MathF.Ceiling(this.ServerVars.Get<int>("sv_max_stages_ms", 500) / serverSendRate);
 
                 var inputHandler = this.localPlayer.Inputable;
-                var inputs = (inputHandler != null && !this.gameInstance.GuiDisableInput) ? inputHandler.GetPlayerInput() : new PlayerInputs();
+                var inputs = (inputHandler != null && !this.gameInstance.GuiDisableInput) ? inputHandler.GetPlayerInput() : new GeneralPlayerInput();
 
                 var lastTicks = WorldTick - lastServerWorldTick;
-                if (bool.Parse(this.ServerVars["sv_freze_client"]) && lastTicks >= MaxStaleServerStateTicks)
+                if (this.ServerVars.Get<bool>("sv_freze_client", false) && lastTicks >= MaxStaleServerStateTicks)
                 {
                     Logger.LogDebug(this, "Server state is too old (is the network connection dead?) - max ticks " + MaxStaleServerStateTicks + " - currentTicks => " + lastTicks);
-                    inputs = new PlayerInputs();
+                    inputs = new GeneralPlayerInput();
                 }
 
                 // Update our snapshot buffers.
@@ -136,7 +141,7 @@ namespace Framework.Game.Client
                 this.localPlayer.localPlayerWorldTickSnapshots[bufidx] = lastServerWorldTick;
 
                 // Send a command for all inputs not yet acknowledged from the server.
-                var unackedInputs = new List<IPlayerInput>();
+                var unackedInputs = new List<GeneralPlayerInput>();
                 var clientWorldTickDeltas = new List<short>();
                 // TODO: lastServerWorldTick is technically not the same as lastAckedInputTick, fix this.
                 for (uint tick = lastServerWorldTick; tick <= WorldTick; ++tick)
@@ -159,7 +164,7 @@ namespace Framework.Game.Client
                 this.localPlayer.SetPlayerInputs(inputs);
 
                 // SimulateWorld
-                this.localPlayer.Tick(interval);
+                this.localPlayer.InternalTick(interval);
             }
 
             //increase worldTick
@@ -177,7 +182,7 @@ namespace Framework.Game.Client
             this.ExecuteHeartbeat(incomingState);
 
             //procese player inputs
-            this.ProcessServerWorldState(incomingState);
+            this.ProcessServerWorldState(incomingState, interval);
 
             this.Tick(interval);
         }
@@ -333,11 +338,8 @@ namespace Framework.Game.Client
             return new LocalPlayer(id, this);
         }
 
-        /// <summary>
-        /// Compare inputs with current state and do client interpolation
-        /// </summary>
-        /// <param name="incomingState"></param>
-        private void ProcessServerWorldState(WorldHeartbeat incomingState)
+        /// <inheritdoc />
+        private void ProcessServerWorldState(WorldHeartbeat incomingState, float interval)
         {
             //set the last server world tick
             lastServerWorldTick = incomingState.WorldTick;
@@ -348,7 +350,7 @@ namespace Framework.Game.Client
             if (incomingState.YourLatestInputTick > 0)
             {
                 int actualTickLead = (int)incomingState.YourLatestInputTick - (int)lastServerWorldTick + 1;
-                this.clientSimulationAdjuster.NotifyActualTickLead(actualTickLead, false, bool.Parse(this.ServerVars["sv_agressive_lag_reduction"]));
+                this.clientSimulationAdjuster.NotifyActualTickLead(actualTickLead, false, this.ServerVars.Get<bool>("sv_agressive_lag_reduction", true));
             }
 
             // For debugging purposes, log the local lead we're running at
@@ -365,9 +367,7 @@ namespace Framework.Game.Client
                 Logger.LogDebug(this, "Got a FUTURE tick somehow???");
             }
 
-            // Locate the data for our local player.
-
-
+            // Locate the data for our local playerr
             foreach (var playerState in incomingState.PlayerStates)
             {
                 if (playerState.Id == this.MyServerId)
@@ -388,7 +388,7 @@ namespace Framework.Game.Client
                 }
             }
 
-
+            // Handle local player rewinding
             if (this.localPlayer != null && this.localPlayer.Body != null)
             {
                 if (default(PlayerState).Equals(this.localPlayer.incomingLocalPlayerState))
@@ -428,11 +428,17 @@ namespace Framework.Game.Client
 
                         // Apply inputs to the associated player controller and simulate the world.
                         this.localPlayer.SetPlayerInputs(inputSnapshot);
-                        this.localPlayer.Tick((float)this.GetPhysicsProcessDeltaTime());
+                        this.localPlayer.InternalTick((float)this.GetPhysicsProcessDeltaTime());
 
                         ++replayTick;
                     }
                 }
+            }
+
+            // Internal tick for puppets
+            foreach (var player in _players.Where(df => df.Value is PuppetPlayer).Select(df => df.Value as PuppetPlayer).ToArray())
+            {
+                player.InternalTick(interval);
             }
         }
     }

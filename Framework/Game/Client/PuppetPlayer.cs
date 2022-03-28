@@ -9,8 +9,13 @@ using System.Collections.Generic;
 
 namespace Framework.Game.Client
 {
+
+    /// <summary>
+    /// The base class of an puppet player
+    /// </summary>
     public class PuppetPlayer : PhysicsPlayer
     {
+        /// <inheritdoc />
         public PuppetPlayer(int id, IWorld world) : base(id, world)
         {
         }
@@ -19,10 +24,12 @@ namespace Framework.Game.Client
         private PlayerState? lastState = null;
         private float stateTimer = 0;
 
-        public override void _PhysicsProcess(float delta)
+        /// <inheritdoc />
+        internal override void InternalTick(float delta)
         {
-            base._PhysicsProcess(delta);
-            if (!bool.Parse(this.GameWorld.ServerVars["sv_interpolate"]))
+            base.InternalTick(delta);
+
+            if (!this.GameWorld.ServerVars.Get<bool>("sv_interpolate", true))
             {
                 return;
             }
@@ -65,9 +72,11 @@ namespace Framework.Game.Client
                 this.Body.Transform = transform;
             }
         }
+
+        /// <inheritdoc />
         public override void ApplyNetworkState(PlayerState state)
         {
-            if (bool.Parse(this.GameWorld.ServerVars["sv_interpolate"]))
+            if (this.GameWorld.ServerVars.Get<bool>("sv_interpolate", true))
             {
                 // TODO: This whole thing needs to be simplified a bit more, but at least make sure
                 // we're not buffering more than we should be.
