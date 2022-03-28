@@ -37,6 +37,18 @@ Check [documentation here](Docs/Manual/Framework.md)
 - (TODO) Vehicle Handler
 - (TODO) Bot Handler 
 
+# Structure
+- ServerLogic (Viewport) => Root Node for Server
+   - ServerWorld => For handling map and players
+      - ServerLevel => Contains your level asset
+      - ServerGameRule => Contains the game rules logics
+      - ServerPlayer -> Server player class
+- ClientLogic (Viewport) => Root Node for Client
+   - ClientWorld => For handling map and players
+      - ClientLevel => Contains your level asset
+      - LocalPlayer => Contains the local player
+      - PuppetPlayer => Contains the puppet player
+
 # Helpers
 - Component system (for extending characters and game world)
 - Registration services (Full threaded services like Networking)
