@@ -10,7 +10,7 @@ public class ServerPlayer : PhysicsPlayer
 
 | name | description |
 | --- | --- |
-| [ServerPlayer](ServerPlayer/ServerPlayer.md)(…) |  |
+| [ServerPlayer](ServerPlayer/ServerPlayer.md)() | The default constructor. |
 | [CurrentPlayerInput](ServerPlayer/CurrentPlayerInput.md) { get; set; } | The active tick based input |
 | [DisconnectTime](ServerPlayer/DisconnectTime.md) { get; set; } | Time since last disconnect |
 | [IsSynchronized](ServerPlayer/IsSynchronized.md) { get; set; } | Return if the player is syncronized with server. |

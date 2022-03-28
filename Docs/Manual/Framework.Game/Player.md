@@ -11,10 +11,9 @@ public abstract class Player : Node, IPlayer
 | name | description |
 | --- | --- |
 | [Player](Player/Player.md)() | Base player class |
-| [Player](Player/Player.md)(…) | Base player class |
 | [AvaiablePlayerComponents](Player/AvaiablePlayerComponents.md) { get; } |  |
 | [Components](Player/Components.md) { get; } |  |
-| [GameWorld](Player/GameWorld.md) { get; } |  |
+| [GameWorld](Player/GameWorld.md) { get; set; } |  |
 | [Id](Player/Id.md) { get; set; } |  |
 | [Latency](Player/Latency.md) { get; set; } |  |
 | [PlayerName](Player/PlayerName.md) { get; set; } |  |

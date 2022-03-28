@@ -1,12 +1,13 @@
 # LocalPlayer constructor
 
+The default constructor.
+
 ```csharp
-public LocalPlayer(int id, IWorld world)
+public LocalPlayer()
 ```
 
 ## See Also
 
-* interface [IWorld](../../Framework.Game/IWorld.md)
 * class [LocalPlayer](../LocalPlayer.md)
 * namespace [Framework.Game.Client](../../Framework.md)
 

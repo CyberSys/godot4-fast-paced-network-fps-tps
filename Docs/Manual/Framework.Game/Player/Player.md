@@ -1,4 +1,4 @@
-# Player constructor (1 of 2)
+# Player constructor
 
 Base player class
 
@@ -8,27 +8,6 @@ public Player()
 
 ## See Also
 
-* class [Player](../Player.md)
-* namespace [Framework.Game](../../Framework.md)
-
----
-
-# Player constructor (2 of 2)
-
-Base player class
-
-```csharp
-public Player(int id, IWorld world)
-```
-
-| parameter | description |
-| --- | --- |
-| id | Server remote id |
-| world | World instance |
-
-## See Also
-
-* interface [IWorld](../IWorld.md)
 * class [Player](../Player.md)
 * namespace [Framework.Game](../../Framework.md)
 

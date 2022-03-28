@@ -12,7 +12,17 @@ public class DefaultMovementProcessor : IMovementProcessor
 | --- | --- |
 | [DefaultMovementProcessor](DefaultMovementProcessor/DefaultMovementProcessor.md)() | The default constructor. |
 | [Velocity](DefaultMovementProcessor/Velocity.md) { get; set; } |  |
-| [Tick](DefaultMovementProcessor/Tick.md)(…) |  |
+| virtual [CanCrouch](DefaultMovementProcessor/CanCrouch.md)() |  |
+| virtual [GetAirAcceleration](DefaultMovementProcessor/GetAirAcceleration.md)() |  |
+| virtual [GetAirControl](DefaultMovementProcessor/GetAirControl.md)() |  |
+| virtual [GetAirDecceleration](DefaultMovementProcessor/GetAirDecceleration.md)() |  |
+| virtual [GetGravity](DefaultMovementProcessor/GetGravity.md)() |  |
+| virtual [GetGroundAccelerationFactor](DefaultMovementProcessor/GetGroundAccelerationFactor.md)() |  |
+| virtual [GetGroundDeaccelerationFactor](DefaultMovementProcessor/GetGroundDeaccelerationFactor.md)() |  |
+| virtual [GetGroundFriction](DefaultMovementProcessor/GetGroundFriction.md)() |  |
+| virtual [GetMovementSpeed](DefaultMovementProcessor/GetMovementSpeed.md)() |  |
+| [isOnGround](DefaultMovementProcessor/isOnGround.md)() |  |
+| [Simulate](DefaultMovementProcessor/Simulate.md)(…) |  |
 
 ## See Also
 

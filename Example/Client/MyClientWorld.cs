@@ -5,13 +5,13 @@ namespace Shooter.Client
 {
     public partial class MyClientWorld : ClientWorld
     {
-        public override LocalPlayer CreateLocalPlayer(int id, IWorld world)
+        public override LocalPlayer CreateLocalPlayer(int id)
         {
-            return new MyLocalPlayer(id, world);
+            return new MyLocalPlayer();
         }
-        public override PuppetPlayer CreatePuppetPlayer(int id, IWorld world)
+        public override PuppetPlayer CreatePuppetPlayer(int id)
         {
-            return new MyPuppetPlayer(id, world);
+            return new MyPuppetPlayer();
         }
     }
 }

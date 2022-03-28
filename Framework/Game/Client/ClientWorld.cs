@@ -255,8 +255,9 @@ namespace Framework.Game.Client
                         if (playerUpdate.Id == this.MyServerId)
                         {
                             Logger.LogDebug(this, "Attach new local player");
-                            var localPlayer = this.CreateLocalPlayer(playerUpdate.Id, this);
-
+                            var localPlayer = this.CreateLocalPlayer(playerUpdate.Id);
+                            localPlayer.Id = playerUpdate.Id;
+                            localPlayer.GameWorld = this;
                             localPlayer.Name = playerUpdate.Id.ToString();
                             this.playerHolder.AddChild(localPlayer);
                             this._players.Add(playerUpdate.Id, localPlayer);
@@ -267,8 +268,9 @@ namespace Framework.Game.Client
                         else
                         {
                             Logger.LogDebug(this, "Attach new puppet player");
-                            var puppetPlayer = this.CreatePuppetPlayer(playerUpdate.Id, this);
-
+                            var puppetPlayer = this.CreatePuppetPlayer(playerUpdate.Id);
+                            puppetPlayer.Id = playerUpdate.Id;
+                            puppetPlayer.GameWorld = this;
                             puppetPlayer.Name = playerUpdate.Id.ToString();
                             this.playerHolder.AddChild(puppetPlayer);
                             this._players.Add(playerUpdate.Id, puppetPlayer);
@@ -341,22 +343,20 @@ namespace Framework.Game.Client
         /// Create an puppet player
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="world"></param>
         /// <returns></returns>
-        public virtual PuppetPlayer CreatePuppetPlayer(int id, IWorld world)
+        public virtual PuppetPlayer CreatePuppetPlayer(int id)
         {
-            return new PuppetPlayer(id, this);
+            return new PuppetPlayer();
         }
 
         /// <summary>
         /// Create an local player
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="world"></param>
         /// <returns></returns>
-        public virtual LocalPlayer CreateLocalPlayer(int id, IWorld world)
+        public virtual LocalPlayer CreateLocalPlayer(int id)
         {
-            return new LocalPlayer(id, this);
+            return new LocalPlayer();
         }
 
         /// <inheritdoc />

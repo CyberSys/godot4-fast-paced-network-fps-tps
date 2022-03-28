@@ -32,7 +32,7 @@ namespace Framework.Game.Client
     public class LocalPlayer : PhysicsPlayer
     {
         /// <inheritdoc />
-        public LocalPlayer(int id, IWorld world) : base(id, world)
+        public LocalPlayer() : base()
         {
         }
 

@@ -3,18 +3,16 @@
 Create an puppet player
 
 ```csharp
-public virtual PuppetPlayer CreatePuppetPlayer(int id, IWorld world)
+public virtual PuppetPlayer CreatePuppetPlayer(int id)
 ```
 
 | parameter | description |
 | --- | --- |
 | id |  |
-| world |  |
 
 ## See Also
 
 * class [PuppetPlayer](../PuppetPlayer.md)
-* interface [IWorld](../../Framework.Game/IWorld.md)
 * class [ClientWorld](../ClientWorld.md)
 * namespace [Framework.Game.Client](../../Framework.md)
 

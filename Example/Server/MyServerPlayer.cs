@@ -5,7 +5,7 @@ namespace Shooter.Server
 {
     public partial class MyServerPlayer : ServerPlayer
     {
-        public MyServerPlayer(int id, IWorld world) : base(id, world)
+        public MyServerPlayer() : base()
         {
             this.AvaiablePlayerComponents.Add("body", new AssignedComponent(
                 typeof(PlayerBodyComponent), "res://Assets/Player/PlayerBody.tscn"

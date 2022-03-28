@@ -40,7 +40,7 @@ namespace Framework.Physics
         /// <param name="serverVars"></param>
         /// <param name="inputs"></param>
         /// <param name="dt"></param>
-        public void Tick(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt);
+        public Vector3 Simulate(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt);
 
         /// <summary>
         /// The current velocity of the moveable object
@@ -74,11 +74,11 @@ namespace Framework.Physics
         private float crouchTime = 0f;
 
         /// <inheritdoc />
-        internal void Execute(float delta, Vector3 velocity)
+        internal void Execute(float delta, Vector3 executeVelocity)
         {
             //set crouching
             float couchLevel = 1.0f;
-            if (this.serverVars.Get<bool>("sv_crouching", true))
+            if (this.CanCrouch())
             {
                 couchLevel = delta * (inputs.GetInput("Crouch") ?
                     this.serverVars.Get<float>("sv_crouching_down_speed", 8.0f) :
@@ -86,16 +86,18 @@ namespace Framework.Physics
             }
 
             component.setCrouchingLevel(inputs.GetInput("Crouch") ? couchLevel * -1 : couchLevel);
-            component.Velocity = velocity;
-            component.Move(delta, velocity);
+            component.Velocity = executeVelocity;
+            component.Move(delta, executeVelocity);
         }
 
         /// <inheritdoc />
-        public void Tick(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt)
+        public Vector3 Simulate(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt)
         {
+            var processedVelocity = _velocity;
+
             if (component == null || inputs == null)
             {
-                return;
+                return Vector3.Zero;
             }
 
             this.inputs = inputs;
@@ -118,15 +120,15 @@ namespace Framework.Physics
 
             if (component.isOnGround())
             {
-                this.GroundMove(dt);
+                processedVelocity = this.GroundMove(dt, processedVelocity);
             }
             else if (!component.isOnGround())
-                this.AirMove(dt);
+            {
+                processedVelocity = this.AirMove(dt, processedVelocity);
+            }
 
             // Apply the final velocity to the character controller.
-            this.Execute(dt, Velocity);
-
-
+            this.Execute(dt, processedVelocity);
 
             transform = component.Transform;
 
@@ -140,20 +142,21 @@ namespace Framework.Physics
             }
 
             // HACK: Reset to zero when falling off the edge for now.
-
             if (transform.origin.y < -100)
             {
                 transform.origin = Vector3.Zero;
-                Velocity = Vector3.Zero;
+                processedVelocity = Vector3.Zero;
             }
 
             component.Transform = transform;
+            _velocity = processedVelocity;
+            return processedVelocity;
         }
 
         /// <inheritdoc />
-        private void ApplyFriction(float t, float dt)
+        internal Vector3 ApplyFriction(Vector3 processedVelocity, float t, float dt)
         {
-            Vector3 vec = Velocity; // Equivalent to: VectorCopy();
+            Vector3 vec = processedVelocity; // Equivalent to: VectorCopy();
             float speed;
             float newspeed;
             float control;
@@ -166,14 +169,10 @@ namespace Framework.Physics
             /* Only if the player is on the ground then apply friction */
             if (this.component.isOnGround())
             {
-                var deaccl = inputs.GetInput("Crouch") && this.serverVars.Get<bool>("sv_crouching", true)
-                ? this.serverVars.Get<float>("sv_crouching_deaccel", 4.0f) : this.serverVars.Get<float>("sv_walk_deaccel", 10f);
+                var deaccl = this.GetGroundDeaccelerationFactor();
 
                 control = speed < deaccl ? deaccl : speed;
-
-                var friction = (inputs.GetInput("Crouch") && this.serverVars.Get<bool>("sv_crouching", true) ?
-                this.serverVars.Get<float>("sv_crouching_friction", 3.0f) : this.serverVars.Get<float>("sv_walk_friction", 6.0f));
-
+                var friction = this.GetGroundFriction();
                 drop = control * friction * dt * t;
             }
 
@@ -183,8 +182,10 @@ namespace Framework.Physics
             if (speed > 0)
                 newspeed /= speed;
 
-            _velocity.x *= newspeed;
-            _velocity.z *= newspeed;
+            processedVelocity.x *= newspeed;
+            processedVelocity.z *= newspeed;
+
+            return processedVelocity;
         }
 
         /// <inheritdoc />
@@ -194,7 +195,7 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        internal void AirControl(Vector3 wishdir, float wishspeed, float dt)
+        internal Vector3 AirControl(Vector3 processedVelocity, Vector3 wishdir, float wishspeed, float dt)
         {
             float zspeed;
             float speed;
@@ -203,56 +204,162 @@ namespace Framework.Physics
 
             // Can't control movement if not moving forward or backward
             if (Mathf.Abs(inputs.ForwardBackwardAxis) < 0.001 || Mathf.Abs(wishspeed) < 0.001)
-                return;
-            zspeed = _velocity.y;
-            _velocity.y = 0;
-            /* Next two lines are equivalent to idTech's VectorNormalize() */
-            speed = _velocity.Length();
-            _velocity = _velocity.Normalized();
+                return processedVelocity;
 
-            dot = _velocity.Dot(wishdir);
+            zspeed = processedVelocity.y;
+            processedVelocity.y = 0;
+            /* Next two lines are equivalent to idTech's VectorNormalize() */
+            speed = processedVelocity.Length();
+            processedVelocity = processedVelocity.Normalized();
+
+            dot = processedVelocity.Dot(wishdir);
             k = 32;
-            k *= this.serverVars.Get<float>("sv_air_control", 0.3f) * dot * dot * dt;
+            k *= this.GetAirControl() * dot * dot * dt;
 
             // Change direction while slowing down
             if (dot > 0)
             {
-                _velocity.x = _velocity.x * speed + wishdir.x * k;
-                _velocity.y = _velocity.y * speed + wishdir.y * k;
-                _velocity.z = _velocity.z * speed + wishdir.z * k;
+                processedVelocity.x = processedVelocity.x * speed + wishdir.x * k;
+                processedVelocity.y = processedVelocity.y * speed + wishdir.y * k;
+                processedVelocity.z = processedVelocity.z * speed + wishdir.z * k;
 
-                _velocity = _velocity.Normalized();
+                processedVelocity = processedVelocity.Normalized();
             }
 
-            _velocity.x *= speed;
-            _velocity.y = zspeed; // Note this line
-            _velocity.z *= speed;
+            processedVelocity.x *= speed;
+            processedVelocity.y = zspeed; // Note this line
+            processedVelocity.z *= speed;
+            return processedVelocity;
         }
 
         /// <inheritdoc />
-        internal void AirMove(float dt)
+        internal Vector3 Accelerate(Vector3 processedVelocity, Vector3 wishdir, float wishspeed, float accel, float dt)
         {
+            float addspeed;
+            float accelspeed;
+            float currentspeed;
 
+            currentspeed = processedVelocity.Dot(wishdir);
+            addspeed = wishspeed - currentspeed;
+            if (addspeed <= 0)
+                return processedVelocity;
+            accelspeed = accel * dt * wishspeed;
+            if (accelspeed > addspeed)
+                accelspeed = addspeed;
+
+            processedVelocity.x += accelspeed * wishdir.x;
+            processedVelocity.z += accelspeed * wishdir.z;
+
+            return processedVelocity;
+        }
+
+        public virtual bool CanCrouch()
+        {
+            return this.serverVars.Get<bool>("sv_crouching", true);
+        }
+
+        public virtual float GetGroundFriction()
+        {
+            return (inputs.GetInput("Crouch") && this.CanCrouch() ?
+                    this.serverVars.Get<float>("sv_crouching_friction", 3.0f) : this.serverVars.Get<float>("sv_walk_friction", 6.0f));
+        }
+        public virtual float GetMovementSpeed()
+        {
+            return inputs.GetInput("Crouch") && this.CanCrouch()
+                  ? this.serverVars.Get<float>("sv_crouching_speed", 4.0f) : this.serverVars.Get<float>("sv_walk_speed", 7.0f);
+
+        }
+
+        public virtual float GetGroundDeaccelerationFactor()
+        {
+            return inputs.GetInput("Crouch") && this.CanCrouch()
+                 ? this.serverVars.Get<float>("sv_crouching_deaccel", 4.0f) : this.serverVars.Get<float>("sv_walk_deaccel", 10f);
+        }
+
+        public virtual float GetGroundAccelerationFactor()
+        {
+            return inputs.GetInput("Crouch") && this.CanCrouch()
+                ? this.serverVars.Get<float>("sv_crouching_accel", 4.0f) : this.serverVars.Get<float>("sv_walk_accel", 14f);
+        }
+
+        public virtual float GetAirAcceleration()
+        {
+            return this.serverVars.Get<float>("sv_air_accel", 12f);
+        }
+
+        public virtual float GetAirDecceleration()
+        {
+            return this.serverVars.Get<float>("sv_air_deaccel", 2f);
+        }
+
+        public virtual float GetGravity()
+        {
+            return this.serverVars.Get<float>("sv_gravity", 20f);
+        }
+
+        public bool isOnGround()
+        {
+            return component.isOnGround();
+        }
+
+        public virtual float GetAirControl()
+        {
+            return this.serverVars.Get<float>("sv_air_control", 0.3f);
+        }
+
+        /// <inheritdoc />
+        internal Vector3 GroundMove(float dt, Vector3 processedVelocity)
+        {
             Vector3 wishdir;
-            float wishvel = this.serverVars.Get<float>("sv_air_accel", 12f);
+
+            // Do not apply friction if the player is queueing up the next jump
+            if (!wishJump)
+                processedVelocity = ApplyFriction(processedVelocity, 1.0f, dt);
+            else
+                processedVelocity = ApplyFriction(processedVelocity, 0, dt);
+
+            wishdir = new Vector3(inputs.LeftRightAxis, 0, inputs.ForwardBackwardAxis);
+            wishdir = component.Transform.basis.Xform(wishdir);
+            wishdir = wishdir.Normalized();
+
+            var wishspeed = wishdir.Length();
+            var moveSpeed = GetMovementSpeed();
+
+            wishspeed *= moveSpeed;
+            processedVelocity = Accelerate(processedVelocity, wishdir, wishspeed, this.GetGroundAccelerationFactor(), dt);
+
+            // Reset the gravity velocity
+            processedVelocity.y = -this.GetGravity() * dt;
+
+            if (wishJump)
+            {
+                processedVelocity.y = this.serverVars.Get<float>("sv_jumpspeed", 6.5f);
+                wishJump = false;
+            }
+
+            return processedVelocity;
+        }
+
+        /// <inheritdoc />
+        internal Vector3 AirMove(float dt, Vector3 processedVelocity)
+        {
+            Vector3 wishdir;
+            float wishvel = this.GetAirAcceleration();
             float accel;
 
             wishdir = new Vector3(inputs.LeftRightAxis, 0, inputs.ForwardBackwardAxis);
             wishdir = component.Transform.basis.Xform(wishdir);
 
             float wishspeed = wishdir.Length();
-            float speed = inputs.GetInput("Crouch") && this.serverVars.Get<bool>("sv_crouching", true)
-                ? this.serverVars.Get<float>("sv_crouching_speed", 4.0f) : this.serverVars.Get<float>("sv_walk_speed", 7.0f);
-            wishspeed *= speed;
-
+            wishspeed *= this.GetMovementSpeed();
             wishdir = wishdir.Normalized();
 
             // CPM: Aircontrol
             float wishspeed2 = wishspeed;
-            if (_velocity.Dot(wishdir) < 0)
-                accel = this.serverVars.Get<float>("sv_air_deaccel", 2f);
+            if (processedVelocity.Dot(wishdir) < 0)
+                accel = this.GetAirDecceleration();
             else
-                accel = this.serverVars.Get<float>("sv_air_accel", 12f);
+                accel = this.GetAirAcceleration();
 
             // If the player is ONLY strafing left or right
             if (inputs.ForwardBackwardAxis == 0 && inputs.LeftRightAxis != 0)
@@ -263,70 +370,17 @@ namespace Framework.Physics
                 accel = this.serverVars.Get<float>("sv_strafe_accel", 50.0f);
             }
 
-            Accelerate(wishdir, wishspeed, accel, dt);
+            processedVelocity = Accelerate(processedVelocity, wishdir, wishspeed, accel, dt);
 
-            if (this.serverVars.Get<float>("sv_air_control", 0.3f) > 0)
-                AirControl(wishdir, wishspeed2, dt);
+            if (this.GetAirControl() > 0)
+                processedVelocity = AirControl(processedVelocity, wishdir, wishspeed2, dt);
             // !CPM: Aircontrol
 
             // Apply gravity
-            _velocity.y -= this.serverVars.Get<float>("sv_gravity", 20f) * dt;
+            processedVelocity.y -= this.GetGravity() * dt;
+
+            return processedVelocity;
         }
 
-        /// <inheritdoc />
-        internal void Accelerate(Vector3 wishdir, float wishspeed, float accel, float dt)
-        {
-            float addspeed;
-            float accelspeed;
-            float currentspeed;
-
-            currentspeed = _velocity.Dot(wishdir);
-            addspeed = wishspeed - currentspeed;
-            if (addspeed <= 0)
-                return;
-            accelspeed = accel * dt * wishspeed;
-            if (accelspeed > addspeed)
-                accelspeed = addspeed;
-
-            _velocity.x += accelspeed * wishdir.x;
-            _velocity.z += accelspeed * wishdir.z;
-        }
-
-        /// <inheritdoc />
-        internal void GroundMove(float dt)
-        {
-            Vector3 wishdir;
-
-            // Do not apply friction if the player is queueing up the next jump
-            if (!wishJump)
-                ApplyFriction(1.0f, dt);
-            else
-                ApplyFriction(0, dt);
-
-            wishdir = new Vector3(inputs.LeftRightAxis, 0, inputs.ForwardBackwardAxis);
-            wishdir = component.Transform.basis.Xform(wishdir);
-            wishdir = wishdir.Normalized();
-
-            var wishspeed = wishdir.Length();
-
-            float moveSpeed = inputs.GetInput("Crouch") && this.serverVars.Get<bool>("sv_crouching", true)
-             ? this.serverVars.Get<float>("sv_crouching_speed", 4.0f) : this.serverVars.Get<float>("sv_walk_speed", 7.0f);
-
-            wishspeed *= moveSpeed;
-
-            var accel = inputs.GetInput("Crouch") && this.serverVars.Get<bool>("sv_crouching", true)
-        ? this.serverVars.Get<float>("sv_crouching_accel", 4.0f) : this.serverVars.Get<float>("sv_walk_accel", 14f);
-
-            Accelerate(wishdir, wishspeed, accel, dt);
-
-            // Reset the gravity velocity
-            _velocity.y = -this.serverVars.Get<float>("sv_gravity", 20f) * dt;
-
-            if (wishJump)
-            {
-                _velocity.y = this.serverVars.Get<float>("sv_jumpspeed", 6.5f);
-                wishJump = false;
-            }
-        }
     }
 }

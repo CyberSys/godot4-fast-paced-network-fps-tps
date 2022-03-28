@@ -11,7 +11,7 @@ public interface IMovementProcessor
 | name | description |
 | --- | --- |
 | [Velocity](IMovementProcessor/Velocity.md) { get; set; } | The current velocity of the moveable object |
-| [Tick](IMovementProcessor/Tick.md)(…) | Calls on each tick for produce movement |
+| [Simulate](IMovementProcessor/Simulate.md)(…) | Calls on each tick for produce movement |
 
 ## See Also
 

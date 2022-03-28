@@ -8,7 +8,6 @@ public abstract class NetworkPlayer : Player
 
 | name | description |
 | --- | --- |
-| [NetworkPlayer](NetworkPlayer/NetworkPlayer.md)(…) |  |
 | virtual [ApplyNetworkState](NetworkPlayer/ApplyNetworkState.md)(…) |  |
 | [SetPlayerInputs](NetworkPlayer/SetPlayerInputs.md)(…) |  |
 | virtual [ToNetworkState](NetworkPlayer/ToNetworkState.md)() |  |
@@ -17,6 +16,7 @@ public abstract class NetworkPlayer : Player
 
 | name | description |
 | --- | --- |
+| [NetworkPlayer](NetworkPlayer/NetworkPlayer.md)() | The default constructor. |
 | [inputs](NetworkPlayer/inputs.md) |  |
 
 ## See Also

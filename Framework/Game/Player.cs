@@ -46,7 +46,7 @@ namespace Framework.Game
         public PlayerTeam Team { get; set; }
 
         /// <inheritdoc />
-        public IWorld GameWorld { get; private set; }
+        public IWorld GameWorld { get; set; }
 
         /// <inheritdoc />
         private readonly ComponentRegistry _components;
@@ -63,24 +63,12 @@ namespace Framework.Game
         /// <summary>
         /// Base player class
         /// </summary>
-        /// <param name="id">Server remote id</param>
-        /// <param name="world">World instance</param>
-        /// <returns></returns>
-        public Player(int id, IWorld world) : base()
-        {
-            this.Id = id;
-            this.GameWorld = world;
-            this._components = new ComponentRegistry(this);
-        }
-
-        /// <summary>
-        /// Base player class
-        /// </summary>
         /// <returns></returns>
         public Player() : base()
         {
-
+            this._components = new ComponentRegistry(this);
         }
+
         /// <inheritdoc />
         public virtual void Tick(float delta)
         {

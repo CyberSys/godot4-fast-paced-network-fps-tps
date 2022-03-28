@@ -10,7 +10,7 @@ public class PuppetPlayer : PhysicsPlayer
 
 | name | description |
 | --- | --- |
-| [PuppetPlayer](PuppetPlayer/PuppetPlayer.md)(…) |  |
+| [PuppetPlayer](PuppetPlayer/PuppetPlayer.md)() | The default constructor. |
 | override [ApplyNetworkState](PuppetPlayer/ApplyNetworkState.md)(…) |  |
 
 ## See Also

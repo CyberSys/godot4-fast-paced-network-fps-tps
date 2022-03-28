@@ -10,7 +10,7 @@ public abstract class PhysicsPlayer : NetworkPlayer
 
 | name | description |
 | --- | --- |
-| [PhysicsPlayer](PhysicsPlayer/PhysicsPlayer.md)(…) |  |
+| [PhysicsPlayer](PhysicsPlayer/PhysicsPlayer.md)() | The default constructor. |
 | [Body](PhysicsPlayer/Body.md) { get; set; } | The body attachted to the physics player simulation (eg. kinematic, rigid..) |
 | [MovementProcessor](PhysicsPlayer/MovementProcessor.md) { get; set; } | The movement processor for physics player movement |
 | override [ApplyNetworkState](PhysicsPlayer/ApplyNetworkState.md)(…) | Apply an network state |

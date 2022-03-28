@@ -32,7 +32,7 @@ namespace Framework.Game.Server
     public class ServerPlayer : PhysicsPlayer
     {
         /// <inheritdoc />
-        public ServerPlayer(int id, IWorld world) : base(id, world)
+        public ServerPlayer() : base()
         {
         }
 

@@ -1,7 +1,7 @@
 # Player.GameWorld property
 
 ```csharp
-public IWorld GameWorld { get; }
+public IWorld GameWorld { get; set; }
 ```
 
 ## See Also

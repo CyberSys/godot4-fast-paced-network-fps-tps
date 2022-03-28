@@ -1,12 +1,13 @@
 # ServerPlayer constructor
 
+The default constructor.
+
 ```csharp
-public ServerPlayer(int id, IWorld world)
+public ServerPlayer()
 ```
 
 ## See Also
 
-* interface [IWorld](../../Framework.Game/IWorld.md)
 * class [ServerPlayer](../ServerPlayer.md)
 * namespace [Framework.Game.Server](../../Framework.md)
 

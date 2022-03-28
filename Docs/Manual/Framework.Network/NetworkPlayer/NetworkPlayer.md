@@ -1,12 +1,13 @@
 # NetworkPlayer constructor
 
+The default constructor.
+
 ```csharp
-public NetworkPlayer(int id, IWorld world)
+protected NetworkPlayer()
 ```
 
 ## See Also
 
-* interface [IWorld](../../Framework.Game/IWorld.md)
 * class [NetworkPlayer](../NetworkPlayer.md)
 * namespace [Framework.Network](../../Framework.md)
 

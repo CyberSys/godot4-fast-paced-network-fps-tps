@@ -1,9 +1,9 @@
-# IMovementProcessor.Tick method
+# IMovementProcessor.Simulate method
 
 Calls on each tick for produce movement
 
 ```csharp
-public void Tick(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt)
+public Vector3 Simulate(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt)
 ```
 
 | parameter | description |

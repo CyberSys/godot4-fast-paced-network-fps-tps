@@ -6,7 +6,7 @@ namespace Shooter.Client
 {
     public partial class MyLocalPlayer : LocalPlayer
     {
-        public MyLocalPlayer(int id, IWorld world) : base(id, world)
+        public MyLocalPlayer() : base()
         {
             this.AvaiablePlayerComponents.Add("body", new AssignedComponent(
                 typeof(PlayerBodyComponent), "res://Assets/Player/PlayerBody.tscn"

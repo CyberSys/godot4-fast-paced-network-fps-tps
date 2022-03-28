@@ -126,9 +126,10 @@ namespace Framework.Game.Server
         {
             if (!this._players.ContainsKey(clientId))
             {
-                T serverPlayer = Activator.CreateInstance(typeof(T), new object[] { clientId, this }) as T;
+                T serverPlayer = Activator.CreateInstance(typeof(T)) as T;
                 serverPlayer.Name = clientId.ToString();
                 serverPlayer.Id = clientId;
+                serverPlayer.GameWorld = this;
                 serverPlayer.Team = PlayerTeam.SPECTATOR;
                 serverPlayer.State = PlayerConnectionState.Connected;
 

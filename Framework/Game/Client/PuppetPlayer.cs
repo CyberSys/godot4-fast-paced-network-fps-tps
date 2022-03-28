@@ -30,14 +30,13 @@ using System.Collections.Generic;
 
 namespace Framework.Game.Client
 {
-
     /// <summary>
     /// The base class of an puppet player
     /// </summary>
     public class PuppetPlayer : PhysicsPlayer
     {
         /// <inheritdoc />
-        public PuppetPlayer(int id, IWorld world) : base(id, world)
+        public PuppetPlayer() : base()
         {
         }
 

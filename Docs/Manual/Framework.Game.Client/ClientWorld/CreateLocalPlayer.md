@@ -3,18 +3,16 @@
 Create an local player
 
 ```csharp
-public virtual LocalPlayer CreateLocalPlayer(int id, IWorld world)
+public virtual LocalPlayer CreateLocalPlayer(int id)
 ```
 
 | parameter | description |
 | --- | --- |
 | id |  |
-| world |  |
 
 ## See Also
 
 * class [LocalPlayer](../LocalPlayer.md)
-* interface [IWorld](../../Framework.Game/IWorld.md)
 * class [ClientWorld](../ClientWorld.md)
 * namespace [Framework.Game.Client](../../Framework.md)
 

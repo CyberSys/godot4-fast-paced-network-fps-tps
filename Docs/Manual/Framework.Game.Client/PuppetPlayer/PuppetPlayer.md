@@ -1,12 +1,13 @@
 # PuppetPlayer constructor
 
+The default constructor.
+
 ```csharp
-public PuppetPlayer(int id, IWorld world)
+public PuppetPlayer()
 ```
 
 ## See Also
 
-* interface [IWorld](../../Framework.Game/IWorld.md)
 * class [PuppetPlayer](../PuppetPlayer.md)
 * namespace [Framework.Game.Client](../../Framework.md)
 

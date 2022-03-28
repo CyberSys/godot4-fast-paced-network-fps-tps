@@ -6,7 +6,7 @@ namespace Shooter.Client
 {
     public partial class MyPuppetPlayer : PuppetPlayer
     {
-        public MyPuppetPlayer(int id, IWorld world) : base(id, world)
+        public MyPuppetPlayer() : base()
         {
             this.AvaiablePlayerComponents.Add("body", new AssignedComponent(
                 typeof(PlayerBodyComponent), "res://Assets/Player/PlayerBody.tscn"

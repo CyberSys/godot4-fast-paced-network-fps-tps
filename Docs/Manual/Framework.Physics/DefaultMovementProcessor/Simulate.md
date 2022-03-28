@@ -1,7 +1,7 @@
-# DefaultMovementProcessor.Tick method
+# DefaultMovementProcessor.Simulate method
 
 ```csharp
-public void Tick(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt)
+public Vector3 Simulate(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt)
 ```
 
 ## See Also

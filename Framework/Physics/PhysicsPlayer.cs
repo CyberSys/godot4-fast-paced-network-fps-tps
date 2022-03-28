@@ -34,7 +34,7 @@ namespace Framework.Physics
     public abstract partial class PhysicsPlayer : NetworkPlayer
     {
         /// <inheritdoc />
-        public PhysicsPlayer(int id, IWorld world) : base(id, world)
+        public PhysicsPlayer() : base()
         {
         }
 
@@ -121,7 +121,7 @@ namespace Framework.Physics
 
             if (Body != null)
             {
-                this.MovementProcessor.Tick(Body, this.GameWorld.ServerVars, this.inputs, delta);
+                this.MovementProcessor.Simulate(Body, this.GameWorld.ServerVars, this.inputs, delta);
             }
         }
     }
