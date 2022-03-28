@@ -14,8 +14,6 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Backwards reconciliation and replay
 - Real-time adjustment of client simulation speed to optimize server's input buffer (Overwatch's method).
 - Server-side lag compensation
-- (TODO) Hitscan weapons
-- (TODO) Projectile weapons
 - Full godot server implementation with disabled 3d
 - Master and multi clients in one project (split screen)
 - Optimized netcode (Quake, Overwatch, Valve methods)
@@ -27,10 +25,29 @@ Check [documentation here](Docs/Manual/Framework.md)
 # Physics
 - Full implemented TPS and FPS Movement (Quake style)
 - Crouching
-- Customizeable movement
+- Customizeable and extendable movement
 - (TODO) Shifting
 - (TODO) Lieing
 - (TODO) Animation network sync
+
+# Extensions
+- (TODO) Hitscan weapons
+- (TODO) Projectile weapons
+- (TODO) Weapon Handler
+- (TODO) Vehicle Handler
+- (TODO) Bot Handler 
+
+# Structure
+- ServerLogic (Viewport) => Root Node for Server
+   - ServerWorld => For handling map and players
+      - ServerLevel => Contains your level asset
+      - ServerGameRule => Contains the game rules logics
+      - ServerPlayer -> Server player class
+- ClientLogic (Viewport) => Root Node for Client
+   - ClientWorld => For handling map and players
+      - ClientLevel => Contains your level asset
+      - LocalPlayer => Contains the local player
+      - PuppetPlayer => Contains the puppet player
 
 # Helpers
 - Component system (for extending characters and game world)
