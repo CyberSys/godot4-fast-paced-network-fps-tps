@@ -10,8 +10,8 @@ public abstract class SpawnPoint : Area3D
 
 | name | description |
 | --- | --- |
-| [inUsage](SpawnPoint/inUsage.md) | Set or get the usage of the spawnpoint |
-| [isFree](SpawnPoint/isFree.md)() |  |
+| [inUsage](SpawnPoint/inUsage.md) { get; set; } | Set or get the usage of the spawnpoint |
+| [isFree](SpawnPoint/isFree.md)() | Returns if the spawn point are free and not in use |
 | override [_EnterTree](SpawnPoint/_EnterTree.md)() |  |
 
 ## Protected Members

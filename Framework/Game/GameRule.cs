@@ -1,13 +1,4 @@
 using System.Linq;
-using Framework.Game;
-using System;
-using System.Collections.Generic;
-using LiteNetLib;
-using Framework.Utils;
-using Framework.Network.Commands;
-using Framework.Network;
-using Framework.Network.Services;
-using Framework.Input;
 using Framework.Physics;
 using Framework.Game.Server;
 using System.Reflection;
@@ -89,7 +80,7 @@ namespace Framework.Game
                 }
             }
         }
-        private void CreateComponent(IPlayer player, RegisteredComonent registeredComonent)
+        private void CreateComponent(IPlayer player, AssignedComponent registeredComonent)
         {
             var method = typeof(ComponentRegistry).GetMethods().Single(
                        m =>
@@ -109,7 +100,7 @@ namespace Framework.Game
             }
         }
 
-        private void CreateComponentWithResource(IPlayer player, RegisteredComonent registeredComonent)
+        private void CreateComponentWithResource(IPlayer player, AssignedComponent registeredComonent)
         {
             var method = typeof(ComponentRegistry).GetMethods().Single(
                        m =>

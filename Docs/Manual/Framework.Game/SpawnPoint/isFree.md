@@ -1,5 +1,7 @@
 # SpawnPoint.isFree method
 
+Returns if the spawn point are free and not in use
+
 ```csharp
 public bool isFree()
 ```

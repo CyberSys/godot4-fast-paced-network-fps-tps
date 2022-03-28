@@ -4,7 +4,6 @@ Godot 4 Fast-Paced (Authoritative Server) Game + Network Framework for FPS and T
 
 Its in process (several changes on architecture incoming)!
 In the end it should be a complete framework including an open-source shooter. Including models.
-
 Totaly written in c#. No gdscript, because its sucks hard for oop.
 
 Check [documentation here](Docs/Manual/Framework.md)
@@ -20,10 +19,15 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Master server in godot (without 3d)
 - Master and multi clients in one project (split screen)
 - Optimized netcode (Quake, Overwatch, Valve methods)
+- Remote de(activation) of player components
+- Ready to use godot nodes (ex.  ServerPlayer,  ServerWorld, ServerLogic..)
+- Server variable sharing between server and client (ServerVars)
+- (TODO) RCON Implementation for Server Management
 
 # Physics
-- Full implemented TPS and FPS Movement (Quake Like)
+- Full implemented TPS and FPS Movement (Quake style)
 - Crouching
+- Customizeable movement
 - (TODO) Shifting
 - (TODO) Lieing
 - (TODO) Animation network sync

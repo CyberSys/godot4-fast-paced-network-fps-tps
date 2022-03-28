@@ -1,7 +1,7 @@
-# World.level field
+# World.Level property
 
 ```csharp
-protected ILevel level;
+public ILevel Level { get; }
 ```
 
 ## See Also

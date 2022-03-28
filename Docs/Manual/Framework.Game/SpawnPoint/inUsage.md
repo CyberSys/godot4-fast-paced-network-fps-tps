@@ -1,9 +1,9 @@
-# SpawnPoint.inUsage field
+# SpawnPoint.inUsage property
 
 Set or get the usage of the spawnpoint
 
 ```csharp
-public bool inUsage;
+public bool inUsage { get; set; }
 ```
 
 ## See Also

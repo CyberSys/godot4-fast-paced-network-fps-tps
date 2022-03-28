@@ -10,21 +10,55 @@ using Framework.Game.Server;
 
 namespace Framework.Game
 {
-    public interface ISimulationAdjuster
-    {
-        float AdjustedInterval { get; }
-    }
-
-    public class NoopAdjuster : ISimulationAdjuster
-    {
-        public float AdjustedInterval { get; } = 1.0f;
-    }
-
     /// <summary>
     /// The core world class for server and client worlds
     /// </summary>
     public abstract partial class World : Node3D, IWorld
     {
+        /// <inheritdoc />
+        public uint WorldTick { get; protected set; } = 0;
+
+        /// <inheritdoc />
+        internal readonly Dictionary<int, IPlayer> _players = new Dictionary<int, IPlayer>();
+
+        /// <inheritdoc />
+        public Dictionary<int, IPlayer> Players => _players;
+
+        /// <inheritdoc />
+        internal string _resourceWorldPath { get; set; }
+
+        /// <inheritdoc />
+        public string ResourceWorldPath => _resourceWorldPath;
+
+        internal virtual void PostUpdate() { }
+
+        private InterpolationController interpController = new InterpolationController();
+
+        internal Node playerHolder = new Node();
+        internal GameLogic gameInstance = null;
+
+        private float accumulator;
+
+
+        /// <summary>
+        /// Adjust the tick rate of the server
+        /// </summary>
+        /// <returns></returns>
+        public ISimulationAdjuster simulationAdjuster { get; set; } = new ServerSimulationAdjuster();
+
+        internal ILevel level;
+
+        /// <inheritdoc />
+        public ILevel Level => level;
+
+        internal bool isInit = false;
+
+        internal ServerVars _serverVars = new ServerVars();
+
+        /// <inheritdoc />
+        public ServerVars ServerVars => _serverVars;
+
+
         /// <inheritdoc />
         public override void _Notification(int what)
         {
@@ -61,39 +95,6 @@ namespace Framework.Game
             this.AddChild(playerHolder);
         }
 
-        /// <inheritdoc />
-        public uint WorldTick { get; protected set; } = 0;
-
-        /// <inheritdoc />
-        internal readonly Dictionary<int, IPlayer> _players = new Dictionary<int, IPlayer>();
-
-        /// <inheritdoc />
-        public Dictionary<int, IPlayer> Players => _players;
-
-        /// <inheritdoc />
-        internal string _resourceWorldPath { get; set; }
-
-        /// <inheritdoc />
-        public string ResourceWorldPath => _resourceWorldPath;
-
-        internal virtual void PostUpdate() { }
-
-        private InterpolationController interpController = new InterpolationController();
-
-        protected Node playerHolder = new Node();
-        protected AsyncLoader loader = new AsyncLoader();
-        protected GameLogic gameInstance = null;
-        private float accumulator;
-        protected float adjustedInterval = 1.0f;
-        protected ISimulationAdjuster simulationAdjuster = new NoopAdjuster();
-
-        protected ILevel level;
-        public ILevel Level => level;
-
-        protected bool isInit = false;
-
-        protected ServerVars _serverVars = new ServerVars();
-        public ServerVars ServerVars => _serverVars;
 
 
         /// <inheritdoc />
@@ -133,8 +134,6 @@ namespace Framework.Game
         /// <inheritdoc />
         internal virtual void InternalProcess(float delta)
         {
-            //async loader
-            this.loader.Tick();
         }
 
         /// <inheritdoc />

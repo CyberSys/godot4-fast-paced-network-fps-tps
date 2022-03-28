@@ -8,7 +8,7 @@ namespace Shooter.Client
     {
         public MyPuppetPlayer(int id, IWorld world) : base(id, world)
         {
-            this.AvaiablePlayerComponents.Add("body", new RegisteredComonent(
+            this.AvaiablePlayerComponents.Add("body", new AssignedComponent(
                 typeof(PlayerBodyComponent), "res://Assets/Player/PlayerBody.tscn"
             ));
         }

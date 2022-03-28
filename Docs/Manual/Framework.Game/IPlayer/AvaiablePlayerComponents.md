@@ -3,12 +3,12 @@
 Contains possible components
 
 ```csharp
-public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents { get; }
+public Dictionary<string, AssignedComponent> AvaiablePlayerComponents { get; }
 ```
 
 ## See Also
 
-* struct [RegisteredComonent](../RegisteredComonent.md)
+* struct [AssignedComponent](../AssignedComponent.md)
 * interface [IPlayer](../IPlayer.md)
 * namespace [Framework.Game](../../Framework.md)
 

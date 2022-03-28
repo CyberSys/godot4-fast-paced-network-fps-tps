@@ -1,12 +1,14 @@
-# World.simulationAdjuster field
+# World.simulationAdjuster property
+
+Adjust the tick rate of the server
 
 ```csharp
-protected ISimulationAdjuster simulationAdjuster;
+public ISimulationAdjuster simulationAdjuster { get; set; }
 ```
 
 ## See Also
 
-* interface [ISimulationAdjuster](../ISimulationAdjuster.md)
+* interface [ISimulationAdjuster](../../Framework.Network/ISimulationAdjuster.md)
 * class [World](../World.md)
 * namespace [Framework.Game](../../Framework.md)
 

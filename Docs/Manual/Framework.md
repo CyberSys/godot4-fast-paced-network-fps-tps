@@ -24,18 +24,16 @@
 
 | public type | description |
 | --- | --- |
+| struct [AssignedComponent](./Framework.Game/AssignedComponent.md) | An assignable component for remote component injection |
 | class [GameLogic](./Framework.Game/GameLogic.md) | Basic game logic component |
 | class [GameRule](./Framework.Game/GameRule.md) | Basic class for an game rule |
 | interface [IGameLogic](./Framework.Game/IGameLogic.md) | Required interface for game logic |
 | interface [IGameRule](./Framework.Game/IGameRule.md) | Required interface for game rules |
 | interface [ILevel](./Framework.Game/ILevel.md) | Required interface for levels |
 | interface [IPlayer](./Framework.Game/IPlayer.md) | Required interface for players |
-| interface [ISimulationAdjuster](./Framework.Game/ISimulationAdjuster.md) |  |
 | interface [IWorld](./Framework.Game/IWorld.md) | The required interface for an game world |
 | abstract class [Level](./Framework.Game/Level.md) | A basic class for an game level |
-| class [NoopAdjuster](./Framework.Game/NoopAdjuster.md) |  |
 | abstract class [Player](./Framework.Game/Player.md) | The general player class |
-| struct [RegisteredComonent](./Framework.Game/RegisteredComonent.md) |  |
 | abstract class [SpawnPoint](./Framework.Game/SpawnPoint.md) | The gernal spawn point class |
 | abstract class [World](./Framework.Game/World.md) | The core world class for server and client worlds |
 
@@ -74,9 +72,11 @@
 | public type | description |
 | --- | --- |
 | class [ClientSimulationAdjuster](./Framework.Network/ClientSimulationAdjuster.md) |  |
+| interface [ISimulationAdjuster](./Framework.Network/ISimulationAdjuster.md) | Adjust the server or client tickrate |
 | abstract class [NetworkPlayer](./Framework.Network/NetworkPlayer.md) |  |
 | abstract class [NetworkService](./Framework.Network/NetworkService.md) |  |
 | enum [PlayerConnectionState](./Framework.Network/PlayerConnectionState.md) |  |
+| class [ServerSimulationAdjuster](./Framework.Network/ServerSimulationAdjuster.md) | The default simulation adapter for a server instance |
 
 ## Framework.Network.Commands namespace
 

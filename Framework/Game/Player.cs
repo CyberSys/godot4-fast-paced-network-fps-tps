@@ -71,10 +71,10 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        private readonly Dictionary<string, RegisteredComonent> avaiableComponents = new Dictionary<string, RegisteredComonent>();
+        private readonly Dictionary<string, AssignedComponent> avaiableComponents = new Dictionary<string, AssignedComponent>();
 
         /// <inheritdoc />
-        public Dictionary<string, RegisteredComonent> AvaiablePlayerComponents => avaiableComponents;
+        public Dictionary<string, AssignedComponent> AvaiablePlayerComponents => avaiableComponents;
 
         /// <inheritdoc />
         public string[] RequiredComponents { get; set; } = new string[0];

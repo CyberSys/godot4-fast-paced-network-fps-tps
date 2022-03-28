@@ -10,15 +10,20 @@ namespace Framework.Game
         /// <summary>
         /// Set or get the usage of the spawnpoint
         /// </summary>
-        public bool inUsage = false;
+        public bool inUsage { get; set; } = false;
 
         private int enteredBodies = 0;
 
+        /// <summary>
+        /// Returns if the spawn point are free and not in use
+        /// </summary>
+        /// <returns></returns>
         public bool isFree()
         {
             return (enteredBodies == 0);
         }
 
+        /// <inheritdoc />
         public override void _EnterTree()
         {
             base._EnterTree();

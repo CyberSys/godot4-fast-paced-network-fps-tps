@@ -14,6 +14,7 @@ public abstract class World : Node3D, IWorld
 | [Players](World/Players.md) { get; } |  |
 | [ResourceWorldPath](World/ResourceWorldPath.md) { get; } |  |
 | [ServerVars](World/ServerVars.md) { get; } |  |
+| [simulationAdjuster](World/simulationAdjuster.md) { get; set; } | Adjust the tick rate of the server |
 | [WorldTick](World/WorldTick.md) { get; protected set; } |  |
 | [Destroy](World/Destroy.md)() |  |
 | virtual [Init](World/Init.md)(…) |  |
@@ -28,14 +29,6 @@ public abstract class World : Node3D, IWorld
 | name | description |
 | --- | --- |
 | [World](World/World.md)() | The default constructor. |
-| [adjustedInterval](World/adjustedInterval.md) |  |
-| [gameInstance](World/gameInstance.md) |  |
-| [isInit](World/isInit.md) |  |
-| [level](World/level.md) |  |
-| [loader](World/loader.md) |  |
-| [playerHolder](World/playerHolder.md) |  |
-| [simulationAdjuster](World/simulationAdjuster.md) |  |
-| [_serverVars](World/_serverVars.md) |  |
 
 ## See Also
 
