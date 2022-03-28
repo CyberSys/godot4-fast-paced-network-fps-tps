@@ -7,6 +7,8 @@ In the end it should be a complete framework including an open-source shooter. I
 
 Totaly written in c#. No gdscript, because its sucks hard for oop.
 
+Check [documentation here](Docs/Manual/Framework.md)
+
 # Network features
 - Client-side prediction of player entities
 - Client-side interpolation of remote entities
