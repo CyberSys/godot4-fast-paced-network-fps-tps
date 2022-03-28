@@ -64,7 +64,6 @@
 | interface [IPlayerInput](./Framework.Input/IPlayerInput.md) |  |
 | class [PlayerInputAttribute](./Framework.Input/PlayerInputAttribute.md) |  |
 | class [PlayerInputProcessor](./Framework.Input/PlayerInputProcessor.md) |  |
-| [Flags] enum [PlayerKeys](./Framework.Input/PlayerKeys.md) |  |
 | struct [TickInput](./Framework.Input/TickInput.md) |  |
 
 ## Framework.Network namespace
