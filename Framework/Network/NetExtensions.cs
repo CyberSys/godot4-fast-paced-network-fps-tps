@@ -26,14 +26,18 @@ using System;
 
 namespace Framework
 {
+    /// <inheritdoc />
     public static class NetExtensions
     {
         private const float QUAT_FLOAT_PRECISION_MULT = 32767f;
+
+        /// <inheritdoc />
         public static T ToEnum<T>(this string enumString)
         {
             return (T)Enum.Parse(typeof(T), enumString);
         }
 
+        /// <inheritdoc />
         public static void PutArray<T>(this NetDataWriter writer, T[] array) where T : INetSerializable
         {
             writer.Put((ushort)array.Length);
@@ -43,6 +47,7 @@ namespace Framework
             }
         }
 
+        /// <inheritdoc />
         public static T[] GetArray<T>(this NetDataReader reader) where T : INetSerializable, new()
         {
             var len = reader.GetUShort();
@@ -54,37 +59,43 @@ namespace Framework
             return array;
         }
 
+        /// <inheritdoc />
         public static void Put(this NetDataWriter writer, Quaternion quaternion)
         {
             SerializeQuaternion(writer, quaternion);
         }
 
+        /// <inheritdoc />
         public static void Put(this NetDataWriter writer, Vector3 vector)
         {
             SerializeVector3(writer, vector);
         }
 
+        /// <inheritdoc />
         public static void Put(this NetDataWriter writer, Dictionary<string, string> dic)
         {
             SerializeStringDictonary(writer, dic);
         }
 
-
-
+        /// <inheritdoc />
         public static Vector3 GetVector3(this NetDataReader reader)
         {
             return DeserializeVector3(reader);
         }
+
+        /// <inheritdoc />
         public static Dictionary<string, string> GetDictonaryString(this NetDataReader reader)
         {
             return DeserializeStringDictonary(reader);
         }
 
+        /// <inheritdoc />
         public static Quaternion GetQuaternion(this NetDataReader reader)
         {
             return DeserializeQuaternion(reader);
         }
 
+        /// <inheritdoc />
         public static void SerializeVector3(NetDataWriter writer, Vector3 vector)
         {
             writer.Put(vector.x);
@@ -92,6 +103,7 @@ namespace Framework
             writer.Put(vector.z);
         }
 
+        /// <inheritdoc />
         public static Vector3 DeserializeVector3(NetDataReader reader)
         {
             Vector3 v;
@@ -101,6 +113,7 @@ namespace Framework
             return v;
         }
 
+        /// <inheritdoc />
         public static void SerializeStringDictonary(NetDataWriter writer, Dictionary<string, string> dic)
         {
             if (dic != null)
@@ -119,7 +132,7 @@ namespace Framework
             }
         }
 
-
+        /// <inheritdoc />
         public static Dictionary<string, string> DeserializeStringDictonary(NetDataReader reader)
         {
             var dictonary = new Dictionary<string, string>();
@@ -132,6 +145,7 @@ namespace Framework
             return dictonary;
         }
 
+        /// <inheritdoc />
         public static void SerializeQuaternion(NetDataWriter writer, Quaternion quaternion)
         {
             // Utilize "Smallest three" strategy.
@@ -189,6 +203,7 @@ namespace Framework
             writer.Put(c);
         }
 
+        /// <inheritdoc />
         public static Quaternion DeserializeQuaternion(NetDataReader reader)
         {
             // Read values from the wire and map back to normal float precision.
@@ -214,6 +229,4 @@ namespace Framework
             }
         }
     }
-
-
 }

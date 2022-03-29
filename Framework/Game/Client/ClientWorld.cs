@@ -83,6 +83,12 @@ namespace Framework.Game.Client
             this.netService = this.gameInstance.Services.Get<ClientNetworkService>();
             this.netService.SubscribeSerialisable<WorldHeartbeat>(HandleWorldState);
             this.netService.SubscribeSerialisable<ClientInitializer>(InitWorld);
+            this.netService.SubscribeSerialisable<ServerVarUpdate>(UpdateWorld);
+        }
+
+        private void UpdateWorld(ServerVarUpdate cmd, NetPeer peer)
+        {
+            this._serverVars = new VarsCollection(cmd.ServerVars);
         }
 
         private void InitWorld(ClientInitializer cmd, NetPeer peer)
@@ -99,7 +105,7 @@ namespace Framework.Game.Client
         }
 
         /// <inheritdoc />
-        public override void Init(VarsCollection serverVars, uint initalWorldTick)
+        internal override void Init(VarsCollection serverVars, uint initalWorldTick)
         {
             base.Init(serverVars, 0);
 

@@ -1,6 +1,6 @@
 # Vars structure
 
-Core class for server variables
+An dictonary for settings (vars)
 
 ```csharp
 public struct Vars : INetSerializable

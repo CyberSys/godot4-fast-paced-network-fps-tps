@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Thirdparty\LiteNetLib\LiteNetLib.csproj" />
     <ProjectReference Include="..\Thirdparty\PriorityQueue\Priority Queue.csproj" />
+    <ProjectReference Include="..\Thirdparty\Rcon\RCONServerLib\RCONServerLib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GodotSharp">

@@ -35,8 +35,8 @@
 | abstract class [Level](./Framework.Game/Level.md) | A basic class for an game level |
 | abstract class [Player](./Framework.Game/Player.md) | The general player class |
 | abstract class [SpawnPoint](./Framework.Game/SpawnPoint.md) | The gernal spawn point class |
-| struct [Vars](./Framework.Game/Vars.md) | Core class for server variables |
-| class [VarsCollection](./Framework.Game/VarsCollection.md) |  |
+| struct [Vars](./Framework.Game/Vars.md) | An dictonary for settings (vars) |
+| class [VarsCollection](./Framework.Game/VarsCollection.md) | An collection of vars and config files |
 | abstract class [World](./Framework.Game/World.md) | The core world class for server and client worlds |
 
 ## Framework.Game.Client namespace
@@ -89,6 +89,7 @@
 | struct [PlayerState](./Framework.Network.Commands/PlayerState.md) | The player states structures Contains all player realted informations eg. position, rotation, velocity |
 | struct [PlayerUpdate](./Framework.Network.Commands/PlayerUpdate.md) |  |
 | struct [ServerInitializer](./Framework.Network.Commands/ServerInitializer.md) |  |
+| struct [ServerVarUpdate](./Framework.Network.Commands/ServerVarUpdate.md) |  |
 | struct [WorldHeartbeat](./Framework.Network.Commands/WorldHeartbeat.md) | The world heartbeat structure for network syncronisation |
 
 ## Framework.Network.Services namespace

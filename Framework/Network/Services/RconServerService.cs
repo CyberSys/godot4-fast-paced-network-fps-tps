@@ -19,36 +19,86 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
+using RCONServerLib;
+using RCONServerLib.Utils;
+using System.Net;
+using System.Text;
 using Godot;
-using LiteNetLib;
-using Framework.Network;
-using Framework;
-
 namespace Framework.Network.Services
 {
     public class RconServerService : IService
     {
+        [Signal]
+        public event ServerStartedHandler ServerStarted;
+
+        public delegate void ServerStartedHandler(CommandManager manager);
+
+        public const int RconPort = 27020;
+
         /// <inheritdoc />
         public void Update(float delta)
         {
 
         }
+
         /// <inheritdoc />
         public void Render(float delta)
         {
 
         }
 
+        private RemoteConServer server;
+
+        public CommandManager Commands => server.CommandManager;
+
         /// <inheritdoc />
         public void Register()
         {
+            var server = new RemoteConServer(IPAddress.Any, RconPort)
+            {
+                SendAuthImmediately = true,
+                Debug = true
+            };
+
+            server.CommandManager.Add("help", "(command)", "Shows this help", (cmd, arguments) =>
+            {
+                if (arguments.Count == 1)
+                {
+                    var helpCmdStr = arguments[0];
+                    var helpCmd = server.CommandManager.GetCommand(helpCmdStr);
+                    if (helpCmd == null)
+                        return "Command not found.";
+
+                    return string.Format("{0} - {1}", helpCmd.Name, helpCmd.Description);
+                }
+
+                var sb = new StringBuilder();
+
+                var all = server.CommandManager.Commands.Count;
+                var i = 0;
+                foreach (var command in server.CommandManager.Commands)
+                {
+                    if (command.Value.Usage == "")
+                        sb.AppendFormat("{0}", command.Value.Name);
+                    else
+                        sb.AppendFormat("{0} {1}", command.Value.Name, command.Value.Usage);
+                    if (i < all)
+                        sb.Append(", ");
+
+                    i++;
+                }
+
+                return sb.ToString();
+            });
+
+            server.StartListening();
+            ServerStarted?.Invoke(server.CommandManager);
         }
 
         /// <inheritdoc />
         public virtual void Unregister()
         {
+            this.server?.StopListening();
         }
     }
 }

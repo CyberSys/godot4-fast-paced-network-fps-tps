@@ -46,6 +46,7 @@ namespace Framework.Network
             this._netPacketProcessor.RegisterNestedType<PlayerInputCommand>();
             this._netPacketProcessor.RegisterNestedType<PlayerState>();
             this._netPacketProcessor.RegisterNestedType<PlayerUpdate>();
+            this._netPacketProcessor.RegisterNestedType<ServerVarUpdate>();
             this._netPacketProcessor.RegisterNestedType<ClientInitializer>();
             this._netPacketProcessor.RegisterNestedType<ClientWorldInitializer>();
             this._netPacketProcessor.RegisterNestedType<ServerInitializer>();
@@ -75,6 +76,20 @@ namespace Framework.Network
             }
 
             this._netPacketProcessor.Send<T>(this.netManager, obj, method);
+        }
+
+        /// <summary>
+        /// Send an network message to all clients
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void SentMessageToAllSerialized<T>(T obj, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : INetSerializable, new()
+        {
+            if (this.netManager == null)
+            {
+                return;
+            }
+
+            this._netPacketProcessor.SendNetSerializable<T>(this.netManager, ref obj, method);
         }
 
         /// <summary>

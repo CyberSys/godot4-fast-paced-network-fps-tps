@@ -1,5 +1,7 @@
 # VarsCollection class
 
+An collection of vars and config files
+
 ```csharp
 public class VarsCollection
 ```

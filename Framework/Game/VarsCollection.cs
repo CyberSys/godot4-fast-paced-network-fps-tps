@@ -26,6 +26,9 @@ using System.Globalization;
 
 namespace Framework.Game
 {
+    /// <summary>
+    /// An collection of vars and config files
+    /// </summary>
     public class VarsCollection
     {
         internal Vars _vars = new Vars();

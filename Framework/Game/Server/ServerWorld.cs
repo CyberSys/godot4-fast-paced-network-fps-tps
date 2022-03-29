@@ -386,6 +386,25 @@ namespace Framework.Game.Server
             }
         }
 
+        /// <inheritdoc />
+        internal override void Init(VarsCollection serverVars, uint initalWorldTick)
+        {
+            base.Init(serverVars, initalWorldTick);
+
+            this.ServerVars.OnChange += (key, value) =>
+            {
+                foreach (var player in Players.Where(df => df.Value.State == PlayerConnectionState.Initialized))
+                {
+                    this.netService.SendMessageSerialisable<ServerVarUpdate>(player.Key,
+                                       new ServerVarUpdate
+                                       {
+                                           ServerVars = this.ServerVars.Vars,
+                                           GameTick = this.WorldTick
+                                       });
+                }
+            };
+        }
+
         private void activateGameRule(IGameRule rule)
         {
             Logger.LogDebug(this, "Activate game rule " + rule.GetType().Name.ToString());

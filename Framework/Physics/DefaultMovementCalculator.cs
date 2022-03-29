@@ -71,6 +71,10 @@ namespace Framework.Physics
         private VarsCollection clientVars;
 
         private Vector3 _velocity = Vector3.Zero;
+        private IMoveable component;
+        private IPlayerInput inputs;
+        private float attackCooldownTimer = 0f;
+        private float crouchTime = 0f;
 
         /// <inheritdoc />
         public Vector3 Velocity
@@ -79,10 +83,6 @@ namespace Framework.Physics
             set { _velocity = value; }
         }
 
-        private IMoveable component;
-        private IPlayerInput inputs;
-        private float attackCooldownTimer = 0f;
-        private float crouchTime = 0f;
 
         /// <inheritdoc />
         internal void Execute(float delta, Vector3 executeVelocity)

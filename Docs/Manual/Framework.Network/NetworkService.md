@@ -15,6 +15,7 @@ public abstract class NetworkService : IService
 | [SendMessage&lt;T&gt;](NetworkService/SendMessage.md)(…) | Send an message to an specific client (non serialized) |
 | [SendMessageSerialisable&lt;T&gt;](NetworkService/SendMessageSerialisable.md)(…) | Send an network message to an specific client by id (serialized) |
 | [SentMessageToAll&lt;T&gt;](NetworkService/SentMessageToAll.md)(…) | Send an network message to all clients |
+| [SentMessageToAllSerialized&lt;T&gt;](NetworkService/SentMessageToAllSerialized.md)(…) | Send an network message to all clients |
 | [Stop](NetworkService/Stop.md)() |  |
 | [Subscribe&lt;T&gt;](NetworkService/Subscribe.md)(…) |  |
 | [SubscribeSerialisable&lt;T&gt;](NetworkService/SubscribeSerialisable.md)(…) |  |

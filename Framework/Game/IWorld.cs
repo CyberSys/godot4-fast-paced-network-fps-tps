@@ -31,12 +31,7 @@ namespace Framework.Game
     /// </summary>
     public interface IWorld
     {
-        /// <summary>
-        /// Init the server world (first time)
-        /// </summary>
-        /// <param name="serverVars">List of avaible server vars</param>
-        /// <param name="initalWorldTick">Staring game time</param>
-        public void Init(VarsCollection serverVars, uint initalWorldTick);
+
 
         /// <summary>
         /// Destroy the game world

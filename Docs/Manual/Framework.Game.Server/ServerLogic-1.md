@@ -20,6 +20,7 @@ public abstract class ServerLogic<T> : GameLogic
 | [NetworkPort](ServerLogic-1/NetworkPort.md) { get; set; } | Network server port |
 | [DefaultVars](ServerLogic-1/DefaultVars.md) | The dictonary with all server settings (vars); |
 | [Variables](ServerLogic-1/Variables.md) |  |
+| virtual [InitRconServer](ServerLogic-1/InitRconServer.md)(…) | Initialized the rcon server, eg attaching commands |
 | virtual [OnPreConnect](ServerLogic-1/OnPreConnect.md)(…) | Called when client connected |
 | virtual [OnServerStarted](ServerLogic-1/OnServerStarted.md)() | Called when after server started succeffull |
 

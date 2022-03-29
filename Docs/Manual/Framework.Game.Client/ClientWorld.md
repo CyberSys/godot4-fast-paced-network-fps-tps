@@ -15,7 +15,6 @@ public abstract class ClientWorld : World
 | [localPlayer](ClientWorld/localPlayer.md) | Local player class |
 | virtual [CreateLocalPlayer](ClientWorld/CreateLocalPlayer.md)(…) | Create an local player |
 | virtual [CreatePuppetPlayer](ClientWorld/CreatePuppetPlayer.md)(…) | Create an puppet player |
-| override [Init](ClientWorld/Init.md)(…) |  |
 
 ## Protected Members
 

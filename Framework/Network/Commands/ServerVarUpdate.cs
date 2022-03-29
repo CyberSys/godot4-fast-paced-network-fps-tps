@@ -1,3 +1,4 @@
+
 /*
  * Created on Mon Mar 28 2022
  *
@@ -19,42 +20,30 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System.Collections.Generic;
 using LiteNetLib.Utils;
+using Framework.Game;
 
-namespace Framework.Game
+namespace Framework.Network.Commands
 {
-
-    /// <summary>
-    /// An dictonary for settings (vars)
-    /// </summary>
-    public struct Vars : INetSerializable
+    public struct ServerVarUpdate : INetSerializable
     {
-        /// <summary>
-        /// Dictonary which contains server varaibles
-        /// </summary>
-        /// <value></value>
-        public Dictionary<string, string> AllVariables { get; private set; } = new Dictionary<string, string>();
-
-        /// <summary>
-        /// Constructor for server vars
-        /// </summary>
-        /// <param name="vars">Dictonary which contains server varaibles</param>
-        public Vars(Dictionary<string, string> vars)
-        {
-            this.AllVariables = vars;
-        }
+        public uint GameTick;
+        public Vars ServerVars;
 
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
-            writer.Put(this.AllVariables);
+            writer.Put(this.GameTick);
+            this.ServerVars.Serialize(writer);
         }
+
 
         /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
-            this.AllVariables = reader.GetDictonaryString();
+            this.GameTick = reader.GetUInt();
+            this.ServerVars.Deserialize(reader);
         }
+
     }
 }

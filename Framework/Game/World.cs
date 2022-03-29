@@ -129,7 +129,7 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public virtual void Init(VarsCollection serverVars, uint initalWorldTick)
+        internal virtual void Init(VarsCollection serverVars, uint initalWorldTick)
         {
             this.isInit = true;
             this._serverVars = serverVars;

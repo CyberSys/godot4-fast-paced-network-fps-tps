@@ -25,6 +25,7 @@ using Framework;
 using System.Collections.Generic;
 using Framework.Network.Services;
 using System;
+using RCONServerLib.Utils;
 
 namespace Framework.Game.Server
 {
@@ -36,6 +37,7 @@ namespace Framework.Game.Server
     {
         /// <inheritdoc />
         internal ServerNetworkService netService = null;
+        internal RconServerService rconService = null;
 
         /// <summary>
         /// maximal possible connections
@@ -113,8 +115,8 @@ namespace Framework.Game.Server
         /// <inheritdoc />
         internal override void InternalTreeEntered()
         {
-            base.InternalTreeEntered();
             this.netService = this.Services.Create<ServerNetworkService>();
+            this.rconService = this.Services.Create<RconServerService>();
             this.netService.ConnectionEstablished += () =>
             {
                 Logger.LogDebug(this, "Server was started.");
@@ -142,8 +144,68 @@ namespace Framework.Game.Server
                 }
             };
 
-            base._EnterTree();
+            this.rconService.ServerStarted += InitRconServer;
+
+            base.InternalTreeEntered();
             this.netService.Bind(NetworkPort);
+        }
+
+        /// <summary>
+        /// Initialized the rcon server, eg attaching commands
+        /// </summary>
+        /// <param name="manager"></param>
+        public virtual void InitRconServer(CommandManager manager)
+        {
+            manager.Add("set", "Set an server variable", (command, arguments) =>
+            {
+                if (arguments.Count != 2)
+                {
+                    return "Required arguments: key, variable";
+                }
+
+                if (this.currentWorld != null)
+                {
+                    var key = this.currentWorld.ServerVars.Vars.AllVariables.ContainsKey(arguments[0]);
+                    if (!key)
+                    {
+                        return "Varaible " + arguments[0] + " not exist.";
+                    }
+                    else
+                    {
+                        this.currentWorld.ServerVars.Set(arguments[0], arguments[1]);
+                        return "Successfull changed.";
+                    }
+                }
+                else
+                {
+                    return "No active game world";
+                }
+            });
+
+            manager.Add("get", "Get an server variable", (command, arguments) =>
+            {
+                if (arguments.Count != 1)
+                {
+                    return "Required arguments: key";
+                }
+
+                if (this.currentWorld != null)
+                {
+                    var key = this.currentWorld.ServerVars.Vars.AllVariables.ContainsKey(arguments[0]);
+                    if (!key)
+                    {
+                        return "Varaible " + arguments[0] + " not exist.";
+                    }
+                    else
+                    {
+                        return this.currentWorld.ServerVars.Vars.AllVariables[arguments[0]];
+                    }
+                }
+                else
+                {
+                    return "No active game world";
+                }
+            });
         }
 
         /// <summary>
@@ -184,7 +246,7 @@ namespace Framework.Game.Server
             this.Variables = new VarsCollection(new Vars(this.DefaultVars));
             this.Variables.LoadConfig("server.cfg");
 
-            this.currentWorld?.Init(this.Variables, 0);
+            newWorld.Init(this.Variables, 0);
 
             //accept clients
             this.AcceptClients = true;
