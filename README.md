@@ -21,7 +21,8 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Ready to use godot nodes (ex.  ServerPlayer,  ServerWorld, ServerLogic..)
 - Server variable sharing between server and client (ServerVars)
 - (TODO) RCON Implementation for Server Management
-
+- (TODO) Object syncronistation (dropped guns, etc)
+- (TODO) Sound syncronistation (like steps)
 # Physics
 - Full implemented TPS and FPS Movement (Quake style)
 - Crouching
