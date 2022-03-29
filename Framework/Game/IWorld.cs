@@ -36,7 +36,7 @@ namespace Framework.Game
         /// </summary>
         /// <param name="serverVars">List of avaible server vars</param>
         /// <param name="initalWorldTick">Staring game time</param>
-        public void Init(ServerVars serverVars, uint initalWorldTick);
+        public void Init(VarsCollection serverVars, uint initalWorldTick);
 
         /// <summary>
         /// Destroy the game world
@@ -64,7 +64,7 @@ namespace Framework.Game
         /// The server vars of the world
         /// </summary>
         /// <value></value>
-        public ServerVars ServerVars { get; }
+        public VarsCollection ServerVars { get; }
 
         /// <summary>
         /// All players of the world

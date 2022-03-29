@@ -74,10 +74,10 @@ namespace Framework.Game
 
         internal bool isInit = false;
 
-        internal ServerVars _serverVars = new ServerVars();
+        internal VarsCollection _serverVars = new VarsCollection();
 
         /// <inheritdoc />
-        public ServerVars ServerVars => _serverVars;
+        public VarsCollection ServerVars => _serverVars;
 
 
         /// <inheritdoc />
@@ -129,11 +129,11 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public virtual void Init(ServerVars serverVars, uint initalWorldTick)
+        public virtual void Init(VarsCollection serverVars, uint initalWorldTick)
         {
             this.isInit = true;
             this._serverVars = serverVars;
-            foreach (var sv in serverVars.AllVariables)
+            foreach (var sv in serverVars.Vars.AllVariables)
             {
                 Logger.LogDebug(this, "[Config] " + sv.Key + " => " + sv.Value);
             }

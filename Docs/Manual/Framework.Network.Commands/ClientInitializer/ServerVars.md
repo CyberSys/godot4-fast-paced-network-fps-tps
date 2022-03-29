@@ -1,12 +1,12 @@
 # ClientInitializer.ServerVars field
 
 ```csharp
-public ServerVars ServerVars;
+public Vars ServerVars;
 ```
 
 ## See Also
 
-* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
+* struct [Vars](../../Framework.Game/Vars.md)
 * struct [ClientInitializer](../ClientInitializer.md)
 * namespace [Framework.Network.Commands](../../Framework.md)
 

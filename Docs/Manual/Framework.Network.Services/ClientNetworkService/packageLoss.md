@@ -1,7 +1,9 @@
-# ClientNetworkService.packageLoss property
+# ClientNetworkService.PackageLoss property
+
+Lossing packages since last 1 second
 
 ```csharp
-public long packageLoss { get; }
+public long PackageLoss { get; }
 ```
 
 ## See Also

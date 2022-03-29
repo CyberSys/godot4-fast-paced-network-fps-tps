@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.GetGroundDeaccelerationFactor method
 
+Get the default ground deaccel factor
+
 ```csharp
 public virtual float GetGroundDeaccelerationFactor()
 ```

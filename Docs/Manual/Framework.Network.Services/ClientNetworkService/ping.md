@@ -1,7 +1,9 @@
-# ClientNetworkService.ping property
+# ClientNetworkService.Ping property
+
+Get the current latency between server and client
 
 ```csharp
-public int ping { get; }
+public int Ping { get; }
 ```
 
 ## See Also

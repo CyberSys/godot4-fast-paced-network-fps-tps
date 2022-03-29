@@ -22,9 +22,7 @@
 using Godot;
 using System;
 using Framework.Input;
-
-using System.Collections.Generic;
-using Framework.Game.Server;
+using Framework.Game;
 
 namespace Framework.Physics
 {
@@ -40,13 +38,25 @@ namespace Framework.Physics
         /// <param name="serverVars"></param>
         /// <param name="inputs"></param>
         /// <param name="dt"></param>
-        public Vector3 Simulate(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt);
+        public Vector3 Simulate(IMoveable component, IPlayerInput inputs, float dt);
 
         /// <summary>
         /// The current velocity of the moveable object
         /// </summary>
         /// <value></value>
         public Vector3 Velocity { get; set; }
+
+        /// <summary>
+        /// Set client related vars
+        /// </summary>
+        /// <param name="vars"></param>
+        public void SetClientVars(VarsCollection vars);
+
+        /// <summary>
+        /// Set server related vars
+        /// </summary>
+        /// <param name="vars"></param>
+        public void SetServerVars(VarsCollection vars);
     }
 
     /// <summary>
@@ -57,7 +67,8 @@ namespace Framework.Physics
     {
         private bool wishJump = false;
 
-        private ServerVars serverVars;
+        private VarsCollection serverVars;
+        private VarsCollection clientVars;
 
         private Vector3 _velocity = Vector3.Zero;
 
@@ -91,7 +102,18 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        public Vector3 Simulate(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt)
+        public void SetServerVars(VarsCollection vars)
+        {
+            serverVars = vars;
+        }
+        /// <inheritdoc />
+        public void SetClientVars(VarsCollection vars)
+        {
+            clientVars = vars;
+        }
+
+        /// <inheritdoc />
+        public Vector3 Simulate(IMoveable component, IPlayerInput inputs, float dt)
         {
             var processedVelocity = _velocity;
 
@@ -102,7 +124,6 @@ namespace Framework.Physics
 
             this.inputs = inputs;
             this.component = component;
-            this.serverVars = serverVars;
 
             var transform = component.Transform;
             // Set orientation based on the view direction.
@@ -253,16 +274,29 @@ namespace Framework.Physics
             return processedVelocity;
         }
 
+        /// <summary>
+        /// Check if player allows to crouch
+        /// </summary>
+        /// <returns></returns>
         public virtual bool CanCrouch()
         {
             return this.serverVars.Get<bool>("sv_crouching", true);
         }
 
+        /// <summary>
+        /// Get the friction for crouching
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetGroundFriction()
         {
             return (inputs.GetInput("Crouch") && this.CanCrouch() ?
                     this.serverVars.Get<float>("sv_crouching_friction", 3.0f) : this.serverVars.Get<float>("sv_walk_friction", 6.0f));
         }
+
+        /// <summary>
+        /// Get the default movement speed
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetMovementSpeed()
         {
             return inputs.GetInput("Crouch") && this.CanCrouch()
@@ -270,38 +304,66 @@ namespace Framework.Physics
 
         }
 
+        /// <summary>
+        /// Get the default ground deaccel factor
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetGroundDeaccelerationFactor()
         {
             return inputs.GetInput("Crouch") && this.CanCrouch()
                  ? this.serverVars.Get<float>("sv_crouching_deaccel", 4.0f) : this.serverVars.Get<float>("sv_walk_deaccel", 10f);
         }
 
+        /// <summary>
+        /// Get the default ground accel factor
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetGroundAccelerationFactor()
         {
             return inputs.GetInput("Crouch") && this.CanCrouch()
                 ? this.serverVars.Get<float>("sv_crouching_accel", 4.0f) : this.serverVars.Get<float>("sv_walk_accel", 14f);
         }
 
+        /// <summary>
+        /// Get the default air accel factor
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetAirAcceleration()
         {
             return this.serverVars.Get<float>("sv_air_accel", 12f);
         }
 
+        /// <summary>
+        /// Get the default air deaccel factor
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetAirDecceleration()
         {
             return this.serverVars.Get<float>("sv_air_deaccel", 2f);
         }
 
+        /// <summary>
+        /// Get the default gravity
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetGravity()
         {
             return this.serverVars.Get<float>("sv_gravity", 20f);
         }
 
+        /// <summary>
+        /// Check if player is on ground
+        /// </summary>
+        /// <returns></returns>
         public bool isOnGround()
         {
             return component.isOnGround();
         }
 
+        /// <summary>
+        /// Get the current air control value
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetAirControl()
         {
             return this.serverVars.Get<float>("sv_air_control", 0.3f);

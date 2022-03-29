@@ -1,8 +1,14 @@
 # ClientSimulationAdjuster constructor
 
+Initialize the simulation tick adjuster
+
 ```csharp
 public ClientSimulationAdjuster(float serverSendRate)
 ```
+
+| parameter | description |
+| --- | --- |
+| serverSendRate | Current server send rate |
 
 ## See Also
 

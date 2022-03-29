@@ -9,18 +9,17 @@ public class ClientNetworkService : NetworkService
 | name | description |
 | --- | --- |
 | [ClientNetworkService](ClientNetworkService/ClientNetworkService.md)() | The default constructor. |
-| [bytesReceived](ClientNetworkService/bytesReceived.md) { get; } |  |
-| [bytesSended](ClientNetworkService/bytesSended.md) { get; } |  |
-| [packageLoss](ClientNetworkService/packageLoss.md) { get; } |  |
-| [packageLossPercent](ClientNetworkService/packageLossPercent.md) { get; } |  |
-| [ping](ClientNetworkService/ping.md) { get; } |  |
+| [BytesReceived](ClientNetworkService/BytesReceived.md) { get; } | Received bytes since last 1 second |
+| [BytesSended](ClientNetworkService/BytesSended.md) { get; } | Sended bytes since last 1 second |
+| [PackageLoss](ClientNetworkService/PackageLoss.md) { get; } | Lossing packages since last 1 second |
+| [PackageLossPercent](ClientNetworkService/PackageLossPercent.md) { get; } | Package loose in percent (avg) since last 1 second |
+| [Ping](ClientNetworkService/Ping.md) { get; } | Get the current latency between server and client |
 | [ServerPeer](ClientNetworkService/ServerPeer.md) { get; } |  |
-| [Statistics](ClientNetworkService/Statistics.md) { get; } |  |
 | [MaxRetriesPerConnection](ClientNetworkService/MaxRetriesPerConnection.md) |  |
 | event [Connected](ClientNetworkService/Connected.md) |  |
 | event [OnDisconnect](ClientNetworkService/OnDisconnect.md) |  |
 | [Connect](ClientNetworkService/Connect.md)(…) | Connect to an server |
-| [Disconnect](ClientNetworkService/Disconnect.md)() |  |
+| [Disconnect](ClientNetworkService/Disconnect.md)() | Disconnect from server |
 | override [Register](ClientNetworkService/Register.md)() |  |
 | override [Unregister](ClientNetworkService/Unregister.md)() |  |
 | override [Update](ClientNetworkService/Update.md)(…) |  |

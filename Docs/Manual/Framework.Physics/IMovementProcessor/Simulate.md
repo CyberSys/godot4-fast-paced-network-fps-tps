@@ -3,7 +3,7 @@
 Calls on each tick for produce movement
 
 ```csharp
-public Vector3 Simulate(IMoveable component, ServerVars serverVars, IPlayerInput inputs, float dt)
+public Vector3 Simulate(IMoveable component, IPlayerInput inputs, float dt)
 ```
 
 | parameter | description |
@@ -16,7 +16,6 @@ public Vector3 Simulate(IMoveable component, ServerVars serverVars, IPlayerInput
 ## See Also
 
 * interface [IMoveable](../IMoveable.md)
-* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
 * interface [IPlayerInput](../../Framework.Input/IPlayerInput.md)
 * interface [IMovementProcessor](../IMovementProcessor.md)
 * namespace [Framework.Physics](../../Framework.md)

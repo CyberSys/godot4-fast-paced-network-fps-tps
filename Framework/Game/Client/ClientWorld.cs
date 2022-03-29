@@ -42,7 +42,16 @@ namespace Framework.Game.Client
     public abstract class ClientWorld : World
     {
         /// <inheritdoc />
-        protected ClientNetworkService netService = null;
+        internal ClientNetworkService netService = null;
+
+        /// <inheritdoc />
+        internal uint lastServerWorldTick = 0;
+
+        /// <inheritdoc />
+        internal int replayedStates;
+
+        /// <inheritdoc />
+        internal int _myServerId = -1;
 
         /// <summary>
         /// Client adjuster
@@ -50,12 +59,7 @@ namespace Framework.Game.Client
         /// </summary>
         public ClientSimulationAdjuster clientSimulationAdjuster;
 
-
-        /// <summary>
-        /// World Heartbeat Queue
-        /// </summary>
-        /// <typeparam name="WorldHeartbeat">The heartbeat structure</typeparam>
-        /// <returns></returns>
+        /// <inheritdoc />
         private Queue<WorldHeartbeat> worldStateQueue = new Queue<WorldHeartbeat>();
 
         /// <inheritdoc />
@@ -65,19 +69,6 @@ namespace Framework.Game.Client
         /// Local player class
         /// </summary>
         public LocalPlayer localPlayer;
-
-        /// <summary>
-        /// Last executed server tick
-        /// </summary>
-        public uint lastServerWorldTick = 0;
-
-        /// <summary>
-        /// Last replayed states
-        /// </summary>
-        private int replayedStates;
-
-        /// <inheritdoc />
-        private int _myServerId = -1;
 
         /// <summary>
         /// The current client player id  the server
@@ -99,7 +90,7 @@ namespace Framework.Game.Client
             Logger.LogDebug(this, "Init world with server user id " + cmd.PlayerId);
 
             this._myServerId = cmd.PlayerId;
-            this?.Init(cmd.ServerVars, cmd.GameTick);
+            this?.Init(new VarsCollection(cmd.ServerVars), cmd.GameTick);
         }
 
         private void HandleWorldState(WorldHeartbeat cmd, NetPeer peed)
@@ -108,7 +99,7 @@ namespace Framework.Game.Client
         }
 
         /// <inheritdoc />
-        public override void Init(ServerVars serverVars, uint initalWorldTick)
+        public override void Init(VarsCollection serverVars, uint initalWorldTick)
         {
             base.Init(serverVars, 0);
 
@@ -116,7 +107,7 @@ namespace Framework.Game.Client
             lastServerWorldTick = initalWorldTick;
 
             this.simulationAdjuster = clientSimulationAdjuster = new ClientSimulationAdjuster(simTickRate / 2);
-            WorldTick = clientSimulationAdjuster.GuessClientTick((float)this.GetPhysicsProcessDeltaTime(), initalWorldTick, this.netService.ping);
+            WorldTick = clientSimulationAdjuster.GuessClientTick((float)this.GetPhysicsProcessDeltaTime(), initalWorldTick, this.netService.Ping);
         }
 
         /// <inheritdoc />

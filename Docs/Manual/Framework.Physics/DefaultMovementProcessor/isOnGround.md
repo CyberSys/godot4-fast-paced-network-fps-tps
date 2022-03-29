@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.isOnGround method
 
+Check if player is on ground
+
 ```csharp
 public bool isOnGround()
 ```

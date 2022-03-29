@@ -18,8 +18,8 @@ public class ServerNetworkService : NetworkService
 | [Bind](ServerNetworkService/Bind.md)(…) | Bind server on specific port |
 | [GetConnectedPeers](ServerNetworkService/GetConnectedPeers.md)() | Get all connected clients |
 | [GetConnectionCount](ServerNetworkService/GetConnectionCount.md)() | Get count of current active connections |
-| override [Register](ServerNetworkService/Register.md)() | Register the service |
-| override [Unregister](ServerNetworkService/Unregister.md)() | Unregister the service |
+| override [Register](ServerNetworkService/Register.md)() |  |
+| override [Unregister](ServerNetworkService/Unregister.md)() |  |
 | delegate [ClientConnectedHandler](ServerNetworkService.ClientConnectedHandler.md) |  |
 | delegate [ClientDisconnectHandler](ServerNetworkService.ClientDisconnectHandler.md) |  |
 | delegate [ClientLatencyUpdateHandler](ServerNetworkService.ClientLatencyUpdateHandler.md) |  |

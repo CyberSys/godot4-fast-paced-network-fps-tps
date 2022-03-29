@@ -8,11 +8,11 @@ public class ClientSimulationAdjuster : ISimulationAdjuster
 
 | name | description |
 | --- | --- |
-| [ClientSimulationAdjuster](ClientSimulationAdjuster/ClientSimulationAdjuster.md)(…) |  |
+| [ClientSimulationAdjuster](ClientSimulationAdjuster/ClientSimulationAdjuster.md)(…) | Initialize the simulation tick adjuster |
 | [AdjustedInterval](ClientSimulationAdjuster/AdjustedInterval.md) { get; } |  |
-| [GuessClientTick](ClientSimulationAdjuster/GuessClientTick.md)(…) |  |
-| [Monitoring](ClientSimulationAdjuster/Monitoring.md)() |  |
-| [NotifyActualTickLead](ClientSimulationAdjuster/NotifyActualTickLead.md)(…) |  |
+| [GuessClientTick](ClientSimulationAdjuster/GuessClientTick.md)(…) | Extrapolate based on latency what our client tick should be. |
+| [Monitoring](ClientSimulationAdjuster/Monitoring.md)() | Just for debugging |
+| [NotifyActualTickLead](ClientSimulationAdjuster/NotifyActualTickLead.md)(…) | Notify actual tick lead |
 
 ## See Also
 

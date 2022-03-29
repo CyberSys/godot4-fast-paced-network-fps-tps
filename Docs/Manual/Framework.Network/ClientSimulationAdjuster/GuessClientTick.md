@@ -1,8 +1,16 @@
 # ClientSimulationAdjuster.GuessClientTick method
 
+Extrapolate based on latency what our client tick should be.
+
 ```csharp
 public uint GuessClientTick(float physicsTime, uint receivedServerTick, int serverLatencyMs)
 ```
+
+| parameter | description |
+| --- | --- |
+| physicsTime |  |
+| receivedServerTick |  |
+| serverLatencyMs |  |
 
 ## See Also
 

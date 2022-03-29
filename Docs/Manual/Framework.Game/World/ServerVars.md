@@ -1,12 +1,12 @@
 # World.ServerVars property
 
 ```csharp
-public ServerVars ServerVars { get; }
+public VarsCollection ServerVars { get; }
 ```
 
 ## See Also
 
-* struct [ServerVars](../../Framework.Game.Server/ServerVars.md)
+* class [VarsCollection](../VarsCollection.md)
 * class [World](../World.md)
 * namespace [Framework.Game](../../Framework.md)
 

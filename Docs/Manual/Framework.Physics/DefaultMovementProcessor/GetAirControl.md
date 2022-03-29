@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.GetAirControl method
 
+Get the current air control value
+
 ```csharp
 public virtual float GetAirControl()
 ```

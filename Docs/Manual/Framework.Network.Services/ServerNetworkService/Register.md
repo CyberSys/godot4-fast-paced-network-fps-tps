@@ -1,7 +1,5 @@
 # ServerNetworkService.Register method
 
-Register the service
-
 ```csharp
 public override void Register()
 ```

@@ -1,7 +1,5 @@
 # ServerNetworkService.Unregister method
 
-Unregister the service
-
 ```csharp
 public override void Unregister()
 ```

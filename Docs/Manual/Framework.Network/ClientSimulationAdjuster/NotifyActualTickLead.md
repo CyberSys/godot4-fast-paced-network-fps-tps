@@ -1,8 +1,16 @@
 # ClientSimulationAdjuster.NotifyActualTickLead method
 
+Notify actual tick lead
+
 ```csharp
 public void NotifyActualTickLead(int actualTickLead, bool isDebug, bool useLagReduction)
 ```
+
+| parameter | description |
+| --- | --- |
+| actualTickLead |  |
+| isDebug |  |
+| useLagReduction |  |
 
 ## See Also
 

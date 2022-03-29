@@ -12,16 +12,18 @@ public class DefaultMovementProcessor : IMovementProcessor
 | --- | --- |
 | [DefaultMovementProcessor](DefaultMovementProcessor/DefaultMovementProcessor.md)() | The default constructor. |
 | [Velocity](DefaultMovementProcessor/Velocity.md) { get; set; } |  |
-| virtual [CanCrouch](DefaultMovementProcessor/CanCrouch.md)() |  |
-| virtual [GetAirAcceleration](DefaultMovementProcessor/GetAirAcceleration.md)() |  |
-| virtual [GetAirControl](DefaultMovementProcessor/GetAirControl.md)() |  |
-| virtual [GetAirDecceleration](DefaultMovementProcessor/GetAirDecceleration.md)() |  |
-| virtual [GetGravity](DefaultMovementProcessor/GetGravity.md)() |  |
-| virtual [GetGroundAccelerationFactor](DefaultMovementProcessor/GetGroundAccelerationFactor.md)() |  |
-| virtual [GetGroundDeaccelerationFactor](DefaultMovementProcessor/GetGroundDeaccelerationFactor.md)() |  |
-| virtual [GetGroundFriction](DefaultMovementProcessor/GetGroundFriction.md)() |  |
-| virtual [GetMovementSpeed](DefaultMovementProcessor/GetMovementSpeed.md)() |  |
-| [isOnGround](DefaultMovementProcessor/isOnGround.md)() |  |
+| virtual [CanCrouch](DefaultMovementProcessor/CanCrouch.md)() | Check if player allows to crouch |
+| virtual [GetAirAcceleration](DefaultMovementProcessor/GetAirAcceleration.md)() | Get the default air accel factor |
+| virtual [GetAirControl](DefaultMovementProcessor/GetAirControl.md)() | Get the current air control value |
+| virtual [GetAirDecceleration](DefaultMovementProcessor/GetAirDecceleration.md)() | Get the default air deaccel factor |
+| virtual [GetGravity](DefaultMovementProcessor/GetGravity.md)() | Get the default gravity |
+| virtual [GetGroundAccelerationFactor](DefaultMovementProcessor/GetGroundAccelerationFactor.md)() | Get the default ground accel factor |
+| virtual [GetGroundDeaccelerationFactor](DefaultMovementProcessor/GetGroundDeaccelerationFactor.md)() | Get the default ground deaccel factor |
+| virtual [GetGroundFriction](DefaultMovementProcessor/GetGroundFriction.md)() | Get the friction for crouching |
+| virtual [GetMovementSpeed](DefaultMovementProcessor/GetMovementSpeed.md)() | Get the default movement speed |
+| [isOnGround](DefaultMovementProcessor/isOnGround.md)() | Check if player is on ground |
+| [SetClientVars](DefaultMovementProcessor/SetClientVars.md)(…) |  |
+| [SetServerVars](DefaultMovementProcessor/SetServerVars.md)(…) |  |
 | [Simulate](DefaultMovementProcessor/Simulate.md)(…) |  |
 
 ## See Also

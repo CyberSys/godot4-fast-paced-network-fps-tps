@@ -22,6 +22,7 @@
 using System.Collections.Generic;
 using LiteNetLib.Utils;
 using Framework.Game.Server;
+using Framework.Game;
 
 namespace Framework.Network.Commands
 {
@@ -29,7 +30,7 @@ namespace Framework.Network.Commands
     {
         public uint GameTick;
         public int PlayerId;
-        public ServerVars ServerVars;
+        public Vars ServerVars;
 
 
         /// <inheritdoc />

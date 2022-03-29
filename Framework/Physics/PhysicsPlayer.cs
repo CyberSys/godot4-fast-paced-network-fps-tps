@@ -22,9 +22,6 @@
 using Godot;
 using Framework.Network.Commands;
 using Framework.Network;
-using Framework.Input;
-using Framework.Game;
-using System;
 
 namespace Framework.Physics
 {
@@ -121,7 +118,9 @@ namespace Framework.Physics
 
             if (Body != null)
             {
-                this.MovementProcessor.Simulate(Body, this.GameWorld.ServerVars, this.inputs, delta);
+                this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
+                this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
+                this.MovementProcessor.Simulate(Body, this.inputs, delta);
             }
         }
     }

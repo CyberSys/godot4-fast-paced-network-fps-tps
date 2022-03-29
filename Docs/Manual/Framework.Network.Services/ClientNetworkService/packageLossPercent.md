@@ -1,7 +1,9 @@
-# ClientNetworkService.packageLossPercent property
+# ClientNetworkService.PackageLossPercent property
+
+Package loose in percent (avg) since last 1 second
 
 ```csharp
-public long packageLossPercent { get; }
+public long PackageLossPercent { get; }
 ```
 
 ## See Also

@@ -275,7 +275,7 @@ namespace Framework.Game.Server
                             new ClientInitializer
                             {
                                 PlayerId = clientId,
-                                ServerVars = this.ServerVars,
+                                ServerVars = this.ServerVars.Vars,
                                 GameTick = this.WorldTick
                             });
             }

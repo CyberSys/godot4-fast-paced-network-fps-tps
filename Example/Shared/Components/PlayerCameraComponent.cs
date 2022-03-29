@@ -18,7 +18,6 @@ namespace Shooter.Shared.Components
     {
         public IBaseComponent BaseComponent { get; set; }
         public const float tpsDamping = 1;
-        public float Sensitivity = 2f;
         private float rotX = 0.0f;
         private float rotY = 0.0f;
         private Vector3 cameraOffset = new Vector3(0, 0.5f, 0.1f);
@@ -78,31 +77,36 @@ namespace Shooter.Shared.Components
         {
             base._Input(@event);
 
-            if (@event is InputEventMouseMotion && enableInput)
-            {
-                // Handle cursor lock state
-                if (Input.GetMouseMode() == Input.MouseMode.Captured)
-                {
-                    var ev = @event as InputEventMouseMotion;
-                    rotX -= ev.Relative.y * (Sensitivity / 1000);
-                    rotY -= ev.Relative.x * (Sensitivity / 1000);
-                    rotX = Mathf.Clamp(rotX, Mathf.Deg2Rad(-90), Mathf.Deg2Rad(90));
-                }
-            }
+            var sens = ClientSettings.Variables.Get<float>("cl_sensitivity", 2.0f);
 
-            if (@event.IsActionReleased("camera") && this.BaseComponent is LocalPlayer)
+            if (this.BaseComponent is LocalPlayer)
             {
-                if (this.cameraMode == CameraMode.FPS)
+                if (@event is InputEventMouseMotion && enableInput)
                 {
-                    this.cameraMode = CameraMode.TPS;
+                    // Handle cursor lock state
+                    if (Input.GetMouseMode() == Input.MouseMode.Captured)
+                    {
+                        var ev = @event as InputEventMouseMotion;
+                        rotX -= ev.Relative.y * (sens / 1000);
+                        rotY -= ev.Relative.x * (sens / 1000);
+                        rotX = Mathf.Clamp(rotX, Mathf.Deg2Rad(-90), Mathf.Deg2Rad(90));
+                    }
                 }
-                else if (this.cameraMode == CameraMode.TPS)
-                {
-                    this.cameraMode = CameraMode.FPS;
-                }
-            }
 
-            @event.Dispose();
+                if (@event.IsActionReleased("camera") && this.BaseComponent is LocalPlayer)
+                {
+                    if (this.cameraMode == CameraMode.FPS)
+                    {
+                        this.cameraMode = CameraMode.TPS;
+                    }
+                    else if (this.cameraMode == CameraMode.TPS)
+                    {
+                        this.cameraMode = CameraMode.FPS;
+                    }
+                }
+
+                @event.Dispose();
+            }
         }
     }
 }

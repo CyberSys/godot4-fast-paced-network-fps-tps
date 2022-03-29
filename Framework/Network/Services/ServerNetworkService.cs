@@ -19,12 +19,9 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
 using System.Collections.Generic;
 using Godot;
 using LiteNetLib;
-using Framework.Network;
-using Framework;
 
 namespace Framework.Network.Services
 {
@@ -74,9 +71,7 @@ namespace Framework.Network.Services
             return this.netManager.ConnectedPeersCount;
         }
 
-        /// <summary>
-        /// Register the service
-        /// </summary>
+        /// <inheritdoc />
         public override void Register()
         {
             base.Register();
@@ -139,9 +134,7 @@ namespace Framework.Network.Services
             }
         }
 
-        /// <summary>
-        /// Unregister the service
-        /// </summary>
+        /// <inheritdoc />
         public override void Unregister()
         {
 

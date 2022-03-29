@@ -35,6 +35,8 @@
 | abstract class [Level](./Framework.Game/Level.md) | A basic class for an game level |
 | abstract class [Player](./Framework.Game/Player.md) | The general player class |
 | abstract class [SpawnPoint](./Framework.Game/SpawnPoint.md) | The gernal spawn point class |
+| struct [Vars](./Framework.Game/Vars.md) | Core class for server variables |
+| class [VarsCollection](./Framework.Game/VarsCollection.md) |  |
 | abstract class [World](./Framework.Game/World.md) | The core world class for server and client worlds |
 
 ## Framework.Game.Client namespace
@@ -42,6 +44,7 @@
 | public type | description |
 | --- | --- |
 | class [ClientLogic&lt;T&gt;](./Framework.Game.Client/ClientLogic-1.md) | Is the base class for any client (SubViewport) |
+| static class [ClientSettings](./Framework.Game.Client/ClientSettings.md) | Static class for client settings |
 | abstract class [ClientWorld](./Framework.Game.Client/ClientWorld.md) | Base class for the client world |
 | class [LocalPlayer](./Framework.Game.Client/LocalPlayer.md) | The base class for local players |
 | class [PuppetPlayer](./Framework.Game.Client/PuppetPlayer.md) | The base class of an puppet player |
@@ -52,7 +55,6 @@
 | --- | --- |
 | abstract class [ServerLogic&lt;T&gt;](./Framework.Game.Server/ServerLogic-1.md) | The core server logic |
 | class [ServerPlayer](./Framework.Game.Server/ServerPlayer.md) | Core class for server player |
-| struct [ServerVars](./Framework.Game.Server/ServerVars.md) | Core class for server variables |
 | abstract class [ServerWorld](./Framework.Game.Server/ServerWorld.md) |  |
 
 ## Framework.Input namespace
@@ -95,6 +97,7 @@
 | --- | --- |
 | struct [ClientConnectionSettings](./Framework.Network.Services/ClientConnectionSettings.md) |  |
 | class [ClientNetworkService](./Framework.Network.Services/ClientNetworkService.md) |  |
+| class [RconServerService](./Framework.Network.Services/RconServerService.md) |  |
 | class [ServerNetworkService](./Framework.Network.Services/ServerNetworkService.md) |  |
 
 ## Framework.Physics namespace

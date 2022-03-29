@@ -21,11 +21,14 @@
 
 using Godot;
 using Framework.Game;
+using Framework.Game.Server;
 using Framework;
 using Framework.Network.Commands;
 using LiteNetLib;
 using Framework.Network.Services;
 using System;
+
+using System.Collections.Generic;
 
 namespace Framework.Game.Client
 {
@@ -35,6 +38,15 @@ namespace Framework.Game.Client
     /// <typeparam name="T"></typeparam>
     public class ClientLogic<T> : GameLogic where T : ClientWorld
     {
+
+        /// <summary>
+        /// The dictonary with all server settings (vars);
+        /// </summary>
+        [Export]
+        public Dictionary<string, string> DefaultVars = new Dictionary<string, string>
+        {
+           { "cl_sensitivity", "2.0"}
+        };
 
         /// <inheritdoc />
         private ClientNetworkService netService = null;
@@ -115,6 +127,9 @@ namespace Framework.Game.Client
         /// <inheritdoc />  
         internal override void InternalTreeEntered()
         {
+            ClientSettings.Variables = new VarsCollection(new Vars(this.DefaultVars));
+            ClientSettings.Variables.LoadConfig("client.cfg");
+
             this.netService = this.Services.Create<ClientNetworkService>();
             this.netService.OnDisconnect += this.OnInternalDisconnect;
             this.netService.Connected += this.OnConnected;

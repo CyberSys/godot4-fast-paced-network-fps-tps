@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.GetGroundFriction method
 
+Get the friction for crouching
+
 ```csharp
 public virtual float GetGroundFriction()
 ```

@@ -16,6 +16,7 @@ public class ClientLogic<T> : GameLogic
 | name | description |
 | --- | --- |
 | [ClientLogic](ClientLogic-1/ClientLogic.md)() | The default constructor. |
+| [DefaultVars](ClientLogic-1/DefaultVars.md) | The dictonary with all server settings (vars); |
 | [Connect](ClientLogic-1/Connect.md)(…) | Connect with an server |
 | [Disconnect](ClientLogic-1/Disconnect.md)() | Disconnect the client |
 | virtual [OnConnected](ClientLogic-1/OnConnected.md)() | On local client is connected |

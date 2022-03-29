@@ -1,5 +1,7 @@
 # ClientNetworkService.Disconnect method
 
+Disconnect from server
+
 ```csharp
 public void Disconnect()
 ```

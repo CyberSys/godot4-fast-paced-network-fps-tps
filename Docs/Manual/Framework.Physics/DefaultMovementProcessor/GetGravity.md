@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.GetGravity method
 
+Get the default gravity
+
 ```csharp
 public virtual float GetGravity()
 ```

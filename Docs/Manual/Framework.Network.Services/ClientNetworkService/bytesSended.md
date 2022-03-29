@@ -1,7 +1,9 @@
-# ClientNetworkService.bytesSended property
+# ClientNetworkService.BytesSended property
+
+Sended bytes since last 1 second
 
 ```csharp
-public long bytesSended { get; }
+public long BytesSended { get; }
 ```
 
 ## See Also

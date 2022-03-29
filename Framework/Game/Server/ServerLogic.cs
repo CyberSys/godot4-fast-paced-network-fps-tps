@@ -53,7 +53,7 @@ namespace Framework.Game.Server
         /// The dictonary with all server settings (vars);
         /// </summary>
         [Export]
-        private Dictionary<string, string> ServerVars = new Dictionary<string, string>  {
+        public Dictionary<string, string> DefaultVars = new Dictionary<string, string>  {
 
             // enable or disable interpolation
             { "sv_interpolate", "true" },
@@ -93,6 +93,8 @@ namespace Framework.Game.Server
             { "sv_strafe_speed", "1.0" },
             { "sv_strafe_accel", "50.0" },
         };
+
+        public VarsCollection Variables = new VarsCollection(new Vars());
 
         /// <summary>
         /// Network server port
@@ -178,7 +180,11 @@ namespace Framework.Game.Server
             newWorld.InstanceLevel(res);
 
             this.currentWorld = newWorld;
-            this.currentWorld?.Init(new ServerVars(this.ServerVars), 0);
+
+            this.Variables = new VarsCollection(new Vars(this.DefaultVars));
+            this.Variables.LoadConfig("server.cfg");
+
+            this.currentWorld?.Init(this.Variables, 0);
 
             //accept clients
             this.AcceptClients = true;

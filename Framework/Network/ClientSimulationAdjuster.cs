@@ -36,6 +36,10 @@ namespace Framework.Network
         /// <inheritdoc />
         private MovingAverage actualTickLeadAvg;
 
+        /// <summary>
+        /// Initialize the simulation tick adjuster
+        /// </summary>
+        /// <param name="serverSendRate">Current server send rate</param>
         public ClientSimulationAdjuster(float serverSendRate)
         {
             this.actualTickLeadAvg = new MovingAverage((int)serverSendRate * 2);
@@ -47,7 +51,13 @@ namespace Framework.Network
         /// <inheritdoc />
         private Stopwatch droppedInputTimer = new Stopwatch();
 
-        // Extrapolate based on latency what our client tick should be.
+        /// <summary>
+        /// Extrapolate based on latency what our client tick should be.
+        /// </summary>
+        /// <param name="physicsTime"></param>
+        /// <param name="receivedServerTick"></param>
+        /// <param name="serverLatencyMs"></param>
+        /// <returns></returns>
         public uint GuessClientTick(float physicsTime, uint receivedServerTick, int serverLatencyMs)
         {
             float serverLatencySeconds = serverLatencyMs / 1000f;
@@ -56,6 +66,12 @@ namespace Framework.Network
             return receivedServerTick + estimatedTickLead;
         }
 
+        /// <summary>
+        /// Notify actual tick lead
+        /// </summary>
+        /// <param name="actualTickLead"></param>
+        /// <param name="isDebug"></param>
+        /// <param name="useLagReduction"></param>
         public void NotifyActualTickLead(int actualTickLead, bool isDebug, bool useLagReduction)
         {
             actualTickLeadAvg.Push(actualTickLead);
@@ -113,6 +129,9 @@ namespace Framework.Network
             }
         }
 
+        /// <summary>
+        /// Just for debugging
+        /// </summary>
         public void Monitoring()
         {
             Logger.SetDebugUI("cl sim factor", AdjustedInterval.ToString());

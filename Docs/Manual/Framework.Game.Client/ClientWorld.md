@@ -12,7 +12,6 @@ public abstract class ClientWorld : World
 | --- | --- |
 | [MyServerId](ClientWorld/MyServerId.md) { get; } | The current client player id the server |
 | [clientSimulationAdjuster](ClientWorld/clientSimulationAdjuster.md) | Client adjuster Handles server ticks and make them accuracy |
-| [lastServerWorldTick](ClientWorld/lastServerWorldTick.md) | Last executed server tick |
 | [localPlayer](ClientWorld/localPlayer.md) | Local player class |
 | virtual [CreateLocalPlayer](ClientWorld/CreateLocalPlayer.md)(…) | Create an local player |
 | virtual [CreatePuppetPlayer](ClientWorld/CreatePuppetPlayer.md)(…) | Create an puppet player |
@@ -23,7 +22,6 @@ public abstract class ClientWorld : World
 | name | description |
 | --- | --- |
 | [ClientWorld](ClientWorld/ClientWorld.md)() | The default constructor. |
-| [netService](ClientWorld/netService.md) |  |
 
 ## See Also
 

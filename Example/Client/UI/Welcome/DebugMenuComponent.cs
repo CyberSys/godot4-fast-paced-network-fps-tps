@@ -48,9 +48,9 @@ namespace Shooter.Client.UI.Welcome
                 var netService = componnent.Services.Get<ClientNetworkService>();
                 if (netService != null)
                 {
-                    this.GetNode<Label>(this.PackageDataPath).Text = "Send: " + (netService.bytesSended / 1000) + "kB/s, " + "Rec: " + (netService.bytesReceived / 1000) + "kB/s";
-                    this.GetNode<Label>(this.PackageLoosePath).Text = netService.packageLoss + " (" + netService.packageLossPercent + "%" + ")";
-                    this.GetNode<Label>(this.PingPath).Text = netService.ping.ToString() + "ms";
+                    this.GetNode<Label>(this.PackageDataPath).Text = "Send: " + (netService.BytesSended / 1000) + "kB/s, " + "Rec: " + (netService.BytesReceived / 1000) + "kB/s";
+                    this.GetNode<Label>(this.PackageLoosePath).Text = netService.PackageLoss + " (" + netService.PackageLossPercent + "%" + ")";
+                    this.GetNode<Label>(this.PingPath).Text = netService.Ping.ToString() + "ms";
 
                 }
 

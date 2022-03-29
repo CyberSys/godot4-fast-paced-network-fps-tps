@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.GetAirAcceleration method
 
+Get the default air accel factor
+
 ```csharp
 public virtual float GetAirAcceleration()
 ```

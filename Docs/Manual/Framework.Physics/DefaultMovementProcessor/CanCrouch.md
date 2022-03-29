@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.CanCrouch method
 
+Check if player allows to crouch
+
 ```csharp
 public virtual bool CanCrouch()
 ```

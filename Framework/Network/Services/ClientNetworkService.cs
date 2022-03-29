@@ -36,6 +36,16 @@ namespace Framework.Network.Services
 
     public class ClientNetworkService : NetworkService
     {
+        private int currentRetries = 0;
+        private float nextStaticsUpdate = 0f;
+        private bool canRetry = false;
+        private float RetryTime = 0;
+
+        private long _bytesSended = 0;
+        private long _packageLoss = 0;
+        private long _bytesReceived = 0;
+        private long _packageLossPercent = 0;
+
         [Signal]
         public event ConnectedHandler Connected;
         public delegate void ConnectedHandler();
@@ -50,11 +60,6 @@ namespace Framework.Network.Services
         [Export]
         public const int ConnectionRetryDelay = 2;
 
-        private int currentRetries = 0;
-        private float nextStaticsUpdate = 0f;
-        private bool canRetry = false;
-        private float RetryTime = 0;
-
         private NetPeer currentPeer;
 
         private ClientConnectionSettings lastConnectionSettings;
@@ -63,21 +68,37 @@ namespace Framework.Network.Services
 
         public NetPeer ServerPeer => serverPeer;
 
-        public NetStatistics Statistics => this.netManager.Statistics;
+        private NetStatistics Statistics => this.netManager.Statistics;
 
-        private long _bytesSended = 0;
-        private long _packageLoss = 0;
-        private long _bytesReceived = 0;
-        private long _packageLossPercent = 0;
+        /// <summary>
+        /// Sended bytes since last 1 second
+        /// </summary>
+        public long BytesSended => _bytesSended;
 
-        public long bytesSended => _bytesSended;
-        public long packageLoss => _packageLoss;
+        /// <summary>
+        /// Lossing packages since last 1 second
+        /// </summary>
+        public long PackageLoss => _packageLoss;
 
-        public long bytesReceived => _bytesReceived;
-        public long packageLossPercent => _packageLossPercent;
+        /// <summary>
+        /// Received bytes since last 1 second
+        /// </summary>
+        public long BytesReceived => _bytesReceived;
+
+        /// <summary>
+        /// Package loose in percent (avg) since last 1 second
+        /// </summary>
+        public long PackageLossPercent => _packageLossPercent;
         private int _ping = 0;
-        public int ping => _ping;
 
+        /// <summary>
+        /// Get the current latency between server and client
+        /// </summary>
+        public int Ping => _ping;
+
+        /// <summary>
+        /// Disconnect from server
+        /// </summary>
         public void Disconnect()
         {
             this.currentRetries = 0;
@@ -85,7 +106,7 @@ namespace Framework.Network.Services
             this.canRetry = false;
             this.currentPeer?.Disconnect();
         }
-
+        /// <inheritdoc />
         public override void Register()
         {
             base.Register();
@@ -141,6 +162,7 @@ namespace Framework.Network.Services
             this.netManager.Start();
         }
 
+        /// <inheritdoc />
         public override void Update(float delta)
         {
             if (this.canRetry && !this.lastConnectionSettings.Equals(default(ClientConnectionSettings)))
@@ -166,7 +188,7 @@ namespace Framework.Network.Services
                 this._packageLoss = this.Statistics.PacketLoss;
                 this._packageLossPercent = this.Statistics.PacketLossPercent;
 
-                //    this.Statistics.Reset();
+                this.Statistics.Reset();
             }
             else
             {
@@ -196,6 +218,7 @@ namespace Framework.Network.Services
             task.Start();
         }
 
+        /// <inheritdoc />
         public override void Unregister()
         {
             base.Unregister();
