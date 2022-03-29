@@ -20,7 +20,7 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Remote de(activation) of player components
 - Ready to use godot nodes (ex.  ServerPlayer,  ServerWorld, ServerLogic..)
 - Server variable sharing between server and client (ServerVars)
-- (TODO) RCON Implementation for Server Management
+- RCON Implementation for Server Management
 - (TODO) Object syncronistation (dropped guns, etc)
 - (TODO) Sound syncronistation (like steps)
 # Physics
