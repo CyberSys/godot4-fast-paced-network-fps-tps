@@ -1,7 +1,9 @@
-# ClientWorldInitializer.WorldName field
+# ClientWorldInitializer.PlayerId field
+
+Own player id on server
 
 ```csharp
-public string WorldName;
+public int PlayerId;
 ```
 
 ## See Also

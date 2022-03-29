@@ -1,8 +1,14 @@
-# ServerLogic&lt;T&gt;.Variables field
+# ServerLogic&lt;T&gt;.Variables property
+
+Contains the server vars
 
 ```csharp
-public VarsCollection Variables;
+public VarsCollection Variables { get; }
 ```
+
+| parameter | description |
+| --- | --- |
+| Vars()() |  |
 
 ## See Also
 

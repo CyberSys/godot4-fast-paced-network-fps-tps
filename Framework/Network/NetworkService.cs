@@ -47,8 +47,8 @@ namespace Framework.Network
             this._netPacketProcessor.RegisterNestedType<PlayerState>();
             this._netPacketProcessor.RegisterNestedType<PlayerUpdate>();
             this._netPacketProcessor.RegisterNestedType<ServerVarUpdate>();
-            this._netPacketProcessor.RegisterNestedType<ClientInitializer>();
             this._netPacketProcessor.RegisterNestedType<ClientWorldInitializer>();
+            this._netPacketProcessor.RegisterNestedType<ClientWorldLoader>();
             this._netPacketProcessor.RegisterNestedType<ServerInitializer>();
 
             this._netPacketProcessor.RegisterNestedType(

@@ -1,5 +1,7 @@
 # ILevel.GetFreeSpawnPoints method
 
+List of free spawn points
+
 ```csharp
 public SpawnPoint[] GetFreeSpawnPoints()
 ```

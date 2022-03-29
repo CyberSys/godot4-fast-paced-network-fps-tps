@@ -31,8 +31,11 @@ namespace Framework.Game
     /// </summary>
     public class VarsCollection
     {
-        internal Vars _vars = new Vars();
-        public Vars Vars => _vars;
+        /// <summary>
+        /// List of all variables
+        /// </summary>
+        /// <returns></returns>
+        public Vars Vars { get; private set; } = new Vars();
 
         /// <summary>
         /// Constructor for  vars
@@ -40,7 +43,7 @@ namespace Framework.Game
         /// <param name="vars">Dictonary which contains  varaibles</param>
         public VarsCollection(Vars vars)
         {
-            this._vars = vars;
+            this.Vars = vars;
         }
 
         /// <summary>
@@ -48,7 +51,7 @@ namespace Framework.Game
         /// </summary>
         public VarsCollection()
         {
-            this._vars = new Vars();
+            this.Vars = new Vars();
         }
 
         /// <summary>

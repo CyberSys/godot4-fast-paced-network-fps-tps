@@ -1,5 +1,7 @@
 # PlayerState.Id field
 
+The id of this player
+
 ```csharp
 public int Id;
 ```

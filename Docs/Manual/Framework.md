@@ -55,7 +55,7 @@
 | --- | --- |
 | abstract class [ServerLogic&lt;T&gt;](./Framework.Game.Server/ServerLogic-1.md) | The core server logic |
 | class [ServerPlayer](./Framework.Game.Server/ServerPlayer.md) | Core class for server player |
-| abstract class [ServerWorld](./Framework.Game.Server/ServerWorld.md) |  |
+| abstract class [ServerWorld](./Framework.Game.Server/ServerWorld.md) | Base class for an server world |
 
 ## Framework.Input namespace
 
@@ -83,9 +83,9 @@
 
 | public type | description |
 | --- | --- |
-| struct [ClientInitializer](./Framework.Network.Commands/ClientInitializer.md) |  |
-| struct [ClientWorldInitializer](./Framework.Network.Commands/ClientWorldInitializer.md) |  |
-| struct [PlayerInputCommand](./Framework.Network.Commands/PlayerInputCommand.md) |  |
+| struct [ClientWorldInitializer](./Framework.Network.Commands/ClientWorldInitializer.md) | Network command for an client, after map was loaded sucessfull Contains all server relevated settings and vars |
+| struct [ClientWorldLoader](./Framework.Network.Commands/ClientWorldLoader.md) | Network package for initialize game level and client side |
+| struct [PlayerInputCommand](./Framework.Network.Commands/PlayerInputCommand.md) | Network command to send client input to server |
 | struct [PlayerState](./Framework.Network.Commands/PlayerState.md) | The player states structures Contains all player realted informations eg. position, rotation, velocity |
 | struct [PlayerUpdate](./Framework.Network.Commands/PlayerUpdate.md) |  |
 | struct [ServerInitializer](./Framework.Network.Commands/ServerInitializer.md) |  |

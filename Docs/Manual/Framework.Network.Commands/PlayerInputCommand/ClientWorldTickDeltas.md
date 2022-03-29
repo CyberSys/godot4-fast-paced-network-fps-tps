@@ -1,5 +1,7 @@
 # PlayerInputCommand.ClientWorldTickDeltas field
 
+For each input: Delta between the input world tick and the tick the server was at for that input. TODO: This may be overkill, determining an average is probably better, but for now this will give us 100% accuracy over lag compensation.
+
 ```csharp
 public short[] ClientWorldTickDeltas;
 ```

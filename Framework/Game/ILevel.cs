@@ -29,11 +29,15 @@ namespace Framework.Game
     public interface ILevel
     {
         /// <summary>
-        /// List of avaible spawn points
+        /// List of all spawn points in map
         /// </summary>
         /// <returns></returns>
         public SpawnPoint[] GetAllSpawnPoints();
 
+        /// <summary>
+        /// List of free spawn points
+        /// </summary>
+        /// <returns></returns>
         public SpawnPoint[] GetFreeSpawnPoints();
     }
 }

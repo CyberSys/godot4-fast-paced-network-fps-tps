@@ -1,5 +1,7 @@
 # VarsCollection.Vars property
 
+List of all variables
+
 ```csharp
 public Vars Vars { get; }
 ```

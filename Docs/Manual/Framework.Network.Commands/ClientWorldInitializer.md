@@ -1,5 +1,7 @@
 # ClientWorldInitializer structure
 
+Network command for an client, after map was loaded sucessfull Contains all server relevated settings and vars
+
 ```csharp
 public struct ClientWorldInitializer : INetSerializable
 ```
@@ -8,8 +10,9 @@ public struct ClientWorldInitializer : INetSerializable
 
 | name | description |
 | --- | --- |
-| [WorldName](ClientWorldInitializer/WorldName.md) |  |
-| [WorldTick](ClientWorldInitializer/WorldTick.md) |  |
+| [GameTick](ClientWorldInitializer/GameTick.md) | Current server world tick |
+| [PlayerId](ClientWorldInitializer/PlayerId.md) | Own player id on server |
+| [ServerVars](ClientWorldInitializer/ServerVars.md) | Server variables |
 | [Deserialize](ClientWorldInitializer/Deserialize.md)(…) |  |
 | [Serialize](ClientWorldInitializer/Serialize.md)(…) |  |
 

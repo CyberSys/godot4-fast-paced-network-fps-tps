@@ -12,7 +12,7 @@ public class VarsCollection
 | --- | --- |
 | [VarsCollection](VarsCollection/VarsCollection.md)() | Constructor for vars |
 | [VarsCollection](VarsCollection/VarsCollection.md)(…) | Constructor for vars |
-| [Vars](VarsCollection/Vars.md) { get; } |  |
+| [Vars](VarsCollection/Vars.md) { get; } | List of all variables |
 | event [OnChange](VarsCollection/OnChange.md) | Called when an value inside the collection changed |
 | [Get&lt;T&gt;](VarsCollection/Get.md)(…) | Get an server variable |
 | [LoadConfig](VarsCollection/LoadConfig.md)(…) | Load an config file by given filename |

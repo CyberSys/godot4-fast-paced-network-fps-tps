@@ -30,12 +30,32 @@ namespace Framework.Network.Commands
     /// </summary>
     public struct PlayerState : INetSerializable
     {
+        /// <summary>
+        /// The id of this player
+        /// </summary>
         public int Id;
+
+        /// <summary>
+        /// The current position of this player
+        /// </summary>
         public Vector3 Position;
+
+        /// <summary>
+        /// The current rotation of this player
+        /// </summary>
         public Quaternion Rotation;
+
+        /// <summary>
+        /// The current velocity of this player
+        /// </summary>
         public Vector3 Velocity;
+
+        /// <summary>
+        /// If player is grounded or not
+        /// </summary>
         public bool Grounded;
 
+        /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(this.Id);
@@ -47,6 +67,7 @@ namespace Framework.Network.Commands
             writer.Put(this.Grounded);
         }
 
+        /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
             this.Id = reader.GetInt();

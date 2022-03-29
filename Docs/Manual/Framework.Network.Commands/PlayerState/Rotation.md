@@ -1,5 +1,7 @@
 # PlayerState.Rotation field
 
+The current rotation of this player
+
 ```csharp
 public Quaternion Rotation;
 ```

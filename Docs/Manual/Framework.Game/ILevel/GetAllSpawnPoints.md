@@ -1,6 +1,6 @@
 # ILevel.GetAllSpawnPoints method
 
-List of avaible spawn points
+List of all spawn points in map
 
 ```csharp
 public SpawnPoint[] GetAllSpawnPoints()

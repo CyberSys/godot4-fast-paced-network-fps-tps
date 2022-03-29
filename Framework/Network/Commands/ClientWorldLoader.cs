@@ -1,3 +1,4 @@
+
 /*
  * Created on Mon Mar 28 2022
  *
@@ -20,32 +21,36 @@
  */
 
 using LiteNetLib.Utils;
-using Framework.Game;
 
 namespace Framework.Network.Commands
 {
-    public struct ClientInitializer : INetSerializable
+    /// <summary>
+    /// Network package for initialize game level and client side
+    /// </summary>
+    public struct ClientWorldLoader : INetSerializable
     {
-        public uint GameTick;
-        public int PlayerId;
-        public Vars ServerVars;
+        /// <summary>
+        /// Resource path to level
+        /// </summary>
+        public string WorldName;
 
+        /// <summary>
+        /// Current server world tick
+        /// </summary>
+        public uint WorldTick;
 
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
-            writer.Put(this.GameTick);
-            writer.Put(this.PlayerId);
-            this.ServerVars.Serialize(writer);
+            writer.Put(this.WorldName);
+            writer.Put(this.WorldTick);
         }
-
 
         /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
-            this.GameTick = reader.GetUInt();
-            this.PlayerId = reader.GetInt();
-            this.ServerVars.Deserialize(reader);
+            this.WorldName = reader.GetString();
+            this.WorldTick = reader.GetUInt();
         }
     }
 }

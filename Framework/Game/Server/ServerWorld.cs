@@ -19,9 +19,7 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System.Xml.Linq;
 using System.Linq;
-using Framework.Game;
 using System;
 using System.Collections.Generic;
 using LiteNetLib;
@@ -30,11 +28,12 @@ using Framework.Network.Commands;
 using Framework.Network;
 using Framework.Network.Services;
 using Framework.Input;
-using LiteNetLib.Utils;
-using Framework.Physics;
 
 namespace Framework.Game.Server
 {
+    /// <summary>
+    /// Base class for an server world
+    /// </summary>
     public abstract class ServerWorld : World
     {
 
@@ -146,11 +145,11 @@ namespace Framework.Game.Server
                 this.ActiveGameRule?.OnPlayerRejoined(serverPlayer);
             }
 
-            var message = new ClientWorldInitializer();
+            var message = new ClientWorldLoader();
             message.WorldName = ResourceWorldPath;
             message.WorldTick = this.WorldTick;
 
-            this.netService.SendMessageSerialisable<ClientWorldInitializer>(clientId, message);
+            this.netService.SendMessageSerialisable<ClientWorldLoader>(clientId, message);
         }
 
         /// <summary>
@@ -271,8 +270,8 @@ namespace Framework.Game.Server
                     this.OnPlayerInitilaized(player);
                 }
 
-                this.netService.SendMessageSerialisable<ClientInitializer>(clientId,
-                            new ClientInitializer
+                this.netService.SendMessageSerialisable<ClientWorldInitializer>(clientId,
+                            new ClientWorldInitializer
                             {
                                 PlayerId = clientId,
                                 ServerVars = this.ServerVars.Vars,

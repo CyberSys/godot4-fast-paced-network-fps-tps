@@ -82,7 +82,7 @@ namespace Framework.Game.Client
 
             this.netService = this.gameInstance.Services.Get<ClientNetworkService>();
             this.netService.SubscribeSerialisable<WorldHeartbeat>(HandleWorldState);
-            this.netService.SubscribeSerialisable<ClientInitializer>(InitWorld);
+            this.netService.SubscribeSerialisable<ClientWorldInitializer>(InitWorld);
             this.netService.SubscribeSerialisable<ServerVarUpdate>(UpdateWorld);
         }
 
@@ -91,7 +91,7 @@ namespace Framework.Game.Client
             this._serverVars = new VarsCollection(cmd.ServerVars);
         }
 
-        private void InitWorld(ClientInitializer cmd, NetPeer peer)
+        private void InitWorld(ClientWorldInitializer cmd, NetPeer peer)
         {
             Logger.LogDebug(this, "Init world with server user id " + cmd.PlayerId);
 

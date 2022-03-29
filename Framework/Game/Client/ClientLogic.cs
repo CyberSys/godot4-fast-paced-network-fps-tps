@@ -134,7 +134,7 @@ namespace Framework.Game.Client
             this.netService.OnDisconnect += this.OnInternalDisconnect;
             this.netService.Connected += this.OnConnected;
 
-            this.netService.SubscribeSerialisable<ClientWorldInitializer>((package, peer) =>
+            this.netService.SubscribeSerialisable<ClientWorldLoader>((package, peer) =>
             {
                 if (this.loadedWorldName != package.WorldName)
                 {

@@ -1,5 +1,7 @@
 # PlayerState.Position field
 
+The current position of this player
+
 ```csharp
 public Vector3 Position;
 ```

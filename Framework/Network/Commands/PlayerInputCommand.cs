@@ -25,20 +25,30 @@ using Framework.Input;
 
 namespace Framework.Network.Commands
 {
+    /// <summary>
+    /// Network command to send client input to server
+    /// </summary>
     public struct PlayerInputCommand : INetSerializable
     {
-        // The world tick for the first input in the array.
+        /// <summary>
+        /// The world tick for the first input in the array.
+        /// </summary>
         public uint StartWorldTick;
 
-        // An array of inputs, one entry for tick.  Ticks are guaranteed to be contiguous.
+        /// <summary>
+        /// An array of inputs, one entry for tick.  Ticks are guaranteed to be contiguous.
+        /// </summary>
         public GeneralPlayerInput[] Inputs;
 
-        // For each input:
-        // Delta between the input world tick and the tick the server was at for that input.
-        // TODO: This may be overkill, determining an average is probably better, but for now
-        // this will give us 100% accuracy over lag compensation.
+        /// <summary>
+        /// For each input:
+        /// Delta between the input world tick and the tick the server was at for that input.
+        /// TODO: This may be overkill, determining an average is probably better, but for now
+        /// this will give us 100% accuracy over lag compensation.
+        /// </summary>
         public short[] ClientWorldTickDeltas;
 
+        /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(this.StartWorldTick);
@@ -60,6 +70,7 @@ namespace Framework.Network.Commands
             }
         }
 
+        /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
             this.StartWorldTick = reader.GetUInt();

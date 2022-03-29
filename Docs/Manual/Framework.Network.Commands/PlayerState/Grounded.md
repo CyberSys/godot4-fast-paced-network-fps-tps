@@ -1,5 +1,7 @@
 # PlayerState.Grounded field
 
+If player is grounded or not
+
 ```csharp
 public bool Grounded;
 ```

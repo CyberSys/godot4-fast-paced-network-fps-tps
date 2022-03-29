@@ -1,5 +1,7 @@
 # PlayerInputCommand structure
 
+Network command to send client input to server
+
 ```csharp
 public struct PlayerInputCommand : INetSerializable
 ```
@@ -8,9 +10,9 @@ public struct PlayerInputCommand : INetSerializable
 
 | name | description |
 | --- | --- |
-| [ClientWorldTickDeltas](PlayerInputCommand/ClientWorldTickDeltas.md) |  |
-| [Inputs](PlayerInputCommand/Inputs.md) |  |
-| [StartWorldTick](PlayerInputCommand/StartWorldTick.md) |  |
+| [ClientWorldTickDeltas](PlayerInputCommand/ClientWorldTickDeltas.md) | For each input: Delta between the input world tick and the tick the server was at for that input. TODO: This may be overkill, determining an average is probably better, but for now this will give us 100% accuracy over lag compensation. |
+| [Inputs](PlayerInputCommand/Inputs.md) | An array of inputs, one entry for tick. Ticks are guaranteed to be contiguous. |
+| [StartWorldTick](PlayerInputCommand/StartWorldTick.md) | The world tick for the first input in the array. |
 | [Deserialize](PlayerInputCommand/Deserialize.md)(…) |  |
 | [Serialize](PlayerInputCommand/Serialize.md)(…) |  |
 

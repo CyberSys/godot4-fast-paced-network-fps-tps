@@ -10,8 +10,8 @@ public interface ILevel
 
 | name | description |
 | --- | --- |
-| [GetAllSpawnPoints](ILevel/GetAllSpawnPoints.md)() | List of avaible spawn points |
-| [GetFreeSpawnPoints](ILevel/GetFreeSpawnPoints.md)() |  |
+| [GetAllSpawnPoints](ILevel/GetAllSpawnPoints.md)() | List of all spawn points in map |
+| [GetFreeSpawnPoints](ILevel/GetFreeSpawnPoints.md)() | List of free spawn points |
 
 ## See Also
 

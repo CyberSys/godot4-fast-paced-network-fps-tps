@@ -96,7 +96,12 @@ namespace Framework.Game.Server
             { "sv_strafe_accel", "50.0" },
         };
 
-        public VarsCollection Variables = new VarsCollection(new Vars());
+        /// <summary>
+        /// Contains the server vars
+        /// </summary>
+        /// <param name="Vars()"></param>
+        /// <returns></returns>
+        public VarsCollection Variables { get; private set; } = new VarsCollection(new Vars());
 
         /// <summary>
         /// Network server port

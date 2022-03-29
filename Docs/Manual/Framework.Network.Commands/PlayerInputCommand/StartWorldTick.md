@@ -1,5 +1,7 @@
 # PlayerInputCommand.StartWorldTick field
 
+The world tick for the first input in the array.
+
 ```csharp
 public uint StartWorldTick;
 ```

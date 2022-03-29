@@ -1,5 +1,7 @@
 # PlayerInputCommand.Inputs field
 
+An array of inputs, one entry for tick. Ticks are guaranteed to be contiguous.
+
 ```csharp
 public GeneralPlayerInput[] Inputs;
 ```

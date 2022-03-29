@@ -1,5 +1,7 @@
 # PlayerState.Velocity field
 
+The current velocity of this player
+
 ```csharp
 public Vector3 Velocity;
 ```

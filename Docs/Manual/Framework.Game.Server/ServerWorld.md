@@ -1,5 +1,7 @@
 # ServerWorld class
 
+Base class for an server world
+
 ```csharp
 public abstract class ServerWorld : World
 ```

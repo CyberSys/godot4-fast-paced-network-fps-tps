@@ -1,4 +1,3 @@
-
 /*
  * Created on Mon Mar 28 2022
  *
@@ -21,25 +20,45 @@
  */
 
 using LiteNetLib.Utils;
-using System.Collections.Generic;
+using Framework.Game;
 
 namespace Framework.Network.Commands
 {
+    /// <summary>
+    /// Network command for an client, after map was loaded sucessfull
+    /// Contains all server relevated settings and vars
+    /// </summary>
     public struct ClientWorldInitializer : INetSerializable
     {
-        public string WorldName;
-        public uint WorldTick;
+        /// <summary>
+        /// Current server world tick
+        /// </summary>
+        public uint GameTick;
 
+        /// <summary>
+        /// Own player id on server
+        /// </summary>
+        public int PlayerId;
+
+        /// <summary>
+        /// Server variables
+        /// </summary>
+        public Vars ServerVars;
+
+        /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
-            writer.Put(this.WorldName);
-            writer.Put(this.WorldTick);
+            writer.Put(this.GameTick);
+            writer.Put(this.PlayerId);
+            this.ServerVars.Serialize(writer);
         }
 
+        /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
-            this.WorldName = reader.GetString();
-            this.WorldTick = reader.GetUInt();
+            this.GameTick = reader.GetUInt();
+            this.PlayerId = reader.GetInt();
+            this.ServerVars.Deserialize(reader);
         }
     }
 }
