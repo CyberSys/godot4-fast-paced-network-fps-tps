@@ -24,12 +24,6 @@ public abstract class ServerLogic<T> : GameLogic
 | virtual [OnPreConnect](ServerLogic-1/OnPreConnect.md)(…) | Called when client connected |
 | virtual [OnServerStarted](ServerLogic-1/OnServerStarted.md)() | Called when after server started succeffull |
 
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [ServerLogic](ServerLogic-1/ServerLogic.md)() | The default constructor. |
-
 ## See Also
 
 * class [GameLogic](../Framework.Game/GameLogic.md)

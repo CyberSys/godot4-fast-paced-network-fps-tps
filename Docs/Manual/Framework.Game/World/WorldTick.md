@@ -1,7 +1,7 @@
 # World.WorldTick property
 
 ```csharp
-public uint WorldTick { get; protected set; }
+public uint WorldTick { get; }
 ```
 
 ## See Also

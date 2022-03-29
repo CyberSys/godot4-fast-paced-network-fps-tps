@@ -13,12 +13,6 @@ public abstract class Level : Node3D, ILevel
 | [GetAllSpawnPoints](Level/GetAllSpawnPoints.md)() |  |
 | [GetFreeSpawnPoints](Level/GetFreeSpawnPoints.md)() |  |
 
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [Level](Level/Level.md)() | The default constructor. |
-
 ## See Also
 
 * interface [ILevel](./ILevel.md)

@@ -16,12 +16,6 @@ public abstract class ClientWorld : World
 | virtual [CreateLocalPlayer](ClientWorld/CreateLocalPlayer.md)(…) | Create an local player |
 | virtual [CreatePuppetPlayer](ClientWorld/CreatePuppetPlayer.md)(…) | Create an puppet player |
 
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [ClientWorld](ClientWorld/ClientWorld.md)() | The default constructor. |
-
 ## See Also
 
 * class [World](../Framework.Game/World.md)

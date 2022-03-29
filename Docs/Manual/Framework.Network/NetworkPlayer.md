@@ -12,13 +12,6 @@ public abstract class NetworkPlayer : Player
 | [SetPlayerInputs](NetworkPlayer/SetPlayerInputs.md)(…) |  |
 | virtual [ToNetworkState](NetworkPlayer/ToNetworkState.md)() |  |
 
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [NetworkPlayer](NetworkPlayer/NetworkPlayer.md)() | The default constructor. |
-| [inputs](NetworkPlayer/inputs.md) |  |
-
 ## See Also
 
 * class [Player](../Framework.Game/Player.md)

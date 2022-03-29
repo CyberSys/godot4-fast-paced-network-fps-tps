@@ -14,12 +14,6 @@ public abstract class SpawnPoint : Area3D
 | [isFree](SpawnPoint/isFree.md)() | Returns if the spawn point are free and not in use |
 | override [_EnterTree](SpawnPoint/_EnterTree.md)() |  |
 
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [SpawnPoint](SpawnPoint/SpawnPoint.md)() | The default constructor. |
-
 ## See Also
 
 * namespace [Framework.Game](../Framework.md)

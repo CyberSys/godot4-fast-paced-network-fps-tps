@@ -1,7 +1,9 @@
-# GameLogic.currentWorld field
+# GameLogic.CurrentWorld property
+
+The active game world
 
 ```csharp
-protected IWorld currentWorld;
+public IWorld CurrentWorld { get; }
 ```
 
 ## See Also

@@ -15,19 +15,13 @@ public abstract class World : Node3D, IWorld
 | [ResourceWorldPath](World/ResourceWorldPath.md) { get; } |  |
 | [ServerVars](World/ServerVars.md) { get; } |  |
 | [simulationAdjuster](World/simulationAdjuster.md) { get; set; } | Adjust the tick rate of the server |
-| [WorldTick](World/WorldTick.md) { get; protected set; } |  |
+| [WorldTick](World/WorldTick.md) { get; } |  |
 | [Destroy](World/Destroy.md)() |  |
 | virtual [OnPlayerInitilaized](World/OnPlayerInitilaized.md)(…) |  |
 | virtual [Tick](World/Tick.md)(…) |  |
 | override [_Notification](World/_Notification.md)(…) |  |
 | override [_PhysicsProcess](World/_PhysicsProcess.md)(…) |  |
 | override [_Process](World/_Process.md)(…) |  |
-
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [World](World/World.md)() | The default constructor. |
 
 ## See Also
 

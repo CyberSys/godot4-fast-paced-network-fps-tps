@@ -19,12 +19,6 @@ public abstract class ServerWorld : World
 | virtual [OnPlayerConnected](ServerWorld/OnPlayerConnected.md)(…) | Event called after client is connected to server |
 | virtual [OnPlayerDisconnect](ServerWorld/OnPlayerDisconnect.md)(…) | Event called after client is disconnected from server |
 
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [ServerWorld](ServerWorld/ServerWorld.md)() | The default constructor. |
-
 ## See Also
 
 * class [World](../Framework.Game/World.md)

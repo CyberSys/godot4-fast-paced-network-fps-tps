@@ -22,12 +22,6 @@ public class GameLogic : SubViewport, IGameLogic
 | override [_Notification](GameLogic/_Notification.md)(…) |  |
 | override [_Process](GameLogic/_Process.md)(…) |  |
 
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [currentWorld](GameLogic/currentWorld.md) |  |
-
 ## See Also
 
 * interface [IGameLogic](./IGameLogic.md)

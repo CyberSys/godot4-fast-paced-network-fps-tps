@@ -22,13 +22,6 @@ public abstract class NetworkService : IService
 | virtual [Unregister](NetworkService/Unregister.md)() |  |
 | virtual [Update](NetworkService/Update.md)(…) |  |
 
-## Protected Members
-
-| name | description |
-| --- | --- |
-| [netManager](NetworkService/netManager.md) |  |
-| readonly [_netPacketProcessor](NetworkService/_netPacketProcessor.md) | Default server port |
-
 ## See Also
 
 * interface [IService](../Framework/IService.md)
