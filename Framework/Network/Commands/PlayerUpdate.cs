@@ -29,6 +29,9 @@ using System.Collections.Generic;
 
 namespace Framework.Network.Commands
 {
+    /// <summary>
+    /// Contains all player relevant fields eg Latency, Team, Required Components
+    /// </summary>
     public struct PlayerUpdate : INetSerializable
     {
         public PlayerTeam Team;
@@ -39,7 +42,6 @@ namespace Framework.Network.Commands
 
         public string[] RequiredComponents;
         public string[] RequiredPuppetComponents;
-
 
         [IgnoreDataMemberAttribute]
         public float DisconnectTime;

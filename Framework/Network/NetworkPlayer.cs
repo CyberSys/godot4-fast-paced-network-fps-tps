@@ -21,35 +21,68 @@
 
 using Godot;
 using Framework.Network.Commands;
-using Framework;
+using System.Linq;
 using Framework.Game;
-using Framework.Input;
-using Framework.Physics;
+using LiteNetLib.Utils;
 
 namespace Framework.Network
 {
-    public abstract partial class NetworkPlayer : Player, IBaseComponent
+    /// <summary>
+    /// Player class for network players eg. players, npcs
+    /// </summary>
+    public abstract partial class NetworkPlayer : Player
     {
-
-        protected IPlayerInput inputs;
-
-        public void SetPlayerInputs(IPlayerInput inputs)
-        {
-            this.inputs = inputs;
-        }
-
-
+        /// <summary>
+        /// Get the current network state
+        /// </summary>
+        /// <returns></returns>
         public virtual PlayerState ToNetworkState()
         {
+            var netComps = new System.Collections.Generic.Dictionary<string, byte[]>();
+            foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
+                    x.IsGenericType &&
+                    x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
+            {
+                var instanceMethod = component.GetType().GetMethod("GetNetworkState");
+                INetSerializable result = instanceMethod.Invoke(component, new object[] { }) as INetSerializable;
+
+                var writer = new NetDataWriter();
+                result.Serialize(writer);
+                netComps.Add((component as IChildComponent).GetComponentName(), writer.Data);
+            }
+
             return new PlayerState
             {
-                Id = int.Parse(this.Name),
+                Id = this.Id,
+                NetworkComponents = netComps
             };
         }
 
+        /// <summary>
+        /// Apply an network state
+        /// </summary>
+        /// <param name="state">The network state to applied</param>
         public virtual void ApplyNetworkState(PlayerState state)
         {
+            foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
+                    x.IsGenericType &&
+                    x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
+            {
+                var compName = (component as IChildComponent).GetComponentName();
+                if (state.NetworkComponents.ContainsKey(compName))
+                {
+                    //     var decompose = state.Decompose();
+                    var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
+                    var parameterType = instanceMethod.GetParameters().First().ParameterType;
 
+                    var methods = state.GetType().GetMethods();
+                    var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
+
+                    var decomposed = method.MakeGenericMethod(parameterType)
+                          .Invoke(state, new object[] { compName });
+                    instanceMethod.Invoke(component, new object[] { decomposed });
+                }
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 # PlayerUpdate structure
 
+Contains all player relevant fields eg Latency, Team, Required Components
+
 ```csharp
 public struct PlayerUpdate : INetSerializable
 ```

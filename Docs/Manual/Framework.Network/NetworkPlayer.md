@@ -1,5 +1,7 @@
 # NetworkPlayer class
 
+Player class for network players eg. players, npcs
+
 ```csharp
 public abstract class NetworkPlayer : Player
 ```
@@ -8,9 +10,8 @@ public abstract class NetworkPlayer : Player
 
 | name | description |
 | --- | --- |
-| virtual [ApplyNetworkState](NetworkPlayer/ApplyNetworkState.md)(…) |  |
-| [SetPlayerInputs](NetworkPlayer/SetPlayerInputs.md)(…) |  |
-| virtual [ToNetworkState](NetworkPlayer/ToNetworkState.md)() |  |
+| virtual [ApplyNetworkState](NetworkPlayer/ApplyNetworkState.md)(…) | Apply an network state |
+| virtual [ToNetworkState](NetworkPlayer/ToNetworkState.md)() | Get the current network state |
 
 ## See Also
 

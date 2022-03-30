@@ -16,6 +16,12 @@ namespace Shooter.Shared.Components
     }
     public partial class PlayerCameraComponent : Camera3D, IChildComponent
     {
+
+        public string GetComponentName()
+        {
+            return "input";
+        }
+
         public IBaseComponent BaseComponent { get; set; }
         public const float tpsDamping = 1;
         private float rotX = 0.0f;
@@ -73,6 +79,7 @@ namespace Shooter.Shared.Components
         {
             return this.Transform.basis.GetRotationQuaternion();
         }
+
         public override void _Input(InputEvent @event)
         {
             base._Input(@event);

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://bhjpvjaopmtj6"
+path="res://.godot/imported/STEPS Concrete, Run 07.wav-a8afce828dc306217d5bc33ee887009b.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Concrete/Run/STEPS Concrete, Run 07.wav"
+dest_files=["res://.godot/imported/STEPS Concrete, Run 07.wav-a8afce828dc306217d5bc33ee887009b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

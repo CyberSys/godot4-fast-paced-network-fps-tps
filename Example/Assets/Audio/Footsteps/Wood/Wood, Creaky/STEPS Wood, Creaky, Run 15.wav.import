@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://ceuimkf3b7agj"
+path="res://.godot/imported/STEPS Wood, Creaky, Run 15.wav-e26d9b4f965c8cd8b25671efc1afb8ae.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Wood/Wood, Creaky/STEPS Wood, Creaky, Run 15.wav"
+dest_files=["res://.godot/imported/STEPS Wood, Creaky, Run 15.wav-e26d9b4f965c8cd8b25671efc1afb8ae.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -56,12 +56,10 @@ namespace Framework.Network.Commands
             if (this.Inputs != null)
             {
                 writer.Put(this.Inputs.Length);
-
                 for (int i = 0; i < this.Inputs.Length; i++)
                 {
-                    writer.Put(this.Inputs[i].GetKeyBitfield());
-                    writer.Put(this.Inputs[i].ViewDirection);
                     writer.Put(this.ClientWorldTickDeltas[i]);
+                    this.Inputs[i].Serialize(writer);
                 }
             }
             else
@@ -74,16 +72,16 @@ namespace Framework.Network.Commands
         public void Deserialize(NetDataReader reader)
         {
             this.StartWorldTick = reader.GetUInt();
+
             var length = reader.GetInt();
 
-            this.Inputs = new GeneralPlayerInput[length];
             this.ClientWorldTickDeltas = new short[length];
+            this.Inputs = new GeneralPlayerInput[length];
 
             for (int i = 0; i < length; i++)
             {
-                this.Inputs[i].ApplyKeyBitfield(reader.GetByte());
-                this.Inputs[i].ViewDirection = reader.GetQuaternion();
                 this.ClientWorldTickDeltas[i] = reader.GetShort();
+                this.Inputs[i].Deserialize(reader);
             }
         }
     }

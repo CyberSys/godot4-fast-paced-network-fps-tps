@@ -1,5 +1,7 @@
 # ServerVarUpdate.GameTick field
 
+Current game tick
+
 ```csharp
 public uint GameTick;
 ```

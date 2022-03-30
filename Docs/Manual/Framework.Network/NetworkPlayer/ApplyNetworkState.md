@@ -1,8 +1,14 @@
 # NetworkPlayer.ApplyNetworkState method
 
+Apply an network state
+
 ```csharp
 public virtual void ApplyNetworkState(PlayerState state)
 ```
+
+| parameter | description |
+| --- | --- |
+| state | The network state to applied |
 
 ## See Also
 

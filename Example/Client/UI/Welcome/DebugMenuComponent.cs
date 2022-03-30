@@ -7,6 +7,10 @@ namespace Shooter.Client.UI.Welcome
 {
     public partial class DebugMenuComponent : CanvasLayer, IChildComponent
     {
+        public string GetComponentName()
+        {
+            return "debug";
+        }
         public IBaseComponent BaseComponent { get; set; }
 
         [Export]

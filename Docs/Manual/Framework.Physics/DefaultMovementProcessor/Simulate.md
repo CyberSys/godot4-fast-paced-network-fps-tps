@@ -1,13 +1,14 @@
 # DefaultMovementProcessor.Simulate method
 
 ```csharp
-public Vector3 Simulate(IMoveable component, IPlayerInput inputs, float dt)
+public Vector3 Simulate(IChildMovementNetworkSyncComponent component, GeneralPlayerInput inputs, 
+    float dt)
 ```
 
 ## See Also
 
-* interface [IMoveable](../IMoveable.md)
-* interface [IPlayerInput](../../Framework.Input/IPlayerInput.md)
+* interface [IChildMovementNetworkSyncComponent](../IChildMovementNetworkSyncComponent.md)
+* struct [GeneralPlayerInput](../../Framework.Input/GeneralPlayerInput.md)
 * class [DefaultMovementProcessor](../DefaultMovementProcessor.md)
 * namespace [Framework.Physics](../../Framework.md)
 

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://cmyetg28k825k"
+path="res://.godot/imported/STEPS Wood, Dense, Walk 06.wav-a3d9ba9645f7cca762985afee1317dbd.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Wood/Wood, Dense/STEPS Wood, Dense, Walk 06.wav"
+dest_files=["res://.godot/imported/STEPS Wood, Dense, Walk 06.wav-a3d9ba9645f7cca762985afee1317dbd.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

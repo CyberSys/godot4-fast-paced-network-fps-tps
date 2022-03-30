@@ -1,9 +1,16 @@
 # NetworkService.SubscribeSerialisable&lt;T&gt; method
 
+Subscribe an network command from type INetSerializable
+
 ```csharp
 public void SubscribeSerialisable<T>(Action<T, NetPeer> onReceive)
     where T : INetSerializable, new()
 ```
+
+| parameter | description |
+| --- | --- |
+| T |  |
+| onReceive |  |
 
 ## See Also
 

@@ -38,9 +38,8 @@ namespace Framework.Game.Client
     /// <typeparam name="T"></typeparam>
     public class ClientLogic<T> : GameLogic where T : ClientWorld
     {
-
         /// <summary>
-        /// The dictonary with all server settings (vars);
+        /// The dictonary with all default settings (vars);
         /// </summary>
         [Export]
         public Dictionary<string, string> DefaultVars = new Dictionary<string, string>

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://d37l8ysilahxo"
+path="res://.godot/imported/STEPS Dirt, Walk 03.wav-fd26225dc4e041e8c769694e8e36dc16.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Dirt/STEPS Dirt, Walk 03.wav"
+dest_files=["res://.godot/imported/STEPS Dirt, Walk 03.wav-fd26225dc4e041e8c769694e8e36dc16.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

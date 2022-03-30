@@ -1,5 +1,7 @@
 # ServerInitializer structure
 
+Network command to tell the server that the client world is initalized
+
 ```csharp
 public struct ServerInitializer : INetSerializable
 ```

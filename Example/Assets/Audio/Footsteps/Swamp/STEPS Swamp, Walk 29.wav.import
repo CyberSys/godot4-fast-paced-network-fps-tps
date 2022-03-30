@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://cd04d2sju0xpm"
+path="res://.godot/imported/STEPS Swamp, Walk 29.wav-e1317ad312fc4c964c05111ecf4fc112.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Swamp/STEPS Swamp, Walk 29.wav"
+dest_files=["res://.godot/imported/STEPS Swamp, Walk 29.wav-e1317ad312fc4c964c05111ecf4fc112.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

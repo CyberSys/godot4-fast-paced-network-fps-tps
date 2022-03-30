@@ -1,3 +1,4 @@
+using System.Linq;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -22,6 +23,10 @@
 using Godot;
 using Framework.Network.Commands;
 using Framework.Network;
+using LiteNetLib.Utils;
+using Framework.Input;
+using System;
+using Framework.Game.Client;
 
 namespace Framework.Physics
 {
@@ -36,79 +41,26 @@ namespace Framework.Physics
         }
 
         /// <summary>
-        /// The movement processor for physics player movement
-        /// </summary>
-        /// <returns></returns>
-        public IMovementProcessor MovementProcessor { get; set; } = new DefaultMovementProcessor();
-
-        /// <summary>
-        /// The body attachted to the physics player simulation (eg.  kinematic, rigid..)
-        /// </summary>
-        /// <value></value>
-        public IMoveable Body { get; set; }
-
-
-        /// <summary>
         /// Teleport player to an given position
         /// </summary>
         /// <param name="origin">New position of the player</param>
         public void DoTeleport(Godot.Vector3 origin)
         {
-            if (Body != null)
+            foreach (var component in this.Components.All)
             {
-                var bodyNode = Body as Node3D;
-                var gt = bodyNode.GlobalTransform;
-                gt.origin = origin;
-                bodyNode.GlobalTransform = gt;
+                if (component is IChildMovementNetworkSyncComponent)
+                {
+                    var data = (component as IChildMovementNetworkSyncComponent).GetNetworkState();
+                    data.Position = origin;
+                    (component as IChildMovementNetworkSyncComponent).ApplyNetworkState(data);
+                }
             }
         }
 
-        /// <summary>
-        /// Get the current network state
-        /// </summary>
-        /// <returns></returns>
-        public override PlayerState ToNetworkState()
+        internal GeneralPlayerInput inputs;
+        public void SetPlayerInputs(GeneralPlayerInput inputs)
         {
-            if (Body != null)
-            {
-                return new PlayerState
-                {
-                    Id = this.Id,
-                    Position = Body.Transform.origin,
-                    Rotation = Body.Transform.basis.GetRotationQuaternion(),
-                    Velocity = MovementProcessor.Velocity,
-                    Grounded = Body.isOnGround(),
-                };
-            }
-            else
-            {
-                return new PlayerState
-                {
-                    Id = this.Id,
-                };
-            }
-        }
-
-        /// <summary>
-        /// Apply an network state
-        /// </summary>
-        /// <param name="state">The network state to applied</param>
-        public override void ApplyNetworkState(PlayerState state)
-        {
-            if (Body != null)
-            {
-                Body.activateColliderShape(false);
-
-                var transform = Body.Transform;
-                transform.origin = state.Position;
-                transform.basis = new Basis(state.Rotation);
-                Body.Transform = transform;
-                Body.Velocity = state.Velocity;
-
-                Body.activateColliderShape(true);
-            }
-
-            MovementProcessor.Velocity = state.Velocity;
+            this.inputs = inputs;
         }
 
         /// <inheritdoc />
@@ -116,11 +68,16 @@ namespace Framework.Physics
         {
             base.InternalTick(delta);
 
-            if (Body != null)
+            foreach (var component in this.Components.All)
             {
-                this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
-                this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
-                this.MovementProcessor.Simulate(Body, this.inputs, delta);
+                if (component is IChildMovementNetworkSyncComponent)
+                {
+                    var bodyComp = (component as IChildMovementNetworkSyncComponent);
+
+                    bodyComp.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
+                    bodyComp.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
+                    bodyComp.MovementProcessor.Simulate(component as IChildMovementNetworkSyncComponent, this.inputs, delta);
+                }
             }
         }
     }

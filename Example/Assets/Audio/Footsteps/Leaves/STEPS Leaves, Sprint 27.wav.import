@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://ixhkrlwbbh1c"
+path="res://.godot/imported/STEPS Leaves, Sprint 27.wav-d68af8feca4f67805160040160a7b1b3.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Leaves/STEPS Leaves, Sprint 27.wav"
+dest_files=["res://.godot/imported/STEPS Leaves, Sprint 27.wav-d68af8feca4f67805160040160a7b1b3.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

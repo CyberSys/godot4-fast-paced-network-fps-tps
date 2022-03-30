@@ -1,5 +1,7 @@
 # NetworkPlayer.ToNetworkState method
 
+Get the current network state
+
 ```csharp
 public virtual PlayerState ToNetworkState()
 ```

@@ -37,6 +37,8 @@ namespace Framework.Game.Server
     {
         /// <inheritdoc />
         internal ServerNetworkService netService = null;
+
+        /// <inheritdoc />
         internal RconServerService rconService = null;
 
         /// <summary>

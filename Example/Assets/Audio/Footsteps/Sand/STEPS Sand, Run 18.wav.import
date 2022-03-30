@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://c66hjsjccwfvw"
+path="res://.godot/imported/STEPS Sand, Run 18.wav-a06fe0d22d43f12d4bdae98935a25500.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Sand/STEPS Sand, Run 18.wav"
+dest_files=["res://.godot/imported/STEPS Sand, Run 18.wav-a06fe0d22d43f12d4bdae98935a25500.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -22,11 +22,13 @@
 using Framework.Game;
 using Framework.Network.Commands;
 using Framework.Input;
+using System.Linq;
 using Framework.Network;
 using System;
 using Godot;
 using Framework.Physics;
 using System.Collections.Generic;
+using LiteNetLib.Utils;
 
 namespace Framework.Game.Client
 {
@@ -76,20 +78,52 @@ namespace Framework.Game.Client
                 return;
             }
 
-            // DebugUI.ShowValue("RemotePlayer q size", stateQueue.Count);
             var nextState = stateQueue.Peek();
             float theta = stateTimer / ServerSendInterval;
-            //var a = Quaternion.Euler(0, lastState.Value.Rotation.y, 0);
-            //var b = Quaternion.Euler(0, nextState.Rotation.y, 0);
-            var a = lastState.Value.Rotation;
-            var b = nextState.Rotation;
 
-            if (this.Body != null)
+            foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
+                    x.IsGenericType &&
+                    x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
             {
-                var transform = this.Body.Transform;
-                transform.origin = lastState.Value.Position.Lerp(nextState.Position, theta);
-                transform.basis = new Basis(a.Slerp(b, theta));
-                this.Body.Transform = transform;
+                //only for movement components (to interpolate)
+                if (component is IChildMovementNetworkSyncComponent)
+                {
+                    var networkComp = (component as IChildMovementNetworkSyncComponent);
+                    if (nextState.NetworkComponents.ContainsKey(networkComp.GetComponentName()) &&
+                        lastState.HasValue && lastState.Value.NetworkComponents.ContainsKey(networkComp.GetComponentName()))
+                    {
+                        var decomposedNextState = nextState.Decompose<MovementBodyPackage>(networkComp.GetComponentName());
+                        var decomposesLastState = lastState.Value.Decompose<MovementBodyPackage>(networkComp.GetComponentName());
+
+                        var a = decomposesLastState.Rotation;
+                        var b = decomposedNextState.Rotation;
+
+                        var newState = networkComp.GetNetworkState();
+
+                        newState.Position = decomposesLastState.Position.Lerp(decomposedNextState.Position, theta);
+                        newState.Rotation = a.Slerp(b, theta);
+
+                        (component as IChildMovementNetworkSyncComponent).ApplyNetworkState(newState);
+                    }
+                }
+                //for the rest -> just handle applying components
+                else
+                {
+                    var compName = (component as IChildComponent).GetComponentName();
+                    if (nextState.NetworkComponents.ContainsKey(compName))
+                    {
+                        var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
+                        var parameterType = instanceMethod.GetParameters().First().ParameterType;
+
+                        var methods = nextState.GetType().GetMethods();
+                        var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
+
+                        var decomposed = method.MakeGenericMethod(parameterType)
+                              .Invoke(nextState, new object[] { compName });
+                        instanceMethod.Invoke(component, new object[] { decomposed });
+                    }
+                }
+
             }
         }
 
@@ -98,8 +132,6 @@ namespace Framework.Game.Client
         {
             if (this.GameWorld.ServerVars.Get<bool>("sv_interpolate", true))
             {
-                // TODO: This whole thing needs to be simplified a bit more, but at least make sure
-                // we're not buffering more than we should be.
                 while (stateQueue.Count >= 2)
                 {
                     stateQueue.Dequeue();
@@ -108,15 +140,7 @@ namespace Framework.Game.Client
             }
             else
             {
-                if (this.Body != null)
-                {
-                    var transform = this.Body.Transform;
-                    transform.origin = state.Position;
-                    transform.basis = new Basis(state.Rotation);
-                    this.Body.Transform = transform;
-
-                    return;
-                }
+                base.ApplyNetworkState(state);
             }
         }
     }

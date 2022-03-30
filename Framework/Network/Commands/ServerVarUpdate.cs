@@ -25,9 +25,19 @@ using Framework.Game;
 
 namespace Framework.Network.Commands
 {
+    /// <summary>
+    /// Network command for updaing server vars on client side
+    /// </summary>
     public struct ServerVarUpdate : INetSerializable
     {
+        /// <summary>
+        /// Current game tick
+        /// </summary>
         public uint GameTick;
+
+        /// <summary>
+        /// All server vars
+        /// </summary>
         public Vars ServerVars;
 
         /// <inheritdoc />

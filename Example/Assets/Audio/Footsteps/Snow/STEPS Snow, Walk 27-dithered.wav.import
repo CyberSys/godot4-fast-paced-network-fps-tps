@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://c81a2nk8thbnw"
+path="res://.godot/imported/STEPS Snow, Walk 27-dithered.wav-f035ecdede1021d721b0f2f4843c217b.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Snow/STEPS Snow, Walk 27-dithered.wav"
+dest_files=["res://.godot/imported/STEPS Snow, Walk 27-dithered.wav-f035ecdede1021d721b0f2f4843c217b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

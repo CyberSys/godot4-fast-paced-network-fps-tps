@@ -1,5 +1,7 @@
 # PlayerConnectionState enumeration
 
+Connection states of the player
+
 ```csharp
 public enum PlayerConnectionState
 ```
@@ -8,10 +10,10 @@ public enum PlayerConnectionState
 
 | name | value | description |
 | --- | --- | --- |
-| Unknown | `0` |  |
-| Connected | `1` |  |
-| Initialized | `2` |  |
-| Disconnected | `3` |  |
+| Unknown | `0` | Only for pre-connection |
+| Connected | `1` | When player is connected |
+| Initialized | `2` | When player have completly loading the server world |
+| Disconnected | `3` | When the player is disconnected |
 
 ## See Also
 

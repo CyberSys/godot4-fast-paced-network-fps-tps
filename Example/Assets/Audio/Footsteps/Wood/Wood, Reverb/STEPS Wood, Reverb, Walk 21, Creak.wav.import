@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://da40x24rsc712"
+path="res://.godot/imported/STEPS Wood, Reverb, Walk 21, Creak.wav-139a441cae934d9e1969b96aaead34ac.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Wood/Wood, Reverb/STEPS Wood, Reverb, Walk 21, Creak.wav"
+dest_files=["res://.godot/imported/STEPS Wood, Reverb, Walk 21, Creak.wav-139a441cae934d9e1969b96aaead34ac.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

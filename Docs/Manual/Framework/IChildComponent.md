@@ -11,6 +11,7 @@ public interface IChildComponent
 | name | description |
 | --- | --- |
 | [BaseComponent](IChildComponent/BaseComponent.md) { get; set; } | The base component of the child component |
+| [GetComponentName](IChildComponent/GetComponentName.md)() |  |
 
 ## See Also
 

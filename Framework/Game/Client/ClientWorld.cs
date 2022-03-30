@@ -1,3 +1,4 @@
+using System.ComponentModel;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -135,15 +136,23 @@ namespace Framework.Game.Client
         /// <inheritdoc />  
         internal override void InternalTick(float interval)
         {
-            if (this.localPlayer != null && this.localPlayer.Inputable != null)
+            if (this.localPlayer != null)
             {
+
                 float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
                 var serverSendRate = simTickRate / 2;
 
                 var MaxStaleServerStateTicks = (int)MathF.Ceiling(this.ServerVars.Get<int>("sv_max_stages_ms", 500) / serverSendRate);
 
-                var inputHandler = this.localPlayer.Inputable;
-                var inputs = (inputHandler != null && !this.gameInstance.GuiDisableInput) ? inputHandler.GetPlayerInput() : new GeneralPlayerInput();
+                GeneralPlayerInput inputs = new GeneralPlayerInput();
+
+                if (!this.gameInstance.GuiDisableInput)
+                {
+                    foreach (var component in this.localPlayer.Components.All.Where(df => df is IChildInputComponent).ToArray())
+                    {
+                        inputs = (component as IChildInputComponent).GetPlayerInput();
+                    }
+                }
 
                 var lastTicks = WorldTick - lastServerWorldTick;
                 if (this.ServerVars.Get<bool>("sv_freze_client", false) && lastTicks >= MaxStaleServerStateTicks)
@@ -161,6 +170,7 @@ namespace Framework.Game.Client
                 // Send a command for all inputs not yet acknowledged from the server.
                 var unackedInputs = new List<GeneralPlayerInput>();
                 var clientWorldTickDeltas = new List<short>();
+
                 // TODO: lastServerWorldTick is technically not the same as lastAckedInputTick, fix this.
                 for (uint tick = lastServerWorldTick; tick <= WorldTick; ++tick)
                 {
@@ -320,16 +330,6 @@ namespace Framework.Game.Client
                         {
                             result = player.Components.AddComponent(avaiableComponents.Value.NodeType);
                         }
-
-                        if (result != null && result is IMoveable && player is PhysicsPlayer)
-                        {
-                            (player as PhysicsPlayer).Body = result as IMoveable;
-                        }
-
-                        if (result != null && result is IInputable && player is LocalPlayer)
-                        {
-                            (player as LocalPlayer).Inputable = result as IInputable;
-                        }
                     }
                 }
             }
@@ -407,7 +407,7 @@ namespace Framework.Game.Client
             }
 
             // Handle local player rewinding
-            if (this.localPlayer != null && this.localPlayer.Body != null)
+            if (this.localPlayer != null && this.localPlayer != null)
             {
                 if (default(PlayerState).Equals(this.localPlayer.incomingLocalPlayerState))
                 {
@@ -419,36 +419,52 @@ namespace Framework.Game.Client
                 var stateSnapshot = this.localPlayer.localPlayerStateSnapshots[bufidx];
 
                 // Compare the historical state to see how off it was.
-                var error = this.localPlayer.incomingLocalPlayerState.Position - stateSnapshot.Position;
-                if (error.LengthSquared() > 0.0001f)
+                foreach (var component in this.localPlayer.Components.All)
                 {
-                    if (!headState)
+                    if (component is IChildMovementNetworkSyncComponent)
                     {
-                        Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {this.localPlayer.incomingLocalPlayerState.Position.ToString()} ServerPos: {stateSnapshot.Position.ToString()} ");
-                        replayedStates++;
-                    }
+                        var body = component as IChildMovementNetworkSyncComponent;
 
-                    // Rewind local player state to the correct state from the server.
-                    // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
-                    this.localPlayer.ApplyNetworkState(this.localPlayer.incomingLocalPlayerState);
+                        if (this.localPlayer.incomingLocalPlayerState.NetworkComponents != null
+                        && this.localPlayer.incomingLocalPlayerState.NetworkComponents.ContainsKey(body.GetComponentName())
+                            && stateSnapshot.NetworkComponents != null && stateSnapshot.NetworkComponents.ContainsKey(body.GetComponentName()))
+                        {
+                            var incomingStateDecompose = this.localPlayer.incomingLocalPlayerState.Decompose<MovementBodyPackage>(body.GetComponentName());
+                            var stateSnapshotDecompose = stateSnapshot.Decompose<MovementBodyPackage>(body.GetComponentName());
 
-                    // Loop through and replay all captured input snapshots up to the current tick.
-                    uint replayTick = incomingState.WorldTick;
+                            var error = incomingStateDecompose.Position - stateSnapshotDecompose.Position;
+                            if (error.LengthSquared() > 0.0001f)
+                            {
+                                if (!headState)
+                                {
+                                    Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {incomingStateDecompose.Position.ToString()} ServerPos: {stateSnapshotDecompose.Position.ToString()} ");
+                                    replayedStates++;
+                                }
 
-                    while (replayTick < WorldTick)
-                    {
-                        // Grab the historical input.
-                        bufidx = replayTick % 1024;
-                        var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
+                                // Rewind local player state to the correct state from the server.
+                                // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
+                                this.localPlayer.ApplyNetworkState(this.localPlayer.incomingLocalPlayerState);
 
-                        // Rewrite the historical sate snapshot.
-                        this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
+                                // Loop through and replay all captured input snapshots up to the current tick.
+                                uint replayTick = incomingState.WorldTick;
 
-                        // Apply inputs to the associated player controller and simulate the world.
-                        this.localPlayer.SetPlayerInputs(inputSnapshot);
-                        this.localPlayer.InternalTick((float)this.GetPhysicsProcessDeltaTime());
+                                while (replayTick < WorldTick)
+                                {
+                                    // Grab the historical input.
+                                    bufidx = replayTick % 1024;
+                                    var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
 
-                        ++replayTick;
+                                    // Rewrite the historical sate snapshot.
+                                    this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
+
+                                    // Apply inputs to the associated player controller and simulate the world.
+                                    this.localPlayer.SetPlayerInputs(inputSnapshot);
+                                    this.localPlayer.InternalTick((float)this.GetPhysicsProcessDeltaTime());
+
+                                    ++replayTick;
+                                }
+                            }
+                        }
                     }
                 }
             }

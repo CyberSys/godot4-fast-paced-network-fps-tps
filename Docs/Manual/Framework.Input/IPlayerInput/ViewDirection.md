@@ -1,5 +1,7 @@
 # IPlayerInput.ViewDirection property
 
+The current view direction / camera direction
+
 ```csharp
 public Quaternion ViewDirection { get; set; }
 ```

@@ -298,6 +298,9 @@ namespace Framework.Game.Server
                 {
                     var serverPlayer = this._players[tickInput.PlayerId] as ServerPlayer;
 
+                    //decompose but with what?
+
+                    ///IChildInputComponent
                     serverPlayer.SetPlayerInputs(tickInput.Inputs);
                     serverPlayer.CurrentPlayerInput = tickInput;
                     unprocessedPlayerIds.Remove(tickInput.PlayerId);

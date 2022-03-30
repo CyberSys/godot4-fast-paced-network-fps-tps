@@ -24,15 +24,21 @@ using LiteNetLib.Utils;
 
 namespace Framework.Network.Commands
 {
+    /// <summary>
+    /// Network command to tell the server that the client world is initalized
+    /// </summary>
     public struct ServerInitializer : INetSerializable
     {
+        /// <inheritdoc />
         public int handshake;
 
+        /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(this.handshake);
         }
 
+        /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
             this.handshake = reader.GetInt();

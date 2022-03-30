@@ -71,5 +71,7 @@ namespace Framework
         /// </summary>
         /// <value></value>
         public IBaseComponent BaseComponent { get; set; }
+
+        public string GetComponentName();
     }
 }

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://crhnvibl8g7qk"
+path="res://.godot/imported/MISC Soft Plastic, Scrape 01.wav-be0c6d6959173824a9a0d36ab76937b9.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Soft Plastic/Misc/MISC Soft Plastic, Scrape 01.wav"
+dest_files=["res://.godot/imported/MISC Soft Plastic, Scrape 01.wav-be0c6d6959173824a9a0d36ab76937b9.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

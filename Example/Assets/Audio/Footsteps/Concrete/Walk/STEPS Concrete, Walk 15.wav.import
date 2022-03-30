@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://ds7xji7go6n5k"
+path="res://.godot/imported/STEPS Concrete, Walk 15.wav-b834642d490f0910aeccccb4638a20ec.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Concrete/Walk/STEPS Concrete, Walk 15.wav"
+dest_files=["res://.godot/imported/STEPS Concrete, Walk 15.wav-b834642d490f0910aeccccb4638a20ec.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://cv216ix0vi5yw"
+path="res://.godot/imported/STEPS Leaves, Run 23.wav-a1f699bf6e7a9f07b7a4336c79a27cec.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Leaves/STEPS Leaves, Run 23.wav"
+dest_files=["res://.godot/imported/STEPS Leaves, Run 23.wav-a1f699bf6e7a9f07b7a4336c79a27cec.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

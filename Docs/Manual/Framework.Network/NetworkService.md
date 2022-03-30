@@ -1,5 +1,7 @@
 # NetworkService class
 
+Base network service class
+
 ```csharp
 public abstract class NetworkService : IService
 ```
@@ -9,16 +11,15 @@ public abstract class NetworkService : IService
 | name | description |
 | --- | --- |
 | [NetworkService](NetworkService/NetworkService.md)() | The default constructor. |
-| [PeerLatency](NetworkService/PeerLatency.md) { get; } |  |
+| [PeerLatency](NetworkService/PeerLatency.md) { get; } | Latency of each player |
 | virtual [Register](NetworkService/Register.md)() |  |
 | virtual [Render](NetworkService/Render.md)(…) |  |
 | [SendMessage&lt;T&gt;](NetworkService/SendMessage.md)(…) | Send an message to an specific client (non serialized) |
 | [SendMessageSerialisable&lt;T&gt;](NetworkService/SendMessageSerialisable.md)(…) | Send an network message to an specific client by id (serialized) |
 | [SentMessageToAll&lt;T&gt;](NetworkService/SentMessageToAll.md)(…) | Send an network message to all clients |
 | [SentMessageToAllSerialized&lt;T&gt;](NetworkService/SentMessageToAllSerialized.md)(…) | Send an network message to all clients |
-| [Stop](NetworkService/Stop.md)() |  |
-| [Subscribe&lt;T&gt;](NetworkService/Subscribe.md)(…) |  |
-| [SubscribeSerialisable&lt;T&gt;](NetworkService/SubscribeSerialisable.md)(…) |  |
+| [Subscribe&lt;T&gt;](NetworkService/Subscribe.md)(…) | Subscribe an network command from type class |
+| [SubscribeSerialisable&lt;T&gt;](NetworkService/SubscribeSerialisable.md)(…) | Subscribe an network command from type INetSerializable |
 | virtual [Unregister](NetworkService/Unregister.md)() |  |
 | virtual [Update](NetworkService/Update.md)(…) |  |
 

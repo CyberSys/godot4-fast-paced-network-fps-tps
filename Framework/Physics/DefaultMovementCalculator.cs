@@ -23,6 +23,7 @@ using Godot;
 using System;
 using Framework.Input;
 using Framework.Game;
+using Framework.Network.Commands;
 
 namespace Framework.Physics
 {
@@ -38,7 +39,7 @@ namespace Framework.Physics
         /// <param name="serverVars"></param>
         /// <param name="inputs"></param>
         /// <param name="dt"></param>
-        public Vector3 Simulate(IMoveable component, IPlayerInput inputs, float dt);
+        public Vector3 Simulate(IChildMovementNetworkSyncComponent component, GeneralPlayerInput inputs, float dt);
 
         /// <summary>
         /// The current velocity of the moveable object
@@ -71,7 +72,7 @@ namespace Framework.Physics
         private VarsCollection clientVars;
 
         private Vector3 _velocity = Vector3.Zero;
-        private IMoveable component;
+        private IChildMovementNetworkSyncComponent component;
         private IPlayerInput inputs;
         private float attackCooldownTimer = 0f;
         private float crouchTime = 0f;
@@ -113,11 +114,11 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        public Vector3 Simulate(IMoveable component, IPlayerInput inputs, float dt)
+        public Vector3 Simulate(IChildMovementNetworkSyncComponent component, GeneralPlayerInput inputs, float dt)
         {
             var processedVelocity = _velocity;
 
-            if (component == null || inputs == null)
+            if (component == null)
             {
                 return Vector3.Zero;
             }
@@ -125,7 +126,7 @@ namespace Framework.Physics
             this.inputs = inputs;
             this.component = component;
 
-            var transform = component.Transform;
+
             // Set orientation based on the view direction.
             if (inputs.ViewDirection == null || inputs.ViewDirection == new Quaternion(0, 0, 0, 0))
             {
@@ -133,17 +134,15 @@ namespace Framework.Physics
             }
 
             var euler = inputs.ViewDirection.GetEuler();
-            transform.basis = new Basis(new Quaternion(new Vector3(0, euler.y, 0)));
-            component.Transform = transform;
 
             // Process movement.
             this.QueueJump();
 
-            if (component.isOnGround())
+            if (component.IsOnGround())
             {
                 processedVelocity = this.GroundMove(dt, processedVelocity);
             }
-            else if (!component.isOnGround())
+            else if (!component.IsOnGround())
             {
                 processedVelocity = this.AirMove(dt, processedVelocity);
             }
@@ -151,7 +150,9 @@ namespace Framework.Physics
             // Apply the final velocity to the character controller.
             this.Execute(dt, processedVelocity);
 
-            transform = component.Transform;
+            var state = component.GetNetworkState();
+            state.Rotation = new Quaternion(new Vector3(0, euler.y, 0));
+            component.ApplyNetworkState(state);
 
             // Process attacks.
             attackCooldownTimer -= dt;
@@ -163,13 +164,15 @@ namespace Framework.Physics
             }
 
             // HACK: Reset to zero when falling off the edge for now.
-            if (transform.origin.y < -100)
+            if (state.Position.y < -100)
             {
-                transform.origin = Vector3.Zero;
+                state.Position = Vector3.Zero;
+                state.Velocity = Vector3.Zero;
+                component.ApplyNetworkState(state);
+
                 processedVelocity = Vector3.Zero;
             }
 
-            component.Transform = transform;
             _velocity = processedVelocity;
             return processedVelocity;
         }
@@ -188,7 +191,7 @@ namespace Framework.Physics
             drop = 0.0f;
 
             /* Only if the player is on the ground then apply friction */
-            if (this.component.isOnGround())
+            if (this.component.IsOnGround())
             {
                 var deaccl = this.GetGroundDeaccelerationFactor();
 
@@ -224,7 +227,7 @@ namespace Framework.Physics
             float k;
 
             // Can't control movement if not moving forward or backward
-            if (Mathf.Abs(inputs.ForwardBackwardAxis) < 0.001 || Mathf.Abs(wishspeed) < 0.001)
+            if (Mathf.Abs(this.ForwardBackwardAxis) < 0.001 || Mathf.Abs(wishspeed) < 0.001)
                 return processedVelocity;
 
             zspeed = processedVelocity.y;
@@ -357,7 +360,7 @@ namespace Framework.Physics
         /// <returns></returns>
         public bool isOnGround()
         {
-            return component.isOnGround();
+            return component.IsOnGround();
         }
 
         /// <summary>
@@ -367,6 +370,32 @@ namespace Framework.Physics
         public virtual float GetAirControl()
         {
             return this.serverVars.Get<float>("sv_air_control", 0.3f);
+        }
+
+        /// <summary>
+        /// Get left and right axis (currently use input keys "Forward" and "Back")
+        /// </summary>
+        /// <value></value>
+        public virtual float LeftRightAxis
+        {
+            get
+            {
+                return this.inputs.GetInput("Right") ? 1f : this.inputs.GetInput("Left") ? -1f : 0f;
+
+            }
+        }
+
+        /// <summary>
+        /// Get forward and back axis (currently use input keys "Forward" and "Back")
+        /// </summary>
+        /// <value></value>
+        public virtual float ForwardBackwardAxis
+        {
+            get
+            {
+                return this.inputs.GetInput("Forward") ? 1f : this.inputs.GetInput("Back") ? -1f : 0f;
+
+            }
         }
 
         /// <inheritdoc />
@@ -380,8 +409,8 @@ namespace Framework.Physics
             else
                 processedVelocity = ApplyFriction(processedVelocity, 0, dt);
 
-            wishdir = new Vector3(inputs.LeftRightAxis, 0, inputs.ForwardBackwardAxis);
-            wishdir = component.Transform.basis.Xform(wishdir);
+            wishdir = new Vector3(this.LeftRightAxis, 0, this.ForwardBackwardAxis);
+            wishdir = (component as Node3D).Transform.basis.Xform(wishdir);
             wishdir = wishdir.Normalized();
 
             var wishspeed = wishdir.Length();
@@ -409,8 +438,8 @@ namespace Framework.Physics
             float wishvel = this.GetAirAcceleration();
             float accel;
 
-            wishdir = new Vector3(inputs.LeftRightAxis, 0, inputs.ForwardBackwardAxis);
-            wishdir = component.Transform.basis.Xform(wishdir);
+            wishdir = new Vector3(this.LeftRightAxis, 0, this.ForwardBackwardAxis);
+            wishdir = (component as Node3D).Transform.basis.Xform(wishdir);
 
             float wishspeed = wishdir.Length();
             wishspeed *= this.GetMovementSpeed();
@@ -424,7 +453,7 @@ namespace Framework.Physics
                 accel = this.GetAirAcceleration();
 
             // If the player is ONLY strafing left or right
-            if (inputs.ForwardBackwardAxis == 0 && inputs.LeftRightAxis != 0)
+            if (this.ForwardBackwardAxis == 0 && this.LeftRightAxis != 0)
             {
                 if (wishspeed > this.serverVars.Get<float>("sv_strafe_speed", 1.0f))
                     wishspeed = this.serverVars.Get<float>("sv_strafe_speed", 1.0f);

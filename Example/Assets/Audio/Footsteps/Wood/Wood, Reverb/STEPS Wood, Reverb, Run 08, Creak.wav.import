@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://bqg13kpakf0jc"
+path="res://.godot/imported/STEPS Wood, Reverb, Run 08, Creak.wav-fed60851accebb133e67d8b3cd27b00e.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Wood/Wood, Reverb/STEPS Wood, Reverb, Run 08, Creak.wav"
+dest_files=["res://.godot/imported/STEPS Wood, Reverb, Run 08, Creak.wav-fed60851accebb133e67d8b3cd27b00e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

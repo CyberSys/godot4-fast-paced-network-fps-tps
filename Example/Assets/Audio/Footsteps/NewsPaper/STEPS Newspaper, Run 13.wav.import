@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://bqkre1ka5ruui"
+path="res://.godot/imported/STEPS Newspaper, Run 13.wav-beebb6d230cb030f422a2c737870834e.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/NewsPaper/STEPS Newspaper, Run 13.wav"
+dest_files=["res://.godot/imported/STEPS Newspaper, Run 13.wav-beebb6d230cb030f422a2c737870834e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

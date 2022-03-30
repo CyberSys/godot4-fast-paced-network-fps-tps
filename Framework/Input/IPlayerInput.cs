@@ -21,23 +21,29 @@
 
 using Godot;
 using System;
+using LiteNetLib.Utils;
 
 namespace Framework.Input
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public class PlayerInputAttribute : Attribute
-    {
-    }
 
-    public interface IPlayerInput
+    /// <summary>
+    /// The network package required for sending inputs
+    /// </summary>
+    public interface IPlayerInput : INetSerializable
     {
+        /// <summary>
+        /// The current view direction / camera direction
+        /// </summary>
+        /// <value></value>
         public Quaternion ViewDirection { get; set; }
-        public bool GetInput(string name);
-        public float ForwardBackwardAxis { get; }
-        public float LeftRightAxis { get; }
 
-        public byte GetKeyBitfield();
-        public void ApplyKeyBitfield(byte keyFieldData);
+        /// <summary>
+        /// Get input by given string, related to booleans with PlayerInputAttribute
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool GetInput(string name);
+
     }
 
 }

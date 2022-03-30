@@ -15,6 +15,7 @@ namespace Shooter.Client
             this.AvaiablePlayerComponents.Add("camera", new AssignedComponent(
                 typeof(PlayerCameraComponent)
             ));
+
             this.AvaiablePlayerComponents.Add("input", new AssignedComponent(
                 typeof(PlayerInputComponent)
             ));

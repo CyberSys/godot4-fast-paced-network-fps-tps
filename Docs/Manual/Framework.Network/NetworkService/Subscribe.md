@@ -1,9 +1,15 @@
 # NetworkService.Subscribe&lt;T&gt; method
 
+Subscribe an network command from type class
+
 ```csharp
 public void Subscribe<T>(Action<T, NetPeer> onReceive)
     where T : class, new()
 ```
+
+| parameter | description |
+| --- | --- |
+| T |  |
 
 ## See Also
 

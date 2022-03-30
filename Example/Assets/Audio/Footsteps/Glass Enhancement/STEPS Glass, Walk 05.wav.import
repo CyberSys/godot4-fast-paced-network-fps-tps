@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://e2hop4c23a12"
+path="res://.godot/imported/STEPS Glass, Walk 05.wav-1a2cb9e6e0355b3313851a2cdd69078d.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Glass Enhancement/STEPS Glass, Walk 05.wav"
+dest_files=["res://.godot/imported/STEPS Glass, Walk 05.wav-1a2cb9e6e0355b3313851a2cdd69078d.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

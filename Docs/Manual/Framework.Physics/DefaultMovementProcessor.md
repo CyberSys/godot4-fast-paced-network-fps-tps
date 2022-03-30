@@ -11,6 +11,8 @@ public class DefaultMovementProcessor : IMovementProcessor
 | name | description |
 | --- | --- |
 | [DefaultMovementProcessor](DefaultMovementProcessor/DefaultMovementProcessor.md)() | The default constructor. |
+| virtual [ForwardBackwardAxis](DefaultMovementProcessor/ForwardBackwardAxis.md) { get; } | Get forward and back axis (currently use input keys "Forward" and "Back") |
+| virtual [LeftRightAxis](DefaultMovementProcessor/LeftRightAxis.md) { get; } | Get left and right axis (currently use input keys "Forward" and "Back") |
 | [Velocity](DefaultMovementProcessor/Velocity.md) { get; set; } |  |
 | virtual [CanCrouch](DefaultMovementProcessor/CanCrouch.md)() | Check if player allows to crouch |
 | virtual [GetAirAcceleration](DefaultMovementProcessor/GetAirAcceleration.md)() | Get the default air accel factor |

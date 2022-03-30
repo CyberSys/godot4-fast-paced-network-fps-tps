@@ -10,11 +10,9 @@ public struct PlayerState : INetSerializable
 
 | name | description |
 | --- | --- |
-| [Grounded](PlayerState/Grounded.md) | If player is grounded or not |
 | [Id](PlayerState/Id.md) | The id of this player |
-| [Position](PlayerState/Position.md) | The current position of this player |
-| [Rotation](PlayerState/Rotation.md) | The current rotation of this player |
-| [Velocity](PlayerState/Velocity.md) | The current velocity of this player |
+| [NetworkComponents](PlayerState/NetworkComponents.md) |  |
+| [Decompose&lt;T&gt;](PlayerState/Decompose.md)(…) |  |
 | [Deserialize](PlayerState/Deserialize.md)(…) |  |
 | [Serialize](PlayerState/Serialize.md)(…) |  |
 

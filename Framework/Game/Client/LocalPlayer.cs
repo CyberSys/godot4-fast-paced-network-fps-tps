@@ -19,7 +19,6 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using Framework.Game;
 using Framework.Network.Commands;
 using Framework.Input;
 using Framework.Physics;
@@ -41,12 +40,6 @@ namespace Framework.Game.Client
         /// </summary>
         /// <returns></returns>
         public PlayerState incomingLocalPlayerState = new PlayerState();
-
-        /// <summary>
-        /// The component which handles the outgoing inputs
-        /// </summary>
-        /// <value></value>
-        public IInputable Inputable { get; set; }
 
         /// <summary>
         /// The local player input snapshots

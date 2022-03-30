@@ -1,5 +1,7 @@
 # GeneralPlayerInput.ViewDirection property
 
+The view direction or camera direction
+
 ```csharp
 public Quaternion ViewDirection { get; set; }
 ```

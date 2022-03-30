@@ -1,8 +1,14 @@
 # IPlayerInput.GetInput method
 
+Get input by given string, related to booleans with PlayerInputAttribute
+
 ```csharp
 public bool GetInput(string name)
 ```
+
+| parameter | description |
+| --- | --- |
+| name |  |
 
 ## See Also
 

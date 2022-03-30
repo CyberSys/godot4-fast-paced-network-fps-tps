@@ -1,5 +1,7 @@
 # GeneralPlayerInput structure
 
+Default class for player input
+
 ```csharp
 public struct GeneralPlayerInput : IPlayerInput
 ```
@@ -8,20 +10,12 @@ public struct GeneralPlayerInput : IPlayerInput
 
 | name | description |
 | --- | --- |
-| [ForwardBackwardAxis](GeneralPlayerInput/ForwardBackwardAxis.md) { get; } |  |
-| [LeftRightAxis](GeneralPlayerInput/LeftRightAxis.md) { get; } |  |
-| [ViewDirection](GeneralPlayerInput/ViewDirection.md) { get; set; } |  |
-| [Back](GeneralPlayerInput/Back.md) |  |
-| [Crouch](GeneralPlayerInput/Crouch.md) |  |
-| [Fire](GeneralPlayerInput/Fire.md) |  |
-| [Forward](GeneralPlayerInput/Forward.md) |  |
-| [Jump](GeneralPlayerInput/Jump.md) |  |
-| [Left](GeneralPlayerInput/Left.md) |  |
-| [Right](GeneralPlayerInput/Right.md) |  |
-| [Shifting](GeneralPlayerInput/Shifting.md) |  |
-| [ApplyKeyBitfield](GeneralPlayerInput/ApplyKeyBitfield.md)(…) |  |
-| [GetInput](GeneralPlayerInput/GetInput.md)(…) |  |
-| [GetKeyBitfield](GeneralPlayerInput/GetKeyBitfield.md)() |  |
+| [InputKeys](GeneralPlayerInput/InputKeys.md) { get; } | Keys which enabled |
+| [ViewDirection](GeneralPlayerInput/ViewDirection.md) { get; set; } | The view direction or camera direction |
+| [Deserialize](GeneralPlayerInput/Deserialize.md)(…) |  |
+| [GetInput](GeneralPlayerInput/GetInput.md)(…) | Get input by given string, related to booleans with PlayerInputAttribute |
+| [Serialize](GeneralPlayerInput/Serialize.md)(…) |  |
+| [SetInput](GeneralPlayerInput/SetInput.md)(…) | Enable an boolean (input) for given key |
 
 ## See Also
 

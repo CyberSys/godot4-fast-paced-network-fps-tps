@@ -1,5 +1,7 @@
 # ServerVarUpdate structure
 
+Network command for updaing server vars on client side
+
 ```csharp
 public struct ServerVarUpdate : INetSerializable
 ```
@@ -8,8 +10,8 @@ public struct ServerVarUpdate : INetSerializable
 
 | name | description |
 | --- | --- |
-| [GameTick](ServerVarUpdate/GameTick.md) |  |
-| [ServerVars](ServerVarUpdate/ServerVars.md) |  |
+| [GameTick](ServerVarUpdate/GameTick.md) | Current game tick |
+| [ServerVars](ServerVarUpdate/ServerVars.md) | All server vars |
 | [Deserialize](ServerVarUpdate/Deserialize.md)(…) |  |
 | [Serialize](ServerVarUpdate/Serialize.md)(…) |  |
 

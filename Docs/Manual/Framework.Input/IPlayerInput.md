@@ -1,19 +1,17 @@
 # IPlayerInput interface
 
+The network package required for sending inputs
+
 ```csharp
-public interface IPlayerInput
+public interface IPlayerInput : INetSerializable
 ```
 
 ## Members
 
 | name | description |
 | --- | --- |
-| [ForwardBackwardAxis](IPlayerInput/ForwardBackwardAxis.md) { get; } |  |
-| [LeftRightAxis](IPlayerInput/LeftRightAxis.md) { get; } |  |
-| [ViewDirection](IPlayerInput/ViewDirection.md) { get; set; } |  |
-| [ApplyKeyBitfield](IPlayerInput/ApplyKeyBitfield.md)(…) |  |
-| [GetInput](IPlayerInput/GetInput.md)(…) |  |
-| [GetKeyBitfield](IPlayerInput/GetKeyBitfield.md)() |  |
+| [ViewDirection](IPlayerInput/ViewDirection.md) { get; set; } | The current view direction / camera direction |
+| [GetInput](IPlayerInput/GetInput.md)(…) | Get input by given string, related to booleans with PlayerInputAttribute |
 
 ## See Also
 

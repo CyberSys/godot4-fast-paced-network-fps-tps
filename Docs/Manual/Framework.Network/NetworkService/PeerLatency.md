@@ -1,5 +1,7 @@
 # NetworkService.PeerLatency property
 
+Latency of each player
+
 ```csharp
 public Dictionary<NetPeer, int> PeerLatency { get; }
 ```

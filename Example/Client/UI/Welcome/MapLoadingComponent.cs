@@ -6,6 +6,11 @@ namespace Shooter.Client.UI.Welcome
 {
     public partial class MapLoadingComponent : CanvasLayer, IChildComponent
     {
+        public string GetComponentName()
+        {
+            return "loading";
+        }
+
         public IBaseComponent BaseComponent { get; set; }
 
         [Export]

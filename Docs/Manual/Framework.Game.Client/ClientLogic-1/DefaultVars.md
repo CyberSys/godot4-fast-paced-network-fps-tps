@@ -1,6 +1,6 @@
 # ClientLogic&lt;T&gt;.DefaultVars field
 
-The dictonary with all server settings (vars);
+The dictonary with all default settings (vars);
 
 ```csharp
 public Dictionary<string, string> DefaultVars;

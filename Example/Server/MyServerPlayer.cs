@@ -14,6 +14,12 @@ namespace Shooter.Server
             this.AvaiablePlayerComponents.Add("camera", new AssignedComponent(
                 typeof(PlayerCameraComponent)
             ));
+
+        }
+
+        public override void Tick(float delta)
+        {
+            base.Tick(delta);
         }
     }
 }

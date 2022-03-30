@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://btkshugugpauc"
+path="res://.godot/imported/MISC Wood, Foot Scrape 01.wav-37e1d7915a4e9640f1a535ee41acc475.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Wood/Wood, Dense/Misc/MISC Wood, Foot Scrape 01.wav"
+dest_files=["res://.godot/imported/MISC Wood, Foot Scrape 01.wav-37e1d7915a4e9640f1a535ee41acc475.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

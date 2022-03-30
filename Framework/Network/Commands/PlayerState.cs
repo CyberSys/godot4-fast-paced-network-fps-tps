@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Collections.Generic;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -20,21 +22,17 @@
  */
 
 using Godot;
+using System.Reflection;
 using LiteNetLib.Utils;
+using System;
 
 namespace Framework.Network.Commands
 {
     /// <summary>
-    /// The player states structures
-    /// Contains all player realted informations eg. position, rotation, velocity
+    /// The default network command for moving bodies
     /// </summary>
-    public struct PlayerState : INetSerializable
+    public struct MovementBodyPackage : INetSerializable
     {
-        /// <summary>
-        /// The id of this player
-        /// </summary>
-        public int Id;
-
         /// <summary>
         /// The current position of this player
         /// </summary>
@@ -58,23 +56,89 @@ namespace Framework.Network.Commands
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
-            writer.Put(this.Id);
-
             writer.Put(this.Position);
             writer.Put(this.Rotation);
             writer.Put(this.Velocity);
-
             writer.Put(this.Grounded);
         }
 
         /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
-            this.Id = reader.GetInt();
             this.Position = reader.GetVector3();
             this.Rotation = reader.GetQuaternion();
             this.Velocity = reader.GetVector3();
             this.Grounded = reader.GetBool();
+        }
+    }
+    /// <summary>
+    /// The player states structures
+    /// Contains all player realted informations eg. position, rotation, velocity
+    /// </summary>
+    public struct PlayerState : INetSerializable
+    {
+        /// <summary>
+        /// The id of this player
+        /// </summary>
+        public int Id;
+
+        public Dictionary<string, byte[]> NetworkComponents;
+
+        /// <inheritdoc />
+        public void Serialize(NetDataWriter writer)
+        {
+            writer.Put(this.Id);
+
+            //needs to be at end
+            if (this.NetworkComponents != null)
+            {
+                writer.Put(NetworkComponents.Count);
+                foreach (var item in NetworkComponents)
+                {
+                    writer.Put(item.Key);
+                    writer.PutBytesWithLength(item.Value);
+                }
+            }
+            else
+            {
+                writer.Put(0);
+            }
+        }
+
+        /// <inheritdoc />
+        public void Deserialize(NetDataReader reader)
+        {
+            this.Id = reader.GetInt();
+
+            //needs to be at end
+            var comps = new Dictionary<string, byte[]>();
+            var componentsCount = reader.GetInt();
+            for (int i = 0; i < componentsCount; i++)
+            {
+                string compName = reader.GetString();
+
+                byte[] bytes = reader.GetBytesWithLength();
+                comps.Add(compName, bytes);
+            }
+
+            this.NetworkComponents = comps;
+        }
+
+        /// <inheritdoc />
+        public T Decompose<T>(string value) where T : INetSerializable
+        {
+            if (!this.NetworkComponents.ContainsKey(value))
+            {
+                return default(T);
+            }
+            else
+            {
+                T netcomponent = Activator.CreateInstance<T>();
+                var reader = new NetDataReader(this.NetworkComponents[value]);
+                netcomponent.Deserialize(reader);
+
+                return netcomponent;
+            }
         }
     }
 }

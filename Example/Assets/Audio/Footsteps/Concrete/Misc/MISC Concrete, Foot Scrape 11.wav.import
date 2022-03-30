@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://2xw3vbryomou"
+path="res://.godot/imported/MISC Concrete, Foot Scrape 11.wav-04b3a068e5a14573edefd879e6e36585.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/Footsteps/Concrete/Misc/MISC Concrete, Foot Scrape 11.wav"
+dest_files=["res://.godot/imported/MISC Concrete, Foot Scrape 11.wav-04b3a068e5a14573edefd879e6e36585.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

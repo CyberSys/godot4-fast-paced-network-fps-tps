@@ -29,18 +29,22 @@ using Framework;
 namespace Framework.Network
 {
 
+    /// <summary>
+    /// Base network service class
+    /// </summary>
     public abstract class NetworkService : IService
     {
+        internal readonly NetPacketProcessor _netPacketProcessor = new NetPacketProcessor();
+        internal NetManager netManager;
+
         /// <summary>
-        /// Default server port
+        /// Latency of each player
         /// </summary>
-
-        protected readonly NetPacketProcessor _netPacketProcessor = new NetPacketProcessor();
-        protected NetManager netManager;
-
+        /// <value></value>
         public Dictionary<NetPeer, int> PeerLatency { get; private set; }
             = new Dictionary<NetPeer, int>();
 
+        /// <inheritdoc />
         public NetworkService()
         {
             this._netPacketProcessor.RegisterNestedType<PlayerInputCommand>();
@@ -134,36 +138,50 @@ namespace Framework.Network
             }
         }
 
+        /// <summary>
+        /// Subscribe an network command from type class
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public void Subscribe<T>(Action<T, NetPeer> onReceive) where T : class, new()
         {
             _netPacketProcessor.SubscribeReusable<T, NetPeer>(onReceive);
         }
 
+        /// <summary>
+        /// Subscribe an network command from type INetSerializable
+        /// </summary>
+        /// <param name="onReceive"></param>
+        /// <typeparam name="T"></typeparam>
         public void SubscribeSerialisable<T>(Action<T, NetPeer> onReceive) where T : INetSerializable, new()
         {
             _netPacketProcessor.SubscribeNetSerializable<T, NetPeer>(onReceive);
         }
 
+        /// <inheritdoc />
         public virtual void Update(float delta)
         {
             netManager?.PollEvents();
         }
 
+        /// <inheritdoc />
         public virtual void Render(float delta)
         {
 
         }
 
+        /// <inheritdoc />
         public virtual void Register()
         {
         }
 
-        public void Stop()
+        /// <inheritdoc />
+        private void Stop()
         {
             netManager.Stop();
             Logger.LogDebug(this, "Shutdown.");
         }
 
+        /// <inheritdoc />
         public virtual void Unregister()
         {
             this.Stop();

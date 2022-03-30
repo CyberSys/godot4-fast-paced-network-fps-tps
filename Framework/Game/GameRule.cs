@@ -23,6 +23,7 @@ using System.Linq;
 using Framework.Physics;
 using Framework.Game.Server;
 using System.Reflection;
+using Framework.Input;
 
 namespace Framework.Game
 {
@@ -114,11 +115,6 @@ namespace Framework.Game
             {
 
             });
-
-            if (createdObject is IMoveable && player is PhysicsPlayer)
-            {
-                (player as PhysicsPlayer).Body = (IMoveable)createdObject;
-            }
         }
 
         private void CreateComponentWithResource(IPlayer player, AssignedComponent registeredComonent)
@@ -135,11 +131,6 @@ namespace Framework.Game
             {
                         registeredComonent.ResourcePath
             });
-
-            if (createdObject is IMoveable && player is PhysicsPlayer)
-            {
-                (player as PhysicsPlayer).Body = (IMoveable)createdObject;
-            }
         }
 
         /// <inheritdoc />

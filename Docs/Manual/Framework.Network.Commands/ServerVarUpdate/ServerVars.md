@@ -1,5 +1,7 @@
 # ServerVarUpdate.ServerVars field
 
+All server vars
+
 ```csharp
 public Vars ServerVars;
 ```
