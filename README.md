@@ -23,12 +23,11 @@ Check [documentation here](Docs/Manual/Framework.md)
 - RCON Implementation for Server Management
 - (TODO) Object syncronistation (dropped guns, etc)
 - (TODO) Sound syncronistation (like steps)
+
 # Physics
 - Full implemented TPS and FPS Movement (Quake style)
 - Crouching
 - Customizeable and extendable movement
-- (TODO) Shifting
-- (TODO) Lieing
 - (TODO) Animation network sync
 
 # Extensions
