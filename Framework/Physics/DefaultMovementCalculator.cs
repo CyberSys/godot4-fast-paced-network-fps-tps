@@ -292,8 +292,10 @@ namespace Framework.Physics
         /// <returns></returns>
         public virtual float GetGroundFriction()
         {
-            return (inputs.GetInput("Crouch") && this.CanCrouch() ?
-                    this.serverVars.Get<float>("sv_crouching_friction", 3.0f) : this.serverVars.Get<float>("sv_walk_friction", 6.0f));
+            return ((inputs.GetInput("Crouch") && this.CanCrouch())
+                    || inputs.GetInput("Shifting"))
+                  ?
+                    this.serverVars.Get<float>("sv_crouching_friction", 3.0f) : this.serverVars.Get<float>("sv_walk_friction", 6.0f);
         }
 
         /// <summary>
@@ -302,9 +304,20 @@ namespace Framework.Physics
         /// <returns></returns>
         public virtual float GetMovementSpeed()
         {
-            return inputs.GetInput("Crouch") && this.CanCrouch()
-                  ? this.serverVars.Get<float>("sv_crouching_speed", 4.0f) : this.serverVars.Get<float>("sv_walk_speed", 7.0f);
+            return ((inputs.GetInput("Crouch") && this.CanCrouch())
+                    || inputs.GetInput("Shifting"))
+                  ? this.serverVars.Get<float>("sv_crouching_speed", 4.0f) : this.GetWalkingSpeed();
+        }
 
+        public virtual float GetMovementSpeedFactor()
+        {
+            var vel = this.Velocity;
+            vel.y = 0;
+            return vel.Length() / this.GetWalkingSpeed();
+        }
+        public virtual float GetWalkingSpeed()
+        {
+            return this.serverVars.Get<float>("sv_walk_speed", 7.0f);
         }
 
         /// <summary>
@@ -313,8 +326,9 @@ namespace Framework.Physics
         /// <returns></returns>
         public virtual float GetGroundDeaccelerationFactor()
         {
-            return inputs.GetInput("Crouch") && this.CanCrouch()
-                 ? this.serverVars.Get<float>("sv_crouching_deaccel", 4.0f) : this.serverVars.Get<float>("sv_walk_deaccel", 10f);
+            return ((inputs.GetInput("Crouch") && this.CanCrouch())
+                    || inputs.GetInput("Shifting"))
+                  ? this.serverVars.Get<float>("sv_crouching_deaccel", 4.0f) : this.serverVars.Get<float>("sv_walk_deaccel", 10f);
         }
 
         /// <summary>
@@ -323,8 +337,9 @@ namespace Framework.Physics
         /// <returns></returns>
         public virtual float GetGroundAccelerationFactor()
         {
-            return inputs.GetInput("Crouch") && this.CanCrouch()
-                ? this.serverVars.Get<float>("sv_crouching_accel", 4.0f) : this.serverVars.Get<float>("sv_walk_accel", 14f);
+            return ((inputs.GetInput("Crouch") && this.CanCrouch())
+                    || inputs.GetInput("Shifting"))
+                  ? this.serverVars.Get<float>("sv_crouching_accel", 4.0f) : this.serverVars.Get<float>("sv_walk_accel", 14f);
         }
 
         /// <summary>

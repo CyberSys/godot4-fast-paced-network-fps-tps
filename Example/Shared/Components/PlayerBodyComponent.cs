@@ -130,7 +130,6 @@ namespace Shooter.Shared.Components
                 shape.Height = currentCouchLevel;
                 this.shape.Shape = shape;
 
-
                 this.previousCrouchLevel = this.currentCouchLevel;
             }
         }

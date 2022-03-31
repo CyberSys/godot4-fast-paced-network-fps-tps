@@ -85,6 +85,7 @@ namespace Framework.Game.Client
             this.netService.SubscribeSerialisable<WorldHeartbeat>(HandleWorldState);
             this.netService.SubscribeSerialisable<ClientWorldInitializer>(InitWorld);
             this.netService.SubscribeSerialisable<ServerVarUpdate>(UpdateWorld);
+
         }
 
         private void UpdateWorld(ServerVarUpdate cmd, NetPeer peer)

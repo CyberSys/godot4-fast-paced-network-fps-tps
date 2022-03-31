@@ -30,6 +30,7 @@ namespace Shooter.Shared.Components
             input.SetInput("Left", horiz < 0);
             input.SetInput("Jump", Input.IsActionPressed("jump"));
             input.SetInput("Crouch", Input.IsActionPressed("move_crouch"));
+            input.SetInput("Shifting", Input.IsActionPressed("move_shift"));
             input.SetInput("Fire", Input.IsActionPressed("attack"));
 
             input.ViewDirection = camera != null ? camera.getViewRotation() : Quaternion.Identity;

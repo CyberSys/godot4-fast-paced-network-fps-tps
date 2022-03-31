@@ -129,6 +129,8 @@ namespace Framework.Game.Client
             ClientSettings.Variables = new VarsCollection(new Vars(this.DefaultVars));
             ClientSettings.Variables.LoadConfig("client.cfg");
 
+            this.AudioListenerEnable3d = true;
+
             this.netService = this.Services.Create<ClientNetworkService>();
             this.netService.OnDisconnect += this.OnInternalDisconnect;
             this.netService.Connected += this.OnConnected;

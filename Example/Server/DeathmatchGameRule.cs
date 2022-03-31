@@ -41,6 +41,7 @@ namespace Shooter.Server
 
             this.AddComponentToPlayer(player, "body");
             this.AddComponentToPlayer(player, "camera");
+            this.AddComponentToPlayer(player, "footsteps");
 
             this.AddRemoteComponentToPlayer(player, "body");
             this.AddRemoteComponentToPlayer(player, "camera");

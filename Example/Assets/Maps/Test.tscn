@@ -121,6 +121,7 @@ mesh = ExtResource( "7_156u2" )
 skeleton = NodePath("")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Cube408_0"]
+metadata/footstep = "Metal"
 
 [node name="@@28107" type="CollisionShape3D" parent="Cube408_0/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_5j686" )
