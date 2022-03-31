@@ -22,7 +22,11 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Server variable sharing between server and client (ServerVars)
 - RCON Implementation for Server Management
 - (TODO) Object syncronistation (dropped guns, etc)
-- (TODO) Sound syncronistation (like steps)
+
+# Example
+-  Sound syncronistation for footesteps
+-  Body movement for puppet, local and server player
+-  Moveable camera
 
 # Physics
 - Full implemented TPS and FPS Movement (Quake style)
