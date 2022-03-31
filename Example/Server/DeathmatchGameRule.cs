@@ -45,8 +45,11 @@ namespace Shooter.Server
             this.AddRemoteComponentToPlayer(player, "body");
             this.AddRemoteComponentToPlayer(player, "camera");
             this.AddRemoteComponentToPlayer(player, "input");
+            this.AddRemoteComponentToPlayer(player, "footsteps");
+
 
             this.AddPuppetComponentToPlayer(player, "body");
+            this.AddPuppetComponentToPlayer(player, "footsteps");
 
             serverPlayer.DoTeleport(origin);
         }

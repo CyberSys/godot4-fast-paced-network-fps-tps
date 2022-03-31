@@ -11,6 +11,10 @@ namespace Shooter.Client
             this.AvaiablePlayerComponents.Add("body", new AssignedComponent(
                 typeof(PlayerBodyComponent), "res://Assets/Player/PlayerBody.tscn"
             ));
+
+            this.AvaiablePlayerComponents.Add("footsteps", new AssignedComponent(
+                typeof(PlayerFootstepComponent)
+            ));
         }
     }
 }

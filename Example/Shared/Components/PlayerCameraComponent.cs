@@ -16,7 +16,6 @@ namespace Shooter.Shared.Components
     }
     public partial class PlayerCameraComponent : Camera3D, IChildComponent
     {
-
         public string GetComponentName()
         {
             return "input";
@@ -42,7 +41,7 @@ namespace Shooter.Shared.Components
             this.rotY = rotation.y;
         }
 
-        public override void _Process(float delta)
+        public override void _PhysicsProcess(float delta)
         {
             var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
             if (body != null)

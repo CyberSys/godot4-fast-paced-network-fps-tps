@@ -15,6 +15,9 @@ namespace Shooter.Server
                 typeof(PlayerCameraComponent)
             ));
 
+            this.AvaiablePlayerComponents.Add("footsteps", new AssignedComponent(
+                typeof(PlayerFootstepComponent)
+            ));
         }
 
         public override void Tick(float delta)

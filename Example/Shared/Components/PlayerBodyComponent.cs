@@ -45,16 +45,12 @@ namespace Shooter.Shared.Components
 
         public void ApplyNetworkState(MovementBodyPackage state)
         {
-            this.ActivateColliderShape(false);
-
             var transform = this.Transform;
             transform.origin = state.Position;
             transform.basis = new Basis(state.Rotation);
             this.Transform = transform;
             this.Velocity = state.Velocity;
             MovementProcessor.Velocity = state.Velocity;
-
-            this.ActivateColliderShape(true);
         }
 
         public MovementBodyPackage GetNetworkState()
@@ -94,10 +90,6 @@ namespace Shooter.Shared.Components
             return this.IsOnFloor();
         }
 
-        private void ActivateColliderShape(bool enable)
-        {
-            this.shape.Disabled = !enable;
-        }
 
         public override void _Process(float delta)
         {
@@ -125,7 +117,6 @@ namespace Shooter.Shared.Components
 
             if (this.previousCrouchLevel != this.currentCouchLevel)
             {
-                this.ActivateColliderShape(false);
 
                 var yPos = (this.shapeHeight - this.currentCouchLevel) / 2;
                 yPos = yPos * -1;
@@ -139,7 +130,6 @@ namespace Shooter.Shared.Components
                 shape.Height = currentCouchLevel;
                 this.shape.Shape = shape;
 
-                this.ActivateColliderShape(true);
 
                 this.previousCrouchLevel = this.currentCouchLevel;
             }

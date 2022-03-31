@@ -16,6 +16,12 @@ namespace Shooter.Client
                 typeof(PlayerCameraComponent)
             ));
 
+            this.AvaiablePlayerComponents.Add("footsteps", new AssignedComponent(
+                typeof(PlayerFootstepComponent)
+            ));
+
+
+
             this.AvaiablePlayerComponents.Add("input", new AssignedComponent(
                 typeof(PlayerInputComponent)
             ));
