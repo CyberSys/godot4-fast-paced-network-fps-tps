@@ -23,6 +23,10 @@ driver/enable_input=true
 
 window/vsync/vsync_mode=0
 
+[editor]
+
+run/main_run_args="-server"
+
 [input]
 
 move_forward={

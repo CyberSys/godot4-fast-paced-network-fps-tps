@@ -77,17 +77,28 @@ namespace Framework.Game
         public void Tick(float delta);
 
         /// <summary>
-        /// Add an component to an client player instance
+        /// Add an component to an local player instance on client side
         /// </summary>
         /// <param name="player"></param>
         /// <param name="component"></param>
-        public void AddRemoteComponentToPlayer(IPlayer player, string component);
+        public void AddComponentToLocalPlayer(IPlayer player, string component);
 
         /// <summary>
         /// Add an component to an server player instance
         /// </summary>
         /// <param name="player"></param>
         /// <param name="component"></param>
-        public void AddComponentToPlayer(IPlayer player, string component);
+        public void AddComponentToPuppetPlayer(IPlayer player, string component);
+
+        /// <summary>
+        /// Add an component to an server side player
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="component"></param>
+        public void AddComponentToServerPlayer(IPlayer player, string component);
+
+        public void RemoveComponentFromLocalPlayer(IPlayer player, string component);
+
+        public void RemoteComponentFromPuppetPlayer(IPlayer player, string component);
     }
 }

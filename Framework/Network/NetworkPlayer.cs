@@ -70,7 +70,7 @@ namespace Framework.Network
                     x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
             {
                 var compName = (component as IChildComponent).GetComponentName();
-                if (state.NetworkComponents.ContainsKey(compName))
+                if (state.NetworkComponents != null && state.NetworkComponents.ContainsKey(compName))
                 {
                     //     var decompose = state.Decompose();
                     var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");

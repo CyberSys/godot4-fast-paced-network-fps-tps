@@ -122,6 +122,12 @@ namespace Framework.Game.Server
         /// <inheritdoc />
         internal override void InternalTreeEntered()
         {
+            this.RenderTargetUpdateMode = UpdateMode.Always;
+            this.PhysicsObjectPicking = true;
+            this.ProcessMode = ProcessModeEnum.Always;
+            this.Disable3d = true;
+            this.HandleInputLocally = false;
+
             this.netService = this.Services.Create<ServerNetworkService>();
             this.rconService = this.Services.Create<RconServerService>();
             this.netService.ConnectionEstablished += () =>

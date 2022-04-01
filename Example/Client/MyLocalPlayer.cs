@@ -20,8 +20,6 @@ namespace Shooter.Client
                 typeof(PlayerFootstepComponent)
             ));
 
-
-
             this.AvaiablePlayerComponents.Add("input", new AssignedComponent(
                 typeof(PlayerInputComponent)
             ));

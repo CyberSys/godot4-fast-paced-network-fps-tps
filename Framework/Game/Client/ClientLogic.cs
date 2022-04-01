@@ -85,8 +85,8 @@ namespace Framework.Game.Client
         /// </summary>
         public void Disconnect()
         {
-            this.DestroyMapInternal();
             this.netService.Disconnect();
+            this.DestroyMapInternal();
         }
 
         /// <summary>
@@ -154,8 +154,9 @@ namespace Framework.Game.Client
             if (fullDisconnect)
             {
                 Logger.LogDebug(this, "Full disconnected");
-                this.DestroyMapInternal();
                 this.OnDisconnect();
+                this.DestroyMapInternal();
+
             }
         }
     }

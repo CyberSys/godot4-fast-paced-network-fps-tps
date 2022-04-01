@@ -78,7 +78,7 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public void AddComponentToPlayer(IPlayer player, string component)
+        public void AddComponentToServerPlayer(IPlayer player, string component)
         {
             if (player is Player)
             {
@@ -102,6 +102,7 @@ namespace Framework.Game
                 }
             }
         }
+
         private void CreateComponent(IPlayer player, AssignedComponent registeredComonent)
         {
             var method = typeof(ComponentRegistry).GetMethods().Single(
@@ -134,7 +135,7 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public void AddRemoteComponentToPlayer(IPlayer player, string component)
+        public void AddComponentToLocalPlayer(IPlayer player, string component)
         {
             if (player is ServerPlayer)
             {
@@ -147,9 +148,8 @@ namespace Framework.Game
             }
         }
 
-
         /// <inheritdoc />
-        public void AddPuppetComponentToPlayer(IPlayer player, string component)
+        public void AddComponentToPuppetPlayer(IPlayer player, string component)
         {
             if (player is ServerPlayer)
             {
@@ -163,7 +163,7 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public void RemoveRemoteComponentFromPlayer(IPlayer player, string component)
+        public void RemoveComponentFromLocalPlayer(IPlayer player, string component)
         {
             if (player is ServerPlayer)
             {
@@ -177,7 +177,7 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public void RemoveRemoteComponentFromPuppet(IPlayer player, string component)
+        public void RemoteComponentFromPuppetPlayer(IPlayer player, string component)
         {
             if (player is ServerPlayer)
             {

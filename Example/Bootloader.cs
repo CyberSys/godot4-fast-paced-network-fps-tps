@@ -1,57 +1,66 @@
-using System;
+using System.Diagnostics;
 using System.Linq;
 using Godot;
-
+using System;
+using Framework;
+using Framework.Game.Server;
+using Framework.Game.Client;
+using Shooter.Server;
+using Shooter.Client;
+using Shooter;
 public partial class Bootloader : Node
 {
-	[Export]
-	public Godot.Collections.Array<NodePath> viewSlot1 = new Godot.Collections.Array<NodePath>();
+    public enum BootloaderMode
+    {
+        Client,
+        Server,
+        Both
+    }
+    public static BootloaderMode currentMode = BootloaderMode.Both;
 
-	public int viewSlot = 0;
+    private void createServerWindow(string name = "window")
+    {
+        Logger.LogDebug(this, "Load server..");
 
-	public override void _EnterTree()
-	{
-		base._EnterTree();
-		this.setGuiInputs();
-		GD.Load<CSharpScript>("res://Shared/MyGameLevel.cs");
+        var scene = new MyServerLogic();
+        scene.Name = name;
+        scene.ProcessMode = ProcessModeEnum.Always;
 
-	}
+        GetNode("box").AddChild(scene);
+    }
 
-	public override void _Input(InputEvent @event)
-	{
-		base._Input(@event);
+    private void createClientWindow(string name = "window")
+    {
+        Logger.LogDebug(this, "Load client..");
 
-		if (@event.IsActionReleased("switch_view"))
-		{
-			if (viewSlot == viewSlot1.Count - 1)
-			{
-				viewSlot = 0;
-			}
-			else
-			{
-				viewSlot++;
-			}
+        var scene = new MyClientLogic();
+        scene.Name = name;
+        GetNode("box").AddChild(scene);
+    }
 
-			Console.WriteLine("Viewport set to" + viewSlot);
-			this.setGuiInputs();
-		}
+    public override void _Ready()
+    {
+        base._Ready();
 
+        GD.Load<CSharpScript>("res://Shared/MyGameLevel.cs");
+        this.ProcessMode = ProcessModeEnum.Always;
 
-		@event.Dispose();
-	}
+        if (OS.GetCmdlineArgs().Contains("-client"))
+        {
+            currentMode = BootloaderMode.Client;
+            GetTree().Root.Title = "Client Version";
+            this.createClientWindow();
+        }
+        else if (OS.GetCmdlineArgs().Contains("-server"))
+        {
+            currentMode = BootloaderMode.Server;
+            GD.Print("Run server");
+            //  RenderingServer.RenderLoopEnabled = false;
+            //DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Enabled, 0);
+            //Engine.TargetFps = 60;
+            GetTree().Root.Title = "Server Version";
 
-	public void setGuiInputs()
-	{
-		int i = 0;
-		foreach (var item in this.viewSlot1)
-		{
-			var node = this.GetNodeOrNull<Viewport>(item);
-			if (node != null)
-			{
-				node.GuiDisableInput = (i != viewSlot);
-			}
-
-			i++;
-		}
-	}
+            this.createServerWindow();
+        }
+    }
 }

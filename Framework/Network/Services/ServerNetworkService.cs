@@ -89,7 +89,7 @@ namespace Framework.Network.Services
             this.netManager.AutoRecycle = true;
             this.netManager.EnableStatistics = true;
             this.netManager.UnconnectedMessagesEnabled = true;
-            // this.netManager.MtuOverride = 8096;
+            this.netManager.MtuOverride = 8096;
 
             listener.NetworkErrorEvent += (endPoint, socketErrorCode) =>
             {

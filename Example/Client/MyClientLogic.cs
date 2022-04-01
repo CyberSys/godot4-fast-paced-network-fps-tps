@@ -36,7 +36,6 @@ namespace Shooter.Client
         public override void OnDisconnect()
         {
             this.Components.DeleteComponent<PreConnectComponent>();
-            this.Components.AddComponent<MapLoadingComponent>("res://Client/UI/Welcome/MapLoadingComponent.tscn");
         }
 
         public override void _Input(InputEvent @event)

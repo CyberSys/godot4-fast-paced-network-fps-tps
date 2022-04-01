@@ -20,12 +20,10 @@ namespace Shooter.Shared.Components
         public float UnitDB { get; set; }
         public float ZPos { get; set; }
 
-
         public bool Equals(FootStepsPackage compareObj)
         {
             return this.GetHashCode() == compareObj.GetHashCode();
         }
-
 
         public void Serialize(NetDataWriter writer)
         {
@@ -51,6 +49,9 @@ namespace Shooter.Shared.Components
 
     public partial class PlayerFootstepComponent : AudioStreamPlayer3D, IChildNetworkSyncComponent<FootStepsPackage>
     {
+        [Export(PropertyHint.Dir)]
+        public string FootStepsSoundPathFolder = "res://Assets/Audio/Footsteps/";
+
         public IBaseComponent BaseComponent { get; set; }
         private AsyncLoader soundLoader = new AsyncLoader();
         private int currentStep = 0;
@@ -218,7 +219,7 @@ namespace Shooter.Shared.Components
             if (!soundsCache.ContainsKey(folderName))
             {
                 soundsCache.Add(folderName, new List<FootStepsSound>());
-                var footstepPath = System.IO.Path.Combine("res://Assets/Audio/Footsteps/", folderName);
+                var footstepPath = System.IO.Path.Combine(this.FootStepsSoundPathFolder, folderName);
 
                 var dir = new Godot.Directory();
                 var listOfFiles = new List<string>();

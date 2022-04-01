@@ -118,11 +118,15 @@ namespace Framework.Game
         /// </summary>
         internal virtual void InternalTreeEntered()
         {
-            var origSize = this.GetParent<SubViewportContainer>().Size;
-            this.Size = new Vector2i((int)origSize.x, (int)origSize.y);
+            var parent = this.GetParentOrNull<Control>();
+            if (parent != null)
+            {
+                parent.ProcessMode = ProcessModeEnum.Always;
+                Logger.LogDebug(this, "Found parent set size: " + parent.Size);
+                this.Size = new Vector2i((int)parent.Size.x, (int)parent.Size.y);
+            }
 
             Logger.LogDebug(this, "Service amount: " + _serviceRegistry.All.Length);
-
             foreach (var service in _serviceRegistry.All)
             {
                 service.Register();

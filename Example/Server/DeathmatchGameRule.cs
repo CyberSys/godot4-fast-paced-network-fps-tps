@@ -39,18 +39,17 @@ namespace Shooter.Server
 
             var serverPlayer = player as ServerPlayer;
 
-            this.AddComponentToPlayer(player, "body");
-            this.AddComponentToPlayer(player, "camera");
-            this.AddComponentToPlayer(player, "footsteps");
+            this.AddComponentToServerPlayer(player, "body");
+            this.AddComponentToServerPlayer(player, "camera");
+            this.AddComponentToServerPlayer(player, "footsteps");
 
-            this.AddRemoteComponentToPlayer(player, "body");
-            this.AddRemoteComponentToPlayer(player, "camera");
-            this.AddRemoteComponentToPlayer(player, "input");
-            this.AddRemoteComponentToPlayer(player, "footsteps");
+            this.AddComponentToLocalPlayer(player, "body");
+            this.AddComponentToLocalPlayer(player, "camera");
+            this.AddComponentToLocalPlayer(player, "input");
+            this.AddComponentToLocalPlayer(player, "footsteps");
 
-
-            this.AddPuppetComponentToPlayer(player, "body");
-            this.AddPuppetComponentToPlayer(player, "footsteps");
+            this.AddComponentToPuppetPlayer(player, "body");
+            this.AddComponentToPuppetPlayer(player, "footsteps");
 
             serverPlayer.DoTeleport(origin);
         }

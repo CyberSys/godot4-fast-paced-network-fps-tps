@@ -10,7 +10,6 @@ namespace Shooter.Shared.Components
 {
     public partial class PlayerBodyComponent : CharacterBody3D, IChildMovementNetworkSyncComponent
     {
-
         public IBaseComponent BaseComponent { get; set; }
         public IMovementProcessor MovementProcessor { get; set; } = new DefaultMovementProcessor();
 
@@ -55,8 +54,6 @@ namespace Shooter.Shared.Components
 
         public MovementBodyPackage GetNetworkState()
         {
-            //                Id = (this.BaseComponent as Player).Id,
-
             return new MovementBodyPackage
             {
                 Position = this.Transform.origin,
@@ -82,14 +79,12 @@ namespace Shooter.Shared.Components
             this.previousCrouchLevel = shape.Height;
         }
 
-
         private bool _isOnGround = false;
 
         public bool IsOnGround()
         {
             return this.IsOnFloor();
         }
-
 
         public override void _Process(float delta)
         {

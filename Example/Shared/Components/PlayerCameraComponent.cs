@@ -82,11 +82,10 @@ namespace Shooter.Shared.Components
         public override void _Input(InputEvent @event)
         {
             base._Input(@event);
-
-            var sens = ClientSettings.Variables.Get<float>("cl_sensitivity", 2.0f);
-
             if (this.BaseComponent is LocalPlayer)
             {
+                var sens = ClientSettings.Variables.Get<float>("cl_sensitivity", 2.0f);
+
                 if (@event is InputEventMouseMotion && enableInput)
                 {
                     // Handle cursor lock state
