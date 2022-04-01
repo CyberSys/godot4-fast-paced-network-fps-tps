@@ -11,12 +11,15 @@ public interface IGameRule
 | name | description |
 | --- | --- |
 | [GameWorld](IGameRule/GameWorld.md) { get; } | The server world |
-| [AddComponentToPlayer](IGameRule/AddComponentToPlayer.md)(…) | Add an component to an server player instance |
-| [AddRemoteComponentToPlayer](IGameRule/AddRemoteComponentToPlayer.md)(…) | Add an component to an client player instance |
+| [AddComponentToLocalPlayer](IGameRule/AddComponentToLocalPlayer.md)(…) | Add an component to an local player instance on client side |
+| [AddComponentToPuppetPlayer](IGameRule/AddComponentToPuppetPlayer.md)(…) | Add an component to an server player instance |
+| [AddComponentToServerPlayer](IGameRule/AddComponentToServerPlayer.md)(…) | Add an component to an server side player |
 | [OnNewPlayerJoined](IGameRule/OnNewPlayerJoined.md)(…) | Called on new player joined the game |
 | [OnPlayerLeave](IGameRule/OnPlayerLeave.md)(…) | Called when players finanly leave the game |
 | [OnPlayerLeaveTemporary](IGameRule/OnPlayerLeaveTemporary.md)(…) | Called when players are disconnected (as eg. timeouts) |
 | [OnPlayerRejoined](IGameRule/OnPlayerRejoined.md)(…) | Called when player are rejoined the game (after previous disconnect) |
+| [RemoteComponentFromPuppetPlayer](IGameRule/RemoteComponentFromPuppetPlayer.md)(…) | Remove an component from an local player (server sided) |
+| [RemoveComponentFromLocalPlayer](IGameRule/RemoveComponentFromLocalPlayer.md)(…) | Remove an component from an local player (client sided) |
 | [Tick](IGameRule/Tick.md)(…) | Execute on each server tick |
 
 ## See Also

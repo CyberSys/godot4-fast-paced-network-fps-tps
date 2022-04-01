@@ -1,8 +1,15 @@
 # Logger.LogDebug method
 
+Debug logging an object with messsage
+
 ```csharp
 public static void LogDebug(object service, string message)
 ```
+
+| parameter | description |
+| --- | --- |
+| service |  |
+| message |  |
 
 ## See Also
 

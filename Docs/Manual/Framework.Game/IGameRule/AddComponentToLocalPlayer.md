@@ -1,9 +1,9 @@
-# IGameRule.AddRemoteComponentToPlayer method
+# IGameRule.AddComponentToLocalPlayer method
 
-Add an component to an client player instance
+Add an component to an local player instance on client side
 
 ```csharp
-public void AddRemoteComponentToPlayer(IPlayer player, string component)
+public void AddComponentToLocalPlayer(IPlayer player, string component)
 ```
 
 | parameter | description |

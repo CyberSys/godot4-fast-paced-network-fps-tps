@@ -1,8 +1,15 @@
 # PlayerInputProcessor.LogQueueStatsForPlayer method
 
+Log stats for queue input
+
 ```csharp
 public void LogQueueStatsForPlayer(int playerId, uint worldTick)
 ```
+
+| parameter | description |
+| --- | --- |
+| playerId |  |
+| worldTick |  |
 
 ## See Also
 

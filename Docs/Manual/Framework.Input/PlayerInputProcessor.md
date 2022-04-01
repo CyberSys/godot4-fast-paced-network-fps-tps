@@ -1,5 +1,7 @@
 # PlayerInputProcessor class
 
+Processing inputs from an given queue
+
 ```csharp
 public class PlayerInputProcessor
 ```
@@ -9,10 +11,10 @@ public class PlayerInputProcessor
 | name | description |
 | --- | --- |
 | [PlayerInputProcessor](PlayerInputProcessor/PlayerInputProcessor.md)() | The default constructor. |
-| [DequeueInputsForTick](PlayerInputProcessor/DequeueInputsForTick.md)(…) |  |
-| [EnqueueInput](PlayerInputProcessor/EnqueueInput.md)(…) |  |
-| [LogQueueStatsForPlayer](PlayerInputProcessor/LogQueueStatsForPlayer.md)(…) |  |
-| [TryGetLatestInput](PlayerInputProcessor/TryGetLatestInput.md)(…) |  |
+| [DequeueInputsForTick](PlayerInputProcessor/DequeueInputsForTick.md)(…) | Get an collection of the last inputs since an given tick and dequeue them |
+| [EnqueueInput](PlayerInputProcessor/EnqueueInput.md)(…) | Add new input to input queue |
+| [LogQueueStatsForPlayer](PlayerInputProcessor/LogQueueStatsForPlayer.md)(…) | Log stats for queue input |
+| [TryGetLatestInput](PlayerInputProcessor/TryGetLatestInput.md)(…) | Try to get the last input |
 
 ## See Also
 

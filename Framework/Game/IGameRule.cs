@@ -97,8 +97,19 @@ namespace Framework.Game
         /// <param name="component"></param>
         public void AddComponentToServerPlayer(IPlayer player, string component);
 
+
+        /// <summary>
+        /// Remove an component from an local player (client sided)
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="component"></param>
         public void RemoveComponentFromLocalPlayer(IPlayer player, string component);
 
+        /// <summary>
+        /// Remove an component from an local player (server sided)
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="component"></param>
         public void RemoteComponentFromPuppetPlayer(IPlayer player, string component);
     }
 }

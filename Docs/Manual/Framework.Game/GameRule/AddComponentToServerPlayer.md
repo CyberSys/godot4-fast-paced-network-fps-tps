@@ -1,7 +1,7 @@
-# GameRule.AddPuppetComponentToPlayer method
+# GameRule.AddComponentToServerPlayer method
 
 ```csharp
-public void AddPuppetComponentToPlayer(IPlayer player, string component)
+public void AddComponentToServerPlayer(IPlayer player, string component)
 ```
 
 ## See Also

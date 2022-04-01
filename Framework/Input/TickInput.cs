@@ -19,49 +19,43 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+using Framework.Input;
+using Framework.Utils;
+using Framework.Network.Commands;
+using Framework;
 using System.Collections.Generic;
-using System.Globalization;
-using System;
-using System.Diagnostics;
+using Priority_Queue;
 
-namespace Framework
+namespace Framework.Input
 {
-    public static class Logger
+
+    /// <summary>
+    /// The input for an given world tick of on specfic player (server-sided)
+    /// </summary>
+    public struct TickInput
     {
-        public static event LogMessageHandler OnLogMessage;
-        public delegate void LogMessageHandler(string message);
-
-        public static Dictionary<string, string> DebugUI = new Dictionary<string, string>();
+        /// <summary>
+        /// The tick of the input
+        /// </summary>
+        public uint WorldTick;
 
         /// <summary>
-        /// For client-side logging (not finish)
+        /// The remote world tick the player saw other entities at for this input.
+        /// (This is equivalent to lastServerWorldTick on the client).
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        public static void SetDebugUI(string name, string value)
-        {
-            DebugUI[name] = value;
-        }
+        public uint RemoteViewTick;
 
         /// <summary>
-        /// Debug logging an object with messsage
+        /// The player id
         /// </summary>
-        /// <param name="service"></param>
-        /// <param name="message"></param>
-        public static void LogDebug(object service, string message)
-        {
-            Console.WriteLine
-            (
-                String.Format(
-                    "[{3}][{0}][{1}] {2}",
-                    Process.GetCurrentProcess().StartTime,
-                    service.GetType().Name,
-                    message,
-                    System.Threading.Thread.CurrentThread.ManagedThreadId
-                )
-            );
+        public int PlayerId;
 
-            Logger.OnLogMessage?.Invoke(message);
-        }
+        /// <summary>
+        /// The input
+        /// </summary>
+        public GeneralPlayerInput Inputs;
     }
+
+
+
 }

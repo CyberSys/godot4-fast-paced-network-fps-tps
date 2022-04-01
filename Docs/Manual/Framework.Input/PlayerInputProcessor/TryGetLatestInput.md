@@ -1,8 +1,15 @@
 # PlayerInputProcessor.TryGetLatestInput method
 
+Try to get the last input
+
 ```csharp
 public bool TryGetLatestInput(int playerId, out TickInput ret)
 ```
+
+| parameter | description |
+| --- | --- |
+| playerId |  |
+| ret |  |
 
 ## See Also
 

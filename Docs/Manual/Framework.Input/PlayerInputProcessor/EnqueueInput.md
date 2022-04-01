@@ -1,8 +1,16 @@
 # PlayerInputProcessor.EnqueueInput method
 
+Add new input to input queue
+
 ```csharp
 public void EnqueueInput(PlayerInputCommand command, int playerId, uint serverWorldTick)
 ```
+
+| parameter | description |
+| --- | --- |
+| command |  |
+| playerId |  |
+| serverWorldTick |  |
 
 ## See Also
 

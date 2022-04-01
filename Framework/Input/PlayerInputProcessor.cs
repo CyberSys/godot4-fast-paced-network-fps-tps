@@ -28,19 +28,9 @@ using Priority_Queue;
 
 namespace Framework.Input
 {
-    public struct TickInput
-    {
-        public uint WorldTick;
-
-        // The remote world tick the player saw other entities at for this input.
-        // (This is equivalent to lastServerWorldTick on the client).
-        public uint RemoteViewTick;
-
-        public int PlayerId;
-
-        public GeneralPlayerInput Inputs;
-    }
-
+    /// <summary>
+    /// Processing inputs from an given queue
+    /// </summary>
     public class PlayerInputProcessor
     {
         private SimplePriorityQueue<TickInput> queue = new SimplePriorityQueue<TickInput>();
@@ -50,6 +40,11 @@ namespace Framework.Input
         private MovingAverage averageInputQueueSize = new MovingAverage(10);
         private int staleInputs;
 
+        /// <summary>
+        /// Log stats for queue input
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="worldTick"></param>
         public void LogQueueStatsForPlayer(int playerId, uint worldTick)
         {
             int count = 0;
@@ -65,11 +60,22 @@ namespace Framework.Input
             Logger.SetDebugUI("sv_avg_input_queue", averageInputQueueSize.ToString());
         }
 
+        /// <summary>
+        /// Try to get the last input
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="ret"></param>
+        /// <returns></returns>
         public bool TryGetLatestInput(int playerId, out TickInput ret)
         {
             return latestPlayerInput.TryGetValue(playerId, out ret);
         }
 
+        /// <summary>
+        /// Get an collection of the last inputs since an given tick and dequeue them
+        /// </summary>
+        /// <param name="worldTick"></param>
+        /// <returns></returns>
         public List<TickInput> DequeueInputsForTick(uint worldTick)
         {
             var ret = new List<TickInput>();
@@ -93,6 +99,12 @@ namespace Framework.Input
             return ret;
         }
 
+        /// <summary>
+        /// Add new input to input queue
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="playerId"></param>
+        /// <param name="serverWorldTick"></param>
         public void EnqueueInput(PlayerInputCommand command, int playerId, uint serverWorldTick)
         {
             // Monitoring.

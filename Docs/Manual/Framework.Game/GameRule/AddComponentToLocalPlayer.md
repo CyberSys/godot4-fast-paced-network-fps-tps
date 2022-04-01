@@ -1,7 +1,7 @@
-# GameRule.AddRemoteComponentToPlayer method
+# GameRule.AddComponentToLocalPlayer method
 
 ```csharp
-public void AddRemoteComponentToPlayer(IPlayer player, string component)
+public void AddComponentToLocalPlayer(IPlayer player, string component)
 ```
 
 ## See Also

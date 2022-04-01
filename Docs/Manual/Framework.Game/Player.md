@@ -21,6 +21,7 @@ public abstract class Player : Node, IPlayer
 | [RequiredComponents](Player/RequiredComponents.md) { get; set; } |  |
 | [State](Player/State.md) { get; set; } |  |
 | [Team](Player/Team.md) { get; set; } |  |
+| [AddAvaiableComponent&lt;T&gt;](Player/AddAvaiableComponent.md)(…) |  |
 | virtual [Tick](Player/Tick.md)(…) |  |
 
 ## See Also

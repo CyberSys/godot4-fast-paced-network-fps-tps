@@ -12,15 +12,15 @@ public class GameRule : IGameRule
 | --- | --- |
 | [GameRule](GameRule/GameRule.md)(…) | Game rule constructor |
 | [GameWorld](GameRule/GameWorld.md) { get; } |  |
-| [AddComponentToPlayer](GameRule/AddComponentToPlayer.md)(…) |  |
-| [AddPuppetComponentToPlayer](GameRule/AddPuppetComponentToPlayer.md)(…) |  |
-| [AddRemoteComponentToPlayer](GameRule/AddRemoteComponentToPlayer.md)(…) |  |
+| [AddComponentToLocalPlayer](GameRule/AddComponentToLocalPlayer.md)(…) |  |
+| [AddComponentToPuppetPlayer](GameRule/AddComponentToPuppetPlayer.md)(…) |  |
+| [AddComponentToServerPlayer](GameRule/AddComponentToServerPlayer.md)(…) |  |
 | virtual [OnNewPlayerJoined](GameRule/OnNewPlayerJoined.md)(…) |  |
 | virtual [OnPlayerLeave](GameRule/OnPlayerLeave.md)(…) |  |
 | virtual [OnPlayerLeaveTemporary](GameRule/OnPlayerLeaveTemporary.md)(…) |  |
 | virtual [OnPlayerRejoined](GameRule/OnPlayerRejoined.md)(…) |  |
-| [RemoveRemoteComponentFromPlayer](GameRule/RemoveRemoteComponentFromPlayer.md)(…) |  |
-| [RemoveRemoteComponentFromPuppet](GameRule/RemoveRemoteComponentFromPuppet.md)(…) |  |
+| [RemoteComponentFromPuppetPlayer](GameRule/RemoteComponentFromPuppetPlayer.md)(…) |  |
+| [RemoveComponentFromLocalPlayer](GameRule/RemoveComponentFromLocalPlayer.md)(…) |  |
 | virtual [Tick](GameRule/Tick.md)(…) |  |
 
 ## See Also

@@ -64,8 +64,8 @@
 | struct [GeneralPlayerInput](./Framework.Input/GeneralPlayerInput.md) | Default class for player input |
 | interface [IChildInputComponent](./Framework.Input/IChildInputComponent.md) | Required interface for local players with input eg. shifting, crouching, moving, etc. |
 | interface [IPlayerInput](./Framework.Input/IPlayerInput.md) | The network package required for sending inputs |
-| class [PlayerInputProcessor](./Framework.Input/PlayerInputProcessor.md) |  |
-| struct [TickInput](./Framework.Input/TickInput.md) |  |
+| class [PlayerInputProcessor](./Framework.Input/PlayerInputProcessor.md) | Processing inputs from an given queue |
+| struct [TickInput](./Framework.Input/TickInput.md) | The input for an given world tick of on specfic player (server-sided) |
 
 ## Framework.Network namespace
 

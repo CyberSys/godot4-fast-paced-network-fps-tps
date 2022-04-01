@@ -1,5 +1,7 @@
 # TickInput.RemoteViewTick field
 
+The remote world tick the player saw other entities at for this input. (This is equivalent to lastServerWorldTick on the client).
+
 ```csharp
 public uint RemoteViewTick;
 ```

@@ -1,7 +1,7 @@
-# GameRule.RemoveRemoteComponentFromPlayer method
+# GameRule.RemoteComponentFromPuppetPlayer method
 
 ```csharp
-public void RemoveRemoteComponentFromPlayer(IPlayer player, string component)
+public void RemoteComponentFromPuppetPlayer(IPlayer player, string component)
 ```
 
 ## See Also

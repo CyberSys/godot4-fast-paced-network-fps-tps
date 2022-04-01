@@ -1,8 +1,15 @@
 # Logger.SetDebugUI method
 
+For client-side logging (not finish)
+
 ```csharp
 public static void SetDebugUI(string name, string value)
 ```
+
+| parameter | description |
+| --- | --- |
+| name |  |
+| value |  |
 
 ## See Also
 

@@ -1,7 +1,7 @@
-# GameRule.AddComponentToPlayer method
+# GameRule.RemoveComponentFromLocalPlayer method
 
 ```csharp
-public void AddComponentToPlayer(IPlayer player, string component)
+public void RemoveComponentFromLocalPlayer(IPlayer player, string component)
 ```
 
 ## See Also

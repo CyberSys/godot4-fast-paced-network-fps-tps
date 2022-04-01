@@ -10,8 +10,8 @@ public static class Logger
 | --- | --- |
 | static [DebugUI](Logger/DebugUI.md) |  |
 | static event [OnLogMessage](Logger/OnLogMessage.md) |  |
-| static [LogDebug](Logger/LogDebug.md)(…) |  |
-| static [SetDebugUI](Logger/SetDebugUI.md)(…) |  |
+| static [LogDebug](Logger/LogDebug.md)(…) | Debug logging an object with messsage |
+| static [SetDebugUI](Logger/SetDebugUI.md)(…) | For client-side logging (not finish) |
 | delegate [LogMessageHandler](Logger.LogMessageHandler.md) |  |
 
 ## See Also

@@ -1,5 +1,7 @@
 # IChildComponent.GetComponentName method
 
+Get the unique name for the component
+
 ```csharp
 public string GetComponentName()
 ```

@@ -1,8 +1,14 @@
 # PlayerInputProcessor.DequeueInputsForTick method
 
+Get an collection of the last inputs since an given tick and dequeue them
+
 ```csharp
 public List<TickInput> DequeueInputsForTick(uint worldTick)
 ```
+
+| parameter | description |
+| --- | --- |
+| worldTick |  |
 
 ## See Also
 
