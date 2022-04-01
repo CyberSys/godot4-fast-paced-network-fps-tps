@@ -1,5 +1,7 @@
 # PlayerUpdate.PlayerName field
 
+Current player name
+
 ```csharp
 public string PlayerName;
 ```

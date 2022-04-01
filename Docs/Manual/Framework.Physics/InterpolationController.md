@@ -1,5 +1,7 @@
 # InterpolationController class
 
+Helper class for interpolations by ticks
+
 ```csharp
 public class InterpolationController
 ```
@@ -11,7 +13,7 @@ public class InterpolationController
 | [InterpolationController](InterpolationController/InterpolationController.md)() | The default constructor. |
 | [ExplicitFixedUpdate](InterpolationController/ExplicitFixedUpdate.md)(…) |  |
 | [ExplicitUpdate](InterpolationController/ExplicitUpdate.md)(…) |  |
-| static [InterpolationFactor](InterpolationController/InterpolationFactor.md) { get; } |  |
+| static [InterpolationFactor](InterpolationController/InterpolationFactor.md) { get; } | Contains the current interpolation factor |
 
 ## See Also
 

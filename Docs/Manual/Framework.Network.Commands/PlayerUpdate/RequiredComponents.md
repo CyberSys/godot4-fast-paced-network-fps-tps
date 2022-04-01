@@ -1,7 +1,9 @@
 # PlayerUpdate.RequiredComponents field
 
+Required local player components
+
 ```csharp
-public string[] RequiredComponents;
+public int[] RequiredComponents;
 ```
 
 ## See Also

@@ -1,7 +1,7 @@
-# Player.RequiredComponents property
+# Player.AvaiableInputs property
 
 ```csharp
-public string[] RequiredComponents { get; set; }
+public List<string> AvaiableInputs { get; }
 ```
 
 ## See Also

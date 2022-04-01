@@ -10,15 +10,15 @@ public struct PlayerUpdate : INetSerializable
 
 | name | description |
 | --- | --- |
-| [DisconnectTime](PlayerUpdate/DisconnectTime.md) |  |
-| [Id](PlayerUpdate/Id.md) |  |
-| [Latency](PlayerUpdate/Latency.md) |  |
-| [LatestInputTick](PlayerUpdate/LatestInputTick.md) |  |
-| [PlayerName](PlayerUpdate/PlayerName.md) |  |
-| [RequiredComponents](PlayerUpdate/RequiredComponents.md) |  |
-| [RequiredPuppetComponents](PlayerUpdate/RequiredPuppetComponents.md) |  |
-| [State](PlayerUpdate/State.md) |  |
-| [Team](PlayerUpdate/Team.md) |  |
+| [DisconnectTime](PlayerUpdate/DisconnectTime.md) | Time since player is disconnected |
+| [Id](PlayerUpdate/Id.md) | Current network id |
+| [Latency](PlayerUpdate/Latency.md) | Current latency |
+| [LatestInputTick](PlayerUpdate/LatestInputTick.md) | Tick of latest input |
+| [PlayerName](PlayerUpdate/PlayerName.md) | Current player name |
+| [RequiredComponents](PlayerUpdate/RequiredComponents.md) | Required local player components |
+| [RequiredPuppetComponents](PlayerUpdate/RequiredPuppetComponents.md) | Required puppet components |
+| [State](PlayerUpdate/State.md) | Current network connection state |
+| [Team](PlayerUpdate/Team.md) | Team of player |
 | [Deserialize](PlayerUpdate/Deserialize.md)(…) |  |
 | [Serialize](PlayerUpdate/Serialize.md)(…) |  |
 

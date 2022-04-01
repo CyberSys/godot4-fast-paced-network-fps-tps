@@ -1,7 +1,9 @@
 # PlayerUpdate.RequiredPuppetComponents field
 
+Required puppet components
+
 ```csharp
-public string[] RequiredPuppetComponents;
+public int[] RequiredPuppetComponents;
 ```
 
 ## See Also

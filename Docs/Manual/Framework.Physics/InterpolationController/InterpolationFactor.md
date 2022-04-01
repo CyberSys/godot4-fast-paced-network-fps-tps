@@ -1,5 +1,7 @@
 # InterpolationController.InterpolationFactor property
 
+Contains the current interpolation factor
+
 ```csharp
 public static float InterpolationFactor { get; }
 ```

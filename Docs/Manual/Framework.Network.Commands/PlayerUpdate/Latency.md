@@ -1,5 +1,7 @@
 # PlayerUpdate.Latency field
 
+Current latency
+
 ```csharp
 public int Latency;
 ```

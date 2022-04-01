@@ -3,7 +3,7 @@
 Contains possible components
 
 ```csharp
-public Dictionary<string, AssignedComponent> AvaiablePlayerComponents { get; }
+public List<AssignedComponent> AvaiablePlayerComponents { get; }
 ```
 
 ## See Also

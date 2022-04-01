@@ -11,6 +11,7 @@ public abstract class Player : Node, IPlayer
 | name | description |
 | --- | --- |
 | [Player](Player/Player.md)() | Base player class |
+| [AvaiableInputs](Player/AvaiableInputs.md) { get; } |  |
 | [AvaiablePlayerComponents](Player/AvaiablePlayerComponents.md) { get; } |  |
 | [Components](Player/Components.md) { get; } |  |
 | [GameWorld](Player/GameWorld.md) { get; set; } |  |
@@ -18,7 +19,6 @@ public abstract class Player : Node, IPlayer
 | [Latency](Player/Latency.md) { get; set; } |  |
 | [PlayerName](Player/PlayerName.md) { get; set; } |  |
 | [PreviousState](Player/PreviousState.md) { get; set; } | Previous state since last tick |
-| [RequiredComponents](Player/RequiredComponents.md) { get; set; } |  |
 | [State](Player/State.md) { get; set; } |  |
 | [Team](Player/Team.md) { get; set; } |  |
 | [AddAvaiableComponent&lt;T&gt;](Player/AddAvaiableComponent.md)(…) |  |

@@ -1,5 +1,7 @@
 # PlayerUpdate.Team field
 
+Team of player
+
 ```csharp
 public PlayerTeam Team;
 ```

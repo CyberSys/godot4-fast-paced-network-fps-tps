@@ -1,5 +1,7 @@
 # PlayerUpdate.DisconnectTime field
 
+Time since player is disconnected
+
 ```csharp
 public float DisconnectTime;
 ```

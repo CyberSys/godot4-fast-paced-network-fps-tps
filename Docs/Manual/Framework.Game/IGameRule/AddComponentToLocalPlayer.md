@@ -1,9 +1,10 @@
-# IGameRule.AddComponentToLocalPlayer method
+# IGameRule.AddComponentToLocalPlayer&lt;T&gt; method
 
 Add an component to an local player instance on client side
 
 ```csharp
-public void AddComponentToLocalPlayer(IPlayer player, string component)
+public void AddComponentToLocalPlayer<T>(IPlayer player)
+    where T : IChildComponent
 ```
 
 | parameter | description |
@@ -14,6 +15,7 @@ public void AddComponentToLocalPlayer(IPlayer player, string component)
 ## See Also
 
 * interface [IPlayer](../IPlayer.md)
+* interface [IChildComponent](../../Framework/IChildComponent.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

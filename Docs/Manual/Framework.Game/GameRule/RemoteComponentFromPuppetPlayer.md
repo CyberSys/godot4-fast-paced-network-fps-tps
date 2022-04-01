@@ -1,12 +1,14 @@
-# GameRule.RemoteComponentFromPuppetPlayer method
+# GameRule.RemoteComponentFromPuppetPlayer&lt;T&gt; method
 
 ```csharp
-public void RemoteComponentFromPuppetPlayer(IPlayer player, string component)
+public void RemoteComponentFromPuppetPlayer<T>(IPlayer player)
+    where T : IChildComponent
 ```
 
 ## See Also
 
 * interface [IPlayer](../IPlayer.md)
+* interface [IChildComponent](../../Framework/IChildComponent.md)
 * class [GameRule](../GameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

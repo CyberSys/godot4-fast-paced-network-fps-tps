@@ -1,9 +1,9 @@
-# GeneralPlayerInput.InputKeys property
+# GeneralPlayerInput.Input property
 
-Keys which enabled
+The byte which contains all inputs
 
 ```csharp
-public List<string> InputKeys { get; }
+public byte Input { get; set; }
 ```
 
 ## See Also

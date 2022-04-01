@@ -1,5 +1,7 @@
 # PlayerUpdate.Id field
 
+Current network id
+
 ```csharp
 public int Id;
 ```

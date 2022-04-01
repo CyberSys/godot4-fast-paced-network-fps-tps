@@ -1,5 +1,7 @@
 # PlayerUpdate.State field
 
+Current network connection state
+
 ```csharp
 public PlayerConnectionState State;
 ```

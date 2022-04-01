@@ -1,9 +1,10 @@
-# IGameRule.AddComponentToPuppetPlayer method
+# IGameRule.AddComponentToPuppetPlayer&lt;T&gt; method
 
 Add an component to an server player instance
 
 ```csharp
-public void AddComponentToPuppetPlayer(IPlayer player, string component)
+public void AddComponentToPuppetPlayer<T>(IPlayer player)
+    where T : IChildComponent
 ```
 
 | parameter | description |
@@ -14,6 +15,7 @@ public void AddComponentToPuppetPlayer(IPlayer player, string component)
 ## See Also
 
 * interface [IPlayer](../IPlayer.md)
+* interface [IChildComponent](../../Framework/IChildComponent.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

@@ -1,9 +1,10 @@
-# IGameRule.RemoteComponentFromPuppetPlayer method
+# IGameRule.RemoteComponentFromPuppetPlayer&lt;T&gt; method
 
 Remove an component from an local player (server sided)
 
 ```csharp
-public void RemoteComponentFromPuppetPlayer(IPlayer player, string component)
+public void RemoteComponentFromPuppetPlayer<T>(IPlayer player)
+    where T : IChildComponent
 ```
 
 | parameter | description |
@@ -14,6 +15,7 @@ public void RemoteComponentFromPuppetPlayer(IPlayer player, string component)
 ## See Also
 
 * interface [IPlayer](../IPlayer.md)
+* interface [IChildComponent](../../Framework/IChildComponent.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

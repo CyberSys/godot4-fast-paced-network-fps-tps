@@ -1,15 +1,14 @@
-# GeneralPlayerInput.SetInput method
+# GeneralPlayerInput.DeserliazeWithInputKeys method
 
-Enable an boolean (input) for given key
+Deserialize input byte with an given list of input keys
 
 ```csharp
-public void SetInput(string key, bool value = true)
+public GeneralPlayerInput DeserliazeWithInputKeys(List<string> InputKeys)
 ```
 
 | parameter | description |
 | --- | --- |
-| key |  |
-| value |  |
+| InputKeys |  |
 
 ## See Also
 

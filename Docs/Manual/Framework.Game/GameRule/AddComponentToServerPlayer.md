@@ -1,12 +1,14 @@
-# GameRule.AddComponentToServerPlayer method
+# GameRule.AddComponentToServerPlayer&lt;T&gt; method
 
 ```csharp
-public void AddComponentToServerPlayer(IPlayer player, string component)
+public void AddComponentToServerPlayer<T>(IPlayer player)
+    where T : IChildComponent
 ```
 
 ## See Also
 
 * interface [IPlayer](../IPlayer.md)
+* interface [IChildComponent](../../Framework/IChildComponent.md)
 * class [GameRule](../GameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

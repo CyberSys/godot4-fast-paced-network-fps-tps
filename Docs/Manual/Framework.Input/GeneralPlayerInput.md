@@ -10,12 +10,14 @@ public struct GeneralPlayerInput : IPlayerInput
 
 | name | description |
 | --- | --- |
-| [InputKeys](GeneralPlayerInput/InputKeys.md) { get; } | Keys which enabled |
+| [CurrentInput](GeneralPlayerInput/CurrentInput.md) { get; } | The current activated input keys |
+| [Input](GeneralPlayerInput/Input.md) { get; set; } | The byte which contains all inputs |
 | [ViewDirection](GeneralPlayerInput/ViewDirection.md) { get; set; } | The view direction or camera direction |
+| [Apply](GeneralPlayerInput/Apply.md)(…) | Apply input keys with an existing list of avaible keys. Creating an bit mask |
 | [Deserialize](GeneralPlayerInput/Deserialize.md)(…) |  |
+| [DeserliazeWithInputKeys](GeneralPlayerInput/DeserliazeWithInputKeys.md)(…) | Deserialize input byte with an given list of input keys |
 | [GetInput](GeneralPlayerInput/GetInput.md)(…) | Get input by given string, related to booleans with PlayerInputAttribute |
 | [Serialize](GeneralPlayerInput/Serialize.md)(…) |  |
-| [SetInput](GeneralPlayerInput/SetInput.md)(…) | Enable an boolean (input) for given key |
 
 ## See Also
 

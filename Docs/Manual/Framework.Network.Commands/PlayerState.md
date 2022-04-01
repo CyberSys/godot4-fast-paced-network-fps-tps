@@ -11,7 +11,7 @@ public struct PlayerState : INetSerializable
 | name | description |
 | --- | --- |
 | [Id](PlayerState/Id.md) | The id of this player |
-| [NetworkComponents](PlayerState/NetworkComponents.md) |  |
+| [NetworkComponents](PlayerState/NetworkComponents.md) | Uncomposed list of components and component states |
 | [Decompose&lt;T&gt;](PlayerState/Decompose.md)(…) |  |
 | [Deserialize](PlayerState/Deserialize.md)(…) |  |
 | [Serialize](PlayerState/Serialize.md)(…) |  |

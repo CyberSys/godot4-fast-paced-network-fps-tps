@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.GetMovementSpeedFactor method
 
+Get the movement speed factor (current speed / walking speed)
+
 ```csharp
 public virtual float GetMovementSpeedFactor()
 ```

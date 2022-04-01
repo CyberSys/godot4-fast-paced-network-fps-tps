@@ -23,8 +23,8 @@ public class DefaultMovementProcessor : IMovementProcessor
 | virtual [GetGroundDeaccelerationFactor](DefaultMovementProcessor/GetGroundDeaccelerationFactor.md)() | Get the default ground deaccel factor |
 | virtual [GetGroundFriction](DefaultMovementProcessor/GetGroundFriction.md)() | Get the friction for crouching |
 | virtual [GetMovementSpeed](DefaultMovementProcessor/GetMovementSpeed.md)() | Get the default movement speed |
-| virtual [GetMovementSpeedFactor](DefaultMovementProcessor/GetMovementSpeedFactor.md)() |  |
-| virtual [GetWalkingSpeed](DefaultMovementProcessor/GetWalkingSpeed.md)() |  |
+| virtual [GetMovementSpeedFactor](DefaultMovementProcessor/GetMovementSpeedFactor.md)() | Get the movement speed factor (current speed / walking speed) |
+| virtual [GetWalkingSpeed](DefaultMovementProcessor/GetWalkingSpeed.md)() | Get the default walking speed |
 | [isOnGround](DefaultMovementProcessor/isOnGround.md)() | Check if player is on ground |
 | [SetClientVars](DefaultMovementProcessor/SetClientVars.md)(…) |  |
 | [SetServerVars](DefaultMovementProcessor/SetServerVars.md)(…) |  |

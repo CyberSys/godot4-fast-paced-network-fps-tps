@@ -1,9 +1,10 @@
-# IGameRule.RemoveComponentFromLocalPlayer method
+# IGameRule.RemoveComponentFromLocalPlayer&lt;T&gt; method
 
 Remove an component from an local player (client sided)
 
 ```csharp
-public void RemoveComponentFromLocalPlayer(IPlayer player, string component)
+public void RemoveComponentFromLocalPlayer<T>(IPlayer player)
+    where T : IChildComponent
 ```
 
 | parameter | description |
@@ -14,6 +15,7 @@ public void RemoveComponentFromLocalPlayer(IPlayer player, string component)
 ## See Also
 
 * interface [IPlayer](../IPlayer.md)
+* interface [IChildComponent](../../Framework/IChildComponent.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

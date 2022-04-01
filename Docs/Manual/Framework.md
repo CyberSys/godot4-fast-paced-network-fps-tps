@@ -7,6 +7,7 @@
 | class [ComponentRegistry](./Framework/ComponentRegistry.md) | Component registry class |
 | interface [IBaseComponent](./Framework/IBaseComponent.md) | The base component interface required for root components |
 | interface [IChildComponent](./Framework/IChildComponent.md) | The child component interface for childs of an base component |
+| interface [IPlayerComponent](./Framework/IPlayerComponent.md) | Interface required for player components |
 | interface [IService](./Framework/IService.md) | Required interface for service classes |
 | interface [ITeam](./Framework/ITeam.md) |  |
 | static class [Logger](./Framework/Logger.md) |  |
@@ -108,7 +109,7 @@
 | class [DefaultMovementProcessor](./Framework.Physics/DefaultMovementProcessor.md) | An default movement calculator Handles friction, air control, jumping and accelerate |
 | interface [IChildMovementNetworkSyncComponent](./Framework.Physics/IChildMovementNetworkSyncComponent.md) |  |
 | interface [IMovementProcessor](./Framework.Physics/IMovementProcessor.md) | The required interface for movement processors |
-| class [InterpolationController](./Framework.Physics/InterpolationController.md) |  |
+| class [InterpolationController](./Framework.Physics/InterpolationController.md) | Helper class for interpolations by ticks |
 | abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) | The base class for physics based players (kinematic, rigid..) |
 
 ## Framework.Physics.Commands namespace

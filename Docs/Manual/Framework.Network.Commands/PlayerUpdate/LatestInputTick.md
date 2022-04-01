@@ -1,5 +1,7 @@
 # PlayerUpdate.LatestInputTick field
 
+Tick of latest input
+
 ```csharp
 public uint LatestInputTick;
 ```

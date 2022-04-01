@@ -1,7 +1,7 @@
-# ServerPlayer.RequiredPuppetComponents property
+# ServerPlayer.RequiredComponents property
 
 ```csharp
-public int[] RequiredPuppetComponents { get; set; }
+public int[] RequiredComponents { get; set; }
 ```
 
 ## See Also

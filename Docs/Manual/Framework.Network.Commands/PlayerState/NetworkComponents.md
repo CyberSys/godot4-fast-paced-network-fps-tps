@@ -1,5 +1,7 @@
 # PlayerState.NetworkComponents field
 
+Uncomposed list of components and component states
+
 ```csharp
 public Dictionary<string, byte[]> NetworkComponents;
 ```

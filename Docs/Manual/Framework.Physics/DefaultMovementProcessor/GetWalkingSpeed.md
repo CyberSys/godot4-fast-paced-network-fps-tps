@@ -1,5 +1,7 @@
 # DefaultMovementProcessor.GetWalkingSpeed method
 
+Get the default walking speed
+
 ```csharp
 public virtual float GetWalkingSpeed()
 ```
