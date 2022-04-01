@@ -111,8 +111,6 @@ namespace Framework.Game
             this._components = new ComponentRegistry(this);
         }
 
-
-
         /// <summary>
         /// On tree enter
         /// </summary>

@@ -60,6 +60,17 @@ namespace Framework
         public ComponentRegistry Components { get; }
     }
 
+    /// <summary>
+    /// Interface required for player components
+    /// </summary>
+    public interface IPlayerComponent : IChildComponent
+    {
+        /// <summary>
+        /// Called on each physics network tick for component
+        /// </summary>
+        /// <param name="delta"></param>
+        public void Tick(float delta);
+    }
 
     /// <summary>
     /// The child component interface for childs of an base component

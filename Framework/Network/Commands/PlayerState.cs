@@ -41,6 +41,9 @@ namespace Framework.Network.Commands
         /// </summary>
         public int Id;
 
+        /// <summary>
+        /// Uncomposed list of components and component states
+        /// </summary>
         public Dictionary<string, byte[]> NetworkComponents;
 
         /// <inheritdoc />

@@ -58,7 +58,6 @@ namespace Framework.Game.Server
         /// </summary>
         public PlayerState[] States = new PlayerState[1024];
 
-
         /// <summary>
         /// The active tick based input
         /// </summary>
@@ -69,8 +68,9 @@ namespace Framework.Game.Server
         public TickInput CurrentPlayerInput { get; set; }
 
         /// <inheritdoc />
-        public string[] RequiredPuppetComponents { get; set; } = new string[0];
+        public int[] RequiredPuppetComponents { get; set; } = new int[0];
 
-
+        /// <inheritdoc />
+        public int[] RequiredComponents { get; set; } = new int[0];
     }
 }

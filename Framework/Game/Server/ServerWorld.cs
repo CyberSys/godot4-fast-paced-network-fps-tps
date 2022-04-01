@@ -183,13 +183,10 @@ namespace Framework.Game.Server
             var clientId = peer.Id;
             if (this._players.ContainsKey(clientId))
             {
+                var player = this._players[clientId] as ServerPlayer;
+                package.Inputs = package.Inputs.Select(df => df.DeserliazeWithInputKeys(player.AvaiableInputs)).ToArray();
                 playerInputProcessor.EnqueueInput(package, clientId, this.WorldTick);
-
-                if (this._players.ContainsKey(clientId))
-                {
-                    var player = this._players[clientId] as ServerPlayer;
-                    player.LatestInputTick = package.StartWorldTick + (uint)package.Inputs.Length - 1;
-                }
+                player.LatestInputTick = package.StartWorldTick + (uint)package.Inputs.Length - 1;
             }
         }
 
@@ -213,8 +210,8 @@ namespace Framework.Game.Server
                                     Id = df.Key,
                                     Team = df.Value.Team,
                                     State = df.Value.State,
-                                    RequiredComponents = df.Value.RequiredComponents.ToArray(),
-                                    RequiredPuppetComponents = (df.Value as ServerPlayer).RequiredComponents.ToArray(),
+                                    RequiredComponents = (df.Value as ServerPlayer).RequiredComponents.ToArray(),
+                                    RequiredPuppetComponents = (df.Value as ServerPlayer).RequiredPuppetComponents.ToArray(),
                                     Latency = df.Value.Latency
                                 }).ToArray();
 
@@ -416,8 +413,8 @@ namespace Framework.Game.Server
             {
                 //clear previous components
                 player.Components.Clear();
-                (player as ServerPlayer).RequiredPuppetComponents = new string[0];
-                (player as ServerPlayer).RequiredComponents = new string[0];
+                (player as ServerPlayer).RequiredPuppetComponents = new int[0];
+                (player as ServerPlayer).RequiredComponents = new int[0];
 
                 if (this._activeGameRule != null)
                 {

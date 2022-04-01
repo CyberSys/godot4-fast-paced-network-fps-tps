@@ -141,7 +141,6 @@ namespace Framework.Game.Client
         {
             if (this.localPlayer != null)
             {
-
                 float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
                 var serverSendRate = simTickRate / 2;
 
@@ -188,13 +187,13 @@ namespace Framework.Game.Client
                     ClientWorldTickDeltas = clientWorldTickDeltas.ToArray(),
                 };
 
-                //send to server => command
+                // send to server => command
                 this.netService.SendMessageSerialisable(this.netService.ServerPeer.Id, command, LiteNetLib.DeliveryMethod.Sequenced);
 
-                //SetPlayerInputs
+                // SetPlayerInputs
                 this.localPlayer.SetPlayerInputs(inputs);
 
-                // SimulateWorld
+                // Simulate player
                 this.localPlayer.InternalTick(interval);
             }
 
@@ -306,33 +305,35 @@ namespace Framework.Game.Client
             player.Latency = playerUpdate.Latency;
             player.PlayerName = playerUpdate.PlayerName;
             player.State = playerUpdate.State;
-            player.RequiredComponents = (player is LocalPlayer) ? playerUpdate.RequiredComponents : playerUpdate.RequiredComponents;
 
             if (playerUpdate.State == PlayerConnectionState.Initialized)
             {
+                int i = 0;
                 //check if we have to remove some components
                 foreach (var avaiableComponents in player.AvaiablePlayerComponents)
                 {
-                    var componentExist = player.Components.HasComponent(avaiableComponents.Value.NodeType);
-                    var isRequired = player.RequiredComponents.Contains(avaiableComponents.Key);
+                    var componentExist = player.Components.HasComponent(avaiableComponents.NodeType);
+                    var isRequired = playerUpdate.RequiredComponents.Contains(i);
                     if (componentExist && !isRequired)
                     {
-                        player.Components.DeleteComponent(avaiableComponents.Value.NodeType);
+                        player.Components.DeleteComponent(avaiableComponents.NodeType);
                     }
 
                     else if (isRequired && !componentExist)
                     {
                         Node result = null;
 
-                        if (avaiableComponents.Value.ResourcePath != null)
+                        if (avaiableComponents.ResourcePath != null)
                         {
-                            result = player.Components.AddComponent(avaiableComponents.Value.NodeType, avaiableComponents.Value.ResourcePath);
+                            result = player.Components.AddComponent(avaiableComponents.NodeType, avaiableComponents.ResourcePath);
                         }
                         else
                         {
-                            result = player.Components.AddComponent(avaiableComponents.Value.NodeType);
+                            result = player.Components.AddComponent(avaiableComponents.NodeType);
                         }
                     }
+
+                    i++;
                 }
             }
 

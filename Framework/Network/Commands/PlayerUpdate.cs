@@ -34,21 +34,52 @@ namespace Framework.Network.Commands
     /// </summary>
     public struct PlayerUpdate : INetSerializable
     {
+        /// <summary>
+        /// Team of player
+        /// </summary>
         public PlayerTeam Team;
+
+        /// <summary>
+        /// Current network connection state
+        /// </summary>
         public PlayerConnectionState State;
+
+        /// <summary>
+        /// Current player name
+        /// </summary>
         public string PlayerName;
+
+        /// <summary>
+        /// Current network id
+        /// </summary>
         public int Id;
+
+        /// <summary>
+        /// Current latency
+        /// </summary>
         public int Latency;
 
-        public string[] RequiredComponents;
-        public string[] RequiredPuppetComponents;
+        /// <summary>
+        /// Required local player components
+        /// </summary>
+        public int[] RequiredComponents;
 
-        [IgnoreDataMemberAttribute]
+        /// <summary>
+        /// Required puppet components
+        /// </summary>
+        public int[] RequiredPuppetComponents;
+
+        /// <summary>
+        /// Time since player is disconnected
+        /// </summary>
         public float DisconnectTime;
 
-        [IgnoreDataMemberAttribute]
+        /// <summary>
+        /// Tick of latest input
+        /// </summary>
         public uint LatestInputTick;
 
+        /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
 
@@ -61,6 +92,7 @@ namespace Framework.Network.Commands
             writer.PutArray(this.RequiredPuppetComponents);
         }
 
+        /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
             this.Id = reader.GetInt();
@@ -68,8 +100,8 @@ namespace Framework.Network.Commands
             this.State = (PlayerConnectionState)reader.GetInt();
             this.PlayerName = reader.GetString();
             this.Latency = reader.GetInt();
-            this.RequiredComponents = reader.GetStringArray();
-            this.RequiredPuppetComponents = reader.GetStringArray();
+            this.RequiredComponents = reader.GetIntArray();
+            this.RequiredPuppetComponents = reader.GetIntArray();
         }
     }
 }

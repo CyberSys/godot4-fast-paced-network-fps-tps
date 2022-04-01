@@ -124,7 +124,7 @@ namespace Framework.Game.Server
             this.RenderTargetUpdateMode = UpdateMode.Always;
             this.PhysicsObjectPicking = true;
             this.ProcessMode = ProcessModeEnum.Always;
-            this.Disable3d = true;
+            //    this.Disable3d = true;
             this.HandleInputLocally = false;
 
             this.netService = this.Services.Create<ServerNetworkService>();

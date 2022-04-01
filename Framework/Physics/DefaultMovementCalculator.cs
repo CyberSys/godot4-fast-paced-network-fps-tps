@@ -20,10 +20,8 @@
  */
 
 using Godot;
-using System;
 using Framework.Input;
 using Framework.Game;
-using Framework.Network.Commands;
 
 namespace Framework.Physics
 {
@@ -309,12 +307,21 @@ namespace Framework.Physics
                   ? this.serverVars.Get<float>("sv_crouching_speed", 4.0f) : this.GetWalkingSpeed();
         }
 
+        /// <summary>
+        /// Get the movement speed factor (current speed / walking speed)
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetMovementSpeedFactor()
         {
             var vel = this.Velocity;
             vel.y = 0;
             return vel.Length() / this.GetWalkingSpeed();
         }
+
+        /// <summary>
+        /// Get the default walking speed
+        /// </summary>
+        /// <returns></returns>
         public virtual float GetWalkingSpeed()
         {
             return this.serverVars.Get<float>("sv_walk_speed", 7.0f);

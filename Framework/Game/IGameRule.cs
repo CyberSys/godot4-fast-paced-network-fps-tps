@@ -81,21 +81,21 @@ namespace Framework.Game
         /// </summary>
         /// <param name="player"></param>
         /// <param name="component"></param>
-        public void AddComponentToLocalPlayer(IPlayer player, string component);
+        public void AddComponentToLocalPlayer<T>(IPlayer player) where T : IChildComponent;
 
         /// <summary>
         /// Add an component to an server player instance
         /// </summary>
         /// <param name="player"></param>
         /// <param name="component"></param>
-        public void AddComponentToPuppetPlayer(IPlayer player, string component);
+        public void AddComponentToPuppetPlayer<T>(IPlayer player) where T : IChildComponent;
 
         /// <summary>
         /// Add an component to an server side player
         /// </summary>
         /// <param name="player"></param>
         /// <param name="component"></param>
-        public void AddComponentToServerPlayer(IPlayer player, string component);
+        public void AddComponentToServerPlayer<T>(IPlayer player) where T : IChildComponent;
 
 
         /// <summary>
@@ -103,13 +103,13 @@ namespace Framework.Game
         /// </summary>
         /// <param name="player"></param>
         /// <param name="component"></param>
-        public void RemoveComponentFromLocalPlayer(IPlayer player, string component);
+        public void RemoveComponentFromLocalPlayer<T>(IPlayer player) where T : IChildComponent;
 
         /// <summary>
         /// Remove an component from an local player (server sided)
         /// </summary>
         /// <param name="player"></param>
         /// <param name="component"></param>
-        public void RemoteComponentFromPuppetPlayer(IPlayer player, string component);
+        public void RemoteComponentFromPuppetPlayer<T>(IPlayer player) where T : IChildComponent;
     }
 }

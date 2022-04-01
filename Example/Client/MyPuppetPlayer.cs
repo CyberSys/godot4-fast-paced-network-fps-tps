@@ -9,7 +9,10 @@ namespace Shooter.Client
         public MyPuppetPlayer() : base()
         {
             this.AddAvaiableComponent<PlayerBodyComponent>("res://Assets/Player/PlayerBody.tscn");
+            this.AddAvaiableComponent<PlayerCameraComponent>();
             this.AddAvaiableComponent<PlayerFootstepComponent>();
+            this.AddAvaiableComponent<PlayerInputComponent>();
+            this.AddAvaiableComponent<PlayerWeaponComponent>("res://Assets/Weapons/WeaponHolder.tscn");
         }
     }
 }

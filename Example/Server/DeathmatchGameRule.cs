@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using Framework.Game.Server;
 using Framework;
+using Shooter.Shared.Components;
 namespace Shooter.Server
 {
     public class DeathmatchGameRule : GameRule
@@ -39,17 +40,20 @@ namespace Shooter.Server
 
             var serverPlayer = player as ServerPlayer;
 
-            this.AddComponentToServerPlayer(player, "body");
-            this.AddComponentToServerPlayer(player, "camera");
-            this.AddComponentToServerPlayer(player, "footsteps");
+            this.AddComponentToServerPlayer<PlayerBodyComponent>(player);
+            this.AddComponentToServerPlayer<PlayerCameraComponent>(player);
+            this.AddComponentToServerPlayer<PlayerFootstepComponent>(player);
+            this.AddComponentToServerPlayer<PlayerWeaponComponent>(player);
 
-            this.AddComponentToLocalPlayer(player, "body");
-            this.AddComponentToLocalPlayer(player, "camera");
-            this.AddComponentToLocalPlayer(player, "input");
-            this.AddComponentToLocalPlayer(player, "footsteps");
+            this.AddComponentToLocalPlayer<PlayerBodyComponent>(player);
+            this.AddComponentToLocalPlayer<PlayerCameraComponent>(player);
+            this.AddComponentToLocalPlayer<PlayerInputComponent>(player);
+            this.AddComponentToLocalPlayer<PlayerFootstepComponent>(player);
+            this.AddComponentToLocalPlayer<PlayerWeaponComponent>(player);
 
-            this.AddComponentToPuppetPlayer(player, "body");
-            this.AddComponentToPuppetPlayer(player, "footsteps");
+            this.AddComponentToPuppetPlayer<PlayerWeaponComponent>(player);
+            this.AddComponentToPuppetPlayer<PlayerWeaponComponent>(player);
+            this.AddComponentToPuppetPlayer<PlayerWeaponComponent>(player);
 
             serverPlayer.DoTeleport(origin);
         }

@@ -23,8 +23,15 @@ using Framework.Utils;
 
 namespace Framework.Physics
 {
+    /// <summary>
+    /// Helper class for interpolations by ticks
+    /// </summary>
     public class InterpolationController
     {
+        /// <summary>
+        /// Contains the current interpolation factor
+        /// </summary>
+        /// <value></value>
         public static float InterpolationFactor { get; private set; } = 1f;
 
         private DoubleBuffer<float> timestampBuffer = new DoubleBuffer<float>();

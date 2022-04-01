@@ -80,27 +80,33 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        private readonly Dictionary<string, AssignedComponent> avaiableComponents = new Dictionary<string, AssignedComponent>();
+        private readonly List<AssignedComponent> avaiableComponents = new List<AssignedComponent>();
 
         /// <inheritdoc />
-        public Dictionary<string, AssignedComponent> AvaiablePlayerComponents => avaiableComponents;
+        public List<AssignedComponent> AvaiablePlayerComponents => avaiableComponents;
+
+
+        /// <inheritdoc />
+        private readonly List<string> avaiableInputs = new List<string>();
+
+        /// <inheritdoc />
+        public List<string> AvaiableInputs => avaiableInputs;
 
         /// <inheritdoc />
         public void AddAvaiableComponent<T>(string ResourcePath = null) where T : Godot.Node, IChildComponent, new()
         {
-            T obj = new T();
-            var name = obj.GetComponentName();
-            obj.Dispose();
-
-            if (!this.avaiableComponents.ContainsKey(name))
-            {
-                this.avaiableComponents.Add(name, new AssignedComponent(
+            var element = new AssignedComponent(
                                 typeof(T), ResourcePath
-                ));
+                );
+
+
+            if (!this.avaiableComponents.Contains(element))
+            {
+                Logger.LogDebug(this, " => add " + element.NodeType.Name);
+
+                this.avaiableComponents.Add(element);
             }
         }
 
-        /// <inheritdoc />
-        public string[] RequiredComponents { get; set; } = new string[0];
     }
 }

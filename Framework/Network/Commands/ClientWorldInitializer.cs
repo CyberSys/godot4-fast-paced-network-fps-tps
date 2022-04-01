@@ -21,6 +21,7 @@
 
 using LiteNetLib.Utils;
 using Framework.Game;
+using System.Collections.Generic;
 
 namespace Framework.Network.Commands
 {
@@ -44,6 +45,7 @@ namespace Framework.Network.Commands
         /// Server variables
         /// </summary>
         public Vars ServerVars;
+
 
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)

@@ -69,13 +69,8 @@ namespace Framework.Game
         /// Contains possible components
         /// </summary>
         /// <value></value>
-        public Dictionary<string, AssignedComponent> AvaiablePlayerComponents { get; }
+        public List<AssignedComponent> AvaiablePlayerComponents { get; }
 
-        /// <summary>
-        /// List of required components for this player instance
-        /// </summary>
-        /// <value></value>
-        public string[] RequiredComponents { get; set; }
 
         /// <summary>
         /// Add an avaiable component

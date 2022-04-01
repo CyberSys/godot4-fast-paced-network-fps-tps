@@ -11,10 +11,15 @@ using System.Collections.Generic;
 using Framework.Utils;
 namespace Shooter.Shared.Components
 {
+    public enum GroundType
+    {
+        None = 0,
+        Metal = 1,
+    }
     public struct FootStepsPackage : INetSerializable, IEquatable<FootStepsPackage>
     {
         public int SoundIndex { get; set; }
-        public string GroundType { get; set; }
+        public GroundType GroundType { get; set; }
         public float CurrentTime { get; set; }
         public float PitchScale { get; set; }
         public float UnitDB { get; set; }
@@ -28,7 +33,7 @@ namespace Shooter.Shared.Components
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(SoundIndex);
-            writer.Put(GroundType);
+            writer.Put((int)GroundType);
             writer.Put(CurrentTime);
             writer.Put(PitchScale);
             writer.Put(UnitDB);
@@ -39,7 +44,7 @@ namespace Shooter.Shared.Components
         public void Deserialize(NetDataReader reader)
         {
             SoundIndex = reader.GetInt();
-            GroundType = reader.GetString();
+            GroundType = (GroundType)reader.GetInt();
             CurrentTime = reader.GetFloat();
             PitchScale = reader.GetFloat();
             UnitDB = reader.GetFloat();
@@ -47,7 +52,7 @@ namespace Shooter.Shared.Components
         }
     }
 
-    public partial class PlayerFootstepComponent : AudioStreamPlayer3D, IChildNetworkSyncComponent<FootStepsPackage>
+    public partial class PlayerFootstepComponent : AudioStreamPlayer3D, IChildNetworkSyncComponent<FootStepsPackage>, IPlayerComponent
     {
         [Export(PropertyHint.Dir)]
         public string FootStepsSoundPathFolder = "res://Assets/Audio/Footsteps/";
@@ -59,7 +64,7 @@ namespace Shooter.Shared.Components
         public const float betweenStepMultiplier = 3.70f / 2f;
 
         private FootStepsPackage CurrentFootstep { get; set; } = new FootStepsPackage { };
-        private string CurrentGround { get; set; }
+        private GroundType CurrentGround { get; set; } = GroundType.None;
 
         public override void _EnterTree()
         {
@@ -71,6 +76,43 @@ namespace Shooter.Shared.Components
         {
             return "footsteps";
         }
+
+        public void Tick(float delta)
+        {
+            var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
+            if (body != null && !(this.BaseComponent is PuppetPlayer))
+            {
+                if (body.IsOnGround())
+                {
+                    var collision = body.GetLastSlideCollision();
+                    if (collision == null)
+                        return;
+
+                    var collider = collision.GetCollider();
+
+                    if (collider != null && collider is StaticBody3D)
+                    {
+                        var positon = collision.GetPosition(0);
+
+                        var transform = body.Transform;
+                        transform.origin = positon;
+                        this.Transform = transform;
+
+                        var footstepSet = (collider as StaticBody3D).GetMeta("footstep");
+                        try
+                        {
+                            this.CurrentGround = (GroundType)Enum.Parse(typeof(GroundType), footstepSet.ToString());
+                        }
+                        catch
+                        {
+                            this.CurrentGround = GroundType.None;
+                        }
+                        this.CheckFootstep(body);
+                    }
+                }
+            }
+        }
+
 
         private FootStepsPackage LastFootStep;
         public void ApplyNetworkState(FootStepsPackage package)
@@ -146,36 +188,7 @@ namespace Shooter.Shared.Components
         [Export]
         public Vector3 audioOffset = Vector3.Zero;
 
-        public override void _PhysicsProcess(float delta)
-        {
-            base._PhysicsProcess(delta);
 
-            var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
-            if (body != null && !(this.BaseComponent is PuppetPlayer))
-            {
-                if (body.IsOnGround())
-                {
-                    var collision = body.GetLastSlideCollision();
-                    if (collision == null)
-                        return;
-
-                    var collider = collision.GetCollider();
-
-                    if (collider != null && collider is StaticBody3D)
-                    {
-                        var positon = collision.GetPosition(0);
-
-                        var transform = body.Transform;
-                        transform.origin = positon;
-                        this.Transform = transform;
-
-                        var footstepSet = (collider as StaticBody3D).GetMeta("footstep");
-                        this.CurrentGround = footstepSet.ToString();
-                        this.CheckFootstep(body);
-                    }
-                }
-            }
-        }
         private void CheckFootstep(PlayerBodyComponent body)
         {
             var speed = (body.MovementProcessor as DefaultMovementProcessor).GetMovementSpeedFactor();
@@ -212,14 +225,14 @@ namespace Shooter.Shared.Components
             public AudioStreamSample AudioFile { get; set; }
         }
 
-        public Dictionary<string, List<FootStepsSound>> soundsCache = new Dictionary<string, List<FootStepsSound>>();
+        public Dictionary<GroundType, List<FootStepsSound>> soundsCache = new Dictionary<GroundType, List<FootStepsSound>>();
 
-        public void CacheFiles(string folderName)
+        public void CacheFiles(GroundType folderName)
         {
             if (!soundsCache.ContainsKey(folderName))
             {
                 soundsCache.Add(folderName, new List<FootStepsSound>());
-                var footstepPath = System.IO.Path.Combine(this.FootStepsSoundPathFolder, folderName);
+                var footstepPath = System.IO.Path.Combine(this.FootStepsSoundPathFolder, folderName.ToString());
 
                 var dir = new Godot.Directory();
                 var listOfFiles = new List<string>();
@@ -258,7 +271,7 @@ namespace Shooter.Shared.Components
 
         private void playFootstep()
         {
-            if (String.IsNullOrEmpty(CurrentGround))
+            if (CurrentGround != GroundType.None)
                 return;
 
             System.Random rnd = new System.Random();

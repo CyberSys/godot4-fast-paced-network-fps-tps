@@ -33,10 +33,10 @@ namespace Framework.Input
     public struct GeneralPlayerInput : IPlayerInput
     {
         /// <summary>
-        /// Keys which enabled
+        /// The byte which contains all inputs
         /// </summary>
         /// <value></value>
-        public List<string> InputKeys { get; private set; }
+        public byte Input { get; set; }
 
         /// <summary>
         /// The view direction or camera direction
@@ -45,22 +45,11 @@ namespace Framework.Input
         public Quaternion ViewDirection { get; set; }
 
         /// <summary>
-        /// Enable an boolean (input) for given key
+        /// The current activated input keys
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        public void SetInput(string key, bool value = true)
-        {
-            if (value == true)
-            {
-                if (this.InputKeys == null)
-                {
-                    this.InputKeys = new List<string>();
-                }
+        /// <value></value>
+        public string[] CurrentInput { get; private set; }
 
-                this.InputKeys.Add(key);
-            }
-        }
 
         /// <summary>
         /// Get input by given string, related to booleans with PlayerInputAttribute
@@ -69,36 +58,86 @@ namespace Framework.Input
         /// <returns></returns>
         public bool GetInput(string name)
         {
-            if (this.InputKeys == null)
+            if (this.CurrentInput == null || this.CurrentInput.Length <= 0)
             {
-                this.InputKeys = new List<string>();
+                return false;
             }
 
-            return this.InputKeys.Contains(name);
+            return this.CurrentInput.Contains(name);
         }
 
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
-            if (this.InputKeys == null)
-            {
-                this.InputKeys = new List<string>();
-            }
-
-            writer.PutArray(this.InputKeys.ToArray());
+            writer.Put(this.Input);
             writer.Put(this.ViewDirection);
         }
 
         /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
-            this.InputKeys = reader.GetStringArray().ToList<string>();
-            if (this.InputKeys == null)
+            this.Input = reader.GetByte();
+            this.ViewDirection = reader.GetQuaternion();
+        }
+
+        /// <summary>
+        /// Deserialize input byte with an given list of input keys
+        /// </summary>
+        /// <param name="InputKeys"></param>
+        /// <returns></returns>
+        public GeneralPlayerInput DeserliazeWithInputKeys(List<string> InputKeys)
+        {
+            if (InputKeys == null)
+                return this;
+
+            int i = 1;
+            var listOfkeys = new List<string>();
+            foreach (var key in InputKeys.OrderBy(df => df))
             {
-                this.InputKeys = new List<string>();
+                var currentByte = byte.Parse((i).ToString());
+                var isInUse = (this.Input & currentByte) != 0;
+                if (isInUse)
+                {
+                    listOfkeys.Add(key);
+                }
+                i *= 2;
             }
 
-            this.ViewDirection = reader.GetQuaternion();
+            this.CurrentInput = listOfkeys.ToArray();
+
+            return this;
+        }
+
+        /// <summary>
+        /// Apply input keys with an existing list of avaible keys.
+        /// Creating an bit mask
+        /// </summary>
+        /// <param name="InputKeys"></param>
+        /// <param name="activeKeys"></param>
+        public void Apply(List<string> InputKeys, Dictionary<string, bool> activeKeys)
+        {
+            if (InputKeys == null)
+                return;
+
+            if (activeKeys == null)
+                return;
+
+            int i = 1;
+            byte input = 0;
+            var listOfActiveKeys = new List<string>();
+            foreach (var key in InputKeys.OrderBy(df => df))
+            {
+                if (activeKeys.ContainsKey(key) && activeKeys[key] == true)
+                {
+                    input |= byte.Parse((i).ToString());
+                    listOfActiveKeys.Add(key);
+                }
+
+                i *= 2;
+            }
+
+            this.CurrentInput = listOfActiveKeys.ToArray();
+            this.Input = input;
         }
     }
 }

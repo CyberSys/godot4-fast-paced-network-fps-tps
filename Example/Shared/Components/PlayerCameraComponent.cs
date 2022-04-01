@@ -1,7 +1,8 @@
 using Framework;
 using Framework.Network;
 using Godot;
-
+using Framework.Utils;
+using Framework.Physics;
 using Framework.Game.Client;
 
 namespace Shooter.Shared.Components
@@ -14,11 +15,22 @@ namespace Shooter.Shared.Components
         Server,
         Dugeon
     }
-    public partial class PlayerCameraComponent : Camera3D, IChildComponent
+    public partial class PlayerCameraComponent : Camera3D, IPlayerComponent
     {
         public string GetComponentName()
         {
             return "camera";
+        }
+        private DoubleBuffer<Vector3> positionBuffer = new DoubleBuffer<Vector3>();
+
+        public void Tick(float delta)
+        {
+            var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
+            if (body != null)
+            {
+                var targetPos = body.Transform.origin + cameraOffset + Vector3.Up * body.getCrouchingHeight();
+                positionBuffer.Push(targetPos);
+            }
         }
 
         public IBaseComponent BaseComponent { get; set; }
@@ -41,7 +53,7 @@ namespace Shooter.Shared.Components
             this.rotY = rotation.y;
         }
 
-        public override void _PhysicsProcess(float delta)
+        public override void _Process(float delta)
         {
             var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
             if (body != null)
@@ -50,20 +62,21 @@ namespace Shooter.Shared.Components
                 {
                     var targetNode = body.Transform;
                     var transform = this.Transform;
-                    transform.origin.x = targetNode.origin.x + tpsCameraDistance * Mathf.Cos(rotY * -1);
-                    transform.origin.z = targetNode.origin.z + tpsCameraDistance * Mathf.Sin(rotY * -1);
+                    transform.origin.x = body.Transform.origin.x + tpsCameraDistance * Mathf.Cos(rotY * -1);
+                    transform.origin.z = body.Transform.origin.z + tpsCameraDistance * Mathf.Sin(rotY * -1);
                     this.Transform = transform;
-
                     this.Transform = this.Transform.LookingAt(body.Transform.origin, Vector3.Up);
                 }
                 else if (this.cameraMode == CameraMode.FPS)
                 {
-                    var transform = body.Transform;
+                    var transform = this.Transform;
 
-                    transform.origin = transform.origin + cameraOffset;
-                    transform.origin.y = transform.origin.y + body.getCrouchingHeight();
+                    // Interpolate position.
+                    transform.origin = positionBuffer.Old().Lerp(
+                                                positionBuffer.New(),
+                                                InterpolationController.InterpolationFactor);
+
                     transform.basis = new Basis(new Vector3(rotX, rotY, 0));
-
                     this.Transform = transform;
                 }
                 else if (this.cameraMode == CameraMode.Server)

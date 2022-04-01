@@ -78,26 +78,29 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public void AddComponentToServerPlayer(IPlayer player, string component)
+        public void AddComponentToServerPlayer<T>(IPlayer player) where T : IChildComponent
         {
             if (player is Player)
             {
-                var components = (player as Player).AvaiablePlayerComponents;
-                if (components.ContainsKey(component) && player is Player)
+                var compIndex = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
+                if (compIndex > -1)
                 {
-                    var registeredComonent = components[component];
-                    Logger.LogDebug(this, "Found registry component: " + registeredComonent.NodeType.ToString() + " => " + registeredComonent.ResourcePath);
-
-                    var playerInstance = player as Player;
-                    var playerComponents = playerInstance.Components;
-
-                    if (registeredComonent.ResourcePath != null)
+                    var component = player.AvaiablePlayerComponents[compIndex];
+                    if (player is Player)
                     {
-                        this.CreateComponentWithResource(player, registeredComonent);
-                    }
-                    else
-                    {
-                        this.CreateComponent(player, registeredComonent);
+                        Logger.LogDebug(this, "Found registry component: " + component.NodeType.ToString() + " => " + component.ResourcePath);
+
+                        var playerInstance = player as Player;
+                        var playerComponents = playerInstance.Components;
+
+                        if (component.ResourcePath != null)
+                        {
+                            this.CreateComponentWithResource(player, component);
+                        }
+                        else
+                        {
+                            this.CreateComponent(player, component);
+                        }
                     }
                 }
             }
@@ -135,56 +138,63 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        public void AddComponentToLocalPlayer(IPlayer player, string component)
+        public void AddComponentToLocalPlayer<T>(IPlayer player) where T : IChildComponent
         {
             if (player is ServerPlayer)
             {
+                var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
+                Logger.LogDebug(this, "Found index " + index);
                 var list = (player as ServerPlayer).RequiredComponents.ToList();
-                if (!list.Contains(component))
+                if (index > -1)
                 {
-                    list.Add(component);
+                    list.Add(index);
                     (player as ServerPlayer).RequiredComponents = list.ToArray();
                 }
             }
         }
 
         /// <inheritdoc />
-        public void AddComponentToPuppetPlayer(IPlayer player, string component)
+        public void AddComponentToPuppetPlayer<T>(IPlayer player) where T : IChildComponent
         {
             if (player is ServerPlayer)
             {
+                var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
                 var list = (player as ServerPlayer).RequiredPuppetComponents.ToList();
-                if (!list.Contains(component))
+                if (index > -1)
                 {
-                    list.Add(component);
+                    list.Add(index);
                     (player as ServerPlayer).RequiredPuppetComponents = list.ToArray();
                 }
             }
         }
 
         /// <inheritdoc />
-        public void RemoveComponentFromLocalPlayer(IPlayer player, string component)
+        public void RemoveComponentFromLocalPlayer<T>(IPlayer player) where T : IChildComponent
         {
             if (player is ServerPlayer)
             {
+                var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
+
                 var list = (player as ServerPlayer).RequiredComponents.ToList();
-                if (list.Contains(component))
+                if (index > -1)
                 {
-                    list.Remove(component);
+                    list.Remove(index);
                     (player as ServerPlayer).RequiredComponents = list.ToArray();
                 }
             }
         }
 
         /// <inheritdoc />
-        public void RemoteComponentFromPuppetPlayer(IPlayer player, string component)
+        public void RemoteComponentFromPuppetPlayer<T>(IPlayer player) where T : IChildComponent
         {
             if (player is ServerPlayer)
             {
+                var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
+
                 var list = (player as ServerPlayer).RequiredPuppetComponents.ToList();
-                if (list.Contains(component))
+                if (index > -1)
                 {
-                    list.Remove(component);
+                    list.Remove(index);
                     (player as ServerPlayer).RequiredPuppetComponents = list.ToArray();
                 }
             }

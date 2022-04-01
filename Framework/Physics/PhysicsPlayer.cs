@@ -70,6 +70,11 @@ namespace Framework.Physics
 
             foreach (var component in this.Components.All)
             {
+                if (component is IPlayerComponent)
+                {
+                    (component as IPlayerComponent).Tick(delta);
+                }
+
                 if (component is IChildMovementNetworkSyncComponent)
                 {
                     var bodyComp = (component as IChildMovementNetworkSyncComponent);
