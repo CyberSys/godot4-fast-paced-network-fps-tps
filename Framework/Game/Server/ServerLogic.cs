@@ -32,7 +32,7 @@ namespace Framework.Game.Server
     /// <summary>
     /// The core server logic
     /// </summary>
-    public abstract class ServerLogic : GameLogic
+    public class ServerLogic : GameLogic
     {
         /// <inheritdoc />
         internal ServerNetworkService netService = null;

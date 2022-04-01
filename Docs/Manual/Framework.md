@@ -53,7 +53,7 @@
 
 | public type | description |
 | --- | --- |
-| abstract class [ServerLogic](./Framework.Game.Server/ServerLogic.md) | The core server logic |
+| class [ServerLogic](./Framework.Game.Server/ServerLogic.md) | The core server logic |
 | class [ServerPlayer](./Framework.Game.Server/ServerPlayer.md) | Core class for server player |
 | class [ServerWorld](./Framework.Game.Server/ServerWorld.md) | Base class for an server world |
 

@@ -3,13 +3,14 @@
 The core server logic
 
 ```csharp
-public abstract class ServerLogic : GameLogic
+public class ServerLogic : GameLogic
 ```
 
 ## Public Members
 
 | name | description |
 | --- | --- |
+| [ServerLogic](ServerLogic/ServerLogic.md)() | The default constructor. |
 | [AcceptClients](ServerLogic/AcceptClients.md) { get; set; } | If clients can connect |
 | [MaxConnections](ServerLogic/MaxConnections.md) { get; set; } | maximal possible connections |
 | [NetworkPort](ServerLogic/NetworkPort.md) { get; set; } | Network server port |
