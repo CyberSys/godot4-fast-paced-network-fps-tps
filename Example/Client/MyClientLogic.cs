@@ -7,9 +7,14 @@ using Shooter.Client.UI.Welcome;
 
 namespace Shooter.Client
 {
-    public partial class MyClientLogic : ClientLogic<MyClientWorld>
+    public partial class MyClientLogic : ClientLogic
     {
         private bool showMenu = false;
+
+        public override ClientWorld CreateWorld()
+        {
+            return new MyClientWorld();
+        }
 
         public override void _EnterTree()
         {

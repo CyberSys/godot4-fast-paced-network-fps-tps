@@ -4,7 +4,7 @@ using Godot;
 
 namespace Shooter.Server
 {
-    public partial class MyServerLogic : ServerLogic<MyServerWorld>
+    public partial class MyServerLogic : ServerLogic
     {
         [Export]
         /// <summary>
@@ -15,6 +15,11 @@ namespace Shooter.Server
         public override void OnServerStarted()
         {
             this.LoadWorld(DefaultMapName, 0);
+        }
+
+        public override ServerWorld CreateWorld()
+        {
+            return new MyServerWorld();
         }
 
         public override void AfterMapLoaded()

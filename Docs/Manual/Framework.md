@@ -43,9 +43,9 @@
 
 | public type | description |
 | --- | --- |
-| class [ClientLogic&lt;T&gt;](./Framework.Game.Client/ClientLogic-1.md) | Is the base class for any client (SubViewport) |
+| class [ClientLogic](./Framework.Game.Client/ClientLogic.md) | Is the base class for any client (SubViewport) |
 | static class [ClientSettings](./Framework.Game.Client/ClientSettings.md) | Static class for client settings |
-| abstract class [ClientWorld](./Framework.Game.Client/ClientWorld.md) | Base class for the client world |
+| class [ClientWorld](./Framework.Game.Client/ClientWorld.md) | Base class for the client world |
 | class [LocalPlayer](./Framework.Game.Client/LocalPlayer.md) | The base class for local players |
 | class [PuppetPlayer](./Framework.Game.Client/PuppetPlayer.md) | The base class of an puppet player |
 
@@ -53,9 +53,9 @@
 
 | public type | description |
 | --- | --- |
-| abstract class [ServerLogic&lt;T&gt;](./Framework.Game.Server/ServerLogic-1.md) | The core server logic |
+| abstract class [ServerLogic](./Framework.Game.Server/ServerLogic.md) | The core server logic |
 | class [ServerPlayer](./Framework.Game.Server/ServerPlayer.md) | Core class for server player |
-| abstract class [ServerWorld](./Framework.Game.Server/ServerWorld.md) | Base class for an server world |
+| class [ServerWorld](./Framework.Game.Server/ServerWorld.md) | Base class for an server world |
 
 ## Framework.Input namespace
 

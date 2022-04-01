@@ -41,7 +41,7 @@ namespace Framework.Game.Client
     /// <summary>
     /// Base class for the client world
     /// </summary>
-    public abstract class ClientWorld : World
+    public class ClientWorld : World
     {
         /// <inheritdoc />
         internal ClientNetworkService netService = null;
@@ -76,6 +76,7 @@ namespace Framework.Game.Client
         /// The current client player id  the server
         /// </summary>
         public int MyServerId => _myServerId;
+
 
         /// <inheritdoc />
         internal override void InternalTreeEntered()
@@ -251,7 +252,7 @@ namespace Framework.Game.Client
                     if (networkPlayer.Id == this.MyServerId)
                     {
                         Logger.LogDebug(this, "Local player are realy disconnected!");
-                        (this.gameInstance as ClientLogic<ClientWorld>).Disconnect();
+                        (this.gameInstance as ClientLogic).Disconnect();
                         return;
                     }
                 }

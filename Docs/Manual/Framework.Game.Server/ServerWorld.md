@@ -3,13 +3,14 @@
 Base class for an server world
 
 ```csharp
-public abstract class ServerWorld : World
+public class ServerWorld : World
 ```
 
 ## Public Members
 
 | name | description |
 | --- | --- |
+| [ServerWorld](ServerWorld/ServerWorld.md)() | The default constructor. |
 | [ActiveGameRule](ServerWorld/ActiveGameRule.md) { get; set; } | Set or get the active game rule |
 | [netService](ServerWorld/netService.md) { get; set; } | The network service for the server world |
 | [deleteTimeForPlayer](ServerWorld/deleteTimeForPlayer.md) | Time after player totaly deleted (0 means directly) |

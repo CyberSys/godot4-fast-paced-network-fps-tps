@@ -34,7 +34,7 @@ namespace Framework.Game.Server
     /// <summary>
     /// Base class for an server world
     /// </summary>
-    public abstract class ServerWorld : World
+    public class ServerWorld : World
     {
 
         /// <summary>

@@ -3,13 +3,14 @@
 Base class for the client world
 
 ```csharp
-public abstract class ClientWorld : World
+public class ClientWorld : World
 ```
 
 ## Public Members
 
 | name | description |
 | --- | --- |
+| [ClientWorld](ClientWorld/ClientWorld.md)() | The default constructor. |
 | [MyServerId](ClientWorld/MyServerId.md) { get; } | The current client player id the server |
 | [clientSimulationAdjuster](ClientWorld/clientSimulationAdjuster.md) | Client adjuster Handles server ticks and make them accuracy |
 | [localPlayer](ClientWorld/localPlayer.md) | Local player class |

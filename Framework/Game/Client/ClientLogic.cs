@@ -35,8 +35,7 @@ namespace Framework.Game.Client
     /// <summary>
     /// Is the base class for any client (SubViewport)
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class ClientLogic<T> : GameLogic where T : ClientWorld
+    public class ClientLogic : GameLogic
     {
         /// <summary>
         /// The dictonary with all default settings (vars);
@@ -53,10 +52,19 @@ namespace Framework.Game.Client
         /// <inheritdoc />
         private string loadedWorldName = null;
 
+        /// <summary>
+        /// Create an client world
+        /// </summary>
+        /// <returns></returns>
+        public virtual ClientWorld CreateWorld()
+        {
+            return new ClientWorld();
+        }
+
         /// <inheritdoc />
         internal override void OnMapInstanceInternal(PackedScene res, uint worldTick)
         {
-            T newWorld = Activator.CreateInstance<T>();
+            ClientWorld newWorld = this.CreateWorld();
             newWorld.Name = "world";
 
             this.AddChild(newWorld);

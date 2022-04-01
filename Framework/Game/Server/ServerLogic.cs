@@ -32,8 +32,7 @@ namespace Framework.Game.Server
     /// <summary>
     /// The core server logic
     /// </summary>
-    /// <typeparam name="T">The type of the server world</typeparam>
-    public abstract class ServerLogic<T> : GameLogic where T : ServerWorld
+    public abstract class ServerLogic : GameLogic
     {
         /// <inheritdoc />
         internal ServerNetworkService netService = null;
@@ -245,10 +244,19 @@ namespace Framework.Game.Server
             base.LoadWorldInternal(mapName, worldTick);
         }
 
+        /// <summary>
+        /// Create an server world
+        /// </summary>
+        /// <returns></returns>
+        public virtual ServerWorld CreateWorld()
+        {
+            return new ServerWorld();
+        }
+
         /// <inheritdoc />
         internal override void OnMapInstanceInternal(PackedScene res, uint worldTick)
         {
-            T newWorld = Activator.CreateInstance<T>();
+            ServerWorld newWorld = this.CreateWorld();
             newWorld.Name = "world";
             this.AddChild(newWorld);
             newWorld._resourceWorldPath = res.ResourcePath;
