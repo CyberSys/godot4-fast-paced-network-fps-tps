@@ -24,7 +24,6 @@ Check [documentation here](Docs/Manual/Framework.md)
 - (TODO) Object syncronistation (dropped guns, etc)
 
 # Example
-How to use?
 -  Sound syncronistation for footesteps
 -  Body movement for puppet, local and server player
 -  Moveable camera
