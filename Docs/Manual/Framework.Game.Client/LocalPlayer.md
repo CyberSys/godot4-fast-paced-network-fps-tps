@@ -11,6 +11,7 @@ public class LocalPlayer : PhysicsPlayer
 | name | description |
 | --- | --- |
 | [LocalPlayer](LocalPlayer/LocalPlayer.md)() | The default constructor. |
+| [LastInput](LocalPlayer/LastInput.md) { get; set; } | Contains the last input |
 | [incomingLocalPlayerState](LocalPlayer/incomingLocalPlayerState.md) | The last incoming local player state |
 | [localPlayerInputsSnapshots](LocalPlayer/localPlayerInputsSnapshots.md) | The local player input snapshots |
 | [localPlayerStateSnapshots](LocalPlayer/localPlayerStateSnapshots.md) | The local player states |

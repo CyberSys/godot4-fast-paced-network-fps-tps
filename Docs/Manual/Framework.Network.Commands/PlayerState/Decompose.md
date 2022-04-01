@@ -1,7 +1,7 @@
 # PlayerState.Decompose&lt;T&gt; method
 
 ```csharp
-public T Decompose<T>(string value)
+public T Decompose<T>(int value)
     where T : INetSerializable
 ```
 

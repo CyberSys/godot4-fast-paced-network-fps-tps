@@ -11,8 +11,8 @@ public abstract class PhysicsPlayer : NetworkPlayer
 | name | description |
 | --- | --- |
 | [PhysicsPlayer](PhysicsPlayer/PhysicsPlayer.md)() | The default constructor. |
+| [LastInput](PhysicsPlayer/LastInput.md) { get; } | The last player input |
 | [DoTeleport](PhysicsPlayer/DoTeleport.md)(…) | Teleport player to an given position |
-| [SetPlayerInputs](PhysicsPlayer/SetPlayerInputs.md)(…) |  |
 
 ## See Also
 

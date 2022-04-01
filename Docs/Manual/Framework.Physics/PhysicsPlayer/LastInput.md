@@ -1,7 +1,9 @@
-# PhysicsPlayer.SetPlayerInputs method
+# PhysicsPlayer.LastInput property
+
+The last player input
 
 ```csharp
-public void SetPlayerInputs(GeneralPlayerInput inputs)
+public GeneralPlayerInput LastInput { get; }
 ```
 
 ## See Also
