@@ -29,6 +29,7 @@ using Godot;
 using Framework.Physics;
 using System.Collections.Generic;
 using LiteNetLib.Utils;
+using Framework.Physics.Commands;
 
 namespace Framework.Game.Client
 {
@@ -92,8 +93,8 @@ namespace Framework.Game.Client
                     if (nextState.NetworkComponents.ContainsKey(networkComp.GetComponentName()) &&
                         lastState.HasValue && lastState.Value.NetworkComponents.ContainsKey(networkComp.GetComponentName()))
                     {
-                        var decomposedNextState = nextState.Decompose<MovementBodyPackage>(networkComp.GetComponentName());
-                        var decomposesLastState = lastState.Value.Decompose<MovementBodyPackage>(networkComp.GetComponentName());
+                        var decomposedNextState = nextState.Decompose<MovementNetworkCommand>(networkComp.GetComponentName());
+                        var decomposesLastState = lastState.Value.Decompose<MovementNetworkCommand>(networkComp.GetComponentName());
 
                         var a = decomposesLastState.Rotation;
                         var b = decomposedNextState.Rotation;

@@ -20,12 +20,12 @@
  */
 
 using Godot;
-using Framework.Network.Commands;
+using Framework.Physics.Commands;
 using Framework.Network;
 
 namespace Framework.Physics
 {
-    public interface IChildMovementNetworkSyncComponent : IChildNetworkSyncComponent<MovementBodyPackage>
+    public interface IChildMovementNetworkSyncComponent : IChildNetworkSyncComponent<MovementNetworkCommand>
     {
         /// <summary>
         /// The movement processor for physics player movement

@@ -71,7 +71,7 @@
 
 | public type | description |
 | --- | --- |
-| class [ClientSimulationAdjuster](./Framework.Network/ClientSimulationAdjuster.md) |  |
+| class [ClientSimulationAdjuster](./Framework.Network/ClientSimulationAdjuster.md) | Helps predict player simulation based on latency. (Only client-sided) |
 | interface [IChildNetworkSyncComponent&lt;T&gt;](./Framework.Network/IChildNetworkSyncComponent-1.md) | The child component interface for childs of an base component |
 | interface [ISimulationAdjuster](./Framework.Network/ISimulationAdjuster.md) | Adjust the server or client tickrate |
 | abstract class [NetworkPlayer](./Framework.Network/NetworkPlayer.md) | Player class for network players eg. players, npcs |
@@ -85,7 +85,6 @@
 | --- | --- |
 | struct [ClientWorldInitializer](./Framework.Network.Commands/ClientWorldInitializer.md) | Network command for an client, after map was loaded sucessfull Contains all server relevated settings and vars |
 | struct [ClientWorldLoader](./Framework.Network.Commands/ClientWorldLoader.md) | Network package for initialize game level and client side |
-| struct [MovementBodyPackage](./Framework.Network.Commands/MovementBodyPackage.md) | The default network command for moving bodies |
 | struct [PlayerInputCommand](./Framework.Network.Commands/PlayerInputCommand.md) | Network command to send client input to server |
 | struct [PlayerState](./Framework.Network.Commands/PlayerState.md) | The player states structures Contains all player realted informations eg. position, rotation, velocity |
 | struct [PlayerUpdate](./Framework.Network.Commands/PlayerUpdate.md) | Contains all player relevant fields eg Latency, Team, Required Components |
@@ -111,6 +110,12 @@
 | interface [IMovementProcessor](./Framework.Physics/IMovementProcessor.md) | The required interface for movement processors |
 | class [InterpolationController](./Framework.Physics/InterpolationController.md) |  |
 | abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) | The base class for physics based players (kinematic, rigid..) |
+
+## Framework.Physics.Commands namespace
+
+| public type | description |
+| --- | --- |
+| struct [MovementNetworkCommand](./Framework.Physics.Commands/MovementNetworkCommand.md) | The default network command for moving bodies |
 
 ## Framework.Utils namespace
 

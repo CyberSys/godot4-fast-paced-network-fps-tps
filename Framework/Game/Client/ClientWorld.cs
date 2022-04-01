@@ -34,6 +34,7 @@ using Framework.Network;
 using Framework.Network.Services;
 using Framework.Physics;
 using Framework.Game.Server;
+using Framework.Physics.Commands;
 
 namespace Framework.Game.Client
 {
@@ -429,8 +430,8 @@ namespace Framework.Game.Client
                         && this.localPlayer.incomingLocalPlayerState.NetworkComponents.ContainsKey(body.GetComponentName())
                             && stateSnapshot.NetworkComponents != null && stateSnapshot.NetworkComponents.ContainsKey(body.GetComponentName()))
                         {
-                            var incomingStateDecompose = this.localPlayer.incomingLocalPlayerState.Decompose<MovementBodyPackage>(body.GetComponentName());
-                            var stateSnapshotDecompose = stateSnapshot.Decompose<MovementBodyPackage>(body.GetComponentName());
+                            var incomingStateDecompose = this.localPlayer.incomingLocalPlayerState.Decompose<MovementNetworkCommand>(body.GetComponentName());
+                            var stateSnapshotDecompose = stateSnapshot.Decompose<MovementNetworkCommand>(body.GetComponentName());
 
                             var error = incomingStateDecompose.Position - stateSnapshotDecompose.Position;
                             if (error.LengthSquared() > 0.0001f)

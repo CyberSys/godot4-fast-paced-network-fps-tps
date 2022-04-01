@@ -5,6 +5,7 @@ using Godot;
 using System;
 using Framework.Network.Commands;
 using Framework.Game;
+using Framework.Physics.Commands;
 
 namespace Shooter.Shared.Components
 {
@@ -42,7 +43,7 @@ namespace Shooter.Shared.Components
         private float previousCrouchLevel = 0f;
         private float currentCouchLevel = 0f;
 
-        public void ApplyNetworkState(MovementBodyPackage state)
+        public void ApplyNetworkState(MovementNetworkCommand state)
         {
             var transform = this.Transform;
             transform.origin = state.Position;
@@ -52,9 +53,9 @@ namespace Shooter.Shared.Components
             MovementProcessor.Velocity = state.Velocity;
         }
 
-        public MovementBodyPackage GetNetworkState()
+        public MovementNetworkCommand GetNetworkState()
         {
-            return new MovementBodyPackage
+            return new MovementNetworkCommand
             {
                 Position = this.Transform.origin,
                 Rotation = this.Transform.basis.GetRotationQuaternion(),

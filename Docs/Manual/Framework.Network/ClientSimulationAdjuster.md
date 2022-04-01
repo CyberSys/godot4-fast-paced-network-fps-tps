@@ -1,5 +1,7 @@
 # ClientSimulationAdjuster class
 
+Helps predict player simulation based on latency. (Only client-sided)
+
 ```csharp
 public class ClientSimulationAdjuster : ISimulationAdjuster
 ```

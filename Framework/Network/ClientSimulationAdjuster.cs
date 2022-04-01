@@ -26,6 +26,9 @@ using Framework.Game;
 
 namespace Framework.Network
 {
+    /// <summary>
+    /// Helps predict player simulation based on latency. (Only client-sided)
+    /// </summary>
     public class ClientSimulationAdjuster : ISimulationAdjuster
     {
 
@@ -134,8 +137,8 @@ namespace Framework.Network
         /// </summary>
         public void Monitoring()
         {
-            Logger.SetDebugUI("cl sim factor", AdjustedInterval.ToString());
-            Logger.SetDebugUI("cl est. missed inputs", estimatedMissedInputs.ToString());
+            Logger.SetDebugUI("cl_sim_factor", AdjustedInterval.ToString());
+            Logger.SetDebugUI("cl_est_missed_inputs", estimatedMissedInputs.ToString());
         }
     }
 }

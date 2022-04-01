@@ -28,49 +28,8 @@ using System;
 
 namespace Framework.Network.Commands
 {
-    /// <summary>
-    /// The default network command for moving bodies
-    /// </summary>
-    public struct MovementBodyPackage : INetSerializable
-    {
-        /// <summary>
-        /// The current position of this player
-        /// </summary>
-        public Vector3 Position;
 
-        /// <summary>
-        /// The current rotation of this player
-        /// </summary>
-        public Quaternion Rotation;
 
-        /// <summary>
-        /// The current velocity of this player
-        /// </summary>
-        public Vector3 Velocity;
-
-        /// <summary>
-        /// If player is grounded or not
-        /// </summary>
-        public bool Grounded;
-
-        /// <inheritdoc />
-        public void Serialize(NetDataWriter writer)
-        {
-            writer.Put(this.Position);
-            writer.Put(this.Rotation);
-            writer.Put(this.Velocity);
-            writer.Put(this.Grounded);
-        }
-
-        /// <inheritdoc />
-        public void Deserialize(NetDataReader reader)
-        {
-            this.Position = reader.GetVector3();
-            this.Rotation = reader.GetQuaternion();
-            this.Velocity = reader.GetVector3();
-            this.Grounded = reader.GetBool();
-        }
-    }
     /// <summary>
     /// The player states structures
     /// Contains all player realted informations eg. position, rotation, velocity
