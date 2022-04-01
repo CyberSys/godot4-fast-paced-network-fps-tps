@@ -86,6 +86,21 @@ namespace Framework.Game
         public Dictionary<string, AssignedComponent> AvaiablePlayerComponents => avaiableComponents;
 
         /// <inheritdoc />
+        public void AddAvaiableComponent<T>(string ResourcePath = null) where T : Godot.Node, IChildComponent, new()
+        {
+            T obj = new T();
+            var name = obj.GetComponentName();
+            obj.Dispose();
+
+            if (!this.avaiableComponents.ContainsKey(name))
+            {
+                this.avaiableComponents.Add(name, new AssignedComponent(
+                                typeof(T), ResourcePath
+                ));
+            }
+        }
+
+        /// <inheritdoc />
         public string[] RequiredComponents { get; set; } = new string[0];
     }
 }

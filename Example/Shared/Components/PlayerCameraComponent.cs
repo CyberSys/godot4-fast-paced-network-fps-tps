@@ -18,7 +18,7 @@ namespace Shooter.Shared.Components
     {
         public string GetComponentName()
         {
-            return "input";
+            return "camera";
         }
 
         public IBaseComponent BaseComponent { get; set; }

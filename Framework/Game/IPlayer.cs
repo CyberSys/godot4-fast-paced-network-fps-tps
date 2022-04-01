@@ -76,5 +76,12 @@ namespace Framework.Game
         /// </summary>
         /// <value></value>
         public string[] RequiredComponents { get; set; }
+
+        /// <summary>
+        /// Add an avaiable component
+        /// </summary>
+        /// <param name="ResourcePath"></param>
+        /// <typeparam name="T"></typeparam>
+        public void AddAvaiableComponent<T>(string ResourcePath = null) where T : Godot.Node, IChildComponent, new();
     }
 }

@@ -313,7 +313,6 @@ namespace Framework.Game.Client
                 {
                     var componentExist = player.Components.HasComponent(avaiableComponents.Value.NodeType);
                     var isRequired = player.RequiredComponents.Contains(avaiableComponents.Key);
-
                     if (componentExist && !isRequired)
                     {
                         player.Components.DeleteComponent(avaiableComponents.Value.NodeType);

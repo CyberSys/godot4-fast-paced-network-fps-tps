@@ -7,17 +7,9 @@ namespace Shooter.Server
     {
         public MyServerPlayer() : base()
         {
-            this.AvaiablePlayerComponents.Add("body", new AssignedComponent(
-                typeof(PlayerBodyComponent), "res://Assets/Player/PlayerBody.tscn"
-            ));
-
-            this.AvaiablePlayerComponents.Add("camera", new AssignedComponent(
-                typeof(PlayerCameraComponent)
-            ));
-
-            this.AvaiablePlayerComponents.Add("footsteps", new AssignedComponent(
-                typeof(PlayerFootstepComponent)
-            ));
+            this.AddAvaiableComponent<PlayerBodyComponent>("res://Assets/Player/PlayerBody.tscn");
+            this.AddAvaiableComponent<PlayerCameraComponent>();
+            this.AddAvaiableComponent<PlayerFootstepComponent>();
         }
 
         public override void Tick(float delta)
