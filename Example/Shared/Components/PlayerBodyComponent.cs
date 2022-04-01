@@ -14,10 +14,7 @@ namespace Shooter.Shared.Components
 		public IBaseComponent BaseComponent { get; set; }
 		public IMovementProcessor MovementProcessor { get; set; } = new DefaultMovementProcessor();
 
-		public string GetComponentName()
-		{
-			return "body";
-		}
+
 
 		[Export]
 		public NodePath ColliderPath = null;

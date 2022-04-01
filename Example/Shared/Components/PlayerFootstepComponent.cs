@@ -72,10 +72,7 @@ namespace Shooter.Shared.Components
             this.Bus = "PlayerFoorSteps";
         }
 
-        public string GetComponentName()
-        {
-            return "footsteps";
-        }
+
 
         public void Tick(float delta)
         {

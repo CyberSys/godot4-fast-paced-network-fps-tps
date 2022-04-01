@@ -12,10 +12,7 @@ namespace Shooter.Shared.Components
 
         public GeneralPlayerInput LastPlayerInput { get; set; }
 
-        public string GetComponentName()
-        {
-            return "input";
-        }
+
 
         public void Tick(float delta)
         {

@@ -86,15 +86,21 @@ namespace Framework.Game.Client
                     x.IsGenericType &&
                     x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
             {
+
+                var index = this.AvaiablePlayerComponents.FindIndex(df => df.NodeType == component.GetType());
+
+                if (index < 0)
+                    continue;
+
                 //only for movement components (to interpolate)
                 if (component is IChildMovementNetworkSyncComponent)
                 {
                     var networkComp = (component as IChildMovementNetworkSyncComponent);
-                    if (nextState.NetworkComponents.ContainsKey(networkComp.GetComponentName()) &&
-                        lastState.HasValue && lastState.Value.NetworkComponents.ContainsKey(networkComp.GetComponentName()))
+                    if (nextState.NetworkComponents.ContainsKey(index) &&
+                        lastState.HasValue && lastState.Value.NetworkComponents.ContainsKey(index))
                     {
-                        var decomposedNextState = nextState.Decompose<MovementNetworkCommand>(networkComp.GetComponentName());
-                        var decomposesLastState = lastState.Value.Decompose<MovementNetworkCommand>(networkComp.GetComponentName());
+                        var decomposedNextState = nextState.Decompose<MovementNetworkCommand>(index);
+                        var decomposesLastState = lastState.Value.Decompose<MovementNetworkCommand>(index);
 
                         var a = decomposesLastState.Rotation;
                         var b = decomposedNextState.Rotation;
@@ -110,8 +116,7 @@ namespace Framework.Game.Client
                 //for the rest -> just handle applying components
                 else
                 {
-                    var compName = (component as IChildComponent).GetComponentName();
-                    if (nextState.NetworkComponents.ContainsKey(compName))
+                    if (nextState.NetworkComponents.ContainsKey(index))
                     {
                         var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
                         var parameterType = instanceMethod.GetParameters().First().ParameterType;
@@ -120,7 +125,7 @@ namespace Framework.Game.Client
                         var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
 
                         var decomposed = method.MakeGenericMethod(parameterType)
-                              .Invoke(nextState, new object[] { compName });
+                              .Invoke(nextState, new object[] { index });
                         instanceMethod.Invoke(component, new object[] { decomposed });
                     }
                 }

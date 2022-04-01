@@ -7,10 +7,6 @@ namespace Shooter.Client.UI.Welcome
     public partial class MenuComponent : CanvasLayer, IChildComponent
     {
 
-        public string GetComponentName()
-        {
-            return "menu";
-        }
         public IBaseComponent BaseComponent { get; set; }
 
         [Export]

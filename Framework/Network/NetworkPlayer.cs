@@ -39,17 +39,21 @@ namespace Framework.Network
         /// <returns></returns>
         public virtual PlayerState ToNetworkState()
         {
-            var netComps = new System.Collections.Generic.Dictionary<string, byte[]>();
+            var netComps = new System.Collections.Generic.Dictionary<int, byte[]>();
             foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
                     x.IsGenericType &&
                     x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
             {
-                var instanceMethod = component.GetType().GetMethod("GetNetworkState");
-                INetSerializable result = instanceMethod.Invoke(component, new object[] { }) as INetSerializable;
+                var findIndex = this.AvaiablePlayerComponents.FindIndex(df => df.NodeType == component.GetType());
+                if (findIndex > -1)
+                {
+                    var instanceMethod = component.GetType().GetMethod("GetNetworkState");
+                    INetSerializable result = instanceMethod.Invoke(component, new object[] { }) as INetSerializable;
 
-                var writer = new NetDataWriter();
-                result.Serialize(writer);
-                netComps.Add((component as IChildComponent).GetComponentName(), writer.Data);
+                    var writer = new NetDataWriter();
+                    result.Serialize(writer);
+                    netComps.Add(findIndex, writer.Data);
+                }
             }
 
             return new PlayerState
@@ -69,19 +73,22 @@ namespace Framework.Network
                     x.IsGenericType &&
                     x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
             {
-                var compName = (component as IChildComponent).GetComponentName();
-                if (state.NetworkComponents != null && state.NetworkComponents.ContainsKey(compName))
+                var findIndex = this.AvaiablePlayerComponents.FindIndex(df => df.NodeType == component.GetType());
+                if (findIndex > -1)
                 {
-                    //     var decompose = state.Decompose();
-                    var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
-                    var parameterType = instanceMethod.GetParameters().First().ParameterType;
+                    if (state.NetworkComponents != null && state.NetworkComponents.ContainsKey(findIndex))
+                    {
+                        //     var decompose = state.Decompose();
+                        var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
+                        var parameterType = instanceMethod.GetParameters().First().ParameterType;
 
-                    var methods = state.GetType().GetMethods();
-                    var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
+                        var methods = state.GetType().GetMethods();
+                        var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
 
-                    var decomposed = method.MakeGenericMethod(parameterType)
-                          .Invoke(state, new object[] { compName });
-                    instanceMethod.Invoke(component, new object[] { decomposed });
+                        var decomposed = method.MakeGenericMethod(parameterType)
+                              .Invoke(state, new object[] { findIndex });
+                        instanceMethod.Invoke(component, new object[] { decomposed });
+                    }
                 }
             }
         }

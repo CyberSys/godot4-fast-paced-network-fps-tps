@@ -20,13 +20,8 @@ using System.Linq;
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using Godot;
-using Framework.Network.Commands;
 using Framework.Network;
-using LiteNetLib.Utils;
 using Framework.Input;
-using System;
-using Framework.Game.Client;
 
 namespace Framework.Physics
 {
@@ -57,10 +52,15 @@ namespace Framework.Physics
             }
         }
 
-        internal GeneralPlayerInput inputs;
-        public void SetPlayerInputs(GeneralPlayerInput inputs)
+        /// <summary>
+        /// The last player input
+        /// </summary>
+        /// <value></value>
+        public GeneralPlayerInput LastInput { get; private set; }
+
+        internal void SetPlayerInputs(GeneralPlayerInput inputs)
         {
-            this.inputs = inputs;
+            this.LastInput = inputs;
         }
 
         /// <inheritdoc />
@@ -81,7 +81,7 @@ namespace Framework.Physics
 
                     bodyComp.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
                     bodyComp.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
-                    bodyComp.MovementProcessor.Simulate(component as IChildMovementNetworkSyncComponent, this.inputs, delta);
+                    bodyComp.MovementProcessor.Simulate(component as IChildMovementNetworkSyncComponent, this.LastInput, delta);
                 }
             }
         }

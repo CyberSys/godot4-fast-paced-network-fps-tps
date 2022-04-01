@@ -17,10 +17,7 @@ namespace Shooter.Shared.Components
     }
     public partial class PlayerCameraComponent : Camera3D, IPlayerComponent
     {
-        public string GetComponentName()
-        {
-            return "camera";
-        }
+
         private DoubleBuffer<Vector3> positionBuffer = new DoubleBuffer<Vector3>();
 
         public void Tick(float delta)

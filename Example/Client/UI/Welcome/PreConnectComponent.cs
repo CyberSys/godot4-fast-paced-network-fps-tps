@@ -5,10 +5,7 @@ namespace Shooter.Client.UI.Welcome
 {
     public partial class PreConnectComponent : CanvasLayer, IChildComponent
     {
-        public string GetComponentName()
-        {
-            return "preconnect";
-        }
+
 
         /// <summary>
         /// The default port of the server

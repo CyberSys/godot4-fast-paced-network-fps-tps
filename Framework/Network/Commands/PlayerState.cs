@@ -44,7 +44,7 @@ namespace Framework.Network.Commands
         /// <summary>
         /// Uncomposed list of components and component states
         /// </summary>
-        public Dictionary<string, byte[]> NetworkComponents;
+        public Dictionary<int, byte[]> NetworkComponents;
 
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
@@ -73,21 +73,20 @@ namespace Framework.Network.Commands
             this.Id = reader.GetInt();
 
             //needs to be at end
-            var comps = new Dictionary<string, byte[]>();
+            var comps = new Dictionary<int, byte[]>();
             var componentsCount = reader.GetInt();
             for (int i = 0; i < componentsCount; i++)
             {
-                string compName = reader.GetString();
-
+                int compId = reader.GetInt();
                 byte[] bytes = reader.GetBytesWithLength();
-                comps.Add(compName, bytes);
+                comps.Add(compId, bytes);
             }
 
             this.NetworkComponents = comps;
         }
 
         /// <inheritdoc />
-        public T Decompose<T>(string value) where T : INetSerializable
+        public T Decompose<T>(int value) where T : INetSerializable
         {
             if (!this.NetworkComponents.ContainsKey(value))
             {

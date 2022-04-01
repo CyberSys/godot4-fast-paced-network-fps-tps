@@ -82,11 +82,5 @@ namespace Framework
         /// </summary>
         /// <value></value>
         public IBaseComponent BaseComponent { get; set; }
-
-        /// <summary>
-        /// Get the unique name for the component
-        /// </summary>
-        /// <returns></returns>
-        public string GetComponentName();
     }
 }

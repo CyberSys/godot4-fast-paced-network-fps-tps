@@ -102,8 +102,6 @@ namespace Framework.Game
 
             if (!this.avaiableComponents.Contains(element))
             {
-                Logger.LogDebug(this, " => add " + element.NodeType.Name);
-
                 this.avaiableComponents.Add(element);
             }
         }

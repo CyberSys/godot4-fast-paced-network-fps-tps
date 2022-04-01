@@ -214,7 +214,7 @@ namespace Framework
                 {
                     _components[type] = createdObject as Node;
 
-                    (createdObject as Node).Name = (createdObject as IChildComponent).GetComponentName();
+                    (createdObject as Node).Name = type.Name;
                     (createdObject as IChildComponent).BaseComponent = this.baseComponent;
 
                     if (this.baseComponent.IsInsideTree())

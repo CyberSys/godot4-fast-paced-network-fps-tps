@@ -4,18 +4,13 @@ using Framework.Network;
 using Framework;
 using Framework.Game.Client;
 using LiteNetLib.Utils;
-
+using Framework.Physics;
 namespace Shooter.Shared.Components
 {
 
     public struct PlayerWeaponPackage : INetSerializable
     {
         public int WeaponIndex { get; set; }
-
-        public bool Equals(FootStepsPackage compareObj)
-        {
-            return this.GetHashCode() == compareObj.GetHashCode();
-        }
 
         public void Serialize(NetDataWriter writer)
         {
@@ -33,24 +28,22 @@ namespace Shooter.Shared.Components
     {
         public IBaseComponent BaseComponent { get; set; }
 
-        public GeneralPlayerInput LastPlayerInput { get; set; }
-
         [Export]
         public Vector3 weaponHolderOffset = new Godot.Vector3(1f, 0f, 0f);
 
-        public string GetComponentName()
-        {
-            return "weapon";
-        }
 
         public void Tick(float delta)
         {
             var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
             if (body != null)
             {
-                var transform = body.Transform;
-                transform.origin += weaponHolderOffset;
+                var player = this.BaseComponent as PhysicsPlayer;
+
+                var transform = this.Transform;
+                transform.origin = body.Transform.origin + weaponHolderOffset;
                 this.Transform = transform;
+
+                this.Transform = this.Transform.LookingAt(body.Transform.origin, Vector3.Up);
             }
         }
 

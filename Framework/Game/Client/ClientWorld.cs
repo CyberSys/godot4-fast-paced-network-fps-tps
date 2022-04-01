@@ -313,7 +313,7 @@ namespace Framework.Game.Client
                 foreach (var avaiableComponents in player.AvaiablePlayerComponents)
                 {
                     var componentExist = player.Components.HasComponent(avaiableComponents.NodeType);
-                    var isRequired = playerUpdate.RequiredComponents.Contains(i);
+                    var isRequired = (player is LocalPlayer) ? playerUpdate.RequiredComponents.Contains(i) : playerUpdate.RequiredPuppetComponents.Contains(i);
                     if (componentExist && !isRequired)
                     {
                         player.Components.DeleteComponent(avaiableComponents.NodeType);
@@ -410,7 +410,7 @@ namespace Framework.Game.Client
             }
 
             // Handle local player rewinding
-            if (this.localPlayer != null && this.localPlayer != null)
+            if (this.localPlayer != null)
             {
                 if (default(PlayerState).Equals(this.localPlayer.incomingLocalPlayerState))
                 {
@@ -422,60 +422,61 @@ namespace Framework.Game.Client
                 var stateSnapshot = this.localPlayer.localPlayerStateSnapshots[bufidx];
 
                 // Compare the historical state to see how off it was.
-                foreach (var component in this.localPlayer.Components.All)
+                foreach (var component in this.localPlayer.Components.All.
+                Where(df => df is IChildMovementNetworkSyncComponent).Select(df => df as IChildMovementNetworkSyncComponent))
                 {
-                    if (component is IChildMovementNetworkSyncComponent)
+                    var index = this.localPlayer.AvaiablePlayerComponents.FindIndex(df => df.NodeType == component.GetType());
+
+                    if (index < 0)
+                        continue;
+
+                    if (this.localPlayer.incomingLocalPlayerState.NetworkComponents != null
+                    && this.localPlayer.incomingLocalPlayerState.NetworkComponents.ContainsKey(index)
+                        && stateSnapshot.NetworkComponents != null && stateSnapshot.NetworkComponents.ContainsKey(index))
                     {
-                        var body = component as IChildMovementNetworkSyncComponent;
+                        var incomingStateDecompose = this.localPlayer.incomingLocalPlayerState.Decompose<MovementNetworkCommand>(index);
+                        var stateSnapshotDecompose = stateSnapshot.Decompose<MovementNetworkCommand>(index);
 
-                        if (this.localPlayer.incomingLocalPlayerState.NetworkComponents != null
-                        && this.localPlayer.incomingLocalPlayerState.NetworkComponents.ContainsKey(body.GetComponentName())
-                            && stateSnapshot.NetworkComponents != null && stateSnapshot.NetworkComponents.ContainsKey(body.GetComponentName()))
+                        var error = incomingStateDecompose.Position - stateSnapshotDecompose.Position;
+                        if (error.LengthSquared() > 0.0001f)
                         {
-                            var incomingStateDecompose = this.localPlayer.incomingLocalPlayerState.Decompose<MovementNetworkCommand>(body.GetComponentName());
-                            var stateSnapshotDecompose = stateSnapshot.Decompose<MovementNetworkCommand>(body.GetComponentName());
-
-                            var error = incomingStateDecompose.Position - stateSnapshotDecompose.Position;
-                            if (error.LengthSquared() > 0.0001f)
+                            if (!headState)
                             {
-                                if (!headState)
-                                {
-                                    Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {incomingStateDecompose.Position.ToString()} ServerPos: {stateSnapshotDecompose.Position.ToString()} ");
-                                    replayedStates++;
-                                }
+                                Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {incomingStateDecompose.Position.ToString()} ServerPos: {stateSnapshotDecompose.Position.ToString()} ");
+                                replayedStates++;
+                            }
 
-                                // Rewind local player state to the correct state from the server.
-                                // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
-                                this.localPlayer.ApplyNetworkState(this.localPlayer.incomingLocalPlayerState);
+                            // Rewind local player state to the correct state from the server.
+                            // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
+                            this.localPlayer.ApplyNetworkState(this.localPlayer.incomingLocalPlayerState);
 
-                                // Loop through and replay all captured input snapshots up to the current tick.
-                                uint replayTick = incomingState.WorldTick;
+                            // Loop through and replay all captured input snapshots up to the current tick.
+                            uint replayTick = incomingState.WorldTick;
 
-                                while (replayTick < WorldTick)
-                                {
-                                    // Grab the historical input.
-                                    bufidx = replayTick % 1024;
-                                    var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
+                            while (replayTick < WorldTick)
+                            {
+                                // Grab the historical input.
+                                bufidx = replayTick % 1024;
+                                var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
 
-                                    // Rewrite the historical sate snapshot.
-                                    this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
+                                // Rewrite the historical sate snapshot.
+                                this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
 
-                                    // Apply inputs to the associated player controller and simulate the world.
-                                    this.localPlayer.SetPlayerInputs(inputSnapshot);
-                                    this.localPlayer.InternalTick((float)this.GetPhysicsProcessDeltaTime());
+                                // Apply inputs to the associated player controller and simulate the world.
+                                this.localPlayer.SetPlayerInputs(inputSnapshot);
+                                this.localPlayer.InternalTick((float)this.GetPhysicsProcessDeltaTime());
 
-                                    ++replayTick;
-                                }
+                                ++replayTick;
                             }
                         }
                     }
                 }
-            }
 
-            // Internal tick for puppets
-            foreach (var player in _players.Where(df => df.Value is PuppetPlayer).Select(df => df.Value as PuppetPlayer).ToArray())
-            {
-                player.InternalTick(interval);
+                // Internal tick for puppets
+                foreach (var player in _players.Where(df => df.Value is PuppetPlayer).Select(df => df.Value as PuppetPlayer).ToArray())
+                {
+                    player.InternalTick(interval);
+                }
             }
         }
     }

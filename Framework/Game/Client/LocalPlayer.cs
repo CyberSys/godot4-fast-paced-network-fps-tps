@@ -55,5 +55,11 @@ namespace Framework.Game.Client
         /// The last world player ticks related to the state snapshots
         /// </summary>
         public uint[] localPlayerWorldTickSnapshots = new uint[1024];
+
+        /// <summary>
+        /// Contains the last input
+        /// </summary>
+        /// <value></value>
+        public GeneralPlayerInput LastInput { get; set; }
     }
 }
