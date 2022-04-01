@@ -24,9 +24,13 @@ Check [documentation here](Docs/Manual/Framework.md)
 - (TODO) Object syncronistation (dropped guns, etc)
 
 # Example
+How to use?
 -  Sound syncronistation for footesteps
 -  Body movement for puppet, local and server player
 -  Moveable camera
+-  Two Startup scenes (Bootloader or BootloaderMutliView)
+   - Bootloader is for running the server and client with arguments over shell (see client.cmd and server.cmd)
+   - BootloaderMutliView is for running Client, Server and more Client in one Window (For testing)
 
 # Physics
 - Full implemented TPS and FPS Movement (Quake style)
