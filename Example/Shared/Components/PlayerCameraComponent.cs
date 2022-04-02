@@ -48,6 +48,8 @@ namespace Shooter.Shared.Components
 
             this.rotX = rotation.x;
             this.rotY = rotation.y;
+
+            this.SetCullMaskValue(2, false);
         }
 
         public override void _Process(float delta)
