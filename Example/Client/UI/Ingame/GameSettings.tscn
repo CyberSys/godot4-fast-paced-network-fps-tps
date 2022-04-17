@@ -1,0 +1,329 @@
+[gd_scene load_steps=3 format=3 uid="uid://bavql442hmhry"]
+
+[ext_resource type="Script" path="res://Client/UI/Ingame/GameSettings.cs" id="1_58hji"]
+[ext_resource type="Script" path="res://Client/UI/Ingame/KeyConfirmationDialog.cs" id="2_f8c0r"]
+
+[node name="GameSettings" type="CanvasLayer"]
+script = ExtResource( "1_58hji" )
+sensPathX = NodePath("RootContainer/VBoxContainer/TabContainer/Mouse/SensXContainer/SpinBoxSensX")
+sensPathY = NodePath("RootContainer/VBoxContainer/TabContainer/Mouse/SensYContainer/SpinBoxSensY")
+shadowQualityPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/ShadowQuality")
+fovPath = NodePath("RootContainer/VBoxContainer/TabContainer/Mouse/FovContainer/FovSpinBox")
+soundVolumePath = NodePath("RootContainer/VBoxContainer/TabContainer/Audio/HBoxContainer/HSlider")
+keyContainerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Keyboard/ScrollContainer/KeyListContainer")
+debandingPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer/debanding")
+occlusionPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer2/occlusion")
+resChangerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/ResChanger")
+windowModeChangerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/WindowModeChanger")
+keyChangeDialogPath = NodePath("ConfirmationDialog")
+closeButtonPath = NodePath("RootContainer/VBoxContainer/CloseButton")
+msaaChangerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/MsaaChanger")
+debugChangerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/DebugChanger")
+viewportScaleChangerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer6/ViewportScaleSlider")
+aaChangerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/AAChanger")
+ssaoPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer3/ssao")
+glowPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer4/glow")
+sdfgiPlath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer5/sdfgi")
+
+[node name="RootContainer" type="AspectRatioContainer" parent="."]
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RootContainer"]
+offset_left = 80.0
+offset_right = 560.0
+offset_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabContainer" type="TabContainer" parent="RootContainer/VBoxContainer"]
+offset_right = 480.0
+offset_bottom = 445.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Keyboard" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RootContainer/VBoxContainer/TabContainer/Keyboard"]
+offset_right = 480.0
+offset_bottom = 414.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="KeyListContainer" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Keyboard/ScrollContainer"]
+offset_right = 480.0
+size_flags_horizontal = 3
+
+[node name="Mouse" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 41.0
+offset_right = -4.0
+offset_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SensXContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Mouse"]
+offset_right = 606.0
+offset_bottom = 33.0
+
+[node name="SensX" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Mouse/SensXContainer"]
+offset_top = 3.0
+offset_right = 301.0
+offset_bottom = 29.0
+size_flags_horizontal = 3
+text = "Sens X"
+
+[node name="SpinBoxSensX" type="SpinBox" parent="RootContainer/VBoxContainer/TabContainer/Mouse/SensXContainer"]
+offset_left = 305.0
+offset_right = 606.0
+offset_bottom = 33.0
+size_flags_horizontal = 3
+step = 0.01
+
+[node name="SensYContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Mouse"]
+offset_top = 37.0
+offset_right = 606.0
+offset_bottom = 70.0
+
+[node name="SensY" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Mouse/SensYContainer"]
+offset_top = 3.0
+offset_right = 301.0
+offset_bottom = 29.0
+size_flags_horizontal = 3
+text = "Sens Y"
+
+[node name="SpinBoxSensY" type="SpinBox" parent="RootContainer/VBoxContainer/TabContainer/Mouse/SensYContainer"]
+offset_left = 305.0
+offset_right = 606.0
+offset_bottom = 33.0
+size_flags_horizontal = 3
+step = 0.01
+
+[node name="FovContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Mouse"]
+offset_top = 74.0
+offset_right = 606.0
+offset_bottom = 107.0
+
+[node name="FovLabel" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Mouse/FovContainer"]
+offset_top = 3.0
+offset_right = 301.0
+offset_bottom = 29.0
+size_flags_horizontal = 3
+text = "Fov"
+
+[node name="FovSpinBox" type="SpinBox" parent="RootContainer/VBoxContainer/TabContainer/Mouse/FovContainer"]
+offset_left = 305.0
+offset_right = 606.0
+offset_bottom = 33.0
+size_flags_horizontal = 3
+min_value = 54.0
+max_value = 70.0
+value = 54.0
+
+[node name="Video" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 41.0
+offset_right = -4.0
+offset_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ResChanger" type="OptionButton" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_right = 557.0
+offset_bottom = 29.0
+
+[node name="MsaaChanger" type="OptionButton" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 33.0
+offset_right = 557.0
+offset_bottom = 62.0
+
+[node name="DebugChanger" type="OptionButton" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 66.0
+offset_right = 557.0
+offset_bottom = 95.0
+
+[node name="AAChanger" type="OptionButton" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 99.0
+offset_right = 557.0
+offset_bottom = 128.0
+
+[node name="WindowModeChanger" type="OptionButton" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 132.0
+offset_right = 557.0
+offset_bottom = 161.0
+
+[node name="ShadowQuality" type="OptionButton" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 165.0
+offset_right = 557.0
+offset_bottom = 194.0
+theme_override_font_sizes/font_size = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 198.0
+offset_right = 557.0
+offset_bottom = 238.0
+
+[node name="Label" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer"]
+offset_top = 7.0
+offset_right = 83.0
+offset_bottom = 33.0
+text = "Debanding"
+
+[node name="debanding" type="CheckButton" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer"]
+offset_left = 87.0
+offset_right = 163.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 242.0
+offset_right = 557.0
+offset_bottom = 282.0
+
+[node name="Label" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer2"]
+offset_top = 7.0
+offset_right = 130.0
+offset_bottom = 33.0
+text = "Occlusion Culling
+"
+
+[node name="occlusion" type="CheckButton" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer2"]
+offset_left = 134.0
+offset_right = 210.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 286.0
+offset_right = 557.0
+offset_bottom = 326.0
+
+[node name="Label" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer3"]
+offset_top = 7.0
+offset_right = 42.0
+offset_bottom = 33.0
+text = "SSAO
+"
+
+[node name="ssao" type="CheckButton" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer3"]
+offset_left = 46.0
+offset_right = 122.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 330.0
+offset_right = 557.0
+offset_bottom = 370.0
+
+[node name="Label" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer4"]
+offset_top = 7.0
+offset_right = 39.0
+offset_bottom = 33.0
+text = "Glow
+"
+
+[node name="glow" type="CheckButton" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer4"]
+offset_left = 43.0
+offset_right = 119.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 374.0
+offset_right = 557.0
+offset_bottom = 414.0
+
+[node name="Label" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer5"]
+offset_top = 7.0
+offset_right = 47.0
+offset_bottom = 33.0
+text = "SDFGI"
+
+[node name="sdfgi" type="CheckButton" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer5"]
+offset_left = 51.0
+offset_right = 127.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 418.0
+offset_right = 557.0
+offset_bottom = 444.0
+
+[node name="Label" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer6"]
+offset_right = 39.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 16
+text = "Scale"
+
+[node name="ViewportScaleSlider" type="HSlider" parent="RootContainer/VBoxContainer/TabContainer/Video/HBoxContainer6"]
+offset_left = 43.0
+offset_right = 557.0
+offset_bottom = 16.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+max_value = 1.0
+step = 0.05
+
+[node name="Audio" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 41.0
+offset_right = -4.0
+offset_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Audio"]
+offset_right = 557.0
+offset_bottom = 26.0
+
+[node name="Label" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Audio/HBoxContainer"]
+offset_right = 54.0
+offset_bottom = 26.0
+text = "Master"
+
+[node name="HSlider" type="HSlider" parent="RootContainer/VBoxContainer/TabContainer/Audio/HBoxContainer"]
+offset_left = 58.0
+offset_right = 557.0
+offset_bottom = 16.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+max_value = 1.0
+step = 0.05
+
+[node name="CloseButton" type="Button" parent="RootContainer/VBoxContainer"]
+offset_top = 449.0
+offset_right = 480.0
+offset_bottom = 480.0
+text = "Close"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+dialog_text = "Press a key to continue..."
+dialog_autowrap = true
+script = ExtResource( "2_f8c0r" )
+
+[node name="Label" type="Label" parent="ConfirmationDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -42.0
+text = "Press a key to continue..."
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConfirmationDialog"]

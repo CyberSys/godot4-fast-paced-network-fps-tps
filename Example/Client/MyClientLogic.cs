@@ -4,12 +4,13 @@ using Framework.Game;
 using Godot;
 using Framework.Game.Client;
 using Shooter.Client.UI.Welcome;
+using Shooter.Client.UI.Ingame;
 
 namespace Shooter.Client
 {
     public partial class MyClientLogic : ClientLogic
     {
-        private bool showMenu = false;
+        public bool showMenu = false;
 
         public override ClientWorld CreateWorld()
         {
@@ -28,6 +29,7 @@ namespace Shooter.Client
         {
             this.Components.DeleteComponent<MapLoadingComponent>();
             this.Components.DeleteComponent<PreConnectComponent>();
+            this.Components.AddComponent<HudComponent>("res://Client/UI/Ingame/HudComponent.tscn");
             Input.SetMouseMode(Input.MouseMode.Captured);
         }
 

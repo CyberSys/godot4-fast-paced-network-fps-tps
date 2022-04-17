@@ -15,6 +15,8 @@ public class VarsCollection
 | [Vars](VarsCollection/Vars.md) { get; } | List of all variables |
 | event [OnChange](VarsCollection/OnChange.md) | Called when an value inside the collection changed |
 | [Get&lt;T&gt;](VarsCollection/Get.md)(…) | Get an server variable |
+| [GetKeyValue](VarsCollection/GetKeyValue.md)(…) | Get an key or button id from config |
+| [IsKeyValuePressed](VarsCollection/IsKeyValuePressed.md)(…) | Check if key or mouse button pressed |
 | [LoadConfig](VarsCollection/LoadConfig.md)(…) | Load an config file by given filename |
 | [Set](VarsCollection/Set.md)(…) | Store an value and trigger event |
 | [StoreConfig](VarsCollection/StoreConfig.md)(…) | Store an config file by given values |

@@ -56,6 +56,12 @@ namespace Framework.Physics
         /// </summary>
         /// <param name="vars"></param>
         public void SetServerVars(VarsCollection vars);
+
+        /// <summary>
+        /// Get maximium speed
+        /// </summary>
+        /// <returns></returns>
+        public float GetMovementSpeedFactor();
     }
 
     /// <summary>
@@ -324,6 +330,8 @@ namespace Framework.Physics
         /// <returns></returns>
         public virtual float GetWalkingSpeed()
         {
+            if (this.serverVars == null)
+                return 0;
             return this.serverVars.Get<float>("sv_walk_speed", 7.0f);
         }
 
@@ -415,8 +423,7 @@ namespace Framework.Physics
         {
             get
             {
-                return this.inputs.GetInput("Forward") ? 1f : this.inputs.GetInput("Back") ? -1f : 0f;
-
+                return this.inputs.GetInput("Back") ? 1f : this.inputs.GetInput("Forward") ? -1f : 0f;
             }
         }
 

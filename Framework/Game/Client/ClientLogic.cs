@@ -43,7 +43,17 @@ namespace Framework.Game.Client
         [Export]
         public Dictionary<string, string> DefaultVars = new Dictionary<string, string>
         {
-           { "cl_sensitivity", "2.0"}
+           { "cl_sensitivity", "2.0"},
+
+           // movement
+           {"key_forward", "KEY_W"},
+           {"key_backward", "KEY_S"},
+           {"key_right", "KEY_D"},
+           {"key_left", "KEY_A"},
+           {"key_jump", "KEY_Space"},
+           {"key_crouch", "KEY_Ctrl"},
+           {"key_shift", "KEY_Shift"},
+           {"key_attack", "BTN_Left"},
         };
 
         /// <inheritdoc />

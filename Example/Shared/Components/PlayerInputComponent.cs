@@ -10,33 +10,30 @@ namespace Shooter.Shared.Components
     {
         public IBaseComponent BaseComponent { get; set; }
 
-        public GeneralPlayerInput LastPlayerInput { get; set; }
-
-
-
         public void Tick(float delta)
         {
-
         }
 
         public GeneralPlayerInput GetPlayerInput()
         {
             var camera = this.BaseComponent.Components.Get<PlayerCameraComponent>();
 
-            var horiz = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
-            var vert = Input.GetActionStrength("move_backward") - Input.GetActionStrength("move_forward");
             var input = new GeneralPlayerInput();
+            var activeKeys = new Dictionary<string, bool>();
 
-            var activeKeys = new Dictionary<string, bool>{
-                {"Forward", vert > 0},
-                {"Back", vert < 0},
-                {"Right", horiz > 0},
-                {"Left", horiz < 0},
-                {"Jump",Input.IsActionPressed("jump")},
-                {"Crouch", Input.IsActionPressed("move_crouch")},
-                {"Shifting", Input.IsActionPressed("move_shift")},
-                {"Fire", Input.IsActionPressed("attack")},
-            };
+            if (Input.GetMouseMode() == Input.MouseMode.Captured)
+            {
+                activeKeys = new Dictionary<string, bool>{
+                    {"Forward", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_forward", Godot.Key.W)},
+                    {"Back", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_backward", Godot.Key.S)},
+                    {"Right", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_right", Godot.Key.D)},
+                    {"Left", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_left", Godot.Key.A)},
+                    {"Jump", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_jump", Godot.Key.Space)},
+                    {"Crouch", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_crouch", Godot.Key.Ctrl)},
+                    {"Shifting", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_shift", Godot.Key.Shift)},
+                    {"Fire",  Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_attack", Godot.MouseButton.Left)},
+                };
+            }
 
             input.ViewDirection = camera != null ? camera.getViewRotation() : Quaternion.Identity;
             input.Apply((this.BaseComponent as PhysicsPlayer).AvaiableInputs, activeKeys);

@@ -51,7 +51,7 @@ namespace Shooter.Server
             this.AddComponentToLocalPlayer<PlayerFootstepComponent>(player);
             this.AddComponentToLocalPlayer<PlayerWeaponComponent>(player);
 
-            this.AddComponentToPuppetPlayer<PlayerWeaponComponent>(player);
+            // this.AddComponentToPuppetPlayer<PlayerWeaponComponent>(player);
             this.AddComponentToPuppetPlayer<PlayerBodyComponent>(player);
             this.AddComponentToPuppetPlayer<PlayerFootstepComponent>(player);
 

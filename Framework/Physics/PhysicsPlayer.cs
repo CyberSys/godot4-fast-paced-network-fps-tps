@@ -66,8 +66,6 @@ namespace Framework.Physics
         /// <inheritdoc />
         internal override void InternalTick(float delta)
         {
-            base.InternalTick(delta);
-
             foreach (var component in this.Components.All)
             {
                 if (component is IPlayerComponent)
@@ -84,6 +82,8 @@ namespace Framework.Physics
                     bodyComp.MovementProcessor.Simulate(component as IChildMovementNetworkSyncComponent, this.LastInput, delta);
                 }
             }
+
+            base.InternalTick(delta);
         }
     }
 }

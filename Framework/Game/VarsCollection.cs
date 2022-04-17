@@ -1,4 +1,5 @@
 
+using System.Linq;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -91,6 +92,62 @@ namespace Framework.Game
             }
         }
 
+
+        /// <summary>
+        /// Get an key or button id from config
+        /// </summary>
+        /// <param name="varName"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public object GetKeyValue(string varName, object defaultValue = null)
+        {
+            if (Vars.AllVariables.ContainsKey(varName))
+            {
+                var value = Vars.AllVariables[varName].ToString();
+                if (value.StartsWith("KEY_"))
+                {
+                    var key = value.Replace("KEY_", "");
+                    Godot.Key myKey;
+                    if (Enum.TryParse<Godot.Key>(key, true, out myKey))
+                    {
+                        return myKey;
+                    }
+                }
+                else if (value.StartsWith("BTN_"))
+                {
+                    var key = value.Replace("BTN_", "");
+                    Godot.MouseButton myBtn;
+                    if (Enum.TryParse<Godot.MouseButton>(key, true, out myBtn))
+                    {
+                        return myBtn;
+                    }
+                }
+            }
+
+            return defaultValue;
+        }
+
+        /// <summary>
+        /// Check if key or mouse button pressed
+        /// </summary>
+        /// <param name="varName"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public bool IsKeyValuePressed(string varName, object defaultValue)
+        {
+            var result = GetKeyValue(varName, defaultValue);
+            if (result is Godot.Key)
+            {
+                return Godot.Input.IsKeyPressed((Godot.Key)result);
+            }
+            else if (result is Godot.MouseButton)
+            {
+                return Godot.Input.IsMouseButtonPressed((Godot.MouseButton)result);
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Store an value and trigger event
         /// </summary>
@@ -98,12 +155,19 @@ namespace Framework.Game
         /// <param name="value"></param>
         public void Set(string key, string value)
         {
-            if (this.Vars.AllVariables.ContainsKey(key))
+            lock (Vars.AllVariables)
             {
-                if (this.Vars.AllVariables[key] != value)
+                if (this.Vars.AllVariables.ContainsKey(key))
                 {
-                    this.Vars.AllVariables[key] = value;
-                    this.OnChange?.Invoke(key, value);
+                    if (this.Vars.AllVariables[key] != value)
+                    {
+                        this.Vars.AllVariables[key] = value;
+                        this.OnChange?.Invoke(key, value);
+                    }
+                }
+                else
+                {
+                    GD.PrintErr("Cant find key in collection -> " + key);
                 }
             }
         }
@@ -115,17 +179,20 @@ namespace Framework.Game
         public void LoadConfig(string configFilename)
         {
             var cfg = new Godot.ConfigFile();
-            if (cfg.Load("user://" + configFilename) != Error.Ok)
+            var loadError = cfg.Load("user://" + configFilename);
+            if (loadError == Error.Ok)
             {
+                Logger.LogDebug(this, "Load config file " + configFilename);
                 if (cfg.HasSection("vars"))
                 {
-                    foreach (var element in Vars.AllVariables)
+                    foreach (var element in Vars.AllVariables.ToArray())
                     {
                         if (cfg.GetValue("vars", element.Key) != null)
                         {
                             this.Set(element.Key, cfg.GetValue("vars", element.Key).ToString());
                         }
                     }
+
                 }
             }
         }
@@ -137,15 +204,21 @@ namespace Framework.Game
         public void StoreConfig(string configFilename)
         {
             var cfg = new Godot.ConfigFile();
-            if (cfg.Load("user://" + configFilename) != Error.Ok)
+            foreach (var element in Vars.AllVariables)
             {
-                foreach (var element in Vars.AllVariables)
-                {
-                    cfg.SetValue("vars", element.Key, element.Value);
-                }
+                cfg.SetValue("vars", element.Key, element.Value);
             }
 
-            cfg.Save("user://" + configFilename);
+            var loadError = cfg.Save("user://" + configFilename);
+            if (loadError != Error.Ok)
+            {
+                GD.PrintErr("Cant store file " + configFilename + " with reason " + loadError);
+            }
+            else
+            {
+                Logger.LogDebug(this, "Store config file " + configFilename);
+
+            }
         }
     }
 }

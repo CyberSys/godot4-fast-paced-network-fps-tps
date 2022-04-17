@@ -11,6 +11,7 @@ public interface IMovementProcessor
 | name | description |
 | --- | --- |
 | [Velocity](IMovementProcessor/Velocity.md) { get; set; } | The current velocity of the moveable object |
+| [GetMovementSpeedFactor](IMovementProcessor/GetMovementSpeedFactor.md)() | Get maximium speed |
 | [SetClientVars](IMovementProcessor/SetClientVars.md)(…) | Set client related vars |
 | [SetServerVars](IMovementProcessor/SetServerVars.md)(…) | Set server related vars |
 | [Simulate](IMovementProcessor/Simulate.md)(…) | Calls on each tick for produce movement |
