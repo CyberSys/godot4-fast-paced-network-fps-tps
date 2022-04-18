@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3n4goh6ko7k4"]
+[gd_scene load_steps=4 format=3 uid="uid://bavds1yv12uxo"]
 
 [ext_resource type="Script" path="res://Client/UI/Ingame/HudComponent.cs" id="1_2hhg7"]
 [ext_resource type="Shader" path="res://Client/UI/Ingame/HudShader.gdshader" id="1_i4e6j"]
@@ -28,8 +28,8 @@ anchor_right = 1.0
 alignment = 1
 
 [node name="CenterContainer3" type="CenterContainer" parent="HudControl/HBoxContainer2"]
-offset_left = 316.0
-offset_right = 345.0
+offset_left = 556.0
+offset_right = 585.0
 offset_bottom = 72.0
 
 [node name="points_team1" type="Label" parent="HudControl/HBoxContainer2/CenterContainer3"]
@@ -39,8 +39,8 @@ theme_override_font_sizes/font_size = 50
 text = "1"
 
 [node name="CenterContainer" type="CenterContainer" parent="HudControl/HBoxContainer2"]
-offset_left = 349.0
-offset_right = 450.0
+offset_left = 589.0
+offset_right = 690.0
 offset_bottom = 72.0
 
 [node name="game_time" type="Label" parent="HudControl/HBoxContainer2/CenterContainer"]
@@ -51,8 +51,8 @@ theme_override_font_sizes/font_size = 30
 text = "1:20:00"
 
 [node name="CenterContainer2" type="CenterContainer" parent="HudControl/HBoxContainer2"]
-offset_left = 454.0
-offset_right = 483.0
+offset_left = 694.0
+offset_right = 723.0
 offset_bottom = 72.0
 
 [node name="points_team2" type="Label" parent="HudControl/HBoxContainer2/CenterContainer2"]
@@ -94,14 +94,14 @@ text = "50"
 
 [node name="MarginContainer" type="MarginContainer" parent="HudControl/HBoxContainer4"]
 offset_left = 82.0
-offset_right = 259.0
+offset_right = 451.0
 offset_bottom = 75.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="CenterContainer2" type="CenterContainer" parent="HudControl/HBoxContainer4"]
-offset_left = 263.0
-offset_right = 320.0
+offset_left = 455.0
+offset_right = 512.0
 offset_bottom = 75.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HudControl/HBoxContainer4/CenterContainer2"]

@@ -358,6 +358,17 @@ namespace Framework.Game.Server
         }
 
         /// <inheritdoc />
+        internal override void OnLevelInternalAddToScene()
+        {
+            applyGlow(false);
+            applySDFGI(false);
+            applySSAO(false);
+            applySSIL(false);
+
+            base.OnLevelInternalAddToScene();
+        }
+
+        /// <inheritdoc />
         private void SimulateWorld(float dt)
         {
             foreach (var player in this._players.

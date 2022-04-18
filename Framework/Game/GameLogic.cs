@@ -47,6 +47,10 @@ namespace Framework.Game
             {
                 this.InternalTreeEntered();
             }
+            if (what == (int)Godot.Node.NotificationReady)
+            {
+                this.InternalReady();
+            }
 
             if (what == (int)Godot.Node.NotificationExitTree)
             {
@@ -109,6 +113,11 @@ namespace Framework.Game
             this.ProcessMode = ProcessModeEnum.Always;
 
             this._components = new ComponentRegistry(this);
+        }
+
+        internal virtual void InternalReady()
+        {
+
         }
 
         /// <summary>

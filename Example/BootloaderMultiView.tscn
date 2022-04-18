@@ -14,12 +14,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 6
+size_flags_vertical = 6
+metadata/_edit_use_custom_anchors = false
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
-offset_right = 800.0
-offset_bottom = 600.0
+offset_right = 1280.0
+offset_bottom = 720.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
@@ -52,10 +53,9 @@ script = ExtResource( "1_1aggm" )
 
 [node name="Slot2" type="SubViewportContainer" parent="VSplitContainer/HSplitContainer"]
 minimum_size = Vector2(100, 100)
-offset_right = 800.0
-offset_bottom = 600.0
+offset_right = 1280.0
+offset_bottom = 720.0
 size_flags_horizontal = 3
-size_flags_vertical = 3
 stretch = true
 
 [node name="ClientViewport" type="SubViewport" parent="VSplitContainer/HSplitContainer/Slot2"]
@@ -65,6 +65,6 @@ msaa = 2
 screen_space_aa = 1
 use_occlusion_culling = true
 physics_object_picking = true
-size = Vector2i(800, 600)
+size = Vector2i(1280, 720)
 render_target_update_mode = 4
 script = ExtResource( "2_t5ic5" )

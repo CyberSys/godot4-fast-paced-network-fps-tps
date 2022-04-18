@@ -92,6 +92,22 @@ namespace Framework.Game
             }
         }
 
+        /// <summary>
+        /// Get value by given key
+        /// </summary>
+        /// <param name="varName"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public string GetValue(string varName, string defaultValue = null)
+        {
+            if (!Vars.AllVariables.ContainsKey(varName))
+            {
+                return defaultValue;
+            }
+
+            return Vars.AllVariables[varName].ToString();
+        }
+
 
         /// <summary>
         /// Get an key or button id from config

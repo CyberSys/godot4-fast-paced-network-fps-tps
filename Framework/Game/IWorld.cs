@@ -75,6 +75,11 @@ namespace Framework.Game
         public void OnPlayerInitilaized(IPlayer p);
 
         /// <summary>
+        ///  When level was adding complelty to scene
+        /// </summary>
+        public void OnLevelAddToScene();
+
+        /// <summary>
         /// Path of the world resource 
         /// </summary>
         /// <value></value>

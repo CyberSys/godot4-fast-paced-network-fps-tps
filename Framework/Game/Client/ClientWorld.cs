@@ -90,6 +90,37 @@ namespace Framework.Game.Client
 
         }
 
+        /// <inheritdoc />
+        internal override void OnLevelInternalAddToScene()
+        {
+            applyGlow(ClientSettings.Variables.Get<bool>("cl_draw_glow", false));
+            applySDFGI(ClientSettings.Variables.Get<bool>("cl_draw_sdfgi", false));
+            applySSAO(ClientSettings.Variables.Get<bool>("cl_draw_ssao", false));
+            applySSIL(ClientSettings.Variables.Get<bool>("cl_draw_ssil", false));
+
+            ClientSettings.Variables.OnChange += (name, value) =>
+            {
+                if (name == "cl_draw_glow")
+                {
+                    applyGlow(ClientSettings.Variables.Get<bool>("cl_draw_glow"));
+                }
+                if (name == "cl_draw_sdfgi")
+                {
+                    applySDFGI(ClientSettings.Variables.Get<bool>("cl_draw_sdfgi"));
+                }
+                if (name == "cl_draw_ssao")
+                {
+                    applySSAO(ClientSettings.Variables.Get<bool>("cl_draw_ssao"));
+                }
+                if (name == "cl_draw_ssil")
+                {
+                    applySSIL(ClientSettings.Variables.Get<bool>("cl_draw_ssil"));
+                }
+            };
+
+            base.OnLevelInternalAddToScene();
+        }
+
         private void UpdateWorld(ServerVarUpdate cmd, NetPeer peer)
         {
             this._serverVars = new VarsCollection(cmd.ServerVars);
@@ -139,6 +170,7 @@ namespace Framework.Game.Client
         /// <inheritdoc />  
         internal override void InternalTick(float interval)
         {
+
             if (this.localPlayer != null)
             {
                 float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
@@ -288,7 +320,7 @@ namespace Framework.Game.Client
                         if (playerUpdate.State != PlayerConnectionState.Initialized
                             && localPlayer.State == PlayerConnectionState.Initialized)
                         {
-                            this.OnPlayerInitilaized(localPlayer);
+                            // this.OnPlayerInitilaized(localPlayer);
                         }
                     }
 
@@ -316,6 +348,7 @@ namespace Framework.Game.Client
                     var isRequired = (player is LocalPlayer) ? playerUpdate.RequiredComponents.Contains(i) : playerUpdate.RequiredPuppetComponents.Contains(i);
                     if (componentExist && !isRequired)
                     {
+                        Logger.LogDebug(this, "Delete component from type " + avaiableComponents.NodeType.Name);
                         player.Components.DeleteComponent(avaiableComponents.NodeType);
                     }
 
@@ -325,10 +358,12 @@ namespace Framework.Game.Client
 
                         if (avaiableComponents.ResourcePath != null)
                         {
+                            Logger.LogDebug(this, "Add component from type " + avaiableComponents.NodeType.Name);
                             result = player.Components.AddComponent(avaiableComponents.NodeType, avaiableComponents.ResourcePath);
                         }
                         else
                         {
+                            Logger.LogDebug(this, "Add component from type " + avaiableComponents.NodeType.Name);
                             result = player.Components.AddComponent(avaiableComponents.NodeType);
                         }
                     }

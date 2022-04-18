@@ -6,6 +6,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 using Framework;
+using Framework.Game.Client;
 
 namespace Shooter.Client.UI.Ingame
 {
@@ -74,10 +75,16 @@ namespace Shooter.Client.UI.Ingame
 		NodePath ssaoPath = null;
 
 		[Export]
+		NodePath ssilPath = null;
+
+		[Export]
 		NodePath glowPath = null;
 
 		[Export]
 		NodePath sdfgiPlath = null;
+
+		[Export]
+		NodePath vsyncPath = null;
 
 		TabContainer container = null;
 
@@ -91,8 +98,10 @@ namespace Shooter.Client.UI.Ingame
 		OptionButton windowModeChanger = null;
 		OptionButton msaaChanger = null;
 		CheckButton debanding = null;
+		CheckButton Vsync = null;
 
 		CheckButton ssao = null;
+		CheckButton ssil = null;
 		CheckButton sdfgi = null;
 		CheckButton glow = null;
 
@@ -115,9 +124,12 @@ namespace Shooter.Client.UI.Ingame
 
 			this.occlusionCulling = GetNode(occlusionPath) as CheckButton;
 			this.ssao = GetNode(ssaoPath) as CheckButton;
+			this.ssil = GetNode(ssilPath) as CheckButton;
 			this.sdfgi = GetNode(sdfgiPlath) as CheckButton;
 			this.glow = GetNode(glowPath) as CheckButton;
 			this.debanding = GetNode(debandingPath) as CheckButton;
+			this.Vsync = GetNode(vsyncPath) as CheckButton;
+
 			this.shadowQuality = GetNode(shadowQualityPath) as OptionButton;
 			this.closeButton = GetNode(closeButtonPath) as Button;
 			this.resChanger = GetNode(resChangerPath) as OptionButton;
@@ -147,77 +159,37 @@ namespace Shooter.Client.UI.Ingame
 				// ConfigValues.setSensitivityY(val);
 			};
 
-			this.resChanger.ItemSelected += onResChanged;
-			this.windowModeChanger.ItemSelected += onFullScreenChanged;
-			this.msaaChanger.ItemSelected += onMsaaChanged;
-			this.debanding.Pressed += onDebanding;
-			this.debanding.Pressed += onOcclusionCulling;
-			this.debugChanger.ItemSelected += onDebugChanger;
-			this.aaChanger.ItemSelected += onAaChanger;
-			this.shadowQuality.ItemSelected += onShadowQualityChanger;
-
 			//  this.shadowQuality.Selected = ConfigValues.shadowQuality;
 			//     this.windowModeChanger.Selected = ConfigValues.mode;
 			//   this.msaaChanger.Selected = (int)ConfigValues.msaa;
 			//      this.aaChanger.Selected = (int)ConfigValues.aa;
-			/*
-						foreach (var item in ConfigValues.Resolutions)
-						{
-							var index = ConfigValues.Resolutions.IndexOf(item);
-							this.resChanger.AddItem(item, index);
-						}
-						*/
-			/*
-						foreach (var item in ConfigValues.ShadowQualities)
-						{
-							var index = ConfigValues.ShadowQualities.IndexOf(item);
-							this.shadowQuality.AddItem(item, index);
-						}
-			*/
-			foreach (var item in Enum.GetValues(typeof(Godot.Window.ModeEnum)))
-			{
-				this.windowModeChanger.AddItem(item.ToString(), (int)item);
-				this.windowModeChanger.SetItemMetadata((int)item, item);
-			}
 
-			foreach (var item in Enum.GetValues(typeof(Godot.Viewport.MSAA)))
-			{
-				this.msaaChanger.AddItem(item.ToString(), (int)item);
-			}
 
-			foreach (var item in Enum.GetValues(typeof(Godot.Viewport.ScreenSpaceAA)))
-			{
-				this.aaChanger.AddItem(item.ToString(), (int)item);
-			}
+			this.InitResolutions();
 
-			foreach (var item in Enum.GetValues(typeof(Godot.Viewport.DebugDrawEnum)))
-			{
-				this.debugChanger.AddItem(item.ToString(), (int)item);
-			}
-
-			//    this.debugChanger.Selected = (int)ConfigValues.debugDrawMode;
-			//   this.occlusionCulling.ButtonPressed = ConfigValues.useOcclusionCulling;
-			//   this.debanding.ButtonPressed = ConfigValues.useDebanding;
-
-			//  this.ssao.ButtonPressed = ConfigValues.useSSAO;
-			//  this.sdfgi.ButtonPressed = ConfigValues.useSDFGI;
-			//  this.glow.ButtonPressed = ConfigValues.useGlow;
-
-			this.glow.Pressed += onGlow;
-			this.sdfgi.Pressed += onSDFGI;
-			this.ssao.Pressed += onSSAO;
+			this.InitEnums<ClientSettings.WindowModes>(this.windowModeChanger, "cl_window_mode");
+			this.InitEnums<Godot.Viewport.MSAA>(this.msaaChanger, "cl_draw_msaa");
+			this.InitEnums<Godot.Viewport.ScreenSpaceAA>(this.aaChanger, "cl_draw_aa");
+			this.InitEnums<Godot.Viewport.DebugDrawEnum>(this.debugChanger, "cl_draw_debug");
+			this.InitEnums<RenderingServer.ShadowQuality>(this.shadowQuality, "cl_draw_shadow");
+			this.InitBoolean(this.glow, "cl_draw_glow");
+			this.InitBoolean(this.sdfgi, "cl_draw_sdfgi");
+			this.InitBoolean(this.ssao, "cl_draw_ssao");
+			this.InitBoolean(this.ssil, "cl_draw_ssil");
+			this.InitBoolean(this.occlusionCulling, "cl_draw_occulision");
+			this.InitBoolean(this.debanding, "cl_draw_debanding");
+			this.InitBoolean(this.Vsync, "cl_draw_vsync");
 
 			this.keyListContainer = GetNode(keyContainerPath) as VBoxContainer;
 			this.keyChangeDialog = GetNode(keyChangeDialogPath) as KeyConfirmationDialog;
 			this.getCurentList();
-
 
 			this.closeButton.Pressed += () =>
 			{
 				this.BaseComponent.Components.AddComponent<MenuComponent>("res://Client/UI/Ingame/MenuComponent.tscn");
 				this.BaseComponent.Components.DeleteComponent<GameSettings>();
 
-				Framework.Game.Client.ClientSettings.Variables.StoreConfig("client.cfg");
+				ClientSettings.Variables.StoreConfig("client.cfg");
 			};
 
 			this.keyChangeDialog.Confirmed += () =>
@@ -225,7 +197,7 @@ namespace Shooter.Client.UI.Ingame
 				var node = this.keyListContainer.GetNode(this.keyChangeDialog.keyName) as GameKeyRecord;
 
 				node.currentKey = this.keyChangeDialog.selectedKey;
-				Framework.Game.Client.ClientSettings.Variables.Set(this.keyChangeDialog.keyName, node.currentKey.ToString());
+				ClientSettings.Variables.Set(this.keyChangeDialog.keyName, node.currentKey.ToString());
 			};
 
 
@@ -255,63 +227,68 @@ namespace Shooter.Client.UI.Ingame
 			  */
 		}
 
-		public void onSSAO()
+		private void InitResolutions()
 		{
-			// if (currentGameLevel != null)
-			//     ConfigValues.ApplySSAO(currentGameLevel, this.ssao.ButtonPressed);
+			var possibleResolitions = ClientSettings.Resolutions;
+			int i = 0;
+			int selected = 0;
+			foreach (var item in possibleResolitions)
+			{
+				if (ClientSettings.Variables.GetValue("cl_resolution") == item)
+				{
+					selected = i;
+				}
+
+				this.resChanger.AddItem(item, i++);
+			}
+
+			this.resChanger.Selected = selected;
+			this.resChanger.ItemSelected += index =>
+			{
+				ClientSettings.Variables.Set("cl_resolution", ClientSettings.Resolutions[index]);
+			};
 		}
 
-		public void onSDFGI()
+		private void InitBoolean(CheckButton button, string storeKey)
 		{
-			// if (currentGameLevel != null)
-			//     ConfigValues.ApplySDFGI(currentGameLevel, this.sdfgi.ButtonPressed);
+			var isChecked = ClientSettings.Variables.Get<bool>(storeKey);
+
+			button.ButtonPressed = isChecked;
+			button.Pressed += () =>
+			{
+				ClientSettings.Variables.Set(storeKey, button.ButtonPressed.ToString());
+			};
 		}
 
-		public void onGlow()
+		private void InitEnums<TEnum>(OptionButton button, string storeKey) where TEnum : struct
 		{
-			//  if (currentGameLevel != null)
-			//    ConfigValues.ApplyGlow(currentGameLevel, this.glow.ButtonPressed);
+			var currentWindowMode = ClientSettings.Variables.GetValue(storeKey);
+
+			int i = 0;
+			int selectedId = 0;
+			foreach (var item in Enum.GetValues(typeof(TEnum)))
+			{
+				button.AddItem(item.ToString(), (int)item);
+				button.SetItemMetadata((int)item, item.ToString());
+
+				if (currentWindowMode == item.ToString())
+				{
+					selectedId = i;
+				}
+
+				i++;
+			}
+
+			button.Selected = selectedId;
+			button.ItemSelected += index =>
+			{
+				var meta = button.GetItemMetadata(index);
+				ClientSettings.Variables.Set(storeKey, meta.ToString());
+			};
 		}
 
-		public void onOcclusionCulling()
-		{
-			// ConfigValues.ApplyOcclusionMode(this, this.occlusionCulling.ButtonPressed);
-		}
 
-		public void onDebanding()
-		{
-			//  ConfigValues.ApplyDebanding(this, this.debanding.ButtonPressed);
-		}
 
-		public void onShadowQualityChanger(int index)
-		{
-			//  ConfigValues.ApplyShadowQuality(this, index);
-		}
-
-		public void onDebugChanger(int index)
-		{
-			//  ConfigValues.ApplyDebugMode(this, index);
-		}
-
-		public void onAaChanger(int index)
-		{
-			// ConfigValues.ApplyAA(this, index);
-		}
-
-		public void onResChanged(int index)
-		{
-			//   ConfigValues.ApplyResolution(index);
-		}
-
-		public void onFullScreenChanged(int index)
-		{
-			//   ConfigValues.ApplyWindowMode(this, index);
-		}
-
-		public void onMsaaChanged(int index)
-		{
-			// ConfigValues.ApplyMSAA(this, index);
-		}
 
 		private void getCurentList()
 		{

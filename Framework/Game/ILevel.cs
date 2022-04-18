@@ -1,3 +1,4 @@
+using System;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -39,5 +40,7 @@ namespace Framework.Game
         /// </summary>
         /// <returns></returns>
         public SpawnPoint[] GetFreeSpawnPoints();
+
+        public Godot.Environment Environment { get; }
     }
 }

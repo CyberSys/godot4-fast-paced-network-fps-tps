@@ -49,6 +49,9 @@ namespace Shooter.Shared.Components
             this.rotX = rotation.x;
             this.rotY = rotation.y;
 
+            this.Far = 150;
+            this.Near = 0.1f;
+            this.DopplerTracking = DopplerTrackingEnum.PhysicsStep;
             // this.SetCullMaskValue(2, false);
         }
 
@@ -94,6 +97,7 @@ namespace Shooter.Shared.Components
         public override void _Input(InputEvent @event)
         {
             base._Input(@event);
+
             if (this.BaseComponent is LocalPlayer)
             {
                 var sens = ClientSettings.Variables.Get<float>("cl_sensitivity", 2.0f);

@@ -21,7 +21,6 @@
 
 using System.Linq;
 using Godot;
-using System;
 
 namespace Framework.Game
 {
@@ -30,6 +29,21 @@ namespace Framework.Game
     /// </summary>
     public abstract class Level : Node3D, ILevel
     {
+        [Export]
+        public NodePath EnvironmentPath;
+
+        public Environment Environment
+        {
+            get
+            {
+                var worldEnv = this.GetNodeOrNull<WorldEnvironment>(this.EnvironmentPath);
+                if (worldEnv != null)
+                    return worldEnv.Environment;
+
+                return null;
+            }
+        }
+
         /// <inheritdoc />
         public SpawnPoint[] GetAllSpawnPoints()
         {

@@ -106,6 +106,47 @@ namespace Framework.Game
         {
 
         }
+        /// <inheritdoc />
+        internal virtual void OnLevelInternalAddToScene()
+        {
+            this.OnLevelAddToScene();
+        }
+
+        /// <summary>
+        /// When level was adding complelty to scene
+        /// </summary>
+        public virtual void OnLevelAddToScene()
+        {
+
+        }
+
+        internal void applyGlow(bool isEnabled)
+        {
+            var env = this.Level?.Environment;
+            if (env != null)
+                env.GlowEnabled = isEnabled;
+        }
+
+        internal void applySDFGI(bool isEnabled)
+        {
+            var env = this.Level?.Environment;
+            if (env != null)
+                env.SdfgiEnabled = isEnabled;
+        }
+
+        internal void applySSAO(bool isEnabled)
+        {
+            var env = this.Level?.Environment;
+            if (env != null)
+                env.SsaoEnabled = isEnabled;
+        }
+
+        internal void applySSIL(bool isEnabled)
+        {
+            var env = this.Level?.Environment;
+            if (env != null)
+                env.SsilEnabled = isEnabled;
+        }
 
         /// <inheritdoc />
         internal virtual void InternalTreeEntered()
@@ -126,6 +167,8 @@ namespace Framework.Game
             this.AddChild(node);
 
             this.level = node;
+
+            this.OnLevelInternalAddToScene();
         }
 
         /// <inheritdoc />
