@@ -11,6 +11,9 @@ public static class ClientSettings
 | name | description |
 | --- | --- |
 | static [Variables](ClientSettings/Variables.md) { get; set; } | Contains all vars for the client instance |
+| static readonly [Resolutions](ClientSettings/Resolutions.md) |  |
+| static readonly [ShadowQualities](ClientSettings/ShadowQualities.md) |  |
+| enum [WindowModes](ClientSettings.WindowModes.md) |  |
 
 ## See Also
 

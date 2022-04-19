@@ -16,6 +16,7 @@ public interface IWorld
 | [ServerVars](IWorld/ServerVars.md) { get; } | The server vars of the world |
 | [WorldTick](IWorld/WorldTick.md) { get; } | The current tick of the world |
 | [Destroy](IWorld/Destroy.md)() | Destroy the game world |
+| [OnLevelAddToScene](IWorld/OnLevelAddToScene.md)() | When level was adding complelty to scene |
 | [OnPlayerInitilaized](IWorld/OnPlayerInitilaized.md)(…) | Calls when an player is initialized and the map was loaded sucessfulll |
 | [Tick](IWorld/Tick.md)(…) | The physics and network related tick process method |
 

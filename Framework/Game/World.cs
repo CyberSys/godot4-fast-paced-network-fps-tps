@@ -27,6 +27,7 @@ using Framework.Network;
 using Framework.Physics;
 using Framework.Utils;
 using Framework.Extensions;
+using System.Diagnostics;
 using Framework.Game.Server;
 
 namespace Framework.Game
@@ -206,7 +207,7 @@ namespace Framework.Game
             if (this.isInit == true)
             {
                 //physics tick replacement
-                var tickInterval = (float)this.GetPhysicsProcessDeltaTime();
+                var tickInterval = delta;
                 accumulator += delta;
                 var adjustedTickInterval = tickInterval * simulationAdjuster.AdjustedInterval;
                 while (accumulator >= adjustedTickInterval)

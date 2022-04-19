@@ -19,7 +19,7 @@ namespace Shooter.Client
 
         public override void _EnterTree()
         {
-            this.Components.AddComponent<DebugMenuComponent>("res://Client/UI/Welcome/DebugMenuComponent.tscn");
+            //  this.Components.AddComponent<DebugMenuComponent>("res://Client/UI/Welcome/DebugMenuComponent.tscn");
             this.Components.AddComponent<PreConnectComponent>("res://Client/UI/Welcome/PreConnectComponent.tscn");
 
             Input.SetMouseMode(Input.MouseMode.Visible);
@@ -29,7 +29,7 @@ namespace Shooter.Client
         {
             this.Components.DeleteComponent<MapLoadingComponent>();
             this.Components.DeleteComponent<PreConnectComponent>();
-            this.Components.AddComponent<HudComponent>("res://Client/UI/Ingame/HudComponent.tscn");
+            //  this.Components.AddComponent<HudComponent>("res://Client/UI/Ingame/HudComponent.tscn");
             Input.SetMouseMode(Input.MouseMode.Captured);
         }
 

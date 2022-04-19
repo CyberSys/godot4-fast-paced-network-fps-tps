@@ -135,6 +135,7 @@ max_value = 70.0
 value = 54.0
 
 [node name="Video" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0

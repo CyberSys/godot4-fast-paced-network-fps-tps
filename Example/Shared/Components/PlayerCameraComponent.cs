@@ -40,6 +40,8 @@ namespace Shooter.Shared.Components
 
         public CameraMode cameraMode = CameraMode.FPS;
 
+        private PlayerBodyComponent bodyComponent;
+
         public override void _EnterTree()
         {
             base._EnterTree();
@@ -57,17 +59,18 @@ namespace Shooter.Shared.Components
 
         public override void _Process(float delta)
         {
-            var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
-            if (body != null)
+            if (this.bodyComponent == null)
+                this.bodyComponent = this.BaseComponent.Components.Get<PlayerBodyComponent>();
+            if (this.bodyComponent != null)
             {
                 if (this.cameraMode == CameraMode.TPS)
                 {
-                    var targetNode = body.Transform;
+                    var targetNode = this.bodyComponent.Transform;
                     var transform = this.Transform;
-                    transform.origin.x = body.Transform.origin.x + tpsCameraDistance * Mathf.Cos(rotY * -1);
-                    transform.origin.z = body.Transform.origin.z + tpsCameraDistance * Mathf.Sin(rotY * -1);
+                    transform.origin.x = this.bodyComponent.Transform.origin.x + tpsCameraDistance * Mathf.Cos(rotY * -1);
+                    transform.origin.z = this.bodyComponent.Transform.origin.z + tpsCameraDistance * Mathf.Sin(rotY * -1);
                     this.Transform = transform;
-                    this.Transform = this.Transform.LookingAt(body.Transform.origin, Vector3.Up);
+                    this.Transform = this.Transform.LookingAt(this.bodyComponent.Transform.origin, Vector3.Up);
                 }
                 else if (this.cameraMode == CameraMode.FPS)
                 {
@@ -83,7 +86,7 @@ namespace Shooter.Shared.Components
                 }
                 else if (this.cameraMode == CameraMode.Server)
                 {
-                    var transform = body.Transform;
+                    var transform = this.bodyComponent.Transform;
                     this.Transform = transform;
                 }
             }

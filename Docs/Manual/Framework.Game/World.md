@@ -17,6 +17,7 @@ public abstract class World : Node3D, IWorld
 | [simulationAdjuster](World/simulationAdjuster.md) { get; set; } | Adjust the tick rate of the server |
 | [WorldTick](World/WorldTick.md) { get; } |  |
 | [Destroy](World/Destroy.md)() |  |
+| virtual [OnLevelAddToScene](World/OnLevelAddToScene.md)() | When level was adding complelty to scene |
 | virtual [OnPlayerInitilaized](World/OnPlayerInitilaized.md)(…) |  |
 | virtual [Tick](World/Tick.md)(…) |  |
 | override [_Notification](World/_Notification.md)(…) |  |

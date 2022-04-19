@@ -25,6 +25,7 @@ using Framework;
 using System;
 using System.Collections.Generic;
 using LiteNetLib;
+using System.Diagnostics;
 using System.Linq;
 using Framework.Game;
 using Framework.Network.Commands;
@@ -170,7 +171,6 @@ namespace Framework.Game.Client
         /// <inheritdoc />  
         internal override void InternalTick(float interval)
         {
-
             if (this.localPlayer != null)
             {
                 float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();

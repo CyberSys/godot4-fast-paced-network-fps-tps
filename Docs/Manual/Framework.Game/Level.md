@@ -10,6 +10,8 @@ public abstract class Level : Node3D, ILevel
 
 | name | description |
 | --- | --- |
+| [Environment](Level/Environment.md) { get; } |  |
+| [EnvironmentPath](Level/EnvironmentPath.md) |  |
 | [GetAllSpawnPoints](Level/GetAllSpawnPoints.md)() |  |
 | [GetFreeSpawnPoints](Level/GetFreeSpawnPoints.md)() |  |
 
