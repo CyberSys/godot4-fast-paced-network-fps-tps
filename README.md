@@ -38,7 +38,7 @@ Check [documentation here](Docs/Manual/Framework.md)
 - (TODO) Animation network sync
 
 # Extensions
-- (TODO) Hitscan weapons
+- Hitscan weapons
 - (TODO) Projectile weapons
 - (TODO) Weapon Handler
 - (TODO) Vehicle Handler
@@ -64,6 +64,10 @@ Check [documentation here](Docs/Manual/Framework.md)
 
 # Utils
 - Simple logging
+
+# TODO
+- Docker image for linux
+- Batch scripts for linux
 
 ![Network Test preview](https://i.ibb.co/CKZ8nLj/net-preview.png "Network Test preview")
 
