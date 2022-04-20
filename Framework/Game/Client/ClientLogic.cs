@@ -44,7 +44,12 @@ namespace Framework.Game.Client
         [Export]
         public Dictionary<string, string> DefaultVars = new Dictionary<string, string>
         {
-           { "cl_sensitivity", "2.0"},
+           { "cl_sensitivity_x", "2.0"},
+           { "cl_sensitivity_y", "2.0"},
+
+           { "cl_fov", "70"},
+
+
            { "cl_resolution", "640x480"},
            { "cl_draw_shadow", "SoftLow"},
 

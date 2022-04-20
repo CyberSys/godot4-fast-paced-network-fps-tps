@@ -138,32 +138,25 @@ namespace Shooter.Client.UI.Ingame
 			this.debugChanger = GetNode(debugChangerPath) as OptionButton;
 			this.aaChanger = GetNode(aaChangerPath) as OptionButton;
 			this.volumeSlider = GetNode(soundVolumePath) as HSlider;
-			//  this.GetNode<ColorRect>("Blur").Visible = false;
 
-			//    this.sensX.Value = ConfigValues.sensitivityX;
-			//    this.sensY.Value = ConfigValues.sensitivityY;
-			//     this.fov.Value = ConfigValues.fov;
+			this.sensX.Value = ClientSettings.Variables.Get<float>("cl_sensitivity_x");
+			this.sensY.Value = ClientSettings.Variables.Get<float>("cl_sensitivity_y");
+			this.fov.Value = ClientSettings.Variables.Get<int>("cl_fov");
 
 			this.fov.ValueChanged += (float val) =>
 			{
-				//   ConfigValues.setFov(val);
+				ClientSettings.Variables.Set("cl_fov", val.ToString());
 			};
 
 			this.sensX.ValueChanged += (float val) =>
 			{
-				//   ConfigValues.setSensitivityX(val);
+				ClientSettings.Variables.Set("cl_sensitivity_x", val.ToString());
 			};
 
 			this.sensY.ValueChanged += (float val) =>
 			{
-				// ConfigValues.setSensitivityY(val);
+				ClientSettings.Variables.Set("cl_sensitivity_y", val.ToString());
 			};
-
-			//  this.shadowQuality.Selected = ConfigValues.shadowQuality;
-			//     this.windowModeChanger.Selected = ConfigValues.mode;
-			//   this.msaaChanger.Selected = (int)ConfigValues.msaa;
-			//      this.aaChanger.Selected = (int)ConfigValues.aa;
-
 
 			this.InitResolutions();
 

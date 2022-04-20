@@ -121,7 +121,6 @@ namespace Framework.Physics
                 return;
 
             var localPlayer = this.BaseComponent as LocalPlayer;
-
             if (localPlayer.Body != null)
             {
                 if (this.Mode == CameraMode.TPS)
@@ -132,6 +131,7 @@ namespace Framework.Physics
                     transform.origin.z = localPlayer.Body.Transform.origin.z + TPSCameraDistance * Mathf.Sin(tempRotY * -1);
                     this.Transform = transform;
                     this.Transform = this.Transform.LookingAt(localPlayer.Body.Transform.origin, Vector3.Up);
+
                 }
                 else if (this.Mode == CameraMode.FPS)
                 {
@@ -145,6 +145,8 @@ namespace Framework.Physics
                     transform.basis = new Basis(new Vector3(tempRotX, tempRotY, 0));
                     this.Transform = transform;
                 }
+
+                this.Fov = ClientSettings.Variables.Get<int>("cl_fov");
             }
         }
 
@@ -164,7 +166,8 @@ namespace Framework.Physics
             {
                 var localPlayer = this.BaseComponent as LocalPlayer;
 
-                var sens = ClientSettings.Variables.Get<float>("cl_sensitivity", 2.0f);
+                var sensX = ClientSettings.Variables.Get<float>("cl_sensitivity_y", 2.0f);
+                var sensY = ClientSettings.Variables.Get<float>("cl_sensitivity_x", 2.0f);
 
                 if (@event is InputEventMouseMotion && localPlayer.InputProcessor.InputEnabled)
                 {
@@ -172,8 +175,8 @@ namespace Framework.Physics
                     if (Godot.Input.GetMouseMode() == Godot.Input.MouseMode.Captured)
                     {
                         var ev = @event as InputEventMouseMotion;
-                        tempRotX -= ev.Relative.y * (sens / 1000);
-                        tempRotY -= ev.Relative.x * (sens / 1000);
+                        tempRotX -= ev.Relative.y * (sensY / 1000);
+                        tempRotY -= ev.Relative.x * (sensX / 1000);
                         tempRotX = Mathf.Clamp(tempRotX, Mathf.Deg2Rad(-90), Mathf.Deg2Rad(90));
                     }
                 }
