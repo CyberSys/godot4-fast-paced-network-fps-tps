@@ -3,8 +3,7 @@
 Calls on each tick for produce movement
 
 ```csharp
-public Vector3 Simulate(IChildMovementNetworkSyncComponent component, GeneralPlayerInput inputs, 
-    float dt)
+public Vector3 Simulate(NetworkPlayerBody component, GeneralPlayerInput inputs, float dt)
 ```
 
 | parameter | description |
@@ -16,7 +15,7 @@ public Vector3 Simulate(IChildMovementNetworkSyncComponent component, GeneralPla
 
 ## See Also
 
-* interface [IChildMovementNetworkSyncComponent](../IChildMovementNetworkSyncComponent.md)
+* class [NetworkPlayerBody](../../Framework.Network/NetworkPlayerBody.md)
 * struct [GeneralPlayerInput](../../Framework.Input/GeneralPlayerInput.md)
 * interface [IMovementProcessor](../IMovementProcessor.md)
 * namespace [Framework.Physics](../../Framework.md)

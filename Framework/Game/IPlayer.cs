@@ -80,18 +80,22 @@ namespace Framework.Game
         public void AddAvaiableComponent<T>(string ResourcePath = null) where T : Godot.Node, IChildComponent, new();
     }
 
+    /// <inheritdoc />
     public static class IPlayerExtensions
     {
+        /// <inheritdoc />
         public static bool IsServer(this IPlayer client)
         {
             return (client is Framework.Game.Server.ServerPlayer);
         }
 
+        /// <inheritdoc />
         public static bool IsLocal(this IPlayer client)
         {
             return (client is Framework.Game.Client.LocalPlayer);
         }
 
+        /// <inheritdoc />
         public static bool IsPuppet(this IPlayer client)
         {
             return (client is Framework.Game.Client.PuppetPlayer);

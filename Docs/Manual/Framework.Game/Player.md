@@ -11,7 +11,6 @@ public abstract class Player : Node, IPlayer
 | name | description |
 | --- | --- |
 | [Player](Player/Player.md)() | Base player class |
-| [AvaiableInputs](Player/AvaiableInputs.md) { get; } |  |
 | [AvaiablePlayerComponents](Player/AvaiablePlayerComponents.md) { get; } |  |
 | [Components](Player/Components.md) { get; } |  |
 | [GameWorld](Player/GameWorld.md) { get; set; } |  |

@@ -1,131 +1,16 @@
-using Framework;
-using Framework.Network;
-using Godot;
-using Framework.Utils;
 using Framework.Physics;
-using Framework.Game.Client;
 
 namespace Shooter.Shared.Components
 {
-    public enum CameraMode
+    public partial class PlayerCameraComponent : PhysicsPlayerCamera
     {
-        FPS,
-        TPS,
-        Follow,
-        Server,
-        Dugeon
-    }
-    public partial class PlayerCameraComponent : Camera3D, IPlayerComponent
-    {
-        private DoubleBuffer<Vector3> positionBuffer = new DoubleBuffer<Vector3>();
-
-        public void Tick(float delta)
-        {
-            var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
-            if (body != null)
-            {
-                var targetPos = body.Transform.origin + cameraOffset + Vector3.Up * body.getCrouchingHeight();
-                positionBuffer.Push(targetPos);
-            }
-        }
-
-        public IBaseComponent BaseComponent { get; set; }
-        public const float tpsDamping = 1;
-        private float rotX = 0.0f;
-        private float rotY = 0.0f;
-        private Vector3 cameraOffset = new Vector3(0, 0.5f, 0.1f);
-        private float tpsCameraDistance = 4f;
-        public bool enableInput = true;
-
-        public CameraMode cameraMode = CameraMode.FPS;
-
-        private PlayerBodyComponent bodyComponent;
-
         public override void _EnterTree()
         {
             base._EnterTree();
 
-            var rotation = this.Transform.basis.GetEuler();
-
-            this.rotX = rotation.x;
-            this.rotY = rotation.y;
-
             this.Far = 150;
             this.Near = 0.1f;
             this.DopplerTracking = DopplerTrackingEnum.PhysicsStep;
-            // this.SetCullMaskValue(2, false);
-        }
-
-        public override void _Process(float delta)
-        {
-            if (this.bodyComponent == null)
-                this.bodyComponent = this.BaseComponent.Components.Get<PlayerBodyComponent>();
-
-            if (this.bodyComponent != null)
-            {
-                if (this.cameraMode == CameraMode.TPS)
-                {
-                    var targetNode = this.bodyComponent.Transform;
-                    var transform = this.Transform;
-                    transform.origin.x = this.bodyComponent.Transform.origin.x + tpsCameraDistance * Mathf.Cos(rotY * -1);
-                    transform.origin.z = this.bodyComponent.Transform.origin.z + tpsCameraDistance * Mathf.Sin(rotY * -1);
-                    this.Transform = transform;
-                    this.Transform = this.Transform.LookingAt(this.bodyComponent.Transform.origin, Vector3.Up);
-                }
-                else if (this.cameraMode == CameraMode.FPS)
-                {
-                    var transform = this.Transform;
-
-                    // Interpolate position.
-                    transform.origin = positionBuffer.Old().Lerp(
-                                                positionBuffer.New(),
-                                                InterpolationController.InterpolationFactor);
-
-                    transform.basis = new Basis(new Vector3(rotX, rotY, 0));
-                    this.Transform = transform;
-                }
-                else if (this.cameraMode == CameraMode.Server)
-                {
-                    var transform = this.bodyComponent.Transform;
-                    this.Transform = transform;
-                }
-            }
-        }
-
-        public override void _Input(InputEvent @event)
-        {
-            base._Input(@event);
-
-            if (this.IsLocal())
-            {
-                var sens = ClientSettings.Variables.Get<float>("cl_sensitivity", 2.0f);
-
-                if (@event is InputEventMouseMotion && enableInput)
-                {
-                    // Handle cursor lock state
-                    if (Input.GetMouseMode() == Input.MouseMode.Captured)
-                    {
-                        var ev = @event as InputEventMouseMotion;
-                        rotX -= ev.Relative.y * (sens / 1000);
-                        rotY -= ev.Relative.x * (sens / 1000);
-                        rotX = Mathf.Clamp(rotX, Mathf.Deg2Rad(-90), Mathf.Deg2Rad(90));
-                    }
-                }
-
-                if (@event.IsActionReleased("camera"))
-                {
-                    if (this.cameraMode == CameraMode.FPS)
-                    {
-                        this.cameraMode = CameraMode.TPS;
-                    }
-                    else if (this.cameraMode == CameraMode.TPS)
-                    {
-                        this.cameraMode = CameraMode.FPS;
-                    }
-                }
-
-                @event.Dispose();
-            }
         }
     }
 }

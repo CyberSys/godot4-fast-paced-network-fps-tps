@@ -1,5 +1,3 @@
-using System;
-using Godot;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -23,6 +21,7 @@ using Godot;
 
 using Framework.Network;
 using Framework.Input;
+using Framework.Network;
 
 namespace Framework.Physics
 {
@@ -31,6 +30,13 @@ namespace Framework.Physics
     /// </summary>
     public abstract partial class PhysicsPlayer : NetworkPlayer
     {
+
+        /// <summary>
+        /// The player camera component
+        /// </summary>
+        /// <value></value>
+        public PhysicsPlayerCamera Camera { get; set; } = null;
+
         /// <summary>
         /// Contains the input proecessor
         /// </summary>
@@ -44,27 +50,17 @@ namespace Framework.Physics
         public IMovementProcessor MovementProcessor { get; set; } = new DefaultMovementProcessor();
 
 
-
-        /// <inheritdoc />
-        public PhysicsPlayer() : base()
-        {
-        }
-
         /// <summary>
         /// Teleport player to an given position
         /// </summary>
         /// <param name="origin">New position of the player</param>
         public void DoTeleport(Godot.Vector3 origin)
         {
-            foreach (var component in this.Components.All)
+            if (this.Body != null)
             {
-                if (component is IChildMovementNetworkSyncComponent)
-                {
-                    var data = (component as IChildMovementNetworkSyncComponent).GetNetworkState();
-                    data.Position = origin;
-                    this.MovementProcessor.Velocity = data.Velocity;
-                    (component as IChildMovementNetworkSyncComponent).ApplyNetworkState(data);
-                }
+                var data = this.Body.GetNetworkState();
+                data.Position = origin;
+                this.Body.ApplyNetworkState(data);
             }
         }
 
@@ -94,13 +90,13 @@ namespace Framework.Physics
                 {
                     (component as IPlayerComponent).Tick(delta);
                 }
+            }
 
-                if (component is IChildMovementNetworkSyncComponent)
-                {
-                    this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
-                    this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
-                    this.MovementProcessor.Simulate(component as IChildMovementNetworkSyncComponent, this.LastInput, delta);
-                }
+            if (this.Body != null)
+            {
+                this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
+                this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
+                this.MovementProcessor.Simulate(this.Body, this.LastInput, delta);
             }
 
             base.InternalTick(delta);

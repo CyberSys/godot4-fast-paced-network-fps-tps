@@ -16,6 +16,7 @@ public class LocalPlayer : PhysicsPlayer
 | [localPlayerInputsSnapshots](LocalPlayer/localPlayerInputsSnapshots.md) | The local player input snapshots |
 | [localPlayerStateSnapshots](LocalPlayer/localPlayerStateSnapshots.md) | The local player states |
 | [localPlayerWorldTickSnapshots](LocalPlayer/localPlayerWorldTickSnapshots.md) | The last world player ticks related to the state snapshots |
+| virtual [GetViewRotation](LocalPlayer/GetViewRotation.md)() | Get the view rotation of an local player |
 
 ## See Also
 

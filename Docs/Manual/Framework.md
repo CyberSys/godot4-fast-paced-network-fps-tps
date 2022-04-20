@@ -8,6 +8,7 @@
 | interface [IBaseComponent](./Framework/IBaseComponent.md) | The base component interface required for root components |
 | interface [IChildComponent](./Framework/IChildComponent.md) | The child component interface for childs of an base component |
 | interface [IPlayerComponent](./Framework/IPlayerComponent.md) | Interface required for player components |
+| static class [IPlayerComponentExtensions](./Framework/IPlayerComponentExtensions.md) |  |
 | interface [IService](./Framework/IService.md) | Required interface for service classes |
 | interface [ITeam](./Framework/ITeam.md) |  |
 | static class [Logger](./Framework/Logger.md) |  |
@@ -32,6 +33,7 @@
 | interface [IGameRule](./Framework.Game/IGameRule.md) | Required interface for game rules |
 | interface [ILevel](./Framework.Game/ILevel.md) | Required interface for levels |
 | interface [IPlayer](./Framework.Game/IPlayer.md) | Required interface for players |
+| static class [IPlayerExtensions](./Framework.Game/IPlayerExtensions.md) |  |
 | interface [IWorld](./Framework.Game/IWorld.md) | The required interface for an game world |
 | abstract class [Level](./Framework.Game/Level.md) | A basic class for an game level |
 | abstract class [Player](./Framework.Game/Player.md) | The general player class |
@@ -62,8 +64,10 @@
 
 | public type | description |
 | --- | --- |
+| class [BaseInputProcessor](./Framework.Input/BaseInputProcessor.md) | The base input processor abstract class |
+| class [GeneralInputProcessor](./Framework.Input/GeneralInputProcessor.md) | An default input procsessor |
 | struct [GeneralPlayerInput](./Framework.Input/GeneralPlayerInput.md) | Default class for player input |
-| interface [IChildInputComponent](./Framework.Input/IChildInputComponent.md) | Required interface for local players with input eg. shifting, crouching, moving, etc. |
+| interface [IInputProcessor](./Framework.Input/IInputProcessor.md) | Required interface for local players with input eg. shifting, crouching, moving, etc. |
 | interface [IPlayerInput](./Framework.Input/IPlayerInput.md) | The network package required for sending inputs |
 | class [PlayerInputProcessor](./Framework.Input/PlayerInputProcessor.md) | Processing inputs from an given queue |
 | struct [TickInput](./Framework.Input/TickInput.md) | The input for an given world tick of on specfic player (server-sided) |
@@ -76,6 +80,7 @@
 | interface [IChildNetworkSyncComponent&lt;T&gt;](./Framework.Network/IChildNetworkSyncComponent-1.md) | The child component interface for childs of an base component |
 | interface [ISimulationAdjuster](./Framework.Network/ISimulationAdjuster.md) | Adjust the server or client tickrate |
 | abstract class [NetworkPlayer](./Framework.Network/NetworkPlayer.md) | Player class for network players eg. players, npcs |
+| class [NetworkPlayerBody](./Framework.Network/NetworkPlayerBody.md) | The character or kinematic 3d body node for an network player |
 | abstract class [NetworkService](./Framework.Network/NetworkService.md) | Base network service class |
 | enum [PlayerConnectionState](./Framework.Network/PlayerConnectionState.md) | Connection states of the player |
 | class [ServerSimulationAdjuster](./Framework.Network/ServerSimulationAdjuster.md) | The default simulation adapter for a server instance |
@@ -89,6 +94,7 @@
 | struct [PlayerInputCommand](./Framework.Network.Commands/PlayerInputCommand.md) | Network command to send client input to server |
 | struct [PlayerState](./Framework.Network.Commands/PlayerState.md) | The player states structures Contains all player realted informations eg. position, rotation, velocity |
 | struct [PlayerUpdate](./Framework.Network.Commands/PlayerUpdate.md) | Contains all player relevant fields eg Latency, Team, Required Components |
+| struct [RaycastTest](./Framework.Network.Commands/RaycastTest.md) | Network command to tell the server that the client world is initalized |
 | struct [ServerInitializer](./Framework.Network.Commands/ServerInitializer.md) | Network command to tell the server that the client world is initalized |
 | struct [ServerVarUpdate](./Framework.Network.Commands/ServerVarUpdate.md) | Network command for updaing server vars on client side |
 | struct [WorldHeartbeat](./Framework.Network.Commands/WorldHeartbeat.md) | The world heartbeat structure for network syncronisation |
@@ -106,11 +112,12 @@
 
 | public type | description |
 | --- | --- |
+| enum [CameraMode](./Framework.Physics/CameraMode.md) | The camera mode for the player camera |
 | class [DefaultMovementProcessor](./Framework.Physics/DefaultMovementProcessor.md) | An default movement calculator Handles friction, air control, jumping and accelerate |
-| interface [IChildMovementNetworkSyncComponent](./Framework.Physics/IChildMovementNetworkSyncComponent.md) |  |
 | interface [IMovementProcessor](./Framework.Physics/IMovementProcessor.md) | The required interface for movement processors |
 | class [InterpolationController](./Framework.Physics/InterpolationController.md) | Helper class for interpolations by ticks |
 | abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) | The base class for physics based players (kinematic, rigid..) |
+| class [PhysicsPlayerCamera](./Framework.Physics/PhysicsPlayerCamera.md) | The player camera for an physics player |
 
 ## Framework.Physics.Commands namespace
 
@@ -125,6 +132,7 @@
 | class [AsyncLoader](./Framework.Utils/AsyncLoader.md) | Helper class to load resources in background |
 | class [DoubleBuffer&lt;T&gt;](./Framework.Utils/DoubleBuffer-1.md) |  |
 | class [FixedTimer](./Framework.Utils/FixedTimer.md) |  |
+| class [RayCastLine](./Framework.Utils/RayCastLine.md) |  |
 | static class [VectorExtension](./Framework.Utils/VectorExtension.md) |  |
 
 <!-- DO NOT EDIT: generated by xmldocmd for Framework.dll -->

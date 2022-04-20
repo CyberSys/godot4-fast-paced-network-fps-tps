@@ -5,7 +5,7 @@ using Framework;
 using LiteNetLib.Utils;
 using Framework.Physics;
 using Framework.Utils;
-
+using Framework.Game.Client;
 namespace Shooter.Shared.Components
 {
 	public struct PlayerWeaponPackage : INetSerializable
@@ -153,19 +153,17 @@ namespace Shooter.Shared.Components
 
 		}
 
-		PlayerBodyComponent bodyComponent;
-		PlayerCameraComponent cameraComponent;
-
 		public override void _Process(float delta)
 		{
-			if (this.cameraComponent == null)
-				this.cameraComponent = this.BaseComponent.Components.Get<PlayerCameraComponent>();
-
-			if (this.cameraComponent != null)
+			if (!this.IsPuppet())
 			{
-				// apply camera transform
-				this.GlobalTransform = this.cameraComponent.GlobalTransform;
-				this.HandleRecoil(delta);
+				var player = this.BaseComponent as PhysicsPlayer;
+				if (player.Camera != null)
+				{
+					// apply camera transform
+					this.GlobalTransform = player.Camera.GlobalTransform;
+					this.HandleRecoil(player, delta);
+				}
 			}
 
 			// swaying walk (only client sided)
@@ -177,7 +175,7 @@ namespace Shooter.Shared.Components
 			}
 		}
 
-		private void HandleRecoil(float delta)
+		private void HandleRecoil(PhysicsPlayer player, float delta)
 		{
 			// fire recoil
 			rotationRecoil = rotationRecoil.Lerp(Vector3.Zero, rotationRecoilSpeed * delta);
@@ -193,55 +191,49 @@ namespace Shooter.Shared.Components
 			cameraRecoil = cameraRecoil.Lerp(Vector3.Zero, rotationCameraReturnSpeed * delta);
 			RotCamera = RotCamera.Lerp(cameraRecoil, rotationCameraSpeed * delta);
 
-			this.cameraComponent.Rotation += RotCamera;
+			if (player.Camera != null)
+				player.Camera.Rotation += RotCamera;
 		}
 
 		private void SwayWalk(float delta)
 		{
+			var currentInput = (this.BaseComponent as PhysicsPlayer).LastInput;
 
-			if (this.bodyComponent == null)
-				this.bodyComponent = this.BaseComponent.Components.Get<PlayerBodyComponent>();
+			var horizontal = currentInput.GetInput("Right") ? 1f : currentInput.GetInput("Left") ? -1f : 0f;
+			var vertical = currentInput.GetInput("Back") ? 1f : currentInput.GetInput("Forward") ? -1f : 0f;
+			var factor = (this.BaseComponent as PhysicsPlayer).MovementProcessor.GetMovementSpeedFactor();
 
-			if (bodyComponent != null)
+			if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)
 			{
-				var currentInput = (this.BaseComponent as PhysicsPlayer).LastInput;
-
-				var horizontal = currentInput.GetInput("Right") ? 1f : currentInput.GetInput("Left") ? -1f : 0f;
-				var vertical = currentInput.GetInput("Back") ? 1f : currentInput.GetInput("Forward") ? -1f : 0f;
-				var factor = (this.BaseComponent as PhysicsPlayer).MovementProcessor.GetMovementSpeedFactor();
-
-				if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)
-				{
-					timer = 0.0f;
-				}
-				else
-				{
-					waveSlice = Mathf.Sin(timer);
-					timer = timer + ((bobSpeed / 1000) * factor);
-					if (timer > Mathf.Pi * 2)
-					{
-						timer = timer - (Mathf.Pi * 2);
-					}
-				}
-
-				var swayPos = swayNodePos.Position;
-				if (waveSlice != 0)
-				{
-					float translateChange = waveSlice * ((bobDistance / 1000) * (factor));
-					float totalAxes = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
-					totalAxes = Mathf.Clamp(totalAxes, 0.0f, 1.0f);
-					translateChange = totalAxes * translateChange;
-
-					swayPos.y += translateChange;
-					swayPos.x += translateChange * 2;
-				}
-				else
-				{
-					swayPos = Vector3.Zero;
-				}
-
-				swayNodePos.Position = swayPos;
+				timer = 0.0f;
 			}
+			else
+			{
+				waveSlice = Mathf.Sin(timer);
+				timer = timer + ((bobSpeed / 1000) * factor);
+				if (timer > Mathf.Pi * 2)
+				{
+					timer = timer - (Mathf.Pi * 2);
+				}
+			}
+
+			var swayPos = swayNodePos.Position;
+			if (waveSlice != 0)
+			{
+				float translateChange = waveSlice * ((bobDistance / 1000) * (factor));
+				float totalAxes = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
+				totalAxes = Mathf.Clamp(totalAxes, 0.0f, 1.0f);
+				translateChange = totalAxes * translateChange;
+
+				swayPos.y += translateChange;
+				swayPos.x += translateChange * 2;
+			}
+			else
+			{
+				swayPos = Vector3.Zero;
+			}
+
+			swayNodePos.Position = swayPos;
 		}
 
 		private void HandleSwayLook(float delta)

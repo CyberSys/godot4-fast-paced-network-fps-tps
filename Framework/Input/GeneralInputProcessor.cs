@@ -15,11 +15,13 @@ namespace Framework.Input
     /// </summary>
     public class BaseInputProcessor : IInputProcessor
     {
+        /// <inheritdoc />  
         public bool InputEnabled { get; set; } = true;
 
         /// <inheritdoc />
         public List<string> AvaiableInputs => this.GetKeys().Keys.ToList();
 
+        /// <inheritdoc />  
         public Quaternion ViewRotation { get; set; }
 
         /// <summary>
@@ -46,6 +48,7 @@ namespace Framework.Input
     /// </summary>
     public class GeneralInputProcessor : BaseInputProcessor
     {
+        /// <inheritdoc />  
         public override Dictionary<String, bool> GetKeys()
         {
             return new Dictionary<string, bool>{
@@ -59,6 +62,8 @@ namespace Framework.Input
                     { "Fire",  Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_attack", Godot.MouseButton.Left)},
                 };
         }
+
+        /// <inheritdoc />  
         public override GeneralPlayerInput GetPlayerInput()
         {
             var input = new GeneralPlayerInput();

@@ -188,8 +188,11 @@ namespace Framework.Game.Client
                 var MaxStaleServerStateTicks = (int)MathF.Ceiling(this.ServerVars.Get<int>("sv_max_stages_ms", 500) / serverSendRate);
 
                 //set view rotation for input processor
-                GeneralPlayerInput inputs = this.localPlayer.InputProcessor.GetPlayerInput();
+                if (this.localPlayer.InputProcessor.InputEnabled && this.gameInstance.GuiDisableInput)
+                    this.localPlayer.InputProcessor.InputEnabled = false;
+
                 this.localPlayer.InputProcessor.ViewRotation = this.localPlayer.GetViewRotation();
+                GeneralPlayerInput inputs = this.localPlayer.InputProcessor.GetPlayerInput();
 
                 var lastTicks = WorldTick - lastServerWorldTick;
                 if (this.ServerVars.Get<bool>("sv_freze_client", false) && lastTicks >= MaxStaleServerStateTicks)
@@ -230,6 +233,13 @@ namespace Framework.Game.Client
 
                 // Simulate player
                 this.localPlayer.InternalTick(interval);
+
+                // interpolate camera because outside the clock
+                if (this.localPlayer.Camera != null)
+                {
+                    this.localPlayer.Camera.PlayerPositionUpdated();
+                }
+
             }
 
             //increase worldTick
@@ -246,11 +256,11 @@ namespace Framework.Game.Client
             //update player list and values
             this.ExecuteHeartbeat(incomingState);
 
+
+
             //procese player inputs
             this.ProcessServerWorldState(incomingState, interval);
 
-
-            //    this.localPlayer.Camera?.PlayerPositionUpdated();
 
             this.Tick(interval);
         }
@@ -374,9 +384,15 @@ namespace Framework.Game.Client
                         }
 
                         //attach the camera to the local player
-                        if (player.IsLocal() && result is Camera3D)
+                        if (player is PhysicsPlayer && result is PhysicsPlayerCamera)
                         {
-                            (player as LocalPlayer).Camera = result as Camera3D;
+                            (player as PhysicsPlayer).Camera = result as PhysicsPlayerCamera;
+                        }
+
+                        //attach the camera to the local player
+                        if (player is NetworkPlayer && result is NetworkPlayerBody)
+                        {
+                            (player as NetworkPlayer).Body = result as NetworkPlayerBody;
                         }
                     }
 
@@ -469,54 +485,44 @@ namespace Framework.Game.Client
                 var stateSnapshot = this.localPlayer.localPlayerStateSnapshots[bufidx];
 
                 // Compare the historical state to see how off it was.
-                foreach (var component in this.localPlayer.Components.All.
-                Where(df => df is IChildMovementNetworkSyncComponent).Select(df => df as IChildMovementNetworkSyncComponent))
+                if (this.localPlayer.Body != null)
                 {
-                    var index = this.localPlayer.AvaiablePlayerComponents.FindIndex(df => df.NodeType == component.GetType());
+                    var incomingStateDecompose = this.localPlayer.incomingLocalPlayerState.BodyComponent;
+                    var stateSnapshotDecompose = stateSnapshot.BodyComponent;
 
-                    if (index < 0)
-                        continue;
-
-                    if (this.localPlayer.incomingLocalPlayerState.NetworkComponents != null
-                    && this.localPlayer.incomingLocalPlayerState.NetworkComponents.ContainsKey(index)
-                        && stateSnapshot.NetworkComponents != null && stateSnapshot.NetworkComponents.ContainsKey(index))
+                    var error = incomingStateDecompose.Position - stateSnapshotDecompose.Position;
+                    if (error.LengthSquared() > 0.0001f)
                     {
-                        var incomingStateDecompose = this.localPlayer.incomingLocalPlayerState.Decompose<MovementNetworkCommand>(index);
-                        var stateSnapshotDecompose = stateSnapshot.Decompose<MovementNetworkCommand>(index);
-
-                        var error = incomingStateDecompose.Position - stateSnapshotDecompose.Position;
-                        if (error.LengthSquared() > 0.0001f)
+                        if (!headState)
                         {
-                            if (!headState)
-                            {
-                                Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {incomingStateDecompose.Position.ToString()} ServerPos: {stateSnapshotDecompose.Position.ToString()} ");
-                                replayedStates++;
-                            }
+                            Logger.LogDebug(this, $"Rewind tick#{incomingState.WorldTick}, Error: {error.Length()}, Range: {WorldTick - incomingState.WorldTick} ClientPost: {incomingStateDecompose.Position.ToString()} ServerPos: {stateSnapshotDecompose.Position.ToString()} ");
+                            replayedStates++;
+                        }
 
-                            // Rewind local player state to the correct state from the server.
-                            // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
-                            this.localPlayer.ApplyNetworkState(this.localPlayer.incomingLocalPlayerState);
+                        // Rewind local player state to the correct state from the server.
+                        // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
+                        this.localPlayer.ApplyNetworkState(this.localPlayer.incomingLocalPlayerState);
 
-                            // Loop through and replay all captured input snapshots up to the current tick.
-                            uint replayTick = incomingState.WorldTick;
+                        // Loop through and replay all captured input snapshots up to the current tick.
+                        uint replayTick = incomingState.WorldTick;
 
-                            while (replayTick < WorldTick)
-                            {
-                                // Grab the historical input.
-                                bufidx = replayTick % 1024;
-                                var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
+                        while (replayTick < WorldTick)
+                        {
+                            // Grab the historical input.
+                            bufidx = replayTick % 1024;
+                            var inputSnapshot = this.localPlayer.localPlayerInputsSnapshots[bufidx];
 
-                                // Rewrite the historical sate snapshot.
-                                this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
+                            // Rewrite the historical sate snapshot.
+                            this.localPlayer.localPlayerStateSnapshots[bufidx] = this.localPlayer.ToNetworkState();
 
-                                // Apply inputs to the associated player controller and simulate the world.
-                                this.localPlayer.SetPlayerInputs(inputSnapshot);
-                                this.localPlayer.InternalTick((float)this.GetPhysicsProcessDeltaTime());
+                            // Apply inputs to the associated player controller and simulate the world.
+                            this.localPlayer.SetPlayerInputs(inputSnapshot);
+                            this.localPlayer.InternalTick((float)this.GetPhysicsProcessDeltaTime());
 
-                                ++replayTick;
-                            }
+                            ++replayTick;
                         }
                     }
+
                 }
 
                 // Internal tick for puppets

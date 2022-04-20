@@ -18,6 +18,7 @@ public class ServerPlayer : PhysicsPlayer
 | [RequiredComponents](ServerPlayer/RequiredComponents.md) { get; set; } |  |
 | [RequiredPuppetComponents](ServerPlayer/RequiredPuppetComponents.md) { get; set; } |  |
 | [States](ServerPlayer/States.md) | Archived player states |
+| [DoAttack](ServerPlayer/DoAttack.md)(…) | Trigger an attack on server side |
 
 ## See Also
 

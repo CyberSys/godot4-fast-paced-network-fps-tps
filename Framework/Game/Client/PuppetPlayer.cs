@@ -82,6 +82,24 @@ namespace Framework.Game.Client
             var nextState = stateQueue.Peek();
             float theta = stateTimer / ServerSendInterval;
 
+            //only for movement component (to interpolate)
+            if (this.Body != null)
+            {
+                var decomposedNextState = nextState.BodyComponent;
+                var decomposesLastState = lastState.Value.BodyComponent;
+
+                var a = decomposesLastState.Rotation;
+                var b = decomposedNextState.Rotation;
+
+                var newState = this.Body.GetNetworkState();
+
+                newState.Position = decomposesLastState.Position.Lerp(decomposedNextState.Position, theta);
+                newState.Rotation = a.Slerp(b, theta);
+
+                this.Body.ApplyNetworkState(newState);
+            }
+
+            //for the rest -> just handle applying components
             foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
                     x.IsGenericType &&
                     x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
@@ -92,44 +110,19 @@ namespace Framework.Game.Client
                 if (index < 0)
                     continue;
 
-                //only for movement components (to interpolate)
-                if (component is IChildMovementNetworkSyncComponent)
+
+                if (nextState.NetworkComponents.ContainsKey(index))
                 {
-                    var networkComp = (component as IChildMovementNetworkSyncComponent);
-                    if (nextState.NetworkComponents.ContainsKey(index) &&
-                        lastState.HasValue && lastState.Value.NetworkComponents.ContainsKey(index))
-                    {
-                        var decomposedNextState = nextState.Decompose<MovementNetworkCommand>(index);
-                        var decomposesLastState = lastState.Value.Decompose<MovementNetworkCommand>(index);
+                    var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
+                    var parameterType = instanceMethod.GetParameters().First().ParameterType;
 
-                        var a = decomposesLastState.Rotation;
-                        var b = decomposedNextState.Rotation;
+                    var methods = nextState.GetType().GetMethods();
+                    var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
 
-                        var newState = networkComp.GetNetworkState();
-
-                        newState.Position = decomposesLastState.Position.Lerp(decomposedNextState.Position, theta);
-                        newState.Rotation = a.Slerp(b, theta);
-
-                        (component as IChildMovementNetworkSyncComponent).ApplyNetworkState(newState);
-                    }
+                    var decomposed = method.MakeGenericMethod(parameterType)
+                          .Invoke(nextState, new object[] { index });
+                    instanceMethod.Invoke(component, new object[] { decomposed });
                 }
-                //for the rest -> just handle applying components
-                else
-                {
-                    if (nextState.NetworkComponents.ContainsKey(index))
-                    {
-                        var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
-                        var parameterType = instanceMethod.GetParameters().First().ParameterType;
-
-                        var methods = nextState.GetType().GetMethods();
-                        var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
-
-                        var decomposed = method.MakeGenericMethod(parameterType)
-                              .Invoke(nextState, new object[] { index });
-                        instanceMethod.Invoke(component, new object[] { decomposed });
-                    }
-                }
-
             }
         }
 

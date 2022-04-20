@@ -34,9 +34,28 @@ namespace Framework.Input
         /// <returns></returns>
         public GeneralPlayerInput GetPlayerInput();
 
+        /// <summary>
+        /// List of avaiable input keys
+        /// </summary>
+        /// <value></value>
         public List<string> AvaiableInputs { get; }
 
+        /// <summary>
+        /// The current view rotation
+        /// </summary>
+        /// <value></value>
         public Quaternion ViewRotation { get; set; }
+
+        /// <summary>
+        /// List of all pressed or unpressed keys
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, bool> GetKeys();
+
+        /// <summary>
+        /// Check if input is enabled
+        /// </summary>
+        /// <value></value>
+        public bool InputEnabled { get; set; }
     }
 }

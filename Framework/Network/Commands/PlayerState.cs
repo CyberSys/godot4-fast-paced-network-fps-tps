@@ -46,10 +46,16 @@ namespace Framework.Network.Commands
         /// </summary>
         public Dictionary<int, byte[]> NetworkComponents;
 
+        /// <summary>
+        /// The netword state for the body component
+        /// </summary>
+        public Framework.Physics.Commands.MovementNetworkCommand BodyComponent;
+
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(this.Id);
+            BodyComponent.Serialize(writer);
 
             //needs to be at end
             if (this.NetworkComponents != null)
@@ -71,6 +77,7 @@ namespace Framework.Network.Commands
         public void Deserialize(NetDataReader reader)
         {
             this.Id = reader.GetInt();
+            BodyComponent.Deserialize(reader);
 
             //needs to be at end
             var comps = new Dictionary<int, byte[]>();

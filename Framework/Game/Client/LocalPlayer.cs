@@ -35,11 +35,6 @@ namespace Framework.Game.Client
         {
         }
 
-        /// <summary>
-        /// The player camera component
-        /// </summary>
-        /// <value></value>
-        public Godot.Camera3D Camera { get; set; } = null;
 
         /// <summary>
         /// Get the view rotation of an local player

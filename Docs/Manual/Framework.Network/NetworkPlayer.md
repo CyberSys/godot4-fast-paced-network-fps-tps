@@ -10,6 +10,7 @@ public abstract class NetworkPlayer : Player
 
 | name | description |
 | --- | --- |
+| [Body](NetworkPlayer/Body.md) { get; set; } | The player body component |
 | virtual [ApplyNetworkState](NetworkPlayer/ApplyNetworkState.md)(…) | Apply an network state |
 | virtual [ToNetworkState](NetworkPlayer/ToNetworkState.md)() | Get the current network state |
 

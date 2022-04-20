@@ -72,16 +72,14 @@ namespace Shooter.Shared.Components
             this.Bus = "PlayerFoorSteps";
         }
 
-
         public void Tick(float delta)
         {
-            var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
-
-            if (body != null && !this.IsPuppet())
+            if (this.BaseComponent is PhysicsPlayer)
             {
-                if (body.IsOnGround())
+                var player = this.BaseComponent as PhysicsPlayer;
+                if (player.Body != null && player.Body.IsOnGround())
                 {
-                    var collision = body.GetLastSlideCollision();
+                    var collision = player.Body.GetLastSlideCollision();
                     if (collision == null)
                         return;
 
@@ -91,7 +89,7 @@ namespace Shooter.Shared.Components
                     {
                         var positon = collision.GetPosition(0);
 
-                        var transform = body.Transform;
+                        var transform = player.Body.Transform;
                         transform.origin = positon;
                         this.Transform = transform;
 
@@ -104,7 +102,8 @@ namespace Shooter.Shared.Components
                         {
                             this.CurrentGround = GroundType.None;
                         }
-                        this.CheckFootstep(body);
+
+                        this.CheckFootstep(player.Body);
                     }
                 }
             }
@@ -112,6 +111,7 @@ namespace Shooter.Shared.Components
 
 
         private FootStepsPackage LastFootStep;
+
         public void ApplyNetworkState(FootStepsPackage package)
         {
             if (this.IsPuppet())
@@ -186,7 +186,7 @@ namespace Shooter.Shared.Components
         public Vector3 audioOffset = Vector3.Zero;
 
 
-        private void CheckFootstep(PlayerBodyComponent body)
+        private void CheckFootstep(NetworkPlayerBody body)
         {
             if (this.BaseComponent is PhysicsPlayer)
             {

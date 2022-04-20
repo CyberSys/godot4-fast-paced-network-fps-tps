@@ -24,6 +24,7 @@ using Framework.Physics;
 using Framework.Game.Server;
 using System.Reflection;
 using Framework.Input;
+using Framework.Network;
 
 namespace Framework.Game
 {
@@ -106,7 +107,7 @@ namespace Framework.Game
             }
         }
 
-        private void CreateComponent(IPlayer player, AssignedComponent registeredComonent)
+        internal void CreateComponent(IPlayer player, AssignedComponent registeredComonent)
         {
             var method = typeof(ComponentRegistry).GetMethods().Single(
                        m =>
@@ -119,9 +120,21 @@ namespace Framework.Game
             {
 
             });
+
+            //attach the body to the local player
+            if (createdObject is NetworkPlayerBody && player is NetworkPlayer)
+            {
+                (player as NetworkPlayer).Body = createdObject as NetworkPlayerBody;
+            }
+
+            //attach the camera to the local player
+            if (createdObject is PhysicsPlayerCamera && player is PhysicsPlayer)
+            {
+                (player as PhysicsPlayer).Camera = createdObject as PhysicsPlayerCamera;
+            }
         }
 
-        private void CreateComponentWithResource(IPlayer player, AssignedComponent registeredComonent)
+        internal void CreateComponentWithResource(IPlayer player, AssignedComponent registeredComonent)
         {
             var method = typeof(ComponentRegistry).GetMethods().Single(
                        m =>
@@ -135,6 +148,18 @@ namespace Framework.Game
             {
                         registeredComonent.ResourcePath
             });
+
+            //attach the body to the server player
+            if (createdObject is NetworkPlayerBody && player is NetworkPlayer)
+            {
+                (player as NetworkPlayer).Body = createdObject as NetworkPlayerBody;
+            }
+
+            //attach the camera to the server player
+            if (createdObject is PhysicsPlayerCamera && player is PhysicsPlayer)
+            {
+                (player as PhysicsPlayer).Camera = createdObject as PhysicsPlayerCamera;
+            }
         }
 
         /// <inheritdoc />

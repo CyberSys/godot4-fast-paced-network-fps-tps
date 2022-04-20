@@ -34,7 +34,7 @@ public partial class BootloaderMultiView : Node
 				viewSlot++;
 			}
 
-			Console.WriteLine("Viewport set to" + viewSlot);
+			Console.WriteLine("Viewport set to slot " + viewSlot);
 			this.setGuiInputs();
 		}
 

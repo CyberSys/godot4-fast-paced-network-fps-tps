@@ -60,18 +60,22 @@ namespace Framework
         public ComponentRegistry Components { get; }
     }
 
+    /// <inheritdoc />
     public static class IPlayerComponentExtensions
     {
+        /// <inheritdoc />
         public static bool IsServer(this IPlayerComponent client)
         {
             return (client.BaseComponent is Framework.Game.Server.ServerPlayer);
         }
 
+        /// <inheritdoc />
         public static bool IsLocal(this IPlayerComponent client)
         {
             return (client.BaseComponent is Framework.Game.Client.LocalPlayer);
         }
 
+        /// <inheritdoc />
         public static bool IsPuppet(this IPlayerComponent client)
         {
             return (client.BaseComponent is Framework.Game.Client.PuppetPlayer);

@@ -28,7 +28,7 @@ namespace Framework.Game
     /// <summary>
     /// The general player class
     /// </summary>
-    public abstract class Player : Godot.CharacterBody3D, IPlayer, IBaseComponent
+    public abstract class Player : Godot.Node, IPlayer, IBaseComponent
     {
         /// <inheritdoc />
         public int Id { get; set; }

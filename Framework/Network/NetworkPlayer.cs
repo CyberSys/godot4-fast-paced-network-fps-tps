@@ -24,7 +24,7 @@ using Framework.Network.Commands;
 using System.Linq;
 using Framework.Game;
 using LiteNetLib.Utils;
-using Framework.Game.Server;
+using Framework.Physics.Commands;
 
 namespace Framework.Network
 {
@@ -33,6 +33,12 @@ namespace Framework.Network
     /// </summary>
     public abstract partial class NetworkPlayer : Player
     {
+        /// <summary>
+        /// The player body component
+        /// </summary>
+        /// <value></value>
+        public NetworkPlayerBody Body { get; set; } = null;
+
         /// <summary>
         /// Get the current network state
         /// </summary>
@@ -59,6 +65,7 @@ namespace Framework.Network
             return new PlayerState
             {
                 Id = this.Id,
+                BodyComponent = this.Body != null ? this.Body.GetNetworkState() : default(MovementNetworkCommand),
                 NetworkComponents = netComps
             };
         }
@@ -69,6 +76,9 @@ namespace Framework.Network
         /// <param name="state">The network state to applied</param>
         public virtual void ApplyNetworkState(PlayerState state)
         {
+            if (this.Body != null)
+                this.Body.ApplyNetworkState(state.BodyComponent);
+
             foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
                     x.IsGenericType &&
                     x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))

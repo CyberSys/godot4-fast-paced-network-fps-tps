@@ -9,8 +9,8 @@ public void AddComponentToServerPlayer<T>(IPlayer player)
 
 | parameter | description |
 | --- | --- |
+| T | Type of component |
 | player |  |
-| component |  |
 
 ## See Also
 

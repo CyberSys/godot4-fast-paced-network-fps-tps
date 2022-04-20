@@ -29,6 +29,7 @@ using Framework.Network;
 using Framework.Network.Services;
 using Framework.Input;
 using Framework.Physics;
+using Framework.Physics.Commands;
 using Godot;
 
 namespace Framework.Game.Server
@@ -314,18 +315,8 @@ namespace Framework.Game.Server
 
             var currentState = player.ToNetworkState();
 
-
-            Physics.Commands.MovementNetworkCommand currentMovementState = new Physics.Commands.MovementNetworkCommand();
-            foreach (var component in player.Components.All)
-            {
-                if (component is IChildMovementNetworkSyncComponent)
-                {
-                    currentMovementState = (component as IChildMovementNetworkSyncComponent).GetNetworkState();
-                }
-            }
-
             // Now check for collisions.
-            var playerObjectHit = this.CheckHit(player, currentMovementState, range);
+            var playerObjectHit = this.CheckHit(player, player.Body != null ? player.Body.GetNetworkState() : default(MovementNetworkCommand), range);
 
             // Debugging.
             foreach (var entry in this.Players)

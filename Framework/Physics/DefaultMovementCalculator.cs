@@ -22,6 +22,7 @@
 using Godot;
 using Framework.Input;
 using Framework.Game;
+using Framework.Network;
 
 namespace Framework.Physics
 {
@@ -37,7 +38,7 @@ namespace Framework.Physics
         /// <param name="serverVars"></param>
         /// <param name="inputs"></param>
         /// <param name="dt"></param>
-        public Vector3 Simulate(IChildMovementNetworkSyncComponent component, GeneralPlayerInput inputs, float dt);
+        public Vector3 Simulate(NetworkPlayerBody component, GeneralPlayerInput inputs, float dt);
 
         /// <summary>
         /// The current velocity of the moveable object
@@ -76,7 +77,7 @@ namespace Framework.Physics
         private VarsCollection clientVars;
 
         private Vector3 _velocity = Vector3.Zero;
-        private IChildMovementNetworkSyncComponent component;
+        private NetworkPlayerBody component;
         private IPlayerInput inputs;
         private float attackCooldownTimer = 0f;
         private float crouchTime = 0f;
@@ -88,7 +89,6 @@ namespace Framework.Physics
             set { _velocity = value; }
         }
 
-
         /// <inheritdoc />
         internal void Execute(float delta, Vector3 executeVelocity)
         {
@@ -98,10 +98,10 @@ namespace Framework.Physics
             {
                 couchLevel = delta * (inputs.GetInput("Crouch") ?
                     this.serverVars.Get<float>("sv_crouching_down_speed", 8.0f) :
-                    this.serverVars.Get<float>("sv_crouching_up_speed", 4.0f)); ;
+                    this.serverVars.Get<float>("sv_crouching_up_speed", 4.0f));
             }
 
-            component.setCrouchingLevel(inputs.GetInput("Crouch") ? couchLevel * -1 : couchLevel);
+            component.SetCrouchingLevel(inputs.GetInput("Crouch") ? couchLevel * -1 : couchLevel);
             component.Velocity = executeVelocity;
             component.Move(delta, executeVelocity);
         }
@@ -118,7 +118,7 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        public Vector3 Simulate(IChildMovementNetworkSyncComponent component, GeneralPlayerInput inputs, float dt)
+        public Vector3 Simulate(NetworkPlayerBody component, GeneralPlayerInput inputs, float dt)
         {
             var processedVelocity = _velocity;
 
@@ -129,8 +129,6 @@ namespace Framework.Physics
 
             this.inputs = inputs;
             this.component = component;
-
-
 
             // Set orientation based on the view direction.
             if (inputs.ViewDirection == null || inputs.ViewDirection == new Quaternion(0, 0, 0, 0))
