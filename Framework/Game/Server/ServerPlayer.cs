@@ -29,6 +29,15 @@ namespace Framework.Game.Server
     /// </summary>
     public class ServerPlayer : PhysicsPlayer
     {
+        /// <summary>
+        /// Trigger an attack on server side
+        /// </summary>
+        /// <param name="range">Range for detection</param>
+        public void DoAttack(float range = 1000)
+        {
+            (this.GameWorld as ServerWorld).ProcessPlayerAttack(this, range);
+        }
+
         /// <inheritdoc />
         public ServerPlayer() : base()
         {

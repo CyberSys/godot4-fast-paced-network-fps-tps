@@ -11,12 +11,8 @@ namespace Shooter.Client
             this.AddAvaiableComponent<PlayerBodyComponent>("res://Assets/Player/PlayerBody.tscn");
             this.AddAvaiableComponent<PlayerCameraComponent>();
             this.AddAvaiableComponent<PlayerFootstepComponent>();
-            this.AddAvaiableComponent<PlayerInputComponent>();
+            //    this.AddAvaiableComponent<PlayerInputComponent>();
             this.AddAvaiableComponent<PlayerWeaponComponent>("res://Assets/Weapons/WeaponHolder.tscn");
-
-            this.AvaiableInputs.AddRange(new string[]{
-                "Forward", "Back", "Left", "Right", "Jump", "Crouch", "Shifting", "Fire"
-            });
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Framework.Game
     /// <summary>
     /// The general player class
     /// </summary>
-    public abstract class Player : Godot.Node, IPlayer, IBaseComponent
+    public abstract class Player : Godot.CharacterBody3D, IPlayer, IBaseComponent
     {
         /// <inheritdoc />
         public int Id { get; set; }
@@ -85,12 +85,6 @@ namespace Framework.Game
         /// <inheritdoc />
         public List<AssignedComponent> AvaiablePlayerComponents => avaiableComponents;
 
-
-        /// <inheritdoc />
-        private readonly List<string> avaiableInputs = new List<string>();
-
-        /// <inheritdoc />
-        public List<string> AvaiableInputs => avaiableInputs;
 
         /// <inheritdoc />
         public void AddAvaiableComponent<T>(string ResourcePath = null) where T : Godot.Node, IChildComponent, new()

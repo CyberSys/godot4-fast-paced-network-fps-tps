@@ -1,4 +1,5 @@
-using System.Linq;
+using System;
+using Godot;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -30,6 +31,20 @@ namespace Framework.Physics
     /// </summary>
     public abstract partial class PhysicsPlayer : NetworkPlayer
     {
+        /// <summary>
+        /// Contains the input proecessor
+        /// </summary>
+        /// <returns></returns>
+        public IInputProcessor InputProcessor { get; set; } = new GeneralInputProcessor();
+
+        /// <summary>
+        /// Movement processor
+        /// </summary>
+        /// <returns></returns>
+        public IMovementProcessor MovementProcessor { get; set; } = new DefaultMovementProcessor();
+
+
+
         /// <inheritdoc />
         public PhysicsPlayer() : base()
         {
@@ -47,10 +62,17 @@ namespace Framework.Physics
                 {
                     var data = (component as IChildMovementNetworkSyncComponent).GetNetworkState();
                     data.Position = origin;
+                    this.MovementProcessor.Velocity = data.Velocity;
                     (component as IChildMovementNetworkSyncComponent).ApplyNetworkState(data);
                 }
             }
         }
+
+        /// <summary>
+        /// Current player head height
+        /// </summary>
+        public float PlayerHeadHeight { get; set; } = 1.5f;
+
 
         /// <summary>
         /// The last player input
@@ -75,11 +97,9 @@ namespace Framework.Physics
 
                 if (component is IChildMovementNetworkSyncComponent)
                 {
-                    var bodyComp = (component as IChildMovementNetworkSyncComponent);
-
-                    bodyComp.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
-                    bodyComp.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
-                    bodyComp.MovementProcessor.Simulate(component as IChildMovementNetworkSyncComponent, this.LastInput, delta);
+                    this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
+                    this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
+                    this.MovementProcessor.Simulate(component as IChildMovementNetworkSyncComponent, this.LastInput, delta);
                 }
             }
 

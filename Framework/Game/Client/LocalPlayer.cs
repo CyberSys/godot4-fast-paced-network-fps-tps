@@ -36,6 +36,28 @@ namespace Framework.Game.Client
         }
 
         /// <summary>
+        /// The player camera component
+        /// </summary>
+        /// <value></value>
+        public Godot.Camera3D Camera { get; set; } = null;
+
+        /// <summary>
+        /// Get the view rotation of an local player
+        /// </summary>
+        /// <returns></returns>
+        public virtual Godot.Quaternion GetViewRotation()
+        {
+            if (this.Camera != null)
+            {
+                return this.Camera.Transform.basis.GetRotationQuaternion();
+            }
+            else
+            {
+                return Godot.Quaternion.Identity;
+            }
+        }
+
+        /// <summary>
         /// The last incoming local player state
         /// </summary>
         /// <returns></returns>

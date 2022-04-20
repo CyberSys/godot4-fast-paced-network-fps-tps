@@ -28,6 +28,8 @@ using Framework.Network.Commands;
 using Framework.Network;
 using Framework.Network.Services;
 using Framework.Input;
+using Framework.Physics;
+using Godot;
 
 namespace Framework.Game.Server
 {
@@ -184,7 +186,7 @@ namespace Framework.Game.Server
             if (this._players.ContainsKey(clientId))
             {
                 var player = this._players[clientId] as ServerPlayer;
-                package.Inputs = package.Inputs.Select(df => df.DeserliazeWithInputKeys(player.AvaiableInputs)).ToArray();
+                package.Inputs = package.Inputs.Select(df => df.DeserliazeWithInputKeys(player.InputProcessor.AvaiableInputs)).ToArray();
                 playerInputProcessor.EnqueueInput(package, clientId, this.WorldTick);
                 player.LatestInputTick = package.StartWorldTick + (uint)package.Inputs.Length - 1;
             }
@@ -204,7 +206,7 @@ namespace Framework.Game.Server
             }
 
             //get player updates
-            var heartbeatUpdateList = this._players.Where(df => df.Value is ServerPlayer).
+            var heartbeatUpdateList = this._players.Where(df => df.Value.IsServer()).
                                 Select(df => new PlayerUpdate
                                 {
                                     Id = df.Key,
@@ -217,7 +219,7 @@ namespace Framework.Game.Server
 
 
             //send to each player data package
-            foreach (var player in this._players.Where(df => df.Value is ServerPlayer).Select(df => df.Value as ServerPlayer).Where(df => df.State == PlayerConnectionState.Initialized).ToArray())
+            foreach (var player in this._players.Where(df => df.Value.IsServer()).Select(df => df.Value as ServerPlayer).Where(df => df.State == PlayerConnectionState.Initialized).ToArray())
             {
                 var cmd = new WorldHeartbeat
                 {
@@ -276,6 +278,113 @@ namespace Framework.Game.Server
                             });
             }
         }
+
+        internal void ProcessPlayerAttack(ServerPlayer player, float range = 1000)
+        {
+            if (player.State != PlayerConnectionState.Initialized)
+                return;
+
+            //spawn the object
+            //    var obj = networkObjectManager.SpawnPlayerObject(0, type, position, orientation);
+
+            Logger.LogDebug(this, "Get player attack for player " + player.Id);
+
+            // First, rollback the state of all attackable entities (for now just players).
+            // The world is not rolled back to the tick the players input was for, but rather
+            // the tick of the server world state the player was seeing at the time of attack.
+            // TODO: Clean up the whole player delegate path, it sucks.
+            var remoteViewTick = player.CurrentPlayerInput.RemoteViewTick;
+
+            // If client interp is enabled, we estimate by subtracting another tick, but I'm not sure
+            // if this is correct or not, needs more work.
+            if (this.ServerVars.Get<bool>("sv_interpolate", true))
+            {
+                remoteViewTick--;
+            }
+
+            uint bufidx = remoteViewTick % 1024;
+            var head = new Dictionary<int, PlayerState>();
+            foreach (var entry in this.Players)
+            {
+                var otherPlayer = entry.Value as ServerPlayer;
+                head[entry.Key] = otherPlayer.ToNetworkState();
+                var historicalState = otherPlayer.States[bufidx];
+                otherPlayer.ApplyNetworkState(historicalState);
+            }
+
+            var currentState = player.ToNetworkState();
+
+
+            Physics.Commands.MovementNetworkCommand currentMovementState = new Physics.Commands.MovementNetworkCommand();
+            foreach (var component in player.Components.All)
+            {
+                if (component is IChildMovementNetworkSyncComponent)
+                {
+                    currentMovementState = (component as IChildMovementNetworkSyncComponent).GetNetworkState();
+                }
+            }
+
+            // Now check for collisions.
+            var playerObjectHit = this.CheckHit(player, currentMovementState, range);
+
+            // Debugging.
+            foreach (var entry in this.Players)
+            {
+                var otherPlayer = entry.Value as ServerPlayer;
+                if (otherPlayer.Id != player.Id)
+                {
+                    // var component = otherPlayer.Components.Get
+                    //  Logger.LogDebug(this, $"Other player at ${otherPlayer.GlobalTransform.origin} for remote view tick ${remoteViewTick}");
+                }
+            }
+
+            // Finally, revert all the players to their head state.
+            foreach (var entry in this.Players)
+            {
+                var otherPlayer = entry.Value as ServerPlayer;
+                otherPlayer.ApplyNetworkState(head[entry.Key]);
+            }
+
+            // Apply the result of the this.
+            if (playerObjectHit != null)
+            {
+                Logger.LogDebug(this, "Registering authoritative player hit");
+                //attack.AddForceToPlayer(playerObjectHit.GetComponent<CPMPlayerController>());
+                // return true;
+
+            }
+            else
+            {
+                Logger.LogDebug(this, "Cant found player hit");
+            }
+
+            //   return false;
+        }
+
+        internal object CheckHit(ServerPlayer player, Physics.Commands.MovementNetworkCommand command, float range)
+        {
+            var currentTransform = new Godot.Transform3D(command.Rotation, command.Position);
+            var attackPosition = currentTransform.origin + Vector3.Up * player.PlayerHeadHeight + currentTransform.basis.x * 0.2f;
+            var attackTransform = new Godot.Transform3D(command.Rotation, attackPosition);
+
+            var raycast = new PhysicsRayQueryParameters3D();
+            raycast.From = attackTransform.origin;
+            raycast.To = attackTransform.origin + -attackTransform.basis.z * range;
+
+            var result = GetWorld3d().DirectSpaceState.IntersectRay(raycast);
+            if (result != null && result.Contains("position"))
+            {
+                if (this.ServerVars.Get<bool>("sv_raycast", true))
+                {
+                    var raycastHit = new RaycastTest { from = attackTransform.origin, to = (Vector3)result["position"] };
+                    Logger.LogDebug(this, "Found raycast at " + raycastHit.from + " => " + raycastHit.to);
+                    this.netService.SentMessageToAllSerialized<RaycastTest>(raycastHit);
+                }
+
+            }
+            return result;
+        }
+
         /// <inheritdoc />  
         internal override void InternalTick(float interval)
         {
@@ -285,7 +394,8 @@ namespace Framework.Game.Server
 
             // Apply inputs to each player.
             unprocessedPlayerIds.Clear();
-            unprocessedPlayerIds.UnionWith(this.Players.Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is ServerPlayer).Select(df => df.Key).ToArray());
+            unprocessedPlayerIds.UnionWith(this.Players.Where(df => df.Value.State ==
+            PlayerConnectionState.Initialized && df.Value.IsServer()).Select(df => df.Key).ToArray());
 
             var tickInputs = this.playerInputProcessor.DequeueInputsForTick(WorldTick);
 
@@ -345,7 +455,7 @@ namespace Framework.Game.Server
             // Snapshot everything.
             var bufidx = WorldTick % 1024;
 
-            foreach (var player in this._players.Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value is ServerPlayer)
+            foreach (var player in this._players.Where(df => df.Value.State == PlayerConnectionState.Initialized && df.Value.IsServer())
             .Select(df => df.Value as ServerPlayer).ToArray())
             {
                 player.States[bufidx] = player.ToNetworkState();

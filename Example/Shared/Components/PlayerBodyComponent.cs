@@ -9,10 +9,9 @@ using Framework.Physics.Commands;
 
 namespace Shooter.Shared.Components
 {
-    public partial class PlayerBodyComponent : CharacterBody3D, IChildMovementNetworkSyncComponent
+    public partial class PlayerBodyComponent : CharacterBody3D, IChildMovementNetworkSyncComponent, IPlayerComponent
     {
         public IBaseComponent BaseComponent { get; set; }
-        public IMovementProcessor MovementProcessor { get; set; } = new DefaultMovementProcessor();
 
 
         [Export]
@@ -20,8 +19,6 @@ namespace Shooter.Shared.Components
 
         [Export]
         public NodePath MeshBodyPaths = null;
-
-        public Vector3 previousPosition = Vector3.Zero;
 
         private float originalHeight = 0f;
 
@@ -39,6 +36,11 @@ namespace Shooter.Shared.Components
         private float previousCrouchLevel = 0f;
         private float currentCouchLevel = 0f;
 
+        public void Tick(float delta)
+        {
+
+        }
+
         public void ApplyNetworkState(MovementNetworkCommand state)
         {
             var transform = this.Transform;
@@ -46,7 +48,12 @@ namespace Shooter.Shared.Components
             transform.basis = new Basis(state.Rotation);
             this.Transform = transform;
             this.Velocity = state.Velocity;
-            MovementProcessor.Velocity = state.Velocity;
+
+            if (this.BaseComponent is PhysicsPlayer)
+            {
+                (this.BaseComponent as PhysicsPlayer).MovementProcessor.Velocity = state.Velocity;
+            }
+
         }
 
         public MovementNetworkCommand GetNetworkState()
@@ -64,7 +71,6 @@ namespace Shooter.Shared.Components
         {
             base._EnterTree();
 
-            this.previousPosition = this.Transform.origin;
             this.shape = this.GetNode<CollisionShape3D>(ColliderPath);
             this.originalHeight = this.shape.Scale.y;
             this.originalYPosition = this.shape.Transform.origin.y;

@@ -17,7 +17,6 @@ namespace Shooter.Shared.Components
     }
     public partial class PlayerCameraComponent : Camera3D, IPlayerComponent
     {
-
         private DoubleBuffer<Vector3> positionBuffer = new DoubleBuffer<Vector3>();
 
         public void Tick(float delta)
@@ -61,6 +60,7 @@ namespace Shooter.Shared.Components
         {
             if (this.bodyComponent == null)
                 this.bodyComponent = this.BaseComponent.Components.Get<PlayerBodyComponent>();
+
             if (this.bodyComponent != null)
             {
                 if (this.cameraMode == CameraMode.TPS)
@@ -92,16 +92,11 @@ namespace Shooter.Shared.Components
             }
         }
 
-        public Quaternion getViewRotation()
-        {
-            return this.Transform.basis.GetRotationQuaternion();
-        }
-
         public override void _Input(InputEvent @event)
         {
             base._Input(@event);
 
-            if (this.BaseComponent is LocalPlayer)
+            if (this.IsLocal())
             {
                 var sens = ClientSettings.Variables.Get<float>("cl_sensitivity", 2.0f);
 
@@ -117,7 +112,7 @@ namespace Shooter.Shared.Components
                     }
                 }
 
-                if (@event.IsActionReleased("camera") && this.BaseComponent is LocalPlayer)
+                if (@event.IsActionReleased("camera"))
                 {
                     if (this.cameraMode == CameraMode.FPS)
                     {

@@ -47,7 +47,6 @@ namespace Shooter.Server
 
             this.AddComponentToLocalPlayer<PlayerBodyComponent>(player);
             this.AddComponentToLocalPlayer<PlayerCameraComponent>(player);
-            this.AddComponentToLocalPlayer<PlayerInputComponent>(player);
             this.AddComponentToLocalPlayer<PlayerFootstepComponent>(player);
             this.AddComponentToLocalPlayer<PlayerWeaponComponent>(player);
 

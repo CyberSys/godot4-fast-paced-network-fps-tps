@@ -54,6 +54,7 @@ namespace Framework.Network
             this._netPacketProcessor.RegisterNestedType<ClientWorldInitializer>();
             this._netPacketProcessor.RegisterNestedType<ClientWorldLoader>();
             this._netPacketProcessor.RegisterNestedType<ServerInitializer>();
+            this._netPacketProcessor.RegisterNestedType<RaycastTest>();
 
             this._netPacketProcessor.RegisterNestedType(
                 NetExtensions.SerializeVector3, NetExtensions.DeserializeVector3);

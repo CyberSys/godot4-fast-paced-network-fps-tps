@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bavql442hmhry"]
+[gd_scene load_steps=3 format=3 uid="uid://clj2w5fexlkaq"]
 
 [ext_resource type="Script" path="res://Client/UI/Ingame/GameSettings.cs" id="1_58hji"]
 [ext_resource type="Script" path="res://Client/UI/Ingame/KeyConfirmationDialog.cs" id="2_f8c0r"]

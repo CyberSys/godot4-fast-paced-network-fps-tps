@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bavds1yv12uxo"]
+[gd_scene load_steps=4 format=3 uid="uid://l8awu7lihjbb"]
 
 [ext_resource type="Script" path="res://Client/UI/Ingame/HudComponent.cs" id="1_2hhg7"]
 [ext_resource type="Shader" path="res://Client/UI/Ingame/HudShader.gdshader" id="1_i4e6j"]

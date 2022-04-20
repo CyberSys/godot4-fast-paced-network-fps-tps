@@ -60,6 +60,24 @@ namespace Framework
         public ComponentRegistry Components { get; }
     }
 
+    public static class IPlayerComponentExtensions
+    {
+        public static bool IsServer(this IPlayerComponent client)
+        {
+            return (client.BaseComponent is Framework.Game.Server.ServerPlayer);
+        }
+
+        public static bool IsLocal(this IPlayerComponent client)
+        {
+            return (client.BaseComponent is Framework.Game.Client.LocalPlayer);
+        }
+
+        public static bool IsPuppet(this IPlayerComponent client)
+        {
+            return (client.BaseComponent is Framework.Game.Client.PuppetPlayer);
+        }
+    }
+
     /// <summary>
     /// Interface required for player components
     /// </summary>
@@ -71,6 +89,7 @@ namespace Framework
         /// <param name="delta"></param>
         public void Tick(float delta);
     }
+
 
     /// <summary>
     /// The child component interface for childs of an base component

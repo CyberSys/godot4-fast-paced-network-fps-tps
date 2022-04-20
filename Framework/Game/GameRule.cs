@@ -140,7 +140,7 @@ namespace Framework.Game
         /// <inheritdoc />
         public void AddComponentToLocalPlayer<T>(IPlayer player) where T : IChildComponent
         {
-            if (player is ServerPlayer)
+            if (player.IsServer())
             {
                 var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
                 Logger.LogDebug(this, "Found index " + index);
@@ -156,7 +156,7 @@ namespace Framework.Game
         /// <inheritdoc />
         public void AddComponentToPuppetPlayer<T>(IPlayer player) where T : IChildComponent
         {
-            if (player is ServerPlayer)
+            if (player.IsServer())
             {
                 var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
                 var list = (player as ServerPlayer).RequiredPuppetComponents.ToList();
@@ -171,7 +171,7 @@ namespace Framework.Game
         /// <inheritdoc />
         public void RemoveComponentFromLocalPlayer<T>(IPlayer player) where T : IChildComponent
         {
-            if (player is ServerPlayer)
+            if (player.IsServer())
             {
                 var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
 
@@ -187,7 +187,7 @@ namespace Framework.Game
         /// <inheritdoc />
         public void RemoteComponentFromPuppetPlayer<T>(IPlayer player) where T : IChildComponent
         {
-            if (player is ServerPlayer)
+            if (player.IsServer())
             {
                 var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
 

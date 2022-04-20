@@ -36,7 +36,7 @@ namespace Framework.Game.Client
     /// <summary>
     /// The base class of an puppet player
     /// </summary>
-    public class PuppetPlayer : PhysicsPlayer
+    public class PuppetPlayer : NetworkPlayer
     {
         /// <inheritdoc />
         public PuppetPlayer() : base()

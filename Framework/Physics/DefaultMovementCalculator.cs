@@ -131,6 +131,7 @@ namespace Framework.Physics
             this.component = component;
 
 
+
             // Set orientation based on the view direction.
             if (inputs.ViewDirection == null || inputs.ViewDirection == new Quaternion(0, 0, 0, 0))
             {
@@ -138,6 +139,7 @@ namespace Framework.Physics
             }
 
             var euler = inputs.ViewDirection.GetEuler();
+            this.component.Rotation = new Vector3(0, euler.y, 0);
 
             // Process movement.
             this.QueueJump();
@@ -157,15 +159,6 @@ namespace Framework.Physics
             var state = component.GetNetworkState();
             state.Rotation = new Quaternion(new Vector3(0, euler.y, 0));
             component.ApplyNetworkState(state);
-
-            // Process attacks.
-            attackCooldownTimer -= dt;
-            if (inputs.GetInput("Fire") && attackCooldownTimer <= 0)
-            {
-                attackCooldownTimer = 1f;
-                // attackDelegate(
-                //    NetworkObjectType.HITSCAN_ATTACK, AttackPosition, inputs.ViewDirection);
-            }
 
             // HACK: Reset to zero when falling off the edge for now.
             if (state.Position.y < -100)

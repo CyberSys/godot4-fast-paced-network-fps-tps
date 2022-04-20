@@ -78,6 +78,8 @@ namespace Framework.Game.Client
         /// </summary>
         public int MyServerId => _myServerId;
 
+        internal Utils.LineDrawer3d rayCastTester = new LineDrawer3d();
+
 
         /// <inheritdoc />
         internal override void InternalTreeEntered()
@@ -88,7 +90,14 @@ namespace Framework.Game.Client
             this.netService.SubscribeSerialisable<WorldHeartbeat>(HandleWorldState);
             this.netService.SubscribeSerialisable<ClientWorldInitializer>(InitWorld);
             this.netService.SubscribeSerialisable<ServerVarUpdate>(UpdateWorld);
+            this.netService.SubscribeSerialisable<RaycastTest>(RayCastTest);
 
+            this.AddChild(this.rayCastTester);
+        }
+
+        internal void RayCastTest(RaycastTest cmd, NetPeer peed)
+        {
+            this.rayCastTester.AddLine(cmd.from, cmd.to);
         }
 
         /// <inheritdoc />
@@ -178,15 +187,9 @@ namespace Framework.Game.Client
 
                 var MaxStaleServerStateTicks = (int)MathF.Ceiling(this.ServerVars.Get<int>("sv_max_stages_ms", 500) / serverSendRate);
 
-                GeneralPlayerInput inputs = new GeneralPlayerInput();
-
-                if (!this.gameInstance.GuiDisableInput)
-                {
-                    foreach (var component in this.localPlayer.Components.All.Where(df => df is IChildInputComponent).ToArray())
-                    {
-                        inputs = (component as IChildInputComponent).GetPlayerInput();
-                    }
-                }
+                //set view rotation for input processor
+                GeneralPlayerInput inputs = this.localPlayer.InputProcessor.GetPlayerInput();
+                this.localPlayer.InputProcessor.ViewRotation = this.localPlayer.GetViewRotation();
 
                 var lastTicks = WorldTick - lastServerWorldTick;
                 if (this.ServerVars.Get<bool>("sv_freze_client", false) && lastTicks >= MaxStaleServerStateTicks)
@@ -245,6 +248,9 @@ namespace Framework.Game.Client
 
             //procese player inputs
             this.ProcessServerWorldState(incomingState, interval);
+
+
+            //    this.localPlayer.Camera?.PlayerPositionUpdated();
 
             this.Tick(interval);
         }
@@ -345,7 +351,7 @@ namespace Framework.Game.Client
                 foreach (var avaiableComponents in player.AvaiablePlayerComponents)
                 {
                     var componentExist = player.Components.HasComponent(avaiableComponents.NodeType);
-                    var isRequired = (player is LocalPlayer) ? playerUpdate.RequiredComponents.Contains(i) : playerUpdate.RequiredPuppetComponents.Contains(i);
+                    var isRequired = (player.IsLocal()) ? playerUpdate.RequiredComponents.Contains(i) : playerUpdate.RequiredPuppetComponents.Contains(i);
                     if (componentExist && !isRequired)
                     {
                         Logger.LogDebug(this, "Delete component from type " + avaiableComponents.NodeType.Name);
@@ -365,6 +371,12 @@ namespace Framework.Game.Client
                         {
                             Logger.LogDebug(this, "Add component from type " + avaiableComponents.NodeType.Name);
                             result = player.Components.AddComponent(avaiableComponents.NodeType);
+                        }
+
+                        //attach the camera to the local player
+                        if (player.IsLocal() && result is Camera3D)
+                        {
+                            (player as LocalPlayer).Camera = result as Camera3D;
                         }
                     }
 
@@ -437,7 +449,7 @@ namespace Framework.Game.Client
                 else
                 {
                     //send states to puppets
-                    foreach (var player in _players.Where(df => df.Value is PuppetPlayer).Select(df => df.Value as PuppetPlayer).ToArray())
+                    foreach (var player in _players.Where(df => df.Value.IsPuppet()).Select(df => df.Value as PuppetPlayer).ToArray())
                     {
                         player.ApplyNetworkState(playerState);
                     }
@@ -508,7 +520,7 @@ namespace Framework.Game.Client
                 }
 
                 // Internal tick for puppets
-                foreach (var player in _players.Where(df => df.Value is PuppetPlayer).Select(df => df.Value as PuppetPlayer).ToArray())
+                foreach (var player in _players.Where(df => df.Value.IsPuppet()).Select(df => df.Value as PuppetPlayer).ToArray())
                 {
                     player.InternalTick(interval);
                 }

@@ -60,6 +60,10 @@ namespace Framework.Game.Server
 
             // enable or disable interpolation
             { "sv_interpolate", "true" },
+
+            // enable or disable showing raycasts
+            { "sv_raycast", "true" },
+            
             // force for soft or hard lag reduction
             { "sv_agressive_lag_reduction", "true" },
             // maximal input stages per ms

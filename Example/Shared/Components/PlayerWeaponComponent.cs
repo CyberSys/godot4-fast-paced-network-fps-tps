@@ -41,10 +41,10 @@ namespace Shooter.Shared.Components
 		NodePath weaponFirePositionPath;
 
 		[Export]
-		float bobSpeed = 0.05f;
+		float bobSpeed = 12f;
 
 		[Export]
-		float bobDistance = 0.0002f;
+		float bobDistance = 0.02f;
 
 		[Export]
 		public float swayAmount = 6f;
@@ -97,6 +97,9 @@ namespace Shooter.Shared.Components
 		[Export]
 		Vector3 RecoilCamera = new Vector3(6f, 1f, 6f);
 
+		[Export]
+		float ShotRange = 1000f;
+
 		private float swayTime;
 
 		private Vector3 newWeaponRotation = Vector3.Zero;
@@ -113,7 +116,7 @@ namespace Shooter.Shared.Components
 		private Vector3 RotCamera = Vector3.Zero;
 
 		[Export]
-		public float fireRate = 0.2f;
+		public float fireRate = 0.1f;
 
 		[Export]
 		public bool requiredFire = true;
@@ -139,17 +142,19 @@ namespace Shooter.Shared.Components
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event is InputEventMouseMotion && Input.GetMouseMode() == Input.MouseMode.Captured)
+			if (this.BaseComponent is Framework.Game.Client.LocalPlayer)
 			{
-				mouseMove = new Vector2((@event as InputEventMouseMotion).Relative.x, (@event as InputEventMouseMotion).Relative.y);
+				if (@event is InputEventMouseMotion && Input.GetMouseMode() == Input.MouseMode.Captured)
+				{
+					mouseMove = new Vector2((@event as InputEventMouseMotion).Relative.x, (@event as InputEventMouseMotion).Relative.y);
+				}
 			}
-
 			@event.Dispose();
+
 		}
 
 		PlayerBodyComponent bodyComponent;
 		PlayerCameraComponent cameraComponent;
-		PlayerInputComponent inputComponent;
 
 		public override void _Process(float delta)
 		{
@@ -193,19 +198,17 @@ namespace Shooter.Shared.Components
 
 		private void SwayWalk(float delta)
 		{
-			if (this.inputComponent == null)
-				this.inputComponent = this.BaseComponent.Components.Get<PlayerInputComponent>();
 
 			if (this.bodyComponent == null)
 				this.bodyComponent = this.BaseComponent.Components.Get<PlayerBodyComponent>();
 
-			if (inputComponent != null && bodyComponent != null)
+			if (bodyComponent != null)
 			{
 				var currentInput = (this.BaseComponent as PhysicsPlayer).LastInput;
 
 				var horizontal = currentInput.GetInput("Right") ? 1f : currentInput.GetInput("Left") ? -1f : 0f;
 				var vertical = currentInput.GetInput("Back") ? 1f : currentInput.GetInput("Forward") ? -1f : 0f;
-				var factor = bodyComponent.MovementProcessor.GetMovementSpeedFactor();
+				var factor = (this.BaseComponent as PhysicsPlayer).MovementProcessor.GetMovementSpeedFactor();
 
 				if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)
 				{
@@ -214,7 +217,7 @@ namespace Shooter.Shared.Components
 				else
 				{
 					waveSlice = Mathf.Sin(timer);
-					timer = timer + (bobSpeed * factor);
+					timer = timer + ((bobSpeed / 1000) * factor);
 					if (timer > Mathf.Pi * 2)
 					{
 						timer = timer - (Mathf.Pi * 2);
@@ -224,7 +227,7 @@ namespace Shooter.Shared.Components
 				var swayPos = swayNodePos.Position;
 				if (waveSlice != 0)
 				{
-					float translateChange = waveSlice * (bobDistance * (factor));
+					float translateChange = waveSlice * ((bobDistance / 1000) * (factor));
 					float totalAxes = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
 					totalAxes = Mathf.Clamp(totalAxes, 0.0f, 1.0f);
 					translateChange = totalAxes * translateChange;
@@ -315,6 +318,9 @@ namespace Shooter.Shared.Components
 
 		private void AddShot()
 		{
+			if (this.BaseComponent is Framework.Game.Server.ServerPlayer)
+				(this.BaseComponent as Framework.Game.Server.ServerPlayer).DoAttack();
+
 			var rd = new RandomNumberGenerator();
 			rd.Randomize();
 			var rotY = rd.RandfRange(-RecoilRotation.y, RecoilRotation.y);
@@ -335,6 +341,9 @@ namespace Shooter.Shared.Components
 
 			cameraRecoil += new Vector3(Mathf.Deg2Rad(RecoilCamera.x), Mathf.Deg2Rad(cameraRecoilY), Mathf.Deg2Rad(cameraRecoilZ));
 		}
+
+
+		public float playerHeadHeight = 1.5f;
 
 		public void ApplyNetworkState(PlayerWeaponPackage package)
 		{

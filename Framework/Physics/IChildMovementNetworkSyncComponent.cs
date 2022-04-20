@@ -27,15 +27,11 @@ namespace Framework.Physics
 {
     public interface IChildMovementNetworkSyncComponent : IChildNetworkSyncComponent<MovementNetworkCommand>
     {
-        /// <summary>
-        /// The movement processor for physics player movement
-        /// </summary>
-        /// <returns></returns>
-        public IMovementProcessor MovementProcessor { get; }
-
         public void setCrouchingLevel(float level);
         public Godot.Vector3 Velocity { get; set; }
         public void Move(float delta, Godot.Vector3 velocity);
         public bool IsOnGround();
+
+        public Godot.Vector3 Rotation { get; set; }
     }
 }

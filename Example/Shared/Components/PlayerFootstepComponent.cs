@@ -73,11 +73,11 @@ namespace Shooter.Shared.Components
         }
 
 
-
         public void Tick(float delta)
         {
             var body = this.BaseComponent.Components.Get<PlayerBodyComponent>();
-            if (body != null && !(this.BaseComponent is PuppetPlayer))
+
+            if (body != null && !this.IsPuppet())
             {
                 if (body.IsOnGround())
                 {
@@ -114,7 +114,7 @@ namespace Shooter.Shared.Components
         private FootStepsPackage LastFootStep;
         public void ApplyNetworkState(FootStepsPackage package)
         {
-            if (this.BaseComponent is PuppetPlayer)
+            if (this.IsPuppet())
             {
                 //stop directly for syncronisation
                 if (package.Equals(default(FootStepsPackage)))
@@ -188,31 +188,35 @@ namespace Shooter.Shared.Components
 
         private void CheckFootstep(PlayerBodyComponent body)
         {
-            var speed = (body.MovementProcessor as DefaultMovementProcessor).GetMovementSpeedFactor();
-            var minSpeed = (body.MovementProcessor as DefaultMovementProcessor).GetWalkingSpeed();
-            var velocity = (body.MovementProcessor as DefaultMovementProcessor).Velocity;
-
-            if (body.IsOnGround())
+            if (this.BaseComponent is PhysicsPlayer)
             {
-                if (velocity.Length() >= minSpeed && this.nextStepSound <= 0.0f)
+                var phyiscsPlayer = this.BaseComponent as PhysicsPlayer;
+                var speed = (phyiscsPlayer.MovementProcessor as DefaultMovementProcessor).GetMovementSpeedFactor();
+                var minSpeed = (phyiscsPlayer.MovementProcessor as DefaultMovementProcessor).GetWalkingSpeed();
+                var velocity = (phyiscsPlayer.MovementProcessor as DefaultMovementProcessor).Velocity;
+
+                if (body.IsOnGround())
                 {
-                    this.playFootstep();
-                    this.nextStepSound = 1.0f;
+                    if (velocity.Length() >= minSpeed && this.nextStepSound <= 0.0f)
+                    {
+                        this.playFootstep();
+                        this.nextStepSound = 1.0f;
+                    }
+                    else
+                    {
+                        var nextStepReduce = (float)this.GetPhysicsProcessDeltaTime() * speed * betweenStepMultiplier;
+                        this.nextStepSound -= nextStepReduce;
+                    }
+
+                    if (velocity.Length() < minSpeed)
+                    {
+                        this.Stop();
+                    }
                 }
                 else
                 {
-                    var nextStepReduce = (float)this.GetPhysicsProcessDeltaTime() * speed * betweenStepMultiplier;
-                    this.nextStepSound -= nextStepReduce;
+                    this.nextStepSound = 0.0f;
                 }
-
-                if (velocity.Length() < minSpeed)
-                {
-                    this.Stop();
-                }
-            }
-            else
-            {
-                this.nextStepSound = 0.0f;
             }
         }
 

@@ -18,18 +18,25 @@
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+using System.Collections.Generic;
+using Godot;
 namespace Framework.Input
 {
     /// <summary>
     /// Required interface for local players with input eg. shifting, crouching, moving, etc.
     /// </summary>
     /// <typeparam name="T">Required the IPlayerInput which is the network package and holds are pressed keys.</typeparam>
-    public interface IChildInputComponent : IChildComponent
+    public interface IInputProcessor
     {
         /// <summary>
         /// The current player input for the actualy local tick
         /// </summary>
         /// <returns></returns>
         public GeneralPlayerInput GetPlayerInput();
+
+        public List<string> AvaiableInputs { get; }
+
+        public Quaternion ViewRotation { get; set; }
+        public Dictionary<string, bool> GetKeys();
     }
 }
