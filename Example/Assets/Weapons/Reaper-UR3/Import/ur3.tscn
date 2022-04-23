@@ -1,0 +1,105 @@
+[gd_scene load_steps=17 format=3 uid="uid://bmu5rdskd1uhk"]
+
+[ext_resource type="ArrayMesh" uid="uid://bby5wckv6ixwm" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Cube039.res" id="1_occ8d"]
+[ext_resource type="ArrayMesh" uid="uid://c555u0mbvqyeb" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Cube042.res" id="2_1s4qd"]
+[ext_resource type="ArrayMesh" uid="uid://dndosc1hed05k" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Cube045.res" id="3_nrdo0"]
+[ext_resource type="ArrayMesh" uid="uid://doao2xt5pmcoy" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Cube036.res" id="4_chrqx"]
+[ext_resource type="ArrayMesh" uid="uid://5ss5yemsl3m2" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Cube044.res" id="5_x842y"]
+[ext_resource type="ArrayMesh" uid="uid://d31abs13vlg3d" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Cube040.res" id="6_g3dku"]
+[ext_resource type="ArrayMesh" uid="uid://cxku15t7fua" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle316.res" id="7_yhoq5"]
+[ext_resource type="ArrayMesh" uid="uid://cmxbmw77l7n4p" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle323.res" id="8_7m3a0"]
+[ext_resource type="ArrayMesh" uid="uid://dp0w3jlv1vf0r" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle314.res" id="9_whwf4"]
+[ext_resource type="ArrayMesh" uid="uid://biywrr3jnyehg" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle315.res" id="10_psx1y"]
+[ext_resource type="ArrayMesh" uid="uid://dt2w048n00ft4" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle324.res" id="11_tk4rx"]
+[ext_resource type="ArrayMesh" uid="uid://bhct76k3vsoak" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle318.res" id="12_f3fdv"]
+[ext_resource type="ArrayMesh" uid="uid://cv5bbsremt3t0" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle317.res" id="13_ualec"]
+[ext_resource type="ArrayMesh" uid="uid://qldos8171cap" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle320.res" id="14_3tger"]
+[ext_resource type="ArrayMesh" uid="uid://t5oetmbt6cct" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle319.res" id="15_qbytb"]
+[ext_resource type="ArrayMesh" uid="uid://cwph4g1je2g3y" path="res://Assets/Weapons/Reaper-UR3/Import/Meshes/untitled_Circle305.res" id="16_nx1nf"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="ScifiPistolNKK27FireSelect" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0704812, 0.0388592)
+gi_mode = 1
+mesh = ExtResource( "1_occ8d" )
+skeleton = NodePath("")
+
+[node name="ScifiPistolNKK27Magazine" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.96123, -0.275748, 0, 0.275748, 0.96123, 0, 0.005126, 0.000513)
+gi_mode = 1
+mesh = ExtResource( "2_1s4qd" )
+skeleton = NodePath("")
+
+[node name="ScifiPistolNKK27MagazineEmpty" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.96123, -0.275748, 0, 0.275748, 0.96123, 0, 0.005126, 0.000513)
+gi_mode = 1
+mesh = ExtResource( "3_nrdo0" )
+skeleton = NodePath("")
+
+[node name="ScifiPistolNKK27Receiver" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "4_chrqx" )
+skeleton = NodePath("")
+
+[node name="ScifiPistolNKK27Slide" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "5_x842y" )
+skeleton = NodePath("")
+
+[node name="ScifiPistolNKK27Trigger" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0691499, 0.0670608)
+gi_mode = 1
+mesh = ExtResource( "6_g3dku" )
+skeleton = NodePath("")
+
+[node name="StandardFlipIronsightBack" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "7_yhoq5" )
+skeleton = NodePath("")
+
+[node name="StandardFlipIronsightBackStatic" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "8_7m3a0" )
+skeleton = NodePath("")
+
+[node name="StandardFlipIronsightBase" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "9_whwf4" )
+skeleton = NodePath("")
+
+[node name="StandardFlipIronsightFront" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "10_psx1y" )
+skeleton = NodePath("")
+
+[node name="StandardFlipIronsightFrontStatic" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "11_tk4rx" )
+skeleton = NodePath("")
+
+[node name="StandardIronsightBack" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "12_f3fdv" )
+skeleton = NodePath("")
+
+[node name="StandardIronsightFront" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "13_ualec" )
+skeleton = NodePath("")
+
+[node name="StandardPicatinnyRailMedium" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "14_3tger" )
+skeleton = NodePath("")
+
+[node name="StandardPicatinnyRailSmall" type="MeshInstance3D" parent="."]
+gi_mode = 1
+mesh = ExtResource( "15_qbytb" )
+skeleton = NodePath("")
+
+[node name="StandardSilencer" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.100059, 0.30066)
+gi_mode = 1
+mesh = ExtResource( "16_nx1nf" )
+skeleton = NodePath("")

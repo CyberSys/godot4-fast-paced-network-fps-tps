@@ -10,7 +10,6 @@ resource_local_to_scene = true
 [node name="CharacterBody3D" type="CharacterBody3D"]
 script = ExtResource( "1_03w53" )
 ColliderPath = NodePath("CollisionShape3D")
-MeshBodyPaths = NodePath("MeshInstance3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource( "CapsuleShape3D_vro8r" )

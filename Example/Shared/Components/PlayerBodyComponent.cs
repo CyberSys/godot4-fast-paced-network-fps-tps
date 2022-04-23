@@ -9,8 +9,8 @@ using Framework.Physics.Commands;
 
 namespace Shooter.Shared.Components
 {
-    public partial class PlayerBodyComponent : NetworkPlayerBody
-    {
+	public partial class PlayerBodyComponent : NetworkPlayerBody
+	{
 
-    }
+	}
 }
