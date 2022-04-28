@@ -15,7 +15,9 @@ public abstract class PhysicsPlayer : NetworkPlayer
 | [LastInput](PhysicsPlayer/LastInput.md) { get; } | The last player input |
 | [MovementProcessor](PhysicsPlayer/MovementProcessor.md) { get; set; } | Movement processor |
 | [PlayerHeadHeight](PhysicsPlayer/PlayerHeadHeight.md) { get; set; } | Current player head height |
+| virtual [DetechtHit](PhysicsPlayer/DetechtHit.md)(…) | Detect an hit by given camera view |
 | [DoTeleport](PhysicsPlayer/DoTeleport.md)(…) | Teleport player to an given position |
+| virtual [OnHit](PhysicsPlayer/OnHit.md)(…) | Trigger when an player got an hit |
 
 ## See Also
 

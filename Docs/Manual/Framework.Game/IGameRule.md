@@ -14,6 +14,7 @@ public interface IGameRule
 | [AddComponentToLocalPlayer&lt;T&gt;](IGameRule/AddComponentToLocalPlayer.md)(…) | Add an component to an local player instance on client side |
 | [AddComponentToPuppetPlayer&lt;T&gt;](IGameRule/AddComponentToPuppetPlayer.md)(…) | Add an component to an server player instance |
 | [AddComponentToServerPlayer&lt;T&gt;](IGameRule/AddComponentToServerPlayer.md)(…) | Add an component to an server side player |
+| [OnHit](IGameRule/OnHit.md)(…) |  |
 | [OnNewPlayerJoined](IGameRule/OnNewPlayerJoined.md)(…) | Called on new player joined the game |
 | [OnPlayerLeave](IGameRule/OnPlayerLeave.md)(…) | Called when players finanly leave the game |
 | [OnPlayerLeaveTemporary](IGameRule/OnPlayerLeaveTemporary.md)(…) | Called when players are disconnected (as eg. timeouts) |

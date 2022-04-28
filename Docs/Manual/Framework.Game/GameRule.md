@@ -15,6 +15,7 @@ public class GameRule : IGameRule
 | [AddComponentToLocalPlayer&lt;T&gt;](GameRule/AddComponentToLocalPlayer.md)(…) |  |
 | [AddComponentToPuppetPlayer&lt;T&gt;](GameRule/AddComponentToPuppetPlayer.md)(…) |  |
 | [AddComponentToServerPlayer&lt;T&gt;](GameRule/AddComponentToServerPlayer.md)(…) |  |
+| virtual [OnHit](GameRule/OnHit.md)(…) | Trigger when an player got an hit |
 | virtual [OnNewPlayerJoined](GameRule/OnNewPlayerJoined.md)(…) |  |
 | virtual [OnPlayerLeave](GameRule/OnPlayerLeave.md)(…) |  |
 | virtual [OnPlayerLeaveTemporary](GameRule/OnPlayerLeaveTemporary.md)(…) |  |

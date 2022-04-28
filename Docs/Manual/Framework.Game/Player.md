@@ -3,7 +3,7 @@
 The general player class
 
 ```csharp
-public abstract class Player : Node, IPlayer
+public abstract class Player : Node3D, IPlayer
 ```
 
 ## Public Members
