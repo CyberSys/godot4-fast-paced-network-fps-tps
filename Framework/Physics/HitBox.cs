@@ -25,10 +25,14 @@ using Framework.Game;
 namespace Framework.Physics
 {
     /// <summary>
-    /// The hit result of an ray cast
+    /// Hit box collider
     /// </summary>
     public class HitBox : StaticBody3D
     {
+        /// <summary>
+        /// The name of the collider group
+        /// </summary>
+
         [Export]
         public string GroupName { get; set; }
 
