@@ -78,6 +78,14 @@ namespace Framework.Game
 
         }
 
+        /// <summary>
+        /// Trigger when an player got an hit
+        /// </summary>
+        public virtual void OnHit(RayCastHit player)
+        {
+
+        }
+
         /// <inheritdoc />
         public void AddComponentToServerPlayer<T>(IPlayer player) where T : IChildComponent
         {

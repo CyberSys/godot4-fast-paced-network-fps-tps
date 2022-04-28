@@ -52,6 +52,8 @@ namespace Framework.Game
         /// <param name="player"></param>
         public void OnNewPlayerJoined(IPlayer player);
 
+        public void OnHit(RayCastHit player);
+
         /// <summary>
         /// Called when player are rejoined the game (after previous disconnect)
         /// </summary>

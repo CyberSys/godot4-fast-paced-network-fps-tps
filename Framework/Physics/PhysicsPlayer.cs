@@ -21,7 +21,9 @@
 
 using Framework.Network;
 using Framework.Input;
-using Framework.Network;
+using Godot;
+using Framework.Game;
+using Framework.Network.Commands;
 
 namespace Framework.Physics
 {
@@ -100,6 +102,56 @@ namespace Framework.Physics
             }
 
             base.InternalTick(delta);
+        }
+
+        /// <summary>
+        /// Detect an hit by given camera view
+        /// </summary>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public virtual RayCastHit DetechtHit(float range)
+        {
+            var command = this.Body != null ? this.Body.GetNetworkState() : default(Physics.Commands.MovementNetworkCommand);
+            var currentTransform = new Godot.Transform3D(command.Rotation, command.Position);
+            var attackPosition = currentTransform.origin + Vector3.Up * this.PlayerHeadHeight + currentTransform.basis.x * 0.2f;
+            var attackTransform = new Godot.Transform3D(command.Rotation, attackPosition);
+
+            var raycast = new PhysicsRayQueryParameters3D();
+            raycast.From = attackTransform.origin;
+            raycast.To = attackTransform.origin + -attackTransform.basis.z * range;
+
+            var result = GetWorld3d().DirectSpaceState.IntersectRay(raycast);
+
+            if (result != null && result.Contains("position"))
+            {
+                var rayResult = new RayCastHit
+                {
+                    PlayerSource = this,
+                    To = (Vector3)result["position"],
+                    Collider = (Node)result["collider"],
+                    From = attackTransform.origin
+                };
+
+                if (rayResult.Collider is HitBox)
+                {
+                    var enemy = (rayResult.Collider as HitBox).GetPlayer();
+                    if (enemy != null && enemy is IPlayer)
+                    {
+                        rayResult.PlayerDestination = enemy;
+                    }
+                }
+
+                return rayResult;
+            }
+            else return null;
+        }
+
+        /// <summary>
+        /// Trigger when an player got an hit
+        /// </summary>
+        public virtual void OnHit(RayCastHit hit)
+        {
+
         }
     }
 }

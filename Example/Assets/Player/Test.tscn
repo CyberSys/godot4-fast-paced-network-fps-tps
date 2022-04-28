@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://besj16ll6cd06"]
+
+[ext_resource type="PackedScene" uid="uid://chg6fcwtp6278" path="res://Assets/Weapons/WeaponHolder.tscn" id="1_7lmro"]
+[ext_resource type="PackedScene" uid="uid://cbgxeb54rajyf" path="res://Assets/Player/PlayerBody.tscn" id="2_604uc"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Node3D" parent="." instance=ExtResource( "1_7lmro" )]
+
+[node name="CharacterBody3D" parent="." instance=ExtResource( "2_604uc" )]
+
+[node name="Camera3D" type="Camera3D" parent="."]

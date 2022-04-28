@@ -285,9 +285,6 @@ namespace Framework.Game.Server
             if (player.State != PlayerConnectionState.Initialized)
                 return;
 
-            //spawn the object
-            //    var obj = networkObjectManager.SpawnPlayerObject(0, type, position, orientation);
-
             Logger.LogDebug(this, "Get player attack for player " + player.Id);
 
             // First, rollback the state of all attackable entities (for now just players).
@@ -316,17 +313,28 @@ namespace Framework.Game.Server
             var currentState = player.ToNetworkState();
 
             // Now check for collisions.
-            var playerObjectHit = this.CheckHit(player, player.Body != null ? player.Body.GetNetworkState() : default(MovementNetworkCommand), range);
-
-            // Debugging.
-            foreach (var entry in this.Players)
+            var playerObjectHit = player.DetechtHit(range);
+            if (playerObjectHit != null)
             {
-                var otherPlayer = entry.Value as ServerPlayer;
-                if (otherPlayer.Id != player.Id)
+                if (this.ServerVars.Get<bool>("sv_raycast", true))
                 {
-                    // var component = otherPlayer.Components.Get
-                    //  Logger.LogDebug(this, $"Other player at ${otherPlayer.GlobalTransform.origin} for remote view tick ${remoteViewTick}");
+                    var raycastHit = new RaycastTest { from = playerObjectHit.From, to = playerObjectHit.To };
+                    Logger.LogDebug(this, "Found raycast at " + raycastHit.from + " => " + raycastHit.to);
+                    this.netService.SentMessageToAllSerialized<RaycastTest>(raycastHit);
                 }
+
+                if (playerObjectHit.PlayerDestination != null
+                    && playerObjectHit.PlayerDestination is PhysicsPlayer)
+                {
+                    Logger.LogDebug(this, $"Player ${player.Id} for remote view tick ${remoteViewTick} was hit Player ${playerObjectHit.PlayerDestination.Id}");
+                    (playerObjectHit.PlayerDestination as PhysicsPlayer).OnHit(playerObjectHit);
+                }
+                else if (playerObjectHit.Collider != null)
+                {
+                    Logger.LogDebug(this, $"Player ${player.Id} for remote view tick ${remoteViewTick} was hit ${playerObjectHit.Collider.Name}");
+                }
+
+                ActiveGameRule?.OnHit(playerObjectHit);
             }
 
             // Finally, revert all the players to their head state.
@@ -335,45 +343,6 @@ namespace Framework.Game.Server
                 var otherPlayer = entry.Value as ServerPlayer;
                 otherPlayer.ApplyNetworkState(head[entry.Key]);
             }
-
-            // Apply the result of the this.
-            if (playerObjectHit != null)
-            {
-                Logger.LogDebug(this, "Registering authoritative player hit");
-                //attack.AddForceToPlayer(playerObjectHit.GetComponent<CPMPlayerController>());
-                // return true;
-
-            }
-            else
-            {
-                Logger.LogDebug(this, "Cant found player hit");
-            }
-
-            //   return false;
-        }
-
-        internal object CheckHit(ServerPlayer player, Physics.Commands.MovementNetworkCommand command, float range)
-        {
-            var currentTransform = new Godot.Transform3D(command.Rotation, command.Position);
-            var attackPosition = currentTransform.origin + Vector3.Up * player.PlayerHeadHeight + currentTransform.basis.x * 0.2f;
-            var attackTransform = new Godot.Transform3D(command.Rotation, attackPosition);
-
-            var raycast = new PhysicsRayQueryParameters3D();
-            raycast.From = attackTransform.origin;
-            raycast.To = attackTransform.origin + -attackTransform.basis.z * range;
-
-            var result = GetWorld3d().DirectSpaceState.IntersectRay(raycast);
-            if (result != null && result.Contains("position"))
-            {
-                if (this.ServerVars.Get<bool>("sv_raycast", true))
-                {
-                    var raycastHit = new RaycastTest { from = attackTransform.origin, to = (Vector3)result["position"] };
-                    Logger.LogDebug(this, "Found raycast at " + raycastHit.from + " => " + raycastHit.to);
-                    this.netService.SentMessageToAllSerialized<RaycastTest>(raycastHit);
-                }
-
-            }
-            return result;
         }
 
         /// <inheritdoc />  
