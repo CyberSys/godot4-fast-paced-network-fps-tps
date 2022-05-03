@@ -18,7 +18,7 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Client-side prediction of player entities
 - Client-side interpolation of remote entities
 - Backwards reconciliation and replay
-- Server standlone
+- Server standalone
 - Real-time adjustment of client simulation speed to optimize server's input buffer (Overwatch's method).
 - Server-side lag compensation
 - Full godot server implementation with disabled 3d
