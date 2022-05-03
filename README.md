@@ -8,6 +8,12 @@ Totaly written in c#. No gdscript, because its sucks hard for oop.
 
 Check [documentation here](Docs/Manual/Framework.md)
 
+# Usage Keys
+- F1 -> Switch between TPS and FPS View
+- F5 -> (Switch and enable the gui and input for the next client window)
+- F6 -> Add another client window to the split screen
+- ESC -> (In game settings menu)
+
 # Network features
 - Client-side prediction of player entities
 - Client-side interpolation of remote entities
@@ -35,7 +41,7 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Full implemented TPS and FPS Movement (Quake style)
 - Crouching
 - Customizeable and extendable movement
-- (TODO) Animation network sync
+- (WIP) Animation network sync
 
 # Extensions
 - Hitscan weapons
@@ -60,7 +66,6 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Component system (for extending characters and game world)
 - Registration services (Full threaded services like Networking)
 - Async world loader
-- (TODO) Async mesh loader
 
 # Utils
 - Simple logging
@@ -69,5 +74,6 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Docker image for linux
 - Batch scripts for linux
 
-![Network Test preview](https://i.ibb.co/CKZ8nLj/net-preview.png "Network Test preview")
-
+![Debug Server View](Docs/Screenshots/DebugServerPosition.jpg "Debug Server View")
+![Split Screen](Docs/Screenshots/SplitScreen.jpg "Split Screen")
+![Ingame Menu](Docs/Screenshots/IngameMenu.jpg "Ingame Menu")

@@ -57,6 +57,7 @@ namespace Framework.Physics
         internal DoubleBuffer<Vector3> positionBuffer = new DoubleBuffer<Vector3>();
         internal float tempRotX = 0.0f;
         internal float tempRotY = 0.0f;
+        internal float tempRotZ = 0.0f;
         internal float tempYaw = 0.0f;
         internal float tempPitch = 0.0f;
 
@@ -77,6 +78,7 @@ namespace Framework.Physics
         /// </summary>
         [Export]
         public float TPSCameraHeight = 0.5f;
+
 
         /// <summary>
         /// The Camera Radis
@@ -121,12 +123,21 @@ namespace Framework.Physics
 
             this.tempRotX = rotation.x;
             this.tempRotY = rotation.y;
+            this.tempRotZ = rotation.z;
+        }
+
+
+        public void AddRotation(Vector3 rotation)
+        {
+            this.tempRotX += Mathf.Deg2Rad(rotation.x);
+            this.tempRotY += Mathf.Deg2Rad(rotation.y);
+            this.tempRotZ += Mathf.Deg2Rad(rotation.z);
         }
 
         /// <inheritdoc />
-        public override void _PhysicsProcess(float delta)
+        public override void _Process(float delta)
         {
-            base._PhysicsProcess(delta);
+            base._Process(delta);
 
             if (!this.IsLocal())
                 return;

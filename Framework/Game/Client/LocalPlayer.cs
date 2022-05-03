@@ -22,6 +22,7 @@
 using Framework.Network.Commands;
 using Framework.Input;
 using Framework.Physics;
+using Godot;
 
 namespace Framework.Game.Client
 {
@@ -77,5 +78,6 @@ namespace Framework.Game.Client
         /// </summary>
         /// <value></value>
         public GeneralPlayerInput LastInput { get; set; }
+
     }
 }

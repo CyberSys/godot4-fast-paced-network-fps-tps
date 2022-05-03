@@ -26,6 +26,12 @@ namespace Shooter.Client.UI.Welcome
         public NodePath PackageDataPath { get; set; }
 
         [Export]
+        public NodePath IdleTimePath { get; set; }
+
+        [Export]
+        public NodePath PhysicsTimePath { get; set; }
+
+        [Export]
         public float updateTimeLabel = 0.5f;
 
         private float currentUpdateTime = 0f;
@@ -52,10 +58,13 @@ namespace Shooter.Client.UI.Welcome
                     this.GetNode<Label>(this.PackageDataPath).Text = "Send: " + (netService.BytesSended / 1000) + "kB/s, " + "Rec: " + (netService.BytesReceived / 1000) + "kB/s";
                     this.GetNode<Label>(this.PackageLoosePath).Text = netService.PackageLoss + " (" + netService.PackageLossPercent + "%" + ")";
                     this.GetNode<Label>(this.PingPath).Text = netService.Ping.ToString() + "ms";
-
                 }
 
-                this.GetNode<Label>(this.FPSPath).Text = Engine.GetFramesPerSecond().ToString() + " (" + Math.Round(delta, 3) + "ms)";
+                this.GetNode<Label>(this.FPSPath).Text = Engine.GetFramesPerSecond().ToString();
+
+                this.GetNode<Label>(this.IdleTimePath).Text = Math.Round(this.GetProcessDeltaTime() * 1000, 6) + "ms";
+                this.GetNode<Label>(this.PhysicsTimePath).Text = Math.Round(this.GetPhysicsProcessDeltaTime() * 1000, 6) + "ms";
+
                 currentUpdateTime = 0f;
             }
             else

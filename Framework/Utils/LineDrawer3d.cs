@@ -26,6 +26,10 @@ namespace Framework.Utils
         {
             base._EnterTree();
             this.Mesh = new ImmediateMesh();
+            var mat = new StandardMaterial3D();
+            mat.AlbedoColor = Colors.Red;
+            mat.CullMode = BaseMaterial3D.CullModeEnum.Disabled;
+            this.MaterialOverride = mat;
         }
 
         public override void _Process(float delta)

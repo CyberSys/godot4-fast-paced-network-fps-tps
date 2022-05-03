@@ -13,6 +13,8 @@ FPSPath = NodePath("VBoxContainer/HBoxContainer/FPSContainer/FPS")
 PingPath = NodePath("VBoxContainer/HBoxContainer/PingContainer/Ping")
 PackageLoosePath = NodePath("VBoxContainer/HBoxContainer/PackageLooseContainer/PackageLoose")
 PackageDataPath = NodePath("VBoxContainer/HBoxContainer/PackageData/PackageData")
+IdleTimePath = NodePath("VBoxContainer/HBoxContainer/IdleTimeContainer/IdleTime")
+PhysicsTimePath = NodePath("VBoxContainer/HBoxContainer/PhysicsTimeContainer/PhysicsTime")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 40.0
@@ -20,7 +22,7 @@ offset_bottom = 40.0
 theme = SubResource( "Theme_15dj5" )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-offset_right = 122.0
+offset_right = 194.0
 offset_bottom = 17.0
 
 [node name="FPSContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -38,9 +40,41 @@ offset_top = 1.0
 offset_right = 22.0
 offset_bottom = 15.0
 
-[node name="PingContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="PhysicsTimeContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
 offset_left = 26.0
-offset_right = 52.0
+offset_right = 67.0
+offset_bottom = 17.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PhysicsTimeContainer"]
+offset_right = 36.0
+offset_bottom = 17.0
+text = "Physics"
+
+[node name="PhysicsTime" type="Label" parent="VBoxContainer/HBoxContainer/PhysicsTimeContainer"]
+offset_left = 40.0
+offset_top = 1.0
+offset_right = 41.0
+offset_bottom = 15.0
+
+[node name="IdleTimeContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+offset_left = 71.0
+offset_right = 94.0
+offset_bottom = 17.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/IdleTimeContainer"]
+offset_right = 18.0
+offset_bottom = 17.0
+text = "Idle"
+
+[node name="IdleTime" type="Label" parent="VBoxContainer/HBoxContainer/IdleTimeContainer"]
+offset_left = 22.0
+offset_top = 1.0
+offset_right = 23.0
+offset_bottom = 15.0
+
+[node name="PingContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+offset_left = 98.0
+offset_right = 124.0
 offset_bottom = 17.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PingContainer"]
@@ -55,8 +89,8 @@ offset_right = 26.0
 offset_bottom = 15.0
 
 [node name="PackageLooseContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
-offset_left = 56.0
-offset_right = 90.0
+offset_left = 128.0
+offset_right = 162.0
 offset_bottom = 17.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PackageLooseContainer"]
@@ -71,8 +105,8 @@ offset_right = 34.0
 offset_bottom = 15.0
 
 [node name="PackageData" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
-offset_left = 94.0
-offset_right = 122.0
+offset_left = 166.0
+offset_right = 194.0
 offset_bottom = 17.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PackageData"]
@@ -88,7 +122,7 @@ offset_bottom = 15.0
 
 [node name="LogMessageContainer" type="HBoxContainer" parent="VBoxContainer"]
 offset_top = 21.0
-offset_right = 122.0
+offset_right = 194.0
 offset_bottom = 35.0
 
 [node name="LogMessage" type="Label" parent="VBoxContainer/LogMessageContainer"]

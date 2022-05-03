@@ -23,6 +23,8 @@ using Framework.Physics;
 using Godot;
 using System;
 using Framework.Physics.Commands;
+using Framework.Game.Client;
+using Framework.Network.Commands;
 
 namespace Framework.Network
 {
@@ -107,13 +109,66 @@ namespace Framework.Network
             };
         }
 
+        private MeshInstance3D debugMesh;
+        private MeshInstance3D debugMeshLocal;
+
+        private void CreateDebugMesh()
+        {
+            var shape = this.GetShape();
+            if (shape != null && shape.Shape != null && shape.Shape is CapsuleShape3D)
+            {
+                var radShape = shape.Shape as CapsuleShape3D;
+                var cpsule = new CapsuleMesh();
+                cpsule.Radius = radShape.Radius;
+                cpsule.Height = radShape.Height;
+
+                var mat = new StandardMaterial3D();
+                mat.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
+                var color = Colors.Red;
+                color.a = 0.3f;
+                mat.AlbedoColor = color;
+
+                var debugMeshLocalMat = new StandardMaterial3D();
+                debugMeshLocalMat.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
+                var colorLocal = Colors.Green;
+                colorLocal.a = 0.3f;
+                debugMeshLocalMat.AlbedoColor = colorLocal;
+
+                var mesh = new MeshInstance3D();
+                mesh.Mesh = cpsule;
+                mesh.MaterialOverride = mat;
+                mesh.Name = "DebugMesh";
+                mesh.Visible = false;
+
+                var meshLocal = new MeshInstance3D();
+                meshLocal.Mesh = cpsule;
+                meshLocal.MaterialOverride = debugMeshLocalMat;
+                meshLocal.Name = "DebugMeshLocal";
+                meshLocal.Visible = false;
+
+                this.AddChild(mesh);
+                this.AddChild(meshLocal);
+
+                this.debugMesh = mesh;
+                this.debugMeshLocal = meshLocal;
+            }
+        }
+
+        /// <summary>
+        /// Get the shape of the player body
+        /// </summary>
+        /// <returns></returns>
+        public CollisionShape3D GetShape()
+        {
+            return this.GetNodeOrNull<CollisionShape3D>(ColliderPath); ;
+        }
+
         /// <inheritdoc />
         public override void _EnterTree()
         {
             base._EnterTree();
 
-            this.shape = this.GetNodeOrNull<CollisionShape3D>(ColliderPath);
-
+            this.shape = this.GetShape();
             float shapeHeight = 0;
 
             if (shape != null)
@@ -138,6 +193,12 @@ namespace Framework.Network
             this.shapeHeight = shapeHeight;
             this.currentCouchLevel = shapeHeight;
             this.previousCrouchLevel = shapeHeight;
+
+
+            if (this.BaseComponent is LocalPlayer)
+            {
+                this.CreateDebugMesh();
+            }
         }
 
         /// <summary>
@@ -153,6 +214,31 @@ namespace Framework.Network
         public override void _Process(float delta)
         {
             base._Process(delta);
+
+            if (this.IsLocal() && this.debugMesh != null && this.debugMeshLocal != null)
+            {
+                var activated = ClientSettings.Variables.Get<bool>("cl_debug_server", false);
+                if (!activated)
+                {
+                    this.debugMeshLocal.Visible = false;
+                    this.debugMesh.Visible = false;
+                }
+                else
+                {
+                    var state = (this.BaseComponent as LocalPlayer).incomingLocalPlayerState;
+                    if (!default(PlayerState).Equals(state))
+                    {
+                        var incomingStateDecompose = state.BodyComponent;
+                        this.debugMeshLocal.Visible = activated;
+                        this.debugMesh.Visible = activated;
+
+                        var gt = this.debugMesh.GlobalTransform;
+                        gt.origin = incomingStateDecompose.Position;
+                        gt.basis = new Basis(incomingStateDecompose.Rotation);
+                        this.debugMesh.GlobalTransform = gt;
+                    }
+                }
+            }
 
             if (this.IsLocal())
             {

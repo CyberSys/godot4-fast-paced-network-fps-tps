@@ -80,7 +80,7 @@ namespace Framework.Physics
         /// <summary>
         /// Current player head height
         /// </summary>
-        public float PlayerHeadHeight { get; set; } = 1.5f;
+        public float PlayerHeadHeight { get; set; } = 0.5f;
 
 
         /// <summary>
@@ -131,13 +131,18 @@ namespace Framework.Physics
         /// <returns></returns>
         public virtual RayCastHit DetechtHit(float range)
         {
+            var headViewRotation = this.LastInput.ViewDirection;
+            var basis = new Basis(headViewRotation);
+
             var command = this.Body != null ? this.Body.GetNetworkState() : default(Physics.Commands.MovementNetworkCommand);
-            var currentTransform = new Godot.Transform3D(command.Rotation, command.Position);
-            var attackPosition = currentTransform.origin + Vector3.Up * this.PlayerHeadHeight + currentTransform.basis.x * 0.2f;
-            var attackTransform = new Godot.Transform3D(command.Rotation, attackPosition);
+            var currentTransform = new Godot.Transform3D(basis, command.Position);
+
+            var attackPosition = currentTransform.origin + Vector3.Up * this.PlayerHeadHeight;
+            var attackTransform = new Godot.Transform3D(basis, attackPosition);
+            var attackTransformFrom = new Godot.Transform3D(command.Rotation, attackPosition);
 
             var raycast = new PhysicsRayQueryParameters3D();
-            raycast.From = attackTransform.origin;
+            raycast.From = attackTransformFrom.origin;
             raycast.To = attackTransform.origin + -attackTransform.basis.z * range;
 
             var result = GetWorld3d().DirectSpaceState.IntersectRay(raycast);
@@ -154,11 +159,14 @@ namespace Framework.Physics
 
                 if (rayResult.Collider is HitBox)
                 {
+
                     var enemy = (rayResult.Collider as HitBox).GetPlayer();
+
                     if (enemy != null && enemy is IPlayer)
                     {
                         rayResult.PlayerDestination = enemy;
                     }
+
                 }
 
                 return rayResult;

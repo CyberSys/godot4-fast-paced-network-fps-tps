@@ -46,9 +46,9 @@ namespace Framework.Game.Client
         {
            { "cl_sensitivity_x", "2.0"},
            { "cl_sensitivity_y", "2.0"},
+           { "cl_debug_server", "true"},
 
            { "cl_fov", "70"},
-
 
            { "cl_resolution", "640x480"},
            { "cl_draw_shadow", "SoftLow"},

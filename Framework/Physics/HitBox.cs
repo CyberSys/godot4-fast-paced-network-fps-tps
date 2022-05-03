@@ -57,17 +57,19 @@ namespace Framework.Physics
 
         internal IPlayer FindPlayer(Node n)
         {
-            if (n is IPlayer)
+            if (n is Framework.Game.Player)
             {
-                return n as IPlayer;
+                return n as Framework.Game.Player;
             }
-            else if (this.GetParent() != null && this.GetParent() is Viewport)
+
+            var parent = n.GetParent();
+            if (parent == null || parent is Viewport)
             {
                 return null;
             }
-            else if (this.GetParent() != null && this.GetParent() is Node)
+            else if (parent is Node)
             {
-                return this.FindPlayer(this.GetParent() as Node);
+                return this.FindPlayer(parent as Node);
             }
             else
             {
