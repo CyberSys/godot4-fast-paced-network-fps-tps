@@ -10,6 +10,7 @@ public abstract class PhysicsPlayer : NetworkPlayer
 
 | name | description |
 | --- | --- |
+| [PhysicsPlayer](PhysicsPlayer/PhysicsPlayer.md)() | The default constructor. |
 | [Camera](PhysicsPlayer/Camera.md) { get; set; } | The player camera component |
 | [InputProcessor](PhysicsPlayer/InputProcessor.md) { get; set; } | Contains the input proecessor |
 | [LastInput](PhysicsPlayer/LastInput.md) { get; } | The last player input |

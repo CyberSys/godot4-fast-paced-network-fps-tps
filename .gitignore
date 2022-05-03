@@ -6,6 +6,7 @@
 .mono/
 # Binaries
 bin
+*.fbx
 build
 lib
 git_api.gdnlib

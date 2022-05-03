@@ -1,13 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://d1qdqf3kjk11e"]
+[gd_scene load_steps=2 format=3 uid="uid://d1qdqf3kjk11e"]
 
-[ext_resource type="Script" path="res://Server/MyServerLogic.cs" id="1_1aggm"]
 [ext_resource type="Script" path="res://BootloaderMultiView.cs" id="1_4f88v"]
-[ext_resource type="Script" path="res://Client/MyClientLogic.cs" id="2_t5ic5"]
 
 [node name="Node" type="Node"]
 process_mode = 3
 script = ExtResource( "1_4f88v" )
-viewSlot1 = [NodePath("VSplitContainer/HSplitContainer/Slot1/ServerViewport"), NodePath("VSplitContainer/HSplitContainer/Slot2/ClientViewport"), NodePath("VSplitContainer/HSplitContainer2/Slot3/ClientViewport")]
+rootContainerPath = NodePath("VSplitContainer")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 anchor_right = 1.0
@@ -17,79 +15,3 @@ grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 metadata/_edit_use_custom_anchors = false
-
-[node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
-offset_right = 1280.0
-offset_bottom = 720.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 3
-
-[node name="Slot1" type="SubViewportContainer" parent="VSplitContainer/HSplitContainer"]
-visible = false
-minimum_size = Vector2(100, 100)
-offset_right = 506.0
-offset_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch = true
-
-[node name="ServerViewport" type="SubViewport" parent="VSplitContainer/HSplitContainer/Slot1"]
-process_mode = 3
-disable_3d = true
-handle_input_locally = false
-canvas_item_default_texture_filter = 0
-gui_disable_input = true
-shadow_atlas_size = 0
-shadow_atlas_16_bits = false
-shadow_atlas_quad_0 = 0
-shadow_atlas_quad_1 = 0
-shadow_atlas_quad_2 = 0
-shadow_atlas_quad_3 = 0
-size = Vector2i(800, 600)
-render_target_update_mode = 0
-script = ExtResource( "1_1aggm" )
-
-[node name="Slot2" type="SubViewportContainer" parent="VSplitContainer/HSplitContainer"]
-minimum_size = Vector2(100, 100)
-offset_right = 1280.0
-offset_bottom = 720.0
-size_flags_horizontal = 3
-stretch = true
-
-[node name="ClientViewport" type="SubViewport" parent="VSplitContainer/HSplitContainer/Slot2"]
-own_world_3d = true
-handle_input_locally = false
-msaa = 2
-screen_space_aa = 1
-use_occlusion_culling = true
-size = Vector2i(1280, 720)
-render_target_update_mode = 4
-script = ExtResource( "2_t5ic5" )
-
-[node name="HSplitContainer2" type="HSplitContainer" parent="VSplitContainer"]
-visible = false
-offset_top = 366.0
-offset_right = 1280.0
-offset_bottom = 720.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 3
-
-[node name="Slot3" type="SubViewportContainer" parent="VSplitContainer/HSplitContainer2"]
-minimum_size = Vector2(100, 100)
-offset_right = 1280.0
-offset_bottom = 354.0
-size_flags_horizontal = 3
-stretch = true
-
-[node name="ClientViewport" type="SubViewport" parent="VSplitContainer/HSplitContainer2/Slot3"]
-own_world_3d = true
-handle_input_locally = false
-msaa = 2
-screen_space_aa = 1
-use_occlusion_culling = true
-physics_object_picking = true
-size = Vector2i(1280, 354)
-render_target_update_mode = 0
-script = ExtResource( "2_t5ic5" )

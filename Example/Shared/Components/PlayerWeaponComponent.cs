@@ -35,6 +35,9 @@ namespace Shooter.Shared.Components
 		NodePath weaponIdlePath;
 
 		[Export]
+		NodePath cameraPath;
+
+		[Export]
 		NodePath weaponSwayPath;
 
 		[Export]
@@ -129,7 +132,6 @@ namespace Shooter.Shared.Components
 		private Node3D swayNodePos;
 		private Node3D swayIdle;
 		private Node3D swayRot;
-
 		public override void _EnterTree()
 		{
 			base._EnterTree();
@@ -160,6 +162,9 @@ namespace Shooter.Shared.Components
 				var player = this.BaseComponent as PhysicsPlayer;
 				if (player.Camera != null)
 				{
+					// hide on tps camera mode
+					this.Visible = (player.Camera.Mode == CameraMode.FPS);
+
 					// apply camera transform
 					this.GlobalTransform = player.Camera.GlobalTransform;
 					this.HandleRecoil(player, delta);
@@ -192,7 +197,9 @@ namespace Shooter.Shared.Components
 			RotCamera = RotCamera.Lerp(cameraRecoil, rotationCameraSpeed * delta);
 
 			if (player.Camera != null)
+			{
 				player.Camera.Rotation += RotCamera;
+			}
 		}
 
 		private void SwayWalk(float delta)

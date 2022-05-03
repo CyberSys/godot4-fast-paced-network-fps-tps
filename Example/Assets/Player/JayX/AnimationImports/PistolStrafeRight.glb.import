@@ -1,0 +1,37 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://ct6lw8q23526f"
+path="res://.godot/imported/PistolStrafeRight.glb-b903d891b47c9622a01c75da8896ee1c.scn"
+
+[deps]
+
+source_file="res://Assets/Player/JayX/AnimationImports/PistolStrafeRight.glb"
+dest_files=["res://.godot/imported/PistolStrafeRight.glb-b903d891b47c9622a01c75da8896ee1c.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.1
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+import_script/path=""
+_subresources={
+"animations": {
+"Armature|mixamocom|Layer0": {
+"save_to_file/enabled": true,
+"save_to_file/keep_custom_tracks": "",
+"save_to_file/path": "res://Assets/Player/JayX/Animations/PistoleStayStrafeRight.res",
+"settings/loop_mode": 1
+}
+}
+}

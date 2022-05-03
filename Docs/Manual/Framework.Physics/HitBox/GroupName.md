@@ -1,5 +1,7 @@
 # HitBox.GroupName property
 
+The name of the collider group
+
 ```csharp
 public string GroupName { get; set; }
 ```

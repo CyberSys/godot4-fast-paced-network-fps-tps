@@ -36,11 +36,5 @@ namespace Framework.Game
         /// </summary>
         /// <value></value>
         public TypeDictonary<IService> Services { get; }
-
-        /// <summary>
-        /// The async map loader 
-        /// </summary>
-        /// <value></value>
-        public AsyncLoader MapLoader { get; }
     }
 }

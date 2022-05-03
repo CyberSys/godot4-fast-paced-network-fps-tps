@@ -30,6 +30,12 @@ namespace Framework.Utils
     /// </summary>
     public class AsyncLoader
     {
+        /// <summary>
+        /// The static async loader
+        /// </summary>
+        /// <returns></returns>
+        public static Framework.Utils.AsyncLoader Loader { get; private set; } = new Utils.AsyncLoader();
+
         /// <inheritdoc/>
         internal class LoadingRequest
         {
@@ -68,7 +74,7 @@ namespace Framework.Utils
         /// </summary>
         public void Tick()
         {
-            if (resourceLoader.Count > 0)
+            if (resourceLoader.Count > 0 && this.currentResource == null)
             {
                 this.currentResource = resourceLoader.Dequeue();
 

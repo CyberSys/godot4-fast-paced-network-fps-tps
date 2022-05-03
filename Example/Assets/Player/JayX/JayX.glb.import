@@ -1,0 +1,253 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://bioxbxpivp51t"
+path="res://.godot/imported/JayX.glb-86936952178bced9f0c3b993c1c97fca.scn"
+
+[deps]
+
+source_file="res://Assets/Player/JayX/JayX.glb"
+dest_files=["res://.godot/imported/JayX.glb-86936952178bced9f0c3b993c1c97fca.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.1
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+import_script/path=""
+_subresources={
+"animations": {
+"Armature|mixamocom|Layer0": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Animations/TPose.res",
+"settings/loop_mode": 1
+}
+},
+"materials": {
+"Body": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Player/JayX/Materials/Body.tres"
+},
+"EyeColor": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Player/JayX/Materials/EyeColor.tres"
+},
+"Head": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Player/JayX/Materials/Head.tres"
+},
+"Helmet": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Player/JayX/Materials/Helmet.tres"
+},
+"Jacket": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Player/JayX/Materials/Jacket.tres"
+},
+"PantsFabric": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Player/JayX/Materials/PantsFabric.tres"
+},
+"RobotArm": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Player/JayX/Materials/RobotArm.tres"
+},
+"Shirt": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Player/JayX/Materials/Shirt.tres"
+}
+},
+"meshes": {
+"JayX_Jacketholes_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_Jacketholes_low.res"
+},
+"JayX_Pants_boot_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_Pants_boot_low.res"
+},
+"JayX_Pants_pants_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_Pants_pants_low.res"
+},
+"JayX_Pants_pantsbeltbuckle_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_Pants_pantsbeltbuckle_low.res"
+},
+"JayX_Pants_pantsholes_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_Pants_pantsholes_low.res"
+},
+"JayX_body_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_body_low.res"
+},
+"JayX_eye_l_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_eye_l_low.res"
+},
+"JayX_eye_r_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_eye_r_low.res"
+},
+"JayX_head_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_head_low.res"
+},
+"JayX_helmetback_02_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetback_02_low.res"
+},
+"JayX_helmetback_03_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetback_03_low.res"
+},
+"JayX_helmetback_05_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetback_05_low.res"
+},
+"JayX_helmetback_06_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetback_06_low.res"
+},
+"JayX_helmetbottom_a_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetbottom_a_low.res"
+},
+"JayX_helmeteyeborder_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmeteyeborder_low.res"
+},
+"JayX_helmeteyeglass_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmeteyeglass_low.res"
+},
+"JayX_helmetfront_01_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetfront_01_low.res"
+},
+"JayX_helmetfront_02_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetfront_02_low.res"
+},
+"JayX_helmetfront_03A_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetfront_03A_low.res"
+},
+"JayX_helmetfront_03B_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetfront_03B_low.res"
+},
+"JayX_helmetfront_04_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetfront_04_low.res"
+},
+"JayX_helmetfront_05_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetfront_05_low.res"
+},
+"JayX_helmetfront_06_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetfront_06_low.res"
+},
+"JayX_helmetfront_07_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetfront_07_low.res"
+},
+"JayX_helmetgoggles_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetgoggles_low.res"
+},
+"JayX_helmetgogglessupport_01_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetgogglessupport_01_low.res"
+},
+"JayX_helmetgogglessupport_02_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetgogglessupport_02_low.res"
+},
+"JayX_helmetgogglessupport_03_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetgogglessupport_03_low.res"
+},
+"JayX_helmetside_01_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetside_01_low.res"
+},
+"JayX_helmetside_02_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetside_02_low.res"
+},
+"JayX_helmetside_03_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetside_03_low.res"
+},
+"JayX_helmetside_04_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetside_04_low.res"
+},
+"JayX_helmetside_05_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetside_05_low.res"
+},
+"JayX_helmetside_06_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmetside_06_low.res"
+},
+"JayX_helmettop_02_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmettop_02_low.res"
+},
+"JayX_helmettop_03_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmettop_03_low.res"
+},
+"JayX_helmettop_04_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_helmettop_04_low.res"
+},
+"JayX_jacket_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_jacket_low.res"
+},
+"JayX_jacketbuckle_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_jacketbuckle_low.res"
+},
+"JayX_jacketcollar_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_jacketcollar_low.res"
+},
+"JayX_jacketemblem_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_jacketemblem_low.res"
+},
+"JayX_neckaddons_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_neckaddons_low.res"
+},
+"JayX_pantsholes_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_pantsholes_low.res"
+},
+"JayX_toptank_low": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Assets/Player/JayX/Meshes/JayX_toptank_low.res"
+}
+},
+"nodes": {
+"PATH:AnimationPlayer": {
+"import/skip_import": true
+}
+}
+}

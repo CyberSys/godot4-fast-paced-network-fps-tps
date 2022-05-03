@@ -11,6 +11,7 @@ public class AsyncLoader
 | name | description |
 | --- | --- |
 | [AsyncLoader](AsyncLoader/AsyncLoader.md)() | The default constructor. |
+| static [Loader](AsyncLoader/Loader.md) { get; } | The static async loader |
 | event [OnProgress](AsyncLoader/OnProgress.md) |  |
 | [LoadResource](AsyncLoader/LoadResource.md)(…) |  |
 | [Tick](AsyncLoader/Tick.md)() | Brings the async loader to the next state. Binded on your _Process Method |

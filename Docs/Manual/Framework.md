@@ -114,7 +114,7 @@
 | --- | --- |
 | enum [CameraMode](./Framework.Physics/CameraMode.md) | The camera mode for the player camera |
 | class [DefaultMovementProcessor](./Framework.Physics/DefaultMovementProcessor.md) | An default movement calculator Handles friction, air control, jumping and accelerate |
-| class [HitBox](./Framework.Physics/HitBox.md) | The hit result of an ray cast |
+| class [HitBox](./Framework.Physics/HitBox.md) | Hit box collider |
 | interface [IMovementProcessor](./Framework.Physics/IMovementProcessor.md) | The required interface for movement processors |
 | class [InterpolationController](./Framework.Physics/InterpolationController.md) | Helper class for interpolations by ticks |
 | abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) | The base class for physics based players (kinematic, rigid..) |

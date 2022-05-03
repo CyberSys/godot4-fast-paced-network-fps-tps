@@ -3,13 +3,14 @@
 Constrcutor for an assignable component
 
 ```csharp
-public AssignedComponent(Type NodeType, string ResourcePath = null)
+public AssignedComponent(Type NodeType, string ResourcePath = null, string ScriptPath = null)
 ```
 
 | parameter | description |
 | --- | --- |
 | NodeType | The type of the child node which be injected to an remote base component (eg. player) |
 | ResourcePath | The resourcepath (if exist) to the resource which will be injected |
+| ScriptPath | The c# script path (if exist) to the resource which will be injected |
 
 ## See Also
 

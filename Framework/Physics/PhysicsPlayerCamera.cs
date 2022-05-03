@@ -1,3 +1,4 @@
+using System;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -56,6 +57,8 @@ namespace Framework.Physics
         internal DoubleBuffer<Vector3> positionBuffer = new DoubleBuffer<Vector3>();
         internal float tempRotX = 0.0f;
         internal float tempRotY = 0.0f;
+        internal float tempYaw = 0.0f;
+        internal float tempPitch = 0.0f;
 
         /// <summary>
         /// The base component of the child component
@@ -73,7 +76,13 @@ namespace Framework.Physics
         /// The Camera Distance from the character in TPS Mode
         /// </summary>
         [Export]
-        public float TPSCameraDistance = 4f;
+        public float TPSCameraHeight = 0.5f;
+
+        /// <summary>
+        /// The Camera Radis
+        /// </summary>
+        [Export]
+        public float TPSCameraRadius = 1.7f;
 
         /// <summary>
         /// The Camera Offset for the FPS Mode
@@ -97,7 +106,7 @@ namespace Framework.Physics
                 var local = this.BaseComponent as LocalPlayer;
                 if (local.Body != null)
                 {
-                    var targetPos = local.Body.Transform.origin + FPSCameraOffset + Vector3.Up * local.Body.GetShapeHeight();
+                    var targetPos = local.Body.GlobalTransform.origin + FPSCameraOffset + Vector3.Up * local.Body.GetShapeHeight();
                     positionBuffer.Push(targetPos);
                 }
             }
@@ -108,15 +117,17 @@ namespace Framework.Physics
         {
             base._EnterTree();
 
-            var rotation = this.Transform.basis.GetEuler();
+            var rotation = this.GlobalTransform.basis.GetEuler();
 
             this.tempRotX = rotation.x;
             this.tempRotY = rotation.y;
         }
 
         /// <inheritdoc />
-        public override void _Process(float delta)
+        public override void _PhysicsProcess(float delta)
         {
+            base._PhysicsProcess(delta);
+
             if (!this.IsLocal())
                 return;
 
@@ -125,17 +136,21 @@ namespace Framework.Physics
             {
                 if (this.Mode == CameraMode.TPS)
                 {
-                    var targetNode = localPlayer.Body.Transform;
-                    var transform = this.Transform;
-                    transform.origin.x = localPlayer.Body.Transform.origin.x + TPSCameraDistance * Mathf.Cos(tempRotY * -1);
-                    transform.origin.z = localPlayer.Body.Transform.origin.z + TPSCameraDistance * Mathf.Sin(tempRotY * -1);
-                    this.Transform = transform;
-                    this.Transform = this.Transform.LookingAt(localPlayer.Body.Transform.origin, Vector3.Up);
+                    var cam_pos = localPlayer.Body.GlobalTransform.origin;
 
+                    cam_pos.x += TPSCameraRadius * Mathf.Sin(Mathf.Deg2Rad(tempYaw)) * Mathf.Cos(Mathf.Deg2Rad(tempPitch));
+                    cam_pos.y += TPSCameraRadius * Mathf.Sin(Mathf.Deg2Rad(tempPitch));
+                    cam_pos.z += TPSCameraRadius * Mathf.Cos(Mathf.Deg2Rad(tempYaw)) * Mathf.Cos(Mathf.Deg2Rad(tempPitch));
+
+                    this.LookAtFromPosition(cam_pos, localPlayer.Body.GlobalTransform.origin, new Vector3(0, 1, 0));
+
+                    var pos = this.Position;
+                    pos.y += this.TPSCameraHeight;
+                    this.Position = pos;
                 }
                 else if (this.Mode == CameraMode.FPS)
                 {
-                    var transform = this.Transform;
+                    var transform = this.GlobalTransform;
 
                     // Interpolate position.
                     transform.origin = positionBuffer.Old().Lerp(
@@ -143,7 +158,7 @@ namespace Framework.Physics
                                                 InterpolationController.InterpolationFactor);
 
                     transform.basis = new Basis(new Vector3(tempRotX, tempRotY, 0));
-                    this.Transform = transform;
+                    this.GlobalTransform = transform;
                 }
 
                 this.Fov = ClientSettings.Variables.Get<int>("cl_fov");
@@ -175,9 +190,12 @@ namespace Framework.Physics
                     if (Godot.Input.GetMouseMode() == Godot.Input.MouseMode.Captured)
                     {
                         var ev = @event as InputEventMouseMotion;
-                        tempRotX -= ev.Relative.y * (sensY / 1000);
-                        tempRotY -= ev.Relative.x * (sensX / 1000);
+                        tempRotX -= ev.Relative.y * (sensY / 100);
                         tempRotX = Mathf.Clamp(tempRotX, Mathf.Deg2Rad(-90), Mathf.Deg2Rad(90));
+                        tempRotY -= ev.Relative.x * (sensX / 100);
+
+                        tempYaw = (tempYaw - (ev.Relative.x * (sensX))) % 360;
+                        tempPitch = Mathf.Max(Mathf.Min(tempPitch + (ev.Relative.y * (sensY)), 85), -85);
                     }
                 }
 

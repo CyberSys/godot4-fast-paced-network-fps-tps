@@ -1,17 +1,19 @@
 [gd_scene load_steps=3 format=3 uid="uid://chg6fcwtp6278"]
 
 [ext_resource type="Script" path="res://Shared/Components/PlayerWeaponComponent.cs" id="1_073hk"]
-[ext_resource type="PackedScene" uid="uid://co2p8r3xu7em1" path="res://Assets/Weapons/Import/test.glb" id="2_k6l6g"]
+[ext_resource type="PackedScene" uid="uid://d357ntddd3mym" path="res://Assets/Weapons/Import/test.glb" id="2_k6l6g"]
 
 [node name="Node3D" type="Node3D"]
 top_level = true
 script = ExtResource( "1_073hk" )
 weaponSwayRotationPath = NodePath("WeaponWalkSway/WeaponSwayRotation")
 weaponIdlePath = NodePath("WeaponWalkSway/WeaponSwayRotation/WeaponIdle")
+cameraPath = NodePath("")
 weaponSwayPath = NodePath("WeaponWalkSway")
 weaponFirePositionPath = NodePath("WeaponWalkSway/WeaponSwayRotation/WeaponIdle/WeaponFirePostion")
 
 [node name="WeaponWalkSway" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.409168)
 
 [node name="WeaponSwayRotation" type="Node3D" parent="WeaponWalkSway"]
 
@@ -20,4 +22,4 @@ weaponFirePositionPath = NodePath("WeaponWalkSway/WeaponSwayRotation/WeaponIdle/
 [node name="WeaponFirePostion" type="Node3D" parent="WeaponWalkSway/WeaponSwayRotation/WeaponIdle"]
 
 [node name="test" parent="WeaponWalkSway/WeaponSwayRotation/WeaponIdle/WeaponFirePostion" instance=ExtResource( "2_k6l6g" )]
-transform = Transform3D(-0.998378, 0, -0.0569368, -0.00648295, 0.993497, 0.113677, 0.0565666, 0.113862, -0.991885, 0.104056, -0.154231, -0.0488198)
+transform = Transform3D(-0.998363, -0.000453409, -0.057194, -0.00693638, 0.993548, 0.113203, 0.0567736, 0.113415, -0.991924, 0.104, -0.154, -0.049)

@@ -114,6 +114,13 @@ namespace Framework.Game.Server
         [Export]
         public int NetworkPort { get; set; } = 27015;
 
+
+        /// <inheritdoc />
+        public ServerLogic() : base()
+        {
+            this.Disable3d = true;
+        }
+
         /// <summary>
         /// Called when after server started succeffull
         /// </summary>

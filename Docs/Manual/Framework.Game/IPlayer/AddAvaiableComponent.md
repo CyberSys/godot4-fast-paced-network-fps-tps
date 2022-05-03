@@ -3,7 +3,7 @@
 Add an avaiable component
 
 ```csharp
-public void AddAvaiableComponent<T>(string ResourcePath = null)
+public void AddAvaiableComponent<T>(string ResourcePath = null, string ScriptPath = null)
     where T : Node, IChildComponent, new()
 ```
 
@@ -11,6 +11,7 @@ public void AddAvaiableComponent<T>(string ResourcePath = null)
 | --- | --- |
 | T |  |
 | ResourcePath |  |
+| ScriptPath |  |
 
 ## See Also
 

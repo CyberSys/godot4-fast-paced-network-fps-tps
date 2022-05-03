@@ -13,6 +13,7 @@ public struct AssignedComponent
 | [AssignedComponent](AssignedComponent/AssignedComponent.md)(…) | Constrcutor for an assignable component |
 | [NodeType](AssignedComponent/NodeType.md) { get; set; } | The type of the child node which be injected to an remote base component (eg. player) |
 | [ResourcePath](AssignedComponent/ResourcePath.md) { get; set; } | The resourcepath (if exist) to the resource which will be injected |
+| [ScriptPath](AssignedComponent/ScriptPath.md) { get; set; } | The resourcepath (if exist) to the resource which will be injected |
 
 ## See Also
 

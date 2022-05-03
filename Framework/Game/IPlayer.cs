@@ -76,8 +76,15 @@ namespace Framework.Game
         /// Add an avaiable component
         /// </summary>
         /// <param name="ResourcePath"></param>
+        /// <param name="ScriptPath"></param>
         /// <typeparam name="T"></typeparam>
-        public void AddAvaiableComponent<T>(string ResourcePath = null) where T : Godot.Node, IChildComponent, new();
+        public void AddAvaiableComponent<T>(string ResourcePath = null, string ScriptPath = null) where T : Godot.Node, IChildComponent, new();
+
+        /// <summary>
+        /// Add an assigned network component
+        /// </summary>
+        /// <param name="assignedComponent"></param>
+        public void AddAssignedComponent(AssignedComponent assignedComponent);
     }
 
     /// <inheritdoc />

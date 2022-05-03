@@ -60,6 +60,13 @@ namespace Framework.Game
         /// <value></value>
         public PlayerConnectionState PreviousState { get; set; }
 
+
+        /// <inheritdoc />
+        private readonly List<AssignedComponent> avaiableComponents = new List<AssignedComponent>();
+
+        /// <inheritdoc />
+        public List<AssignedComponent> AvaiablePlayerComponents => avaiableComponents;
+
         /// <summary>
         /// Base player class
         /// </summary>
@@ -80,17 +87,10 @@ namespace Framework.Game
         }
 
         /// <inheritdoc />
-        private readonly List<AssignedComponent> avaiableComponents = new List<AssignedComponent>();
-
-        /// <inheritdoc />
-        public List<AssignedComponent> AvaiablePlayerComponents => avaiableComponents;
-
-
-        /// <inheritdoc />
-        public void AddAvaiableComponent<T>(string ResourcePath = null) where T : Godot.Node, IChildComponent, new()
+        public void AddAvaiableComponent<T>(string ResourcePath = null, string ScriptPath = null) where T : Godot.Node, IChildComponent, new()
         {
             var element = new AssignedComponent(
-                                typeof(T), ResourcePath
+                                typeof(T), ResourcePath, ScriptPath
                 );
 
 
@@ -100,5 +100,32 @@ namespace Framework.Game
             }
         }
 
+        /// <summary>
+        /// Add an assigned network component
+        /// </summary>
+        /// <param name="assignedComponent"></param>
+        public void AddAssignedComponent(AssignedComponent assignedComponent)
+        {
+            if (assignedComponent.ResourcePath != null)
+            {
+                Logger.LogDebug(this, "Try to load component from type " + assignedComponent.NodeType.Name);
+                //  this.Components.AddComponent(assignedComponent.NodeType, assignedComponent.ResourcePath);
+
+                if (assignedComponent.ScriptPath != null)
+                {
+                    Godot.GD.Load<Godot.CSharpScript>(assignedComponent.ScriptPath);
+                }
+
+                this.Components.AddComponentAsync(assignedComponent.NodeType, assignedComponent.ResourcePath, (Godot.Node res) =>
+                {
+                    Logger.LogDebug(this, "Add component from type " + assignedComponent.NodeType.Name);
+                });
+            }
+            else
+            {
+                this.Components.AddComponent(assignedComponent.NodeType);
+                Logger.LogDebug(this, "Add component from type " + assignedComponent.NodeType.Name);
+            }
+        }
     }
 }

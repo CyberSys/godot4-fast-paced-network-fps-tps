@@ -35,7 +35,6 @@ namespace Framework.Game.Client
         {
         }
 
-
         /// <summary>
         /// Get the view rotation of an local player
         /// </summary>
@@ -44,7 +43,7 @@ namespace Framework.Game.Client
         {
             if (this.Camera != null)
             {
-                return this.Camera.Transform.basis.GetRotationQuaternion();
+                return this.Camera.GlobalTransform.basis.GetRotationQuaternion();
             }
             else
             {

@@ -33,6 +33,19 @@ namespace Framework.Network
     /// </summary>
     public abstract partial class NetworkPlayer : Player
     {
+        /// <inheritdoc />
+        public NetworkPlayer() : base()
+        {
+            this.Components.OnComponentAdded += (Node result) =>
+            {
+                //attach the camera to the local player
+                if (result is NetworkPlayerBody)
+                {
+                    this.Body = result as NetworkPlayerBody;
+                }
+            };
+        }
+
         /// <summary>
         /// The player body component
         /// </summary>

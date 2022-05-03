@@ -1,7 +1,7 @@
 # Player.AddAvaiableComponent&lt;T&gt; method
 
 ```csharp
-public void AddAvaiableComponent<T>(string ResourcePath = null)
+public void AddAvaiableComponent<T>(string ResourcePath = null, string ScriptPath = null)
     where T : Node, IChildComponent, new()
 ```
 

@@ -10,7 +10,6 @@ public interface IGameLogic : IBaseComponent
 
 | name | description |
 | --- | --- |
-| [MapLoader](IGameLogic/MapLoader.md) { get; } | The async map loader |
 | [Services](IGameLogic/Services.md) { get; } | Service registry (which contains the service of the game logic) |
 
 ## See Also

@@ -102,71 +102,9 @@ namespace Framework.Game
                         var playerInstance = player as Player;
                         var playerComponents = playerInstance.Components;
 
-                        if (component.ResourcePath != null)
-                        {
-                            this.CreateComponentWithResource(player, component);
-                        }
-                        else
-                        {
-                            this.CreateComponent(player, component);
-                        }
+                        player.AddAssignedComponent(component);
                     }
                 }
-            }
-        }
-
-        internal void CreateComponent(IPlayer player, AssignedComponent registeredComonent)
-        {
-            var method = typeof(ComponentRegistry).GetMethods().Single(
-                       m =>
-                       m.Name == "AddComponent" &&
-                       m.GetGenericArguments().Length == 1 &&
-                       m.GetParameters().Length == 0);
-
-            MethodInfo generic = method.MakeGenericMethod(registeredComonent.NodeType);
-            var createdObject = generic.Invoke(player.Components, new object[]
-            {
-
-            });
-
-            //attach the body to the local player
-            if (createdObject is NetworkPlayerBody && player is NetworkPlayer)
-            {
-                (player as NetworkPlayer).Body = createdObject as NetworkPlayerBody;
-            }
-
-            //attach the camera to the local player
-            if (createdObject is PhysicsPlayerCamera && player is PhysicsPlayer)
-            {
-                (player as PhysicsPlayer).Camera = createdObject as PhysicsPlayerCamera;
-            }
-        }
-
-        internal void CreateComponentWithResource(IPlayer player, AssignedComponent registeredComonent)
-        {
-            var method = typeof(ComponentRegistry).GetMethods().Single(
-                       m =>
-                       m.Name == "AddComponent" &&
-                       m.GetGenericArguments().Length == 1 &&
-                       m.GetParameters().Length == 1 &&
-                       m.GetParameters()[0].ParameterType == typeof(string));
-
-            MethodInfo generic = method.MakeGenericMethod(registeredComonent.NodeType);
-            var createdObject = generic.Invoke(player.Components, new object[]
-            {
-                        registeredComonent.ResourcePath
-            });
-
-            //attach the body to the server player
-            if (createdObject is NetworkPlayerBody && player is NetworkPlayer)
-            {
-                (player as NetworkPlayer).Body = createdObject as NetworkPlayerBody;
-            }
-
-            //attach the camera to the server player
-            if (createdObject is PhysicsPlayerCamera && player is PhysicsPlayer)
-            {
-                (player as PhysicsPlayer).Camera = createdObject as PhysicsPlayerCamera;
             }
         }
 
@@ -176,7 +114,6 @@ namespace Framework.Game
             if (player.IsServer())
             {
                 var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
-                Logger.LogDebug(this, "Found index " + index);
                 var list = (player as ServerPlayer).RequiredComponents.ToList();
                 if (index > -1)
                 {

@@ -43,6 +43,12 @@ namespace Framework
         /// <returns></returns>
         public Node[] All => _components.Values.ToArray();
 
+        /// <summary>
+        /// Triggered when an component fully added
+        /// </summary>
+        [Godot.Signal]
+        public event OnComponentAddedHandler OnComponentAdded;
+        public delegate void OnComponentAddedHandler(Godot.Node component);
 
         /// <summary>
         /// Delete all exist components and remove them from base component
@@ -131,17 +137,36 @@ namespace Framework
             }
         }
 
+        //required for fix multiple loads in async
+        private List<string> onHold = new List<string>();
 
         /// <summary>
         /// Add an new component to base component by given resource path (async)
         /// </summary>
+        /// <param name="type"></param>
         /// <param name="resourcePath"></param>
         /// <param name="callback"></param>
-        /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public void AddComponentAsync<T>(string resourcePath, Action<bool> callback) where T : IChildComponent
+        public void AddComponentAsync(Type type, string resourcePath, Action<Node> callback)
         {
+            lock (onHold)
+            {
+                if (!this.onHold.Contains(resourcePath))
+                {
+                    this.onHold.Add(resourcePath);
 
+                    Framework.Utils.AsyncLoader.Loader.LoadResource(resourcePath, (res) =>
+                    {
+                        var result = AddComponent(type, (PackedScene)res);
+                        if (callback != null)
+                        {
+                            callback(result);
+                        }
+
+                        this.onHold.Remove(resourcePath);
+                    });
+                }
+            }
         }
 
         /// <summary>
@@ -165,6 +190,7 @@ namespace Framework
                     this.baseComponent.AddChild(component);
                 }
 
+                this.OnComponentAdded?.Invoke(component);
                 return component;
             }
         }
@@ -191,6 +217,7 @@ namespace Framework
                         this.baseComponent.AddChild(createdObject as Node);
                     }
 
+                    this.OnComponentAdded?.Invoke(createdObject as Node);
                     return createdObject as Node;
                 }
                 else return null;
@@ -205,9 +232,21 @@ namespace Framework
         /// <returns></returns>
         public Node AddComponent(Type type, string resourcePath)
         {
+            var scene = GD.Load<PackedScene>(resourcePath);
+            return this.AddComponent(type, scene);
+        }
+
+
+        /// <summary>
+        /// /// Add component as packed scene
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="scene"></param>
+        /// <returns></returns>
+        public Node AddComponent(Type type, PackedScene scene)
+        {
             lock (_components)
             {
-                var scene = GD.Load<PackedScene>(resourcePath);
                 scene.ResourceLocalToScene = true;
                 var createdObject = scene.Instantiate();
                 if (createdObject is IChildComponent && createdObject is Node)
@@ -222,6 +261,7 @@ namespace Framework
                         this.baseComponent.AddChild(createdObject as Node);
                     }
 
+                    this.OnComponentAdded?.Invoke(createdObject as Node);
                     return createdObject as Node;
                 }
                 else return null;
@@ -266,6 +306,7 @@ namespace Framework
                     this.baseComponent.AddChild(component);
                 }
 
+                this.OnComponentAdded?.Invoke(component);
                 return component;
             }
         }

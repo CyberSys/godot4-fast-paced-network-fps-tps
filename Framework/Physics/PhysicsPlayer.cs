@@ -24,6 +24,7 @@ using Framework.Input;
 using Godot;
 using Framework.Game;
 using Framework.Network.Commands;
+using System.Collections.Generic;
 
 namespace Framework.Physics
 {
@@ -32,6 +33,19 @@ namespace Framework.Physics
     /// </summary>
     public abstract partial class PhysicsPlayer : NetworkPlayer
     {
+        /// <inheritdoc />
+        public PhysicsPlayer() : base()
+        {
+            this.Components.OnComponentAdded += (Node result) =>
+            {
+                //attach the camera to the local player
+                if (result is PhysicsPlayerCamera)
+                {
+                    this.Camera = result as PhysicsPlayerCamera;
+                }
+            };
+        }
+
 
         /// <summary>
         /// The player camera component
@@ -51,6 +65,8 @@ namespace Framework.Physics
         /// <returns></returns>
         public IMovementProcessor MovementProcessor { get; set; } = new DefaultMovementProcessor();
 
+        private Queue<Vector3> teleportQueue = new Queue<Vector3>();
+
 
         /// <summary>
         /// Teleport player to an given position
@@ -58,12 +74,7 @@ namespace Framework.Physics
         /// <param name="origin">New position of the player</param>
         public void DoTeleport(Godot.Vector3 origin)
         {
-            if (this.Body != null)
-            {
-                var data = this.Body.GetNetworkState();
-                data.Position = origin;
-                this.Body.ApplyNetworkState(data);
-            }
+            this.teleportQueue.Enqueue(origin);
         }
 
         /// <summary>
@@ -86,6 +97,15 @@ namespace Framework.Physics
         /// <inheritdoc />
         internal override void InternalTick(float delta)
         {
+            if (this.Body != null && this.teleportQueue.Count > 0)
+            {
+                var nextTeleport = this.teleportQueue.Dequeue();
+
+                var data = this.Body.GetNetworkState();
+                data.Position = nextTeleport;
+                this.Body.ApplyNetworkState(data);
+            }
+
             foreach (var component in this.Components.All)
             {
                 if (component is IPlayerComponent)
@@ -98,7 +118,7 @@ namespace Framework.Physics
             {
                 this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
                 this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
-                this.MovementProcessor.Simulate(this.Body, this.LastInput, delta);
+                this.MovementProcessor.Simulate(this.Body, this.Camera, this.LastInput, delta);
             }
 
             base.InternalTick(delta);

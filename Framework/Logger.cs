@@ -50,17 +50,15 @@ namespace Framework
         /// <param name="message"></param>
         public static void LogDebug(object service, string message)
         {
-            Console.WriteLine
-            (
-                String.Format(
+            var format = String.Format(
                     "[{3}][{0}][{1}] {2}",
                     Process.GetCurrentProcess().StartTime,
                     service.GetType().Name,
                     message,
                     System.Threading.Thread.CurrentThread.ManagedThreadId
-                )
-            );
+                );
 
+            System.Diagnostics.Debug.WriteLine(format);
             Logger.OnLogMessage?.Invoke(message);
         }
     }

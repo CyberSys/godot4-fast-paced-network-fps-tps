@@ -58,7 +58,6 @@ namespace Shooter.Shared.Components
         public string FootStepsSoundPathFolder = "res://Assets/Audio/Footsteps/";
 
         public IBaseComponent BaseComponent { get; set; }
-        private AsyncLoader soundLoader = new AsyncLoader();
         private int currentStep = 0;
         private float nextStepSound = 0.0f;
         public const float betweenStepMultiplier = 3.70f / 2f;
@@ -89,9 +88,9 @@ namespace Shooter.Shared.Components
                     {
                         var positon = collision.GetPosition(0);
 
-                        var transform = player.Body.Transform;
+                        var transform = player.Body.GlobalTransform;
                         transform.origin = positon;
-                        this.Transform = transform;
+                        this.GlobalTransform = transform;
 
                         var footstepSet = (collider as StaticBody3D).GetMeta("footstep");
                         try
@@ -247,14 +246,15 @@ namespace Shooter.Shared.Components
                         {
                             var detectedFile = System.IO.Path.Combine(footstepPath, file_name);
                             listOfFiles.Add(detectedFile);
-                            this.soundLoader.LoadResource(detectedFile, (res) =>
-                            {
-                                soundsCache[folderName].Add(new FootStepsSound
-                                {
-                                    Filename = detectedFile,
-                                    AudioFile = res as AudioStreamSample
-                                });
-                            });
+
+                            Framework.Utils.AsyncLoader.Loader.LoadResource(detectedFile, (res) =>
+                              {
+                                  soundsCache[folderName].Add(new FootStepsSound
+                                  {
+                                      Filename = detectedFile,
+                                      AudioFile = res as AudioStreamSample
+                                  });
+                              });
                         }
 
                         file_name = dir.GetNext();
@@ -267,7 +267,6 @@ namespace Shooter.Shared.Components
         public override void _Process(float delta)
         {
             base._Process(delta);
-            this.soundLoader.Tick();
         }
 
         private void playFootstep()

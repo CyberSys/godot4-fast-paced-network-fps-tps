@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://co2p8r3xu7em1"
+uid="uid://d357ntddd3mym"
 path="res://.godot/imported/test.glb-686387bc4edc24a0f38120c9c1942f86.scn"
 
 [deps]
@@ -25,4 +25,59 @@ skins/use_named_skins=true
 animation/import=true
 animation/fps=30
 import_script/path=""
-_subresources={}
+_subresources={
+"materials": {
+"arms": {
+"use_external/path": "res://Assets/Weapons/Import/Materials/arms.tres"
+},
+"beretta": {
+"use_external/path": "res://Assets/Weapons/Import/Materials/beretta.tres"
+}
+},
+"meshes": {
+"test_Mesh": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh.res"
+},
+"test_Mesh001": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh001.res"
+},
+"test_Mesh002": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh002.res"
+},
+"test_Mesh003": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh003.res"
+},
+"test_Mesh004": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh004.res"
+},
+"test_Mesh005": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh005.res"
+},
+"test_Mesh006": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh006.res"
+},
+"test_Mesh007": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh007.res"
+},
+"test_Mesh008": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh008.res"
+},
+"test_Mesh009": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh009.res"
+},
+"test_Mesh010": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh010.res"
+},
+"test_Mesh011": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh011.res"
+},
+"test_Mesh012": {
+"save_to_file/path": "res://Assets/Weapons/Import/Meshes/test_Mesh012.res"
+}
+},
+"nodes": {
+"PATH:AnimationPlayer": {
+"import/skip_import": true
+}
+}
+}

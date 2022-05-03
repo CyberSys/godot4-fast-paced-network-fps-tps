@@ -1,21 +1,19 @@
-# ComponentRegistry.AddComponentAsync&lt;T&gt; method
+# ComponentRegistry.AddComponentAsync method
 
 Add an new component to base component by given resource path (async)
 
 ```csharp
-public void AddComponentAsync<T>(string resourcePath, Action<bool> callback)
-    where T : IChildComponent
+public void AddComponentAsync(Type type, string resourcePath, Action<Node> callback)
 ```
 
 | parameter | description |
 | --- | --- |
-| T |  |
+| type |  |
 | resourcePath |  |
 | callback |  |
 
 ## See Also
 
-* interface [IChildComponent](../IChildComponent.md)
 * class [ComponentRegistry](../ComponentRegistry.md)
 * namespace [Framework](../../Framework.md)
 

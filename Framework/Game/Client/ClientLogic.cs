@@ -245,7 +245,6 @@ namespace Framework.Game.Client
             applyOcclusion(ClientSettings.Variables.Get<bool>("cl_draw_occulision", false));
             applyDebanding(ClientSettings.Variables.Get<bool>("cl_draw_debanding", false));
             applyVsync(ClientSettings.Variables.Get<bool>("cl_draw_vsync", false));
-
         }
 
         internal void applyOcclusion(bool isEnabled)
@@ -315,8 +314,6 @@ namespace Framework.Game.Client
 
                 DisplayServer.WindowSetSize(res);
                 this.GetTree().Root.ContentScaleSize = res;
-
-                GD.Print("real size =" + this.GetTree().Root.Size);
             }
         }
 

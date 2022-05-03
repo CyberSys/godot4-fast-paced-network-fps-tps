@@ -1,4 +1,4 @@
-# ComponentRegistry.AddComponent method (1 of 4)
+# ComponentRegistry.AddComponent method (1 of 5)
 
 Add an new component to base component
 
@@ -17,7 +17,27 @@ public Node AddComponent(Type type)
 
 ---
 
-# ComponentRegistry.AddComponent method (2 of 4)
+# ComponentRegistry.AddComponent method (2 of 5)
+
+/// Add component as packed scene
+
+```csharp
+public Node AddComponent(Type type, PackedScene scene)
+```
+
+| parameter | description |
+| --- | --- |
+| type |  |
+| scene |  |
+
+## See Also
+
+* class [ComponentRegistry](../ComponentRegistry.md)
+* namespace [Framework](../../Framework.md)
+
+---
+
+# ComponentRegistry.AddComponent method (3 of 5)
 
 Add an new component to base component by given resource name
 
@@ -37,7 +57,7 @@ public Node AddComponent(Type type, string resourcePath)
 
 ---
 
-# ComponentRegistry.AddComponent&lt;T&gt; method (3 of 4)
+# ComponentRegistry.AddComponent&lt;T&gt; method (4 of 5)
 
 Add an new component to base component
 
@@ -58,7 +78,7 @@ public T AddComponent<T>()
 
 ---
 
-# ComponentRegistry.AddComponent&lt;T&gt; method (4 of 4)
+# ComponentRegistry.AddComponent&lt;T&gt; method (5 of 5)
 
 Add an new component to base component by given resource path
 

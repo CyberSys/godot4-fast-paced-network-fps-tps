@@ -40,14 +40,22 @@ namespace Framework.Game
         public string ResourcePath { get; set; }
 
         /// <summary>
+        /// The resourcepath (if exist) to the resource which will be injected
+        /// </summary>
+        /// <value></value>
+        public string ScriptPath { get; set; }
+
+        /// <summary>
         /// Constrcutor for an assignable component
         /// </summary>
         /// <param name="NodeType">The type of the child node which be injected to an remote base component (eg. player)</param>
         /// <param name="ResourcePath">The resourcepath (if exist) to the resource which will be injected</param>
-        public AssignedComponent(Type NodeType, string ResourcePath = null)
+        /// <param name="ScriptPath">The c# script path (if exist) to the resource which will be injected</param>
+        public AssignedComponent(Type NodeType, string ResourcePath = null, string ScriptPath = null)
         {
             this.NodeType = NodeType;
             this.ResourcePath = ResourcePath;
+            this.ScriptPath = ScriptPath;
         }
     }
 }

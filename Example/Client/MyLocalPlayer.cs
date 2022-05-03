@@ -8,11 +8,13 @@ namespace Shooter.Client
     {
         public MyLocalPlayer() : base()
         {
-            this.AddAvaiableComponent<PlayerBodyComponent>("res://Assets/Player/PlayerBody.tscn");
+            this.AddAvaiableComponent<PlayerBodyComponent>("res://Assets/Player/PlayerBody.tscn"
+            , "res://Shared/Components/PlayerBodyComponent.cs");
             this.AddAvaiableComponent<PlayerCameraComponent>();
             this.AddAvaiableComponent<PlayerFootstepComponent>();
             //    this.AddAvaiableComponent<PlayerInputComponent>();
-            this.AddAvaiableComponent<PlayerWeaponComponent>("res://Assets/Weapons/WeaponHolder.tscn");
+            this.AddAvaiableComponent<PlayerWeaponComponent>("res://Assets/Weapons/WeaponHolder.tscn",
+            "res://Shared/Components/PlayerWeaponComponent.cs");
         }
     }
 }

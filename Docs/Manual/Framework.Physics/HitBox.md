@@ -1,6 +1,6 @@
 # HitBox class
 
-The hit result of an ray cast
+Hit box collider
 
 ```csharp
 public class HitBox : StaticBody3D
@@ -11,7 +11,7 @@ public class HitBox : StaticBody3D
 | name | description |
 | --- | --- |
 | [HitBox](HitBox/HitBox.md)() | The default constructor. |
-| [GroupName](HitBox/GroupName.md) { get; set; } |  |
+| [GroupName](HitBox/GroupName.md) { get; set; } | The name of the collider group |
 | [GetPlayer](HitBox/GetPlayer.md)() | Get the player instance of an hitbox |
 | override [_EnterTree](HitBox/_EnterTree.md)() |  |
 

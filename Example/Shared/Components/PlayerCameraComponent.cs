@@ -11,6 +11,8 @@ namespace Shooter.Shared.Components
             this.Far = 150;
             this.Near = 0.1f;
             this.DopplerTracking = DopplerTrackingEnum.PhysicsStep;
+
+            this.SetCullMaskValue(2, false);
         }
     }
 }

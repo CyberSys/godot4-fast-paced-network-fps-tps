@@ -20,11 +20,11 @@ namespace Shooter.Client.UI.Welcome
         {
             base._EnterTree();
             var component = this.BaseComponent as IGameLogic;
-            component.MapLoader.OnProgress += (string file, float process) =>
-            {
-                this.GetNode<Label>(pathToLoadingTextBox).Text = "Loading " + file;
-                this.GetNode<ProgressBar>(pathToProgressBar).Value = process;
-            };
+            Framework.Utils.AsyncLoader.Loader.OnProgress += (string file, float process) =>
+           {
+               this.GetNode<Label>(pathToLoadingTextBox).Text = "Loading " + file;
+               this.GetNode<ProgressBar>(pathToProgressBar).Value = process;
+           };
         }
     }
 }

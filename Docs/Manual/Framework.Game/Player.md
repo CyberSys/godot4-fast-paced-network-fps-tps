@@ -20,6 +20,7 @@ public abstract class Player : Node3D, IPlayer
 | [PreviousState](Player/PreviousState.md) { get; set; } | Previous state since last tick |
 | [State](Player/State.md) { get; set; } |  |
 | [Team](Player/Team.md) { get; set; } |  |
+| [AddAssignedComponent](Player/AddAssignedComponent.md)(…) | Add an assigned network component |
 | [AddAvaiableComponent&lt;T&gt;](Player/AddAvaiableComponent.md)(…) |  |
 | virtual [Tick](Player/Tick.md)(…) |  |
 

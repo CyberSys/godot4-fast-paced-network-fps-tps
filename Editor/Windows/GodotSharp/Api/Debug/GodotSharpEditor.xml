@@ -1715,6 +1715,11 @@
             <para>Removes a menu <c>name</c> from Project &gt; Tools.</para>
             </summary>
         </member>
+        <member name="M:Godot.EditorPlugin.GetExportAsMenu">
+            <summary>
+            <para>Returns the <see cref="T:Godot.PopupMenu"/> under Scene &gt; Export As....</para>
+            </summary>
+        </member>
         <member name="M:Godot.EditorPlugin.AddCustomType(System.String,System.String,Godot.Script,Godot.Texture2D)">
             <summary>
             <para>Adds a custom type, which will appear in the list of nodes or resources. An icon can be optionally passed.</para>

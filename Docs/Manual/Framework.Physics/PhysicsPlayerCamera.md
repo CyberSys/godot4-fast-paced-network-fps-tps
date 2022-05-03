@@ -14,11 +14,12 @@ public class PhysicsPlayerCamera : Camera3D, IPlayerComponent
 | [BaseComponent](PhysicsPlayerCamera/BaseComponent.md) { get; set; } | The base component of the child component |
 | [Mode](PhysicsPlayerCamera/Mode.md) { get; set; } | The current camera mode in use |
 | [FPSCameraOffset](PhysicsPlayerCamera/FPSCameraOffset.md) | The Camera Offset for the FPS Mode |
-| [TPSCameraDistance](PhysicsPlayerCamera/TPSCameraDistance.md) | The Camera Distance from the character in TPS Mode |
+| [TPSCameraHeight](PhysicsPlayerCamera/TPSCameraHeight.md) | The Camera Distance from the character in TPS Mode |
+| [TPSCameraRadius](PhysicsPlayerCamera/TPSCameraRadius.md) | The Camera Radis |
 | virtual [Tick](PhysicsPlayerCamera/Tick.md)(…) | Called on each physics network tick for component |
 | override [_EnterTree](PhysicsPlayerCamera/_EnterTree.md)() |  |
 | override [_Input](PhysicsPlayerCamera/_Input.md)(…) |  |
-| override [_Process](PhysicsPlayerCamera/_Process.md)(…) |  |
+| override [_PhysicsProcess](PhysicsPlayerCamera/_PhysicsProcess.md)(…) |  |
 
 ## See Also
 

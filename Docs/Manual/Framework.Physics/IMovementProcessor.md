@@ -10,8 +10,11 @@ public interface IMovementProcessor
 
 | name | description |
 | --- | --- |
+| [ForwardBackwardAxis](IMovementProcessor/ForwardBackwardAxis.md) { get; } | Get the forward backward axis |
+| [LeftRightAxis](IMovementProcessor/LeftRightAxis.md) { get; } | Get the left right axis |
 | [Velocity](IMovementProcessor/Velocity.md) { get; set; } | The current velocity of the moveable object |
 | [GetMovementSpeedFactor](IMovementProcessor/GetMovementSpeedFactor.md)() | Get maximium speed |
+| [GetWalkingSpeed](IMovementProcessor/GetWalkingSpeed.md)() | Get the walking speed |
 | [SetClientVars](IMovementProcessor/SetClientVars.md)(…) | Set client related vars |
 | [SetServerVars](IMovementProcessor/SetServerVars.md)(…) | Set server related vars |
 | [Simulate](IMovementProcessor/Simulate.md)(…) | Calls on each tick for produce movement |

@@ -13,7 +13,6 @@ public class GameLogic : SubViewport, IGameLogic
 | [GameLogic](GameLogic/GameLogic.md)() | The default constructor. |
 | [Components](GameLogic/Components.md) { get; } |  |
 | [CurrentWorld](GameLogic/CurrentWorld.md) { get; } | The active game world |
-| [MapLoader](GameLogic/MapLoader.md) { get; } | The async loader for eg. maps |
 | [Services](GameLogic/Services.md) { get; } | Service Registry (Contains all services) |
 | [secureConnectionKey](GameLogic/secureConnectionKey.md) | Secure passphrase for network connection |
 | virtual [AfterMapDestroy](GameLogic/AfterMapDestroy.md)() | Called when an map unloaded |

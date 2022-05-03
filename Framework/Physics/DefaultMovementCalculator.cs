@@ -35,10 +35,10 @@ namespace Framework.Physics
         /// Calls on each tick for produce movement
         /// </summary>
         /// <param name="component"></param>
-        /// <param name="serverVars"></param>
+        /// <param name="camera"></param>
         /// <param name="inputs"></param>
         /// <param name="dt"></param>
-        public Vector3 Simulate(NetworkPlayerBody component, GeneralPlayerInput inputs, float dt);
+        public Vector3 Simulate(NetworkPlayerBody component, PhysicsPlayerCamera camera, GeneralPlayerInput inputs, float dt);
 
         /// <summary>
         /// The current velocity of the moveable object
@@ -63,6 +63,25 @@ namespace Framework.Physics
         /// </summary>
         /// <returns></returns>
         public float GetMovementSpeedFactor();
+
+        /// <summary>
+        /// Get the walking speed
+        /// </summary>
+        /// <returns></returns>
+        public float GetWalkingSpeed();
+
+
+        /// <summary>
+        /// Get the forward backward axis
+        /// </summary>
+        /// <returns></returns>
+        public float ForwardBackwardAxis { get; }
+
+        /// <summary>
+        /// Get the left right axis
+        /// </summary>
+        /// <returns></returns>
+        public float LeftRightAxis { get; }
     }
 
     /// <summary>
@@ -118,7 +137,7 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        public Vector3 Simulate(NetworkPlayerBody component, GeneralPlayerInput inputs, float dt)
+        public Vector3 Simulate(NetworkPlayerBody component, PhysicsPlayerCamera camera, GeneralPlayerInput inputs, float dt)
         {
             var processedVelocity = _velocity;
 
@@ -137,7 +156,6 @@ namespace Framework.Physics
             }
 
             var euler = inputs.ViewDirection.GetEuler();
-            this.component.Rotation = new Vector3(0, euler.y, 0);
 
             // Process movement.
             this.QueueJump();
@@ -401,8 +419,9 @@ namespace Framework.Physics
         {
             get
             {
+                if (this.inputs == null)
+                    return 0;
                 return this.inputs.GetInput("Right") ? 1f : this.inputs.GetInput("Left") ? -1f : 0f;
-
             }
         }
 
@@ -414,7 +433,10 @@ namespace Framework.Physics
         {
             get
             {
-                return this.inputs.GetInput("Back") ? 1f : this.inputs.GetInput("Forward") ? -1f : 0f;
+                if (this.inputs == null)
+                    return 0;
+
+                return this.inputs.GetInput("Back") ? -1f : this.inputs.GetInput("Forward") ? 1f : 0f;
             }
         }
 
@@ -429,8 +451,8 @@ namespace Framework.Physics
             else
                 processedVelocity = ApplyFriction(processedVelocity, 0, dt);
 
-            wishdir = new Vector3(this.LeftRightAxis, 0, this.ForwardBackwardAxis);
-            wishdir = (component as Node3D).Transform.basis.Xform(wishdir);
+            wishdir = new Vector3(this.LeftRightAxis, 0, this.ForwardBackwardAxis * -1);
+            wishdir = (component as Node3D).GlobalTransform.basis.Xform(wishdir);
             wishdir = wishdir.Normalized();
 
             var wishspeed = wishdir.Length();
@@ -458,8 +480,8 @@ namespace Framework.Physics
             float wishvel = this.GetAirAcceleration();
             float accel;
 
-            wishdir = new Vector3(this.LeftRightAxis, 0, this.ForwardBackwardAxis);
-            wishdir = (component as Node3D).Transform.basis.Xform(wishdir);
+            wishdir = new Vector3(this.LeftRightAxis, 0, this.ForwardBackwardAxis * -1);
+            wishdir = (component as Node3D).GlobalTransform.basis.Xform(wishdir);
 
             float wishspeed = wishdir.Length();
             wishspeed *= this.GetMovementSpeed();

@@ -16,6 +16,7 @@ public interface IPlayer : IBaseComponent
 | [PlayerName](IPlayer/PlayerName.md) { get; set; } | Name of player |
 | [State](IPlayer/State.md) { get; set; } | Current connection state |
 | [Team](IPlayer/Team.md) { get; set; } | Assigned team of player |
+| [AddAssignedComponent](IPlayer/AddAssignedComponent.md)(…) | Add an assigned network component |
 | [AddAvaiableComponent&lt;T&gt;](IPlayer/AddAvaiableComponent.md)(…) | Add an avaiable component |
 | [Tick](IPlayer/Tick.md)(…) | Execute each server tick |
 

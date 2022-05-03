@@ -30,6 +30,7 @@ namespace Framework.Game
     /// </summary>
     public partial class GameLogic : SubViewport, IGameLogic, IBaseComponent
     {
+
         /// <inheritdoc />
         public ComponentRegistry Components => _components;
         private ComponentRegistry _components;
@@ -58,6 +59,11 @@ namespace Framework.Game
             }
         }
 
+        //prevent to load async loader for multiply game logics
+        internal static bool resourceLoaderTick = false;
+
+        private bool canRunAysncLoader = false;
+
         /// <inheritdoc />
         public override void _Process(float delta)
         {
@@ -76,10 +82,6 @@ namespace Framework.Game
 
         }
 
-
-        /// <inheritdoc />
-        private AsyncLoader loader = new AsyncLoader();
-
         /// <inheritdoc />
         protected IWorld currentWorld;
 
@@ -88,11 +90,6 @@ namespace Framework.Game
         /// </summary>
         public string secureConnectionKey = "ConnectionKey";
 
-        /// <summary>
-        /// The async loader for eg. maps
-        /// </summary>
-        /// <returns></returns>        
-        public AsyncLoader MapLoader => loader;
 
         /// <summary>
         /// Service Registry (Contains all services)
@@ -113,6 +110,12 @@ namespace Framework.Game
             this.ProcessMode = ProcessModeEnum.Always;
 
             this._components = new ComponentRegistry(this);
+
+            if (!resourceLoaderTick)
+            {
+                resourceLoaderTick = true;
+                canRunAysncLoader = true;
+            }
         }
 
         internal virtual void InternalReady()
@@ -125,6 +128,7 @@ namespace Framework.Game
         /// </summary>
         internal virtual void InternalTreeEntered()
         {
+
             var parent = this.GetParentOrNull<Control>();
             if (parent != null)
             {
@@ -149,7 +153,9 @@ namespace Framework.Game
                 service.Update(delta);
             }
 
-            this.loader.Tick();
+            // Prevent to call the async loader twice!
+            if (canRunAysncLoader)
+                Framework.Utils.AsyncLoader.Loader.Tick();
         }
 
         /// <inheritdoc />
@@ -184,11 +190,11 @@ namespace Framework.Game
             this.DestroyMapInternal();
             this.mapLoadInProcess = true;
 
-            this.loader.LoadResource(path, (res) =>
-            {
-                this.mapLoadInProcess = false;
-                this.OnMapInstanceInternal((PackedScene)res, worldTick);
-            });
+            Framework.Utils.AsyncLoader.Loader.LoadResource(path, (res) =>
+             {
+                 this.mapLoadInProcess = false;
+                 this.OnMapInstanceInternal((PackedScene)res, worldTick);
+             });
         }
 
         /// <summary>

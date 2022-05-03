@@ -79,10 +79,11 @@ namespace Framework.Network
         /// <param name="state"></param>
         public void ApplyNetworkState(MovementNetworkCommand state)
         {
-            var transform = this.Transform;
+            var transform = this.GlobalTransform;
             transform.origin = state.Position;
             transform.basis = new Basis(state.Rotation);
-            this.Transform = transform;
+
+            this.GlobalTransform = transform;
             this.Velocity = state.Velocity;
 
             if (this.BaseComponent is PhysicsPlayer)
@@ -99,8 +100,8 @@ namespace Framework.Network
         {
             return new MovementNetworkCommand
             {
-                Position = this.Transform.origin,
-                Rotation = this.Transform.basis.GetRotationQuaternion(),
+                Position = this.GlobalTransform.origin,
+                Rotation = this.GlobalTransform.basis.GetRotationQuaternion(),
                 Velocity = this.Velocity,
                 Grounded = this.IsOnGround(),
             };

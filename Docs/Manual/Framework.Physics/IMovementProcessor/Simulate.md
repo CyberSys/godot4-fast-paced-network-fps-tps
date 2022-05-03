@@ -3,19 +3,21 @@
 Calls on each tick for produce movement
 
 ```csharp
-public Vector3 Simulate(NetworkPlayerBody component, GeneralPlayerInput inputs, float dt)
+public Vector3 Simulate(NetworkPlayerBody component, PhysicsPlayerCamera camera, 
+    GeneralPlayerInput inputs, float dt)
 ```
 
 | parameter | description |
 | --- | --- |
 | component |  |
-| serverVars |  |
+| camera |  |
 | inputs |  |
 | dt |  |
 
 ## See Also
 
 * class [NetworkPlayerBody](../../Framework.Network/NetworkPlayerBody.md)
+* class [PhysicsPlayerCamera](../PhysicsPlayerCamera.md)
 * struct [GeneralPlayerInput](../../Framework.Input/GeneralPlayerInput.md)
 * interface [IMovementProcessor](../IMovementProcessor.md)
 * namespace [Framework.Physics](../../Framework.md)

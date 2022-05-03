@@ -194,6 +194,16 @@ namespace Framework.Game.Client
                 this.localPlayer.InputProcessor.ViewRotation = this.localPlayer.GetViewRotation();
                 GeneralPlayerInput inputs = this.localPlayer.InputProcessor.GetPlayerInput();
 
+                /*
+                //todo find better solution for tps camera
+                                if (this.localPlayer.Camera != null && this.localPlayer.Camera.Mode != CameraMode.FPS)
+                                {
+                                    var view = inputs.ViewDirection.GetEuler();
+                                    view.y = 0f;
+                                    var basis = new Basis(view);
+                                    inputs.ViewDirection = basis.GetRotationQuaternion();
+                                }
+                */
                 var lastTicks = WorldTick - lastServerWorldTick;
                 if (this.ServerVars.Get<bool>("sv_freze_client", false) && lastTicks >= MaxStaleServerStateTicks)
                 {
@@ -239,7 +249,6 @@ namespace Framework.Game.Client
                 {
                     this.localPlayer.Camera.PlayerPositionUpdated();
                 }
-
             }
 
             //increase worldTick
@@ -358,48 +367,24 @@ namespace Framework.Game.Client
             {
                 int i = 0;
                 //check if we have to remove some components
-                foreach (var avaiableComponents in player.AvaiablePlayerComponents)
+                foreach (var avaiableComponent in player.AvaiablePlayerComponents)
                 {
-                    var componentExist = player.Components.HasComponent(avaiableComponents.NodeType);
+                    var componentExist = player.Components.HasComponent(avaiableComponent.NodeType);
                     var isRequired = (player.IsLocal()) ? playerUpdate.RequiredComponents.Contains(i) : playerUpdate.RequiredPuppetComponents.Contains(i);
                     if (componentExist && !isRequired)
                     {
-                        Logger.LogDebug(this, "Delete component from type " + avaiableComponents.NodeType.Name);
-                        player.Components.DeleteComponent(avaiableComponents.NodeType);
+                        Logger.LogDebug(this, "Delete component from type " + avaiableComponent.NodeType.Name);
+                        player.Components.DeleteComponent(avaiableComponent.NodeType);
                     }
 
                     else if (isRequired && !componentExist)
                     {
-                        Node result = null;
-
-                        if (avaiableComponents.ResourcePath != null)
-                        {
-                            Logger.LogDebug(this, "Add component from type " + avaiableComponents.NodeType.Name);
-                            result = player.Components.AddComponent(avaiableComponents.NodeType, avaiableComponents.ResourcePath);
-                        }
-                        else
-                        {
-                            Logger.LogDebug(this, "Add component from type " + avaiableComponents.NodeType.Name);
-                            result = player.Components.AddComponent(avaiableComponents.NodeType);
-                        }
-
-                        //attach the camera to the local player
-                        if (player is PhysicsPlayer && result is PhysicsPlayerCamera)
-                        {
-                            (player as PhysicsPlayer).Camera = result as PhysicsPlayerCamera;
-                        }
-
-                        //attach the camera to the local player
-                        if (player is NetworkPlayer && result is NetworkPlayerBody)
-                        {
-                            (player as NetworkPlayer).Body = result as NetworkPlayerBody;
-                        }
+                        player.AddAssignedComponent(avaiableComponent);
                     }
 
                     i++;
                 }
             }
-
         }
 
         /// <summary>

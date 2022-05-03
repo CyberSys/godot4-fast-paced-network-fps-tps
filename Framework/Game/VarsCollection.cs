@@ -80,11 +80,18 @@ namespace Framework.Game
             {
                 return defaultValue;
             }
+
             try
             {
                 var value = Vars.AllVariables[varName].ToString();
                 var formatProvider = CultureInfo.InvariantCulture;
-                return (T)Convert.ChangeType(Vars.AllVariables[varName].ToString(), typeof(T), formatProvider);
+
+                if (default(T) is float)
+                {
+                    value = value.Replace(",", ".");
+                }
+
+                return (T)Convert.ChangeType(value, typeof(T), formatProvider);
             }
             catch
             {
