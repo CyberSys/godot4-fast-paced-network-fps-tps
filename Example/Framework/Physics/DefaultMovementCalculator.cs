@@ -35,10 +35,9 @@ namespace Framework.Physics
         /// Calls on each tick for produce movement
         /// </summary>
         /// <param name="component"></param>
-        /// <param name="camera"></param>
         /// <param name="inputs"></param>
         /// <param name="dt"></param>
-        public Vector3 Simulate(NetworkCharacter component, CharacterCamera camera, GeneralPlayerInput inputs, float dt);
+        public Vector3 Simulate(NetworkCharacter component, GeneralPlayerInput inputs, float dt);
 
         /// <summary>
         /// The current velocity of the moveable object
@@ -137,7 +136,7 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        public Vector3 Simulate(NetworkCharacter component, CharacterCamera camera, GeneralPlayerInput inputs, float dt)
+        public Vector3 Simulate(NetworkCharacter component, GeneralPlayerInput inputs, float dt)
         {
             var processedVelocity = _velocity;
 
@@ -153,9 +152,14 @@ namespace Framework.Physics
             if (inputs.ViewDirection == null || inputs.ViewDirection == new Quaternion(0, 0, 0, 0))
             {
                 inputs.ViewDirection = Quaternion.Identity;
+
             }
 
             var euler = inputs.ViewDirection.GetEuler();
+
+            var gtRot = this.component.GlobalTransform;
+            gtRot.basis = new Basis(new Vector3(0, euler.y, 0));
+            this.component.GlobalTransform = gtRot;
 
             // Process movement.
             this.QueueJump();
@@ -172,16 +176,12 @@ namespace Framework.Physics
             // Apply the final velocity to the character controller.
             this.Execute(dt, processedVelocity);
 
-            var state = component.GetNetworkState();
-            state.Rotation = new Quaternion(new Vector3(0, euler.y, 0));
-            component.ApplyBodyState(state);
-
             // HACK: Reset to zero when falling off the edge for now.
-            if (state.Position.y < -100)
+            if (this.component.GlobalTransform.origin.y < -100)
             {
-                state.Position = Vector3.Zero;
-                state.Velocity = Vector3.Zero;
-                component.ApplyBodyState(state);
+                var gt = this.component.GlobalTransform;
+                gt.origin = Vector3.Zero;
+                this.component.GlobalTransform = gt;
 
                 processedVelocity = Vector3.Zero;
             }
@@ -352,7 +352,7 @@ namespace Framework.Physics
         {
             return ((inputs.GetInput("Crouch") && this.CanCrouch())
                     || inputs.GetInput("Shifting"))
-                  ? this.serverVars.Get<float>("sv_crouching_deaccel", 4.0f) : this.serverVars.Get<float>("sv_walk_deaccel", 10f);
+                  ? this.serverVars.Get<float>("sv_crouching_deaccel", 14.0f) : this.serverVars.Get<float>("sv_walk_deaccel", 10f);
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace Framework.Physics
         {
             return ((inputs.GetInput("Crouch") && this.CanCrouch())
                     || inputs.GetInput("Shifting"))
-                  ? this.serverVars.Get<float>("sv_crouching_accel", 4.0f) : this.serverVars.Get<float>("sv_walk_accel", 14f);
+                  ? this.serverVars.Get<float>("sv_crouching_accel", 20.0f) : this.serverVars.Get<float>("sv_walk_accel", 14f);
         }
 
         /// <summary>

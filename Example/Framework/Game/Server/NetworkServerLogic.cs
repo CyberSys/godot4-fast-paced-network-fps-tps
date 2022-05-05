@@ -75,14 +75,15 @@ namespace Framework.Game.Server
             { "sv_crouching", "true" },
             { "sv_crouching_down_speed", "9.0" },
             { "sv_crouching_up_speed", "4.0" },
-            { "sv_crouching_accel", "8.0" },
-            { "sv_crouching_deaccel", "4.0" },
+
+            { "sv_crouching_accel", "20.0" },
+            { "sv_crouching_deaccel", "15.0" },
             { "sv_crouching_friction", "3.0" },
             { "sv_crouching_speed", "4.0" },
 
             // walking
-            { "sv_walk_accel", "14.0" },
-            { "sv_walk_deaccel", "10.0" },
+            { "sv_walk_accel", "8.0" },
+            { "sv_walk_deaccel", "4.0" },
 
             { "sv_walk_speed", "7.0" },
             { "sv_walk_friction", "6.0" },

@@ -32,7 +32,6 @@ namespace Shooter.Server
 
             Logger.LogDebug(this, "Player was joined to " + origin.ToString());
 
-
             this.AddComponentToServerPlayer<PlayerAnimationComponent>(player);
             this.AddComponentToServerPlayer<PlayerCameraComponent>(player);
             this.AddComponentToServerPlayer<PlayerFootstepComponent>(player);

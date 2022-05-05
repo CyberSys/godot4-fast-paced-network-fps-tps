@@ -134,6 +134,8 @@ namespace Shooter.Shared.Components
         private Node3D swayNodePos;
         private Node3D swayIdle;
         private Node3D swayRot;
+
+        private Vector3 initPosition = Vector3.Zero;
         public override void _EnterTree()
         {
             base._EnterTree();
@@ -155,31 +157,40 @@ namespace Shooter.Shared.Components
             }
 
             @event.Dispose();
-
         }
 
         public override void _Process(float delta)
         {
-            if (!this.IsPuppet())
+            if (this.BaseComponent.IsServer())
             {
                 var camera = this.BaseComponent.Components.Get<PlayerCameraComponent>();
                 if (camera != null)
                 {
                     // hide on tps camera mode
-                    this.Visible = (camera.Mode == CameraMode.FPS);
+                    this.Visible = true;
 
                     // apply camera transform
                     this.GlobalTransform = camera.GlobalTransform;
-                    this.HandleRecoil(camera, delta);
                 }
             }
 
             // swaying walk (only client sided)
             if (this.BaseComponent.IsLocal())
             {
-                this.SwayWalk(delta);
-                this.HandleSwayLook(delta);
-                this.HandleIdleSway(delta);
+                var camera = this.BaseComponent.Components.Get<PlayerCameraComponent>();
+                if (camera != null)
+                {
+                    var gt = camera.GlobalTransform;
+                    gt.origin += this.initPosition;
+                    this.GlobalTransform = gt;
+
+                    this.HandleRecoil(camera, delta);
+                    this.SwayWalk(delta);
+                    this.HandleSwayLook(delta);
+                    this.HandleIdleSway(delta);
+
+                    this.Visible = (camera.Mode == CameraMode.FPS);
+                }
             }
         }
 

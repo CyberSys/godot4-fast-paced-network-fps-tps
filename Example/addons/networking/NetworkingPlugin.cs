@@ -26,6 +26,10 @@ namespace NetworkingLib
             AddCustomType("NetworkClientLogic", "SubViewport",
                 GD.Load<Script>("res://Framework/Game/Client/NetworkClientLogic.cs"),
                 GD.Load<Texture2D>("res://addons/networking/icons/logic.png"));
+
+            AddCustomType("CharacterCamera", "Camera3D",
+                GD.Load<Script>("res://Framework/Game/CharacterCamera.cs"),
+                GD.Load<Texture2D>("res://addons/networking/icons/logic.png"));
         }
 
         public override void _ExitTree()

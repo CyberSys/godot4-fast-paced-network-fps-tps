@@ -432,7 +432,6 @@ namespace Framework.Game
         /// <returns></returns>
         public NetworkCharacter() : base()
         {
-
             this._components = new ComponentRegistry<NetworkCharacter>(this);
         }
 
@@ -534,14 +533,10 @@ namespace Framework.Game
         /// <param name="state"></param>
         public void ApplyBodyState(MovementNetworkCommand state)
         {
-            this.SetPhysicsProcess(false);
-            this.SetProcessInternal(false);
             var transform = this.GlobalTransform;
             transform.origin = state.Position;
             transform.basis = new Basis(state.Rotation);
             this.GlobalTransform = transform;
-            this.SetPhysicsProcess(true);
-            this.SetProcessInternal(true);
 
             this.Velocity = state.Velocity;
             this.MovementProcessor.Velocity = state.Velocity;
@@ -694,7 +689,6 @@ namespace Framework.Game
             float theta = stateTimer / ServerSendInterval;
 
             //only for movement component (to interpolate)
-
             var decomposedNextState = nextState.BodyComponent;
             var decomposesLastState = lastState.Value.BodyComponent;
 
@@ -752,14 +746,12 @@ namespace Framework.Game
             if (!this.IsPuppet())
             {
                 var input = this.Components.Get<NetworkInput>();
-                var camera = this.Components.Get<CharacterCamera>();
-
-                if (input != null && camera != null)
+                if (input != null)
                 {
                     //   this.MovementProcessor.Velocity = this.Velocity;
                     this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
                     this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
-                    this.MovementProcessor.Simulate(this, camera, input.LastInput, delta);
+                    this.MovementProcessor.Simulate(this, input.LastInput, delta);
                 }
             }
             //process puppet
@@ -773,12 +765,13 @@ namespace Framework.Game
             {
                 if (component is IPlayerComponent)
                 {
-                    (component as IPlayerComponent).Tick(delta);
+                    (component as IPlayerComponent)?.Tick(delta);
                 }
             }
 
             this.Tick(delta);
         }
+
 
         /// <summary>
         /// Rewind to an given world tick

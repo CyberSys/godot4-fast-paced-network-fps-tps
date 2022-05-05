@@ -154,21 +154,7 @@ namespace Framework.Game.Client
         /// </summary>
         public ClientSimulationAdjuster clientSimulationAdjuster;
 
-        /// <inheritdoc />
-        internal override void PostUpdate()
-        {
-            // Process the remaining world states if there are any, though we expect this to be empty?
-            // TODO: This is going to need to be structured pretty differently with other players.
-            excessWorldStateAvg.Push(worldStateQueue.Count);
-            //while (worldStateQueue.Count > 0) {
-            //  ProcessServerWorldState();
-            //}
-            // Show some debug monitoring values.
-            // Logger.SetDebugUI("cl_rewinds", replayedStates.ToString());
-            //    Logger.SetDebugUI("incoming_state_excess", excessWorldStateAvg.Average().ToString());
 
-            clientSimulationAdjuster.Monitoring();
-        }
 
         /// <inheritdoc />  
         internal override void InternalTick(float interval)
@@ -335,6 +321,22 @@ namespace Framework.Game.Client
         }
 
         /// <inheritdoc />
+        internal override void PostUpdate()
+        {
+            // Process the remaining world states if there are any, though we expect this to be empty?
+            // TODO: This is going to need to be structured pretty differently with other players.
+            excessWorldStateAvg.Push(worldStateQueue.Count);
+            //while (worldStateQueue.Count > 0) {
+            //  ProcessServerWorldState();
+            //}
+            // Show some debug monitoring values.
+            // Logger.SetDebugUI("cl_rewinds", replayedStates.ToString());
+            //    Logger.SetDebugUI("incoming_state_excess", excessWorldStateAvg.Average().ToString());
+
+            clientSimulationAdjuster.Monitoring();
+        }
+
+        /// <inheritdoc />
         private void ProcessServerWorldState(WorldHeartbeat incomingState)
         {
             //set the last server world tick
@@ -386,7 +388,7 @@ namespace Framework.Game.Client
                 else
                 {
                     player.ApplyNetworkState(playerState);
-                    player.InternalTick((float) this.GetPhysicsProcessDeltaTime());
+                    player.InternalTick((float)this.GetPhysicsProcessDeltaTime());
                 }
             }
         }

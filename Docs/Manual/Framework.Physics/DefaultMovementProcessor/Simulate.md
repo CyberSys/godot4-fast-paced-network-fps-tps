@@ -1,14 +1,12 @@
 # DefaultMovementProcessor.Simulate method
 
 ```csharp
-public Vector3 Simulate(NetworkCharacter component, CharacterCamera camera, 
-    GeneralPlayerInput inputs, float dt)
+public Vector3 Simulate(NetworkCharacter component, GeneralPlayerInput inputs, float dt)
 ```
 
 ## See Also
 
 * class [NetworkCharacter](../../Framework.Game/NetworkCharacter.md)
-* class [CharacterCamera](../../Framework.Game/CharacterCamera.md)
 * struct [GeneralPlayerInput](../../Framework.Input/GeneralPlayerInput.md)
 * class [DefaultMovementProcessor](../DefaultMovementProcessor.md)
 * namespace [Framework.Physics](../../Framework.md)

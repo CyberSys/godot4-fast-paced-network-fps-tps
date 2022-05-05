@@ -361,6 +361,17 @@ namespace Framework.Game.Server
             }
         }
 
+        /// <inheritdoc />
+        internal override void PostUpdate()
+        {
+            if (this._players.Count > 0)
+            {
+                playerInputProcessor.LogQueueStatsForPlayer(this._players.First().Key, WorldTick);
+            }
+        }
+
+
+
         /// <inheritdoc />  
         internal override void InternalTick(float interval)
         {

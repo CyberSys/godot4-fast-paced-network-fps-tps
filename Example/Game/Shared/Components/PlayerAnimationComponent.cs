@@ -51,7 +51,6 @@ namespace Shooter.Shared.Components
                 {
                     var euler = direction.GetEuler();
                     var rotX = Mathf.Clamp(Mathf.Rad2Deg(euler.y), -90f, 90f) / 90f;
-
                     var rotY = Mathf.Clamp(Mathf.Rad2Deg(euler.x), -90f, 90f) / 90f;
 
                     this.AnimTree.Set("parameters/ShoulderMovement/add_amount", rotX * -1);

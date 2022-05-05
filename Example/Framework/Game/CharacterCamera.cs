@@ -93,6 +93,8 @@ namespace Framework.Game
         [Export]
         public Godot.Vector3 FPSCameraOffset = new Godot.Vector3(0, 0.5f, 0.1f);
 
+
+
         /// <summary>
         /// Called on each physics network tick for component
         /// </summary>
@@ -111,36 +113,53 @@ namespace Framework.Game
             this.tempRotX = rotation.x;
             this.tempRotY = rotation.y;
             this.tempRotZ = rotation.z;
+
+            this.Current = !this.IsPuppet();
         }
 
         /// <inheritdoc />
         public override void _Process(float delta)
         {
             base._Process(delta);
+            if (this.IsServer())
+            {
+                if (this.BaseComponent.CurrentPlayerInput.Inputs.ViewDirection != new Quaternion(0, 0, 0, 0))
+                {
+                    var transform = this.GlobalTransform;
+                    var targetPos = this.BaseComponent.GlobalTransform.origin + FPSCameraOffset + Vector3.Up * this.BaseComponent.GetShapeHeight();
+                    transform.origin = targetPos;
+                    var playerDirection = this.BaseComponent.GlobalTransform.basis.GetEuler();
+                    var ViewDirection = this.BaseComponent.CurrentPlayerInput.Inputs.ViewDirection.GetEuler();
+                    ViewDirection.y = playerDirection.y;
+                    transform.basis = new Basis(ViewDirection);
 
-            if (!this.IsLocal())
-                return;
-
-            if (this.Mode == CameraMode.TPS)
+                    this.GlobalTransform = transform;
+                }
+            }
+            else if (this.Mode == CameraMode.TPS)
             {
                 var cam_pos = this.BaseComponent.GlobalTransform.origin;
+                if (!this.IsServer())
+                {
+                    cam_pos.x += TPSCameraRadius * Mathf.Sin(Mathf.Deg2Rad(tempYaw)) * Mathf.Cos(Mathf.Deg2Rad(tempPitch));
+                    cam_pos.y += TPSCameraRadius * Mathf.Sin(Mathf.Deg2Rad(tempPitch));
+                    cam_pos.z += TPSCameraRadius * Mathf.Cos(Mathf.Deg2Rad(tempYaw)) * Mathf.Cos(Mathf.Deg2Rad(tempPitch));
 
-                cam_pos.x += TPSCameraRadius * Mathf.Sin(Mathf.Deg2Rad(tempYaw)) * Mathf.Cos(Mathf.Deg2Rad(tempPitch));
-                cam_pos.y += TPSCameraRadius * Mathf.Sin(Mathf.Deg2Rad(tempPitch));
-                cam_pos.z += TPSCameraRadius * Mathf.Cos(Mathf.Deg2Rad(tempYaw)) * Mathf.Cos(Mathf.Deg2Rad(tempPitch));
+                    this.LookAtFromPosition(cam_pos, this.BaseComponent.GlobalTransform.origin, new Vector3(0, 1, 0));
 
-                this.LookAtFromPosition(cam_pos, this.BaseComponent.GlobalTransform.origin, new Vector3(0, 1, 0));
-
-                var pos = this.Position;
-                pos.y += this.TPSCameraHeight;
-                this.Position = pos;
+                    var pos = this.Position;
+                    pos.y += this.TPSCameraHeight;
+                    this.Position = pos;
+                }
             }
             else if (this.Mode == CameraMode.FPS)
             {
                 var transform = this.GlobalTransform;
-                var targetPos = this.BaseComponent.GlobalTransform.origin + FPSCameraOffset + Vector3.Up * this.BaseComponent.GetShapeHeight();
-                transform.origin = targetPos;
+
+                var target = this.BaseComponent.GlobalTransform.origin + FPSCameraOffset + Vector3.Up * this.BaseComponent.GetShapeHeight();
+                transform.origin = target;
                 transform.basis = new Basis(new Vector3(tempRotX, tempRotY, 0));
+
                 this.GlobalTransform = transform;
             }
 

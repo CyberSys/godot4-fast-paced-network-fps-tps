@@ -48,15 +48,34 @@ namespace Framework.Input
     /// </summary>
     public class GeneralInputProcessor : BaseInputProcessor
     {
+        private bool lastJump = false;
+
         /// <inheritdoc />  
         public override Dictionary<String, bool> GetKeys()
         {
+            var newJump = Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_jump", Godot.Key.Space);
+
+            var canJump = false;
+            if (newJump == true && lastJump == false)
+            {
+                canJump = true;
+            }
+            else if (newJump == true && lastJump == true)
+            {
+                canJump = false;
+            }
+            else if (newJump == false && lastJump == true)
+            {
+                canJump = false;
+            }
+            lastJump = newJump;
+
             return new Dictionary<string, bool>{
                     { "Forward", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_forward", Godot.Key.W)},
                     { "Back", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_backward", Godot.Key.S)},
                     { "Right", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_right", Godot.Key.D)},
                     { "Left", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_left", Godot.Key.A)},
-                    { "Jump", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_jump", Godot.Key.Space)},
+                    { "Jump", canJump},
                     { "Crouch", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_crouch", Godot.Key.Ctrl)},
                     { "Shifting", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_shift", Godot.Key.Shift)},
                     { "Fire",  Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_attack", Godot.MouseButton.Left)},
