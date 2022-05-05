@@ -1,5 +1,7 @@
 # Logger.OnLogMessage event
 
+Event triggered when an new log message received
+
 ```csharp
 public static event LogMessageHandler OnLogMessage;
 ```

@@ -1,8 +1,15 @@
 # AsyncLoader.LoadResource method
 
+Load an resource by given path
+
 ```csharp
 public void LoadResource(string resourceName, Action<Resource> callback)
 ```
+
+| parameter | description |
+| --- | --- |
+| resourceName | Path to resource file |
+| callback | An action with returning an Resource |
 
 ## See Also
 

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://dj1qdbu8xfvyd"
+path="res://.godot/imported/STEPS Pudle, Walk 07, Single Impact.wav-bc2c6171d157db156dfdb8de7924046d.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Pudle/STEPS Pudle, Walk 07, Single Impact.wav"
+dest_files=["res://.godot/imported/STEPS Pudle, Walk 07, Single Impact.wav-bc2c6171d157db156dfdb8de7924046d.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

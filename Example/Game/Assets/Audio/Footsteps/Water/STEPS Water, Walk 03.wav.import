@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://d3s548iecwryw"
+path="res://.godot/imported/STEPS Water, Walk 03.wav-a72e8f625c7eaba367e4f141940161ad.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Water/STEPS Water, Walk 03.wav"
+dest_files=["res://.godot/imported/STEPS Water, Walk 03.wav-a72e8f625c7eaba367e4f141940161ad.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

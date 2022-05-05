@@ -1,8 +1,14 @@
 # IGameRule.OnHit method
 
+Triggered when an player got an hit
+
 ```csharp
 public void OnHit(RayCastHit player)
 ```
+
+| parameter | description |
+| --- | --- |
+| player |  |
 
 ## See Also
 

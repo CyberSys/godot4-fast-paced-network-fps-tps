@@ -4,6 +4,10 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Framework\Framework.csproj" />
+    <Compile Remove="Framework\**" />
+    <EmbeddedResource Remove="Framework\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Framework\Framework.csproj" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://de0jh71ooj6h8"
+path="res://.godot/imported/STEPS Gravel, Walk 07.wav-a6b78de2fc2ba33c29c17711c0bb386c.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Gravel/STEPS Gravel, Walk 07.wav"
+dest_files=["res://.godot/imported/STEPS Gravel, Walk 07.wav-a6b78de2fc2ba33c29c17711c0bb386c.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://do62ro3j82hnl"
+path="res://.godot/imported/STEPS Wood, Reverb, Run 38, Scratch.wav-5799b0371a0542506bfa5f2d750e0bf3.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Wood/Wood, Reverb/STEPS Wood, Reverb, Run 38, Scratch.wav"
+dest_files=["res://.godot/imported/STEPS Wood, Reverb, Run 38, Scratch.wav-5799b0371a0542506bfa5f2d750e0bf3.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://c6ph8mks3uxac"
+path="res://.godot/imported/STEPS Leaves, Sprint 05.wav-f9385d2936ad84965d6d244939d2cc4c.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Leaves/STEPS Leaves, Sprint 05.wav"
+dest_files=["res://.godot/imported/STEPS Leaves, Sprint 05.wav-f9385d2936ad84965d6d244939d2cc4c.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

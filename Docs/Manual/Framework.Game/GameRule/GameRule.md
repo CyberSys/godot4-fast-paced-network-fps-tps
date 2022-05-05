@@ -1,18 +1,13 @@
 # GameRule constructor
 
-Game rule constructor
+Default constructor
 
 ```csharp
-public GameRule(ServerWorld gameWorld)
+public GameRule()
 ```
-
-| parameter | description |
-| --- | --- |
-| gameWorld | Game world |
 
 ## See Also
 
-* class [ServerWorld](../../Framework.Game.Server/ServerWorld.md)
 * class [GameRule](../GameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

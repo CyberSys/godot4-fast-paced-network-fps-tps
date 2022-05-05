@@ -1,5 +1,7 @@
 # ClientSettings.Resolutions field
 
+Possible resoltuions
+
 ```csharp
 public static readonly string[] Resolutions;
 ```

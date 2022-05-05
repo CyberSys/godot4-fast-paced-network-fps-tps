@@ -3,7 +3,7 @@
 Called when players are disconnected (as eg. timeouts)
 
 ```csharp
-public void OnPlayerLeaveTemporary(IPlayer player)
+public void OnPlayerLeaveTemporary(INetworkCharacter player)
 ```
 
 | parameter | description |
@@ -12,7 +12,7 @@ public void OnPlayerLeaveTemporary(IPlayer player)
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

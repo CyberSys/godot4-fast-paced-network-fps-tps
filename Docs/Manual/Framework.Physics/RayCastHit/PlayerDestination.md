@@ -3,12 +3,12 @@
 The collider which hitted
 
 ```csharp
-public IPlayer PlayerDestination { get; set; }
+public INetworkCharacter PlayerDestination { get; set; }
 ```
 
 ## See Also
 
-* interface [IPlayer](../../Framework.Game/IPlayer.md)
+* interface [INetworkCharacter](../../Framework.Game/INetworkCharacter.md)
 * class [RayCastHit](../RayCastHit.md)
 * namespace [Framework.Physics](../../Framework.md)
 

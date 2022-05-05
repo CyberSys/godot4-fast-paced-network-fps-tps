@@ -3,12 +3,12 @@
 The server world
 
 ```csharp
-public ServerWorld GameWorld { get; }
+public NetworkServerWorld GameWorld { get; }
 ```
 
 ## See Also
 
-* class [ServerWorld](../../Framework.Game.Server/ServerWorld.md)
+* class [NetworkServerWorld](../../Framework.Game.Server/NetworkServerWorld.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

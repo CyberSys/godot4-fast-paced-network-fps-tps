@@ -1,5 +1,7 @@
 # AsyncLoader.OnProgress event
 
+Event triggered for each resource loading step (result in percent)
+
 ```csharp
 public event ProgressHandler OnProgress;
 ```

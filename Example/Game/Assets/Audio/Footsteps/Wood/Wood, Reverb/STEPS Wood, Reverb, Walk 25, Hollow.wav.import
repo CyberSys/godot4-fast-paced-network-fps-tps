@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://cgv8rm5k3fisw"
+path="res://.godot/imported/STEPS Wood, Reverb, Walk 25, Hollow.wav-573a68d0b65c7c44f271423da2479026.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Wood/Wood, Reverb/STEPS Wood, Reverb, Walk 25, Hollow.wav"
+dest_files=["res://.godot/imported/STEPS Wood, Reverb, Walk 25, Hollow.wav-573a68d0b65c7c44f271423da2479026.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

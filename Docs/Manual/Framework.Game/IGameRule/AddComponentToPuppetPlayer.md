@@ -3,8 +3,8 @@
 Add an component to an server player instance
 
 ```csharp
-public void AddComponentToPuppetPlayer<T>(IPlayer player)
-    where T : IChildComponent
+public void AddComponentToPuppetPlayer<T>(INetworkCharacter player)
+    where T : IPlayerComponent
 ```
 
 | parameter | description |
@@ -14,8 +14,8 @@ public void AddComponentToPuppetPlayer<T>(IPlayer player)
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
-* interface [IChildComponent](../../Framework/IChildComponent.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
+* interface [IPlayerComponent](../../Framework/IPlayerComponent.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

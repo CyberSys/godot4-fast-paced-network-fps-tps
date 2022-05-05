@@ -3,8 +3,8 @@
 Add an component to an local player instance on client side
 
 ```csharp
-public void AddComponentToLocalPlayer<T>(IPlayer player)
-    where T : IChildComponent
+public void AddComponentToLocalPlayer<T>(INetworkCharacter player)
+    where T : IPlayerComponent
 ```
 
 | parameter | description |
@@ -14,8 +14,8 @@ public void AddComponentToLocalPlayer<T>(IPlayer player)
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
-* interface [IChildComponent](../../Framework/IChildComponent.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
+* interface [IPlayerComponent](../../Framework/IPlayerComponent.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

@@ -1,14 +1,12 @@
-# GameLogic.CurrentWorld property
-
-The active game world
+# GameLogic.currentWorld field
 
 ```csharp
-public IWorld CurrentWorld { get; }
+protected INetworkWorld currentWorld;
 ```
 
 ## See Also
 
-* interface [IWorld](../IWorld.md)
+* interface [INetworkWorld](../INetworkWorld.md)
 * class [GameLogic](../GameLogic.md)
 * namespace [Framework.Game](../../Framework.md)
 

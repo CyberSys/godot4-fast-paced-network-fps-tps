@@ -3,16 +3,18 @@
 The handler for event changes
 
 ```csharp
-public delegate void ValueChangeHandler(string name, string value);
+public delegate void ValueChangeHandler(KeyChangeEnum type, string name, string value);
 ```
 
 | parameter | description |
 | --- | --- |
+| type |  |
 | name |  |
 | value |  |
 
 ## See Also
 
+* enum [KeyChangeEnum](./VarsCollection.KeyChangeEnum.md)
 * class [VarsCollection](./VarsCollection.md)
 * namespace [Framework.Game](../Framework.md)
 

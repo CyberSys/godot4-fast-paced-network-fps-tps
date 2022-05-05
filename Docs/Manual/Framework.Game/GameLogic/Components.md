@@ -1,12 +1,12 @@
 # GameLogic.Components property
 
 ```csharp
-public ComponentRegistry Components { get; }
+public ComponentRegistry<GameLogic> Components { get; }
 ```
 
 ## See Also
 
-* class [ComponentRegistry](../../Framework/ComponentRegistry.md)
+* class [ComponentRegistry&lt;T&gt;](../../Framework/ComponentRegistry-1.md)
 * class [GameLogic](../GameLogic.md)
 * namespace [Framework.Game](../../Framework.md)
 

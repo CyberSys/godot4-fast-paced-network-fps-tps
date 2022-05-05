@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://cbic5fos2ghq4"
+path="res://.godot/imported/STEPS Bush, Walk 13.wav-c8c9132d7c436192b1c28359017e6c55.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Bush/STEPS Bush, Walk 13.wav"
+dest_files=["res://.godot/imported/STEPS Bush, Walk 13.wav-c8c9132d7c436192b1c28359017e6c55.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

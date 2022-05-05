@@ -1,5 +1,7 @@
 # ClientSettings.WindowModes enumeration
 
+Possible window modes
+
 ```csharp
 public enum WindowModes
 ```
@@ -8,10 +10,10 @@ public enum WindowModes
 
 | name | value | description |
 | --- | --- | --- |
-| Windowed | `0` |  |
-| Borderless | `1` |  |
-| Fullscreen | `2` |  |
-| ExclusiveFullscreen | `3` |  |
+| Windowed | `0` | Is windowed |
+| Borderless | `1` | Is borderless window |
+| Fullscreen | `2` | Is fullscreen |
+| ExclusiveFullscreen | `3` | Is exclusive fullscreen |
 
 ## See Also
 

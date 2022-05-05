@@ -1,8 +1,15 @@
 # AsyncLoader.ProgressHandler delegate
 
+The event handler for on progress
+
 ```csharp
 public delegate void ProgressHandler(string filename, float percent);
 ```
+
+| parameter | description |
+| --- | --- |
+| filename |  |
+| percent |  |
 
 ## See Also
 

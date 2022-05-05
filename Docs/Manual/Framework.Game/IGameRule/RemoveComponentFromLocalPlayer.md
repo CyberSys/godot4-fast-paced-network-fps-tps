@@ -3,8 +3,8 @@
 Remove an component from an local player (client sided)
 
 ```csharp
-public void RemoveComponentFromLocalPlayer<T>(IPlayer player)
-    where T : IChildComponent
+public void RemoveComponentFromLocalPlayer<T>(INetworkCharacter player)
+    where T : IPlayerComponent
 ```
 
 | parameter | description |
@@ -14,8 +14,8 @@ public void RemoveComponentFromLocalPlayer<T>(IPlayer player)
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
-* interface [IChildComponent](../../Framework/IChildComponent.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
+* interface [IPlayerComponent](../../Framework/IPlayerComponent.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

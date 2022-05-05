@@ -1,12 +1,12 @@
 # GameRule.OnPlayerLeaveTemporary method
 
 ```csharp
-public virtual void OnPlayerLeaveTemporary(IPlayer player)
+public virtual void OnPlayerLeaveTemporary(INetworkCharacter player)
 ```
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
 * class [GameRule](../GameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

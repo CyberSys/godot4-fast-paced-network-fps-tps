@@ -1,5 +1,7 @@
 # ClientConnectionSettings.Hostname property
 
+Server hostname
+
 ```csharp
 public string Hostname { get; set; }
 ```

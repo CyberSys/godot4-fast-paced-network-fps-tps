@@ -1,5 +1,7 @@
 # ClientConnectionSettings.SecureKey property
 
+The server connect password
+
 ```csharp
 public string SecureKey { get; set; }
 ```

@@ -4,16 +4,14 @@
 
 | public type | description |
 | --- | --- |
-| class [ComponentRegistry](./Framework/ComponentRegistry.md) | Component registry class |
+| class [ComponentRegistry&lt;T&gt;](./Framework/ComponentRegistry-1.md) | Component registry class |
 | interface [IBaseComponent](./Framework/IBaseComponent.md) | The base component interface required for root components |
-| interface [IChildComponent](./Framework/IChildComponent.md) | The child component interface for childs of an base component |
+| interface [IChildComponent&lt;T&gt;](./Framework/IChildComponent-1.md) | The child component interface for childs of an base component |
 | interface [IPlayerComponent](./Framework/IPlayerComponent.md) | Interface required for player components |
 | static class [IPlayerComponentExtensions](./Framework/IPlayerComponentExtensions.md) |  |
 | interface [IService](./Framework/IService.md) | Required interface for service classes |
-| interface [ITeam](./Framework/ITeam.md) |  |
-| static class [Logger](./Framework/Logger.md) |  |
+| static class [Logger](./Framework/Logger.md) | Custom logger of the framework |
 | static class [NetExtensions](./Framework/NetExtensions.md) |  |
-| enum [PlayerTeam](./Framework/PlayerTeam.md) |  |
 
 ## Framework.Extensions namespace
 
@@ -27,38 +25,40 @@
 | public type | description |
 | --- | --- |
 | struct [AssignedComponent](./Framework.Game/AssignedComponent.md) | An assignable component for remote component injection |
+| enum [CameraMode](./Framework.Game/CameraMode.md) | The camera mode for the player camera |
+| class [CharacterCamera](./Framework.Game/CharacterCamera.md) | The player camera for an physics player |
 | class [GameLogic](./Framework.Game/GameLogic.md) | Basic game logic component |
-| class [GameRule](./Framework.Game/GameRule.md) | Basic class for an game rule |
+| abstract class [GameRule](./Framework.Game/GameRule.md) | Basic class for an game rule |
 | interface [IGameLogic](./Framework.Game/IGameLogic.md) | Required interface for game logic |
+| interface [IGameObject](./Framework.Game/IGameObject.md) | Required interface for players |
+| static class [IGameObjectExtension](./Framework.Game/IGameObjectExtension.md) |  |
 | interface [IGameRule](./Framework.Game/IGameRule.md) | Required interface for game rules |
-| interface [ILevel](./Framework.Game/ILevel.md) | Required interface for levels |
-| interface [IPlayer](./Framework.Game/IPlayer.md) | Required interface for players |
-| static class [IPlayerExtensions](./Framework.Game/IPlayerExtensions.md) |  |
-| interface [IWorld](./Framework.Game/IWorld.md) | The required interface for an game world |
-| abstract class [Level](./Framework.Game/Level.md) | A basic class for an game level |
-| abstract class [Player](./Framework.Game/Player.md) | The general player class |
-| abstract class [SpawnPoint](./Framework.Game/SpawnPoint.md) | The gernal spawn point class |
+| interface [INetworkCharacter](./Framework.Game/INetworkCharacter.md) | Required interface for players |
+| interface [INetworkLevel](./Framework.Game/INetworkLevel.md) | Required interface for levels |
+| interface [INetworkWorld](./Framework.Game/INetworkWorld.md) | The required interface for an game world |
+| class [NetworkCharacter](./Framework.Game/NetworkCharacter.md) | The general player class |
+| class [NetworkInput](./Framework.Game/NetworkInput.md) | The character or kinematic 3d body node for an network player |
+| class [NetworkLevel](./Framework.Game/NetworkLevel.md) | A basic class for an game level |
+| enum [NetworkMode](./Framework.Game/NetworkMode.md) | The game object network mode |
+| abstract class [NetworkWorld](./Framework.Game/NetworkWorld.md) | The core world class for server and client worlds |
+| class [SpawnPoint](./Framework.Game/SpawnPoint.md) | The gernal spawn point class |
 | struct [Vars](./Framework.Game/Vars.md) | An dictonary for settings (vars) |
 | class [VarsCollection](./Framework.Game/VarsCollection.md) | An collection of vars and config files |
-| abstract class [World](./Framework.Game/World.md) | The core world class for server and client worlds |
 
 ## Framework.Game.Client namespace
 
 | public type | description |
 | --- | --- |
-| class [ClientLogic](./Framework.Game.Client/ClientLogic.md) | Is the base class for any client (SubViewport) |
 | static class [ClientSettings](./Framework.Game.Client/ClientSettings.md) | Static class for client settings |
-| class [ClientWorld](./Framework.Game.Client/ClientWorld.md) | Base class for the client world |
-| class [LocalPlayer](./Framework.Game.Client/LocalPlayer.md) | The base class for local players |
-| class [PuppetPlayer](./Framework.Game.Client/PuppetPlayer.md) | The base class of an puppet player |
+| class [NetworkClientLogic](./Framework.Game.Client/NetworkClientLogic.md) | Is the base class for any client (SubViewport) |
+| class [NetworkClientWorld](./Framework.Game.Client/NetworkClientWorld.md) | Base class for the client world |
 
 ## Framework.Game.Server namespace
 
 | public type | description |
 | --- | --- |
-| class [ServerLogic](./Framework.Game.Server/ServerLogic.md) | The core server logic |
-| class [ServerPlayer](./Framework.Game.Server/ServerPlayer.md) | Core class for server player |
-| class [ServerWorld](./Framework.Game.Server/ServerWorld.md) | Base class for an server world |
+| class [NetworkServerLogic](./Framework.Game.Server/NetworkServerLogic.md) | The core server logic |
+| class [NetworkServerWorld](./Framework.Game.Server/NetworkServerWorld.md) | Base class for an server world |
 
 ## Framework.Input namespace
 
@@ -79,8 +79,6 @@
 | class [ClientSimulationAdjuster](./Framework.Network/ClientSimulationAdjuster.md) | Helps predict player simulation based on latency. (Only client-sided) |
 | interface [IChildNetworkSyncComponent&lt;T&gt;](./Framework.Network/IChildNetworkSyncComponent-1.md) | The child component interface for childs of an base component |
 | interface [ISimulationAdjuster](./Framework.Network/ISimulationAdjuster.md) | Adjust the server or client tickrate |
-| abstract class [NetworkPlayer](./Framework.Network/NetworkPlayer.md) | Player class for network players eg. players, npcs |
-| class [NetworkPlayerBody](./Framework.Network/NetworkPlayerBody.md) | The character or kinematic 3d body node for an network player |
 | abstract class [NetworkService](./Framework.Network/NetworkService.md) | Base network service class |
 | enum [PlayerConnectionState](./Framework.Network/PlayerConnectionState.md) | Connection states of the player |
 | class [ServerSimulationAdjuster](./Framework.Network/ServerSimulationAdjuster.md) | The default simulation adapter for a server instance |
@@ -103,22 +101,19 @@
 
 | public type | description |
 | --- | --- |
-| struct [ClientConnectionSettings](./Framework.Network.Services/ClientConnectionSettings.md) |  |
-| class [ClientNetworkService](./Framework.Network.Services/ClientNetworkService.md) |  |
-| class [RconServerService](./Framework.Network.Services/RconServerService.md) |  |
-| class [ServerNetworkService](./Framework.Network.Services/ServerNetworkService.md) |  |
+| struct [ClientConnectionSettings](./Framework.Network.Services/ClientConnectionSettings.md) | Settings for the client connection |
+| class [ClientNetworkService](./Framework.Network.Services/ClientNetworkService.md) | The client network service |
+| class [RconServerService](./Framework.Network.Services/RconServerService.md) | The rcon network service |
+| class [ServerNetworkService](./Framework.Network.Services/ServerNetworkService.md) | The server network service |
 
 ## Framework.Physics namespace
 
 | public type | description |
 | --- | --- |
-| enum [CameraMode](./Framework.Physics/CameraMode.md) | The camera mode for the player camera |
 | class [DefaultMovementProcessor](./Framework.Physics/DefaultMovementProcessor.md) | An default movement calculator Handles friction, air control, jumping and accelerate |
 | class [HitBox](./Framework.Physics/HitBox.md) | Hit box collider |
 | interface [IMovementProcessor](./Framework.Physics/IMovementProcessor.md) | The required interface for movement processors |
 | class [InterpolationController](./Framework.Physics/InterpolationController.md) | Helper class for interpolations by ticks |
-| abstract class [PhysicsPlayer](./Framework.Physics/PhysicsPlayer.md) | The base class for physics based players (kinematic, rigid..) |
-| class [PhysicsPlayerCamera](./Framework.Physics/PhysicsPlayerCamera.md) | The player camera for an physics player |
 | class [RayCastHit](./Framework.Physics/RayCastHit.md) | The hit result of an ray cast |
 
 ## Framework.Physics.Commands namespace
@@ -134,6 +129,7 @@
 | class [AsyncLoader](./Framework.Utils/AsyncLoader.md) | Helper class to load resources in background |
 | class [DoubleBuffer&lt;T&gt;](./Framework.Utils/DoubleBuffer-1.md) |  |
 | class [FixedTimer](./Framework.Utils/FixedTimer.md) |  |
+| class [LineDrawer3d](./Framework.Utils/LineDrawer3d.md) |  |
 | class [RayCastLine](./Framework.Utils/RayCastLine.md) |  |
 | static class [VectorExtension](./Framework.Utils/VectorExtension.md) |  |
 

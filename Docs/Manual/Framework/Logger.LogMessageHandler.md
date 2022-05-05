@@ -1,8 +1,14 @@
 # Logger.LogMessageHandler delegate
 
+The log message handler
+
 ```csharp
 public delegate void LogMessageHandler(string message);
 ```
+
+| parameter | description |
+| --- | --- |
+| message |  |
 
 ## See Also
 

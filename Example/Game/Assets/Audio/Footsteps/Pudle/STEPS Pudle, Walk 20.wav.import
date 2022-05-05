@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://di0unus1rm7tc"
+path="res://.godot/imported/STEPS Pudle, Walk 20.wav-0bdb0c4565020d28dd72a7f99a95de2c.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Pudle/STEPS Pudle, Walk 20.wav"
+dest_files=["res://.godot/imported/STEPS Pudle, Walk 20.wav-0bdb0c4565020d28dd72a7f99a95de2c.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

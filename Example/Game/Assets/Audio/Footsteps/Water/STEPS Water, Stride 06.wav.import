@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://caayww8n43rnd"
+path="res://.godot/imported/STEPS Water, Stride 06.wav-5a9b5ebd1d3688c316d22a409d5719be.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Water/STEPS Water, Stride 06.wav"
+dest_files=["res://.godot/imported/STEPS Water, Stride 06.wav-5a9b5ebd1d3688c316d22a409d5719be.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

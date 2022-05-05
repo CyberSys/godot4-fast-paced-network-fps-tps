@@ -1,8 +1,15 @@
 # Logger.DebugUI field
 
+Currently not in use! (TODO)
+
 ```csharp
 public static Dictionary<string, string> DebugUI;
 ```
+
+| parameter | description |
+| --- | --- |
+| string | Key |
+| string | Value |
 
 ## See Also
 

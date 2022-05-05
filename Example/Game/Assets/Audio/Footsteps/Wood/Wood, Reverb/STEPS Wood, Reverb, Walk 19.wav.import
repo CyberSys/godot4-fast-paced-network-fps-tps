@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://dtaj8cvln12kw"
+path="res://.godot/imported/STEPS Wood, Reverb, Walk 19.wav-7b9eb4dad5c9f075b10f5a14067b236d.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Wood/Wood, Reverb/STEPS Wood, Reverb, Walk 19.wav"
+dest_files=["res://.godot/imported/STEPS Wood, Reverb, Walk 19.wav-7b9eb4dad5c9f075b10f5a14067b236d.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

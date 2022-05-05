@@ -1,12 +1,12 @@
 # GameRule.OnPlayerRejoined method
 
 ```csharp
-public virtual void OnPlayerRejoined(IPlayer player)
+public virtual void OnPlayerRejoined(INetworkCharacter player)
 ```
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
 * class [GameRule](../GameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

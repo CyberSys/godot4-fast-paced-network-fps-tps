@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://c415u2n4btdgy"
+path="res://.godot/imported/STEPS Swamp, Walk 23.wav-2f4320abe39cd6cadf4a82bbb3df99f9.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Swamp/STEPS Swamp, Walk 23.wav"
+dest_files=["res://.godot/imported/STEPS Swamp, Walk 23.wav-2f4320abe39cd6cadf4a82bbb3df99f9.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

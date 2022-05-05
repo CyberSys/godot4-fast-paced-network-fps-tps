@@ -1,9 +1,19 @@
 # VectorExtension.SmoothDamp method (1 of 2)
 
+Gradually changes a vector towards a desired goal over time.
+
 ```csharp
 public static Vector3 SmoothDamp(Vector3 current, Vector3 target, ref Vector3 currentVelocity, 
     float smoothTime, float deltaTime)
 ```
+
+| parameter | description |
+| --- | --- |
+| current |  |
+| target |  |
+| currentVelocity |  |
+| smoothTime |  |
+| deltaTime |  |
 
 ## See Also
 
@@ -14,10 +24,21 @@ public static Vector3 SmoothDamp(Vector3 current, Vector3 target, ref Vector3 cu
 
 # VectorExtension.SmoothDamp method (2 of 2)
 
+Gradually changes a vector towards a desired goal over time.
+
 ```csharp
 public static Vector3 SmoothDamp(Vector3 current, Vector3 target, ref Vector3 currentVelocity, 
     float smoothTime, float deltaTime, float maxSpeed = Infinity)
 ```
+
+| parameter | description |
+| --- | --- |
+| current |  |
+| target |  |
+| currentVelocity |  |
+| smoothTime |  |
+| deltaTime |  |
+| maxSpeed |  |
 
 ## See Also
 

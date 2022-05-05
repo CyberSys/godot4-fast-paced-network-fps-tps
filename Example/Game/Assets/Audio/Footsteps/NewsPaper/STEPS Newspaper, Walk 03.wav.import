@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://cojx0yfhxd02p"
+path="res://.godot/imported/STEPS Newspaper, Walk 03.wav-a5663425a28580030b6976062f6924e0.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/NewsPaper/STEPS Newspaper, Walk 03.wav"
+dest_files=["res://.godot/imported/STEPS Newspaper, Walk 03.wav-a5663425a28580030b6976062f6924e0.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

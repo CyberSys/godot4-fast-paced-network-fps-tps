@@ -3,7 +3,7 @@
 Called when players finanly leave the game
 
 ```csharp
-public void OnPlayerLeave(IPlayer player)
+public void OnPlayerLeave(INetworkCharacter player)
 ```
 
 | parameter | description |
@@ -12,7 +12,7 @@ public void OnPlayerLeave(IPlayer player)
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

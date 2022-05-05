@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://gwcbwlbvnvre"
+path="res://.godot/imported/STEPS Snow, Walk 15.wav-1a998cdd647c33908cb1788c206d2bcd.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Snow/STEPS Snow, Walk 15.wav"
+dest_files=["res://.godot/imported/STEPS Snow, Walk 15.wav-1a998cdd647c33908cb1788c206d2bcd.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

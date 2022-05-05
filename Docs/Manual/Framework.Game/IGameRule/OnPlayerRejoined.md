@@ -3,7 +3,7 @@
 Called when player are rejoined the game (after previous disconnect)
 
 ```csharp
-public void OnPlayerRejoined(IPlayer player)
+public void OnPlayerRejoined(INetworkCharacter player)
 ```
 
 | parameter | description |
@@ -12,7 +12,7 @@ public void OnPlayerRejoined(IPlayer player)
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

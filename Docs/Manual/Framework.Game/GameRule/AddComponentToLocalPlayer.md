@@ -1,14 +1,14 @@
 # GameRule.AddComponentToLocalPlayer&lt;T&gt; method
 
 ```csharp
-public void AddComponentToLocalPlayer<T>(IPlayer player)
-    where T : IChildComponent
+public void AddComponentToLocalPlayer<T>(INetworkCharacter player)
+    where T : IPlayerComponent
 ```
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
-* interface [IChildComponent](../../Framework/IChildComponent.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
+* interface [IPlayerComponent](../../Framework/IPlayerComponent.md)
 * class [GameRule](../GameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

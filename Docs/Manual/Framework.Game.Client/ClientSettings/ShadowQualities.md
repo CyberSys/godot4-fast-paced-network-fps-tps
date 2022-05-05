@@ -1,5 +1,7 @@
 # ClientSettings.ShadowQualities field
 
+Possible shadow quality values
+
 ```csharp
 public static readonly Dictionary<string, int> ShadowQualities;
 ```

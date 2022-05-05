@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://k04sk7yss1fu"
+path="res://.godot/imported/STEPS Wood, Dense, Walk 10, Light.wav-06b35a2cd33be24c824efcab4c55486e.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Wood/Wood, Dense/STEPS Wood, Dense, Walk 10, Light.wav"
+dest_files=["res://.godot/imported/STEPS Wood, Dense, Walk 10, Light.wav-06b35a2cd33be24c824efcab4c55486e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

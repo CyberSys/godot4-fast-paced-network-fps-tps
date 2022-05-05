@@ -1,12 +1,12 @@
 # GameRule.GameWorld property
 
 ```csharp
-public ServerWorld GameWorld { get; }
+public NetworkServerWorld GameWorld { get; set; }
 ```
 
 ## See Also
 
-* class [ServerWorld](../../Framework.Game.Server/ServerWorld.md)
+* class [NetworkServerWorld](../../Framework.Game.Server/NetworkServerWorld.md)
 * class [GameRule](../GameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

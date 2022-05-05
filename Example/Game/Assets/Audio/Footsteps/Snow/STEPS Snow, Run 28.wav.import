@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://cbvx0r2u5oww1"
+path="res://.godot/imported/STEPS Snow, Run 28.wav-2b6e83a98979de8e6b937e73a59652fe.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Snow/STEPS Snow, Run 28.wav"
+dest_files=["res://.godot/imported/STEPS Snow, Run 28.wav-2b6e83a98979de8e6b937e73a59652fe.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

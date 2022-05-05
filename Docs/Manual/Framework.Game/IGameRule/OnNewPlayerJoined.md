@@ -3,7 +3,7 @@
 Called on new player joined the game
 
 ```csharp
-public void OnNewPlayerJoined(IPlayer player)
+public void OnNewPlayerJoined(INetworkCharacter player)
 ```
 
 | parameter | description |
@@ -12,7 +12,7 @@ public void OnNewPlayerJoined(IPlayer player)
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
 * interface [IGameRule](../IGameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

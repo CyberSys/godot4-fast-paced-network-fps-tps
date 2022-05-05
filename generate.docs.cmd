@@ -1,2 +1,2 @@
 echo J | rmdir /s Docs\Manual 
-xmldocmd --visibility public --namespace Framework --obsolete Framework\bin\Debug\netstandard2.1\Framework.dll Docs\Manual 
+xmldocmd --source https://github.com/TeamStriked/godot4-fast-paced-network-fps-tps --namespace Framework --obsolete  --clean  Example\Framework\bin\Debug\netstandard2.1\Framework.dll Docs\Manual 

@@ -3,12 +3,12 @@
 Get the player instance of an hitbox
 
 ```csharp
-public IPlayer GetPlayer()
+public INetworkCharacter GetPlayer()
 ```
 
 ## See Also
 
-* interface [IPlayer](../../Framework.Game/IPlayer.md)
+* interface [INetworkCharacter](../../Framework.Game/INetworkCharacter.md)
 * class [HitBox](../HitBox.md)
 * namespace [Framework.Physics](../../Framework.md)
 

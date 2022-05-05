@@ -1,14 +1,14 @@
 # GameRule.AddComponentToPuppetPlayer&lt;T&gt; method
 
 ```csharp
-public void AddComponentToPuppetPlayer<T>(IPlayer player)
-    where T : IChildComponent
+public void AddComponentToPuppetPlayer<T>(INetworkCharacter player)
+    where T : IPlayerComponent
 ```
 
 ## See Also
 
-* interface [IPlayer](../IPlayer.md)
-* interface [IChildComponent](../../Framework/IChildComponent.md)
+* interface [INetworkCharacter](../INetworkCharacter.md)
+* interface [IPlayerComponent](../../Framework/IPlayerComponent.md)
 * class [GameRule](../GameRule.md)
 * namespace [Framework.Game](../../Framework.md)
 

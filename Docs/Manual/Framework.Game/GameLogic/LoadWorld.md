@@ -3,12 +3,13 @@
 Load an world by given resource path
 
 ```csharp
-public void LoadWorld(string path, uint worldTick = 0)
+public void LoadWorld(string path, string scriptPath, uint worldTick = 0)
 ```
 
 | parameter | description |
 | --- | --- |
 | path |  |
+| scriptPath |  |
 | worldTick |  |
 
 ## See Also

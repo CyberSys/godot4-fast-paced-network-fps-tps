@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://bl4mi4mrpsiq1"
+path="res://.godot/imported/STEPS Soft Plastic, Walk 03.wav-bae226f548f6840521e95a8f7b14a400.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/Footsteps/Soft Plastic/STEPS Soft Plastic, Walk 03.wav"
+dest_files=["res://.godot/imported/STEPS Soft Plastic, Walk 03.wav-bae226f548f6840521e95a8f7b14a400.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
