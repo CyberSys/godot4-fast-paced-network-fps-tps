@@ -27,7 +27,7 @@ namespace Framework.Game
     /// <summary>
     /// Required interface for players
     /// </summary>
-    public interface INetworkCharacter : IBaseComponent, IGameObject
+    public interface INetworkCharacter : IBaseComponent, INetworkObject
     {
         /// <summary>
         /// Id of player

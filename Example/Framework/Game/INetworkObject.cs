@@ -43,9 +43,9 @@ namespace Framework.Game
         PUPPET
     }
     /// <summary>
-    /// Required interface for players
+    /// Required interface for network objects
     /// </summary>
-    public interface IGameObject : IBaseComponent
+    public interface INetworkObject : IBaseComponent
     {
         /// <summary>
         /// The network mode for the game object
@@ -67,22 +67,22 @@ namespace Framework.Game
     }
 
     /// <inheritdoc />
-    public static class IGameObjectExtension
+    public static class INetworkObjectExtension
     {
         /// <inheritdoc />
-        public static bool IsServer(this IGameObject client)
+        public static bool IsServer(this INetworkObject client)
         {
             return client.Mode == NetworkMode.SERVER;
         }
 
         /// <inheritdoc />
-        public static bool IsLocal(this IGameObject client)
+        public static bool IsLocal(this INetworkObject client)
         {
             return client.Mode == NetworkMode.CLIENT;
         }
 
         /// <inheritdoc />
-        public static bool IsPuppet(this IGameObject client)
+        public static bool IsPuppet(this INetworkObject client)
         {
             return client.Mode == NetworkMode.PUPPET;
         }
