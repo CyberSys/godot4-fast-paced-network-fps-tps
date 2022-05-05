@@ -3,7 +3,7 @@
 Required interface for players
 
 ```csharp
-public interface INetworkCharacter : IGameObject
+public interface INetworkCharacter : INetworkObject
 ```
 
 ## Members
@@ -21,7 +21,7 @@ public interface INetworkCharacter : IGameObject
 
 ## See Also
 
-* interface [IGameObject](./IGameObject.md)
+* interface [INetworkObject](./INetworkObject.md)
 * namespace [Framework.Game](../Framework.md)
 * [INetworkCharacter.cs](https://github.com/TeamStriked/godot4-fast-paced-network-fps-tps/blob/master/Example/Framework/Game/INetworkCharacter.cs)
 

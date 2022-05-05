@@ -30,11 +30,11 @@
 | class [GameLogic](./Framework.Game/GameLogic.md) | Basic game logic component |
 | abstract class [GameRule](./Framework.Game/GameRule.md) | Basic class for an game rule |
 | interface [IGameLogic](./Framework.Game/IGameLogic.md) | Required interface for game logic |
-| interface [IGameObject](./Framework.Game/IGameObject.md) | Required interface for players |
-| static class [IGameObjectExtension](./Framework.Game/IGameObjectExtension.md) |  |
 | interface [IGameRule](./Framework.Game/IGameRule.md) | Required interface for game rules |
 | interface [INetworkCharacter](./Framework.Game/INetworkCharacter.md) | Required interface for players |
 | interface [INetworkLevel](./Framework.Game/INetworkLevel.md) | Required interface for levels |
+| interface [INetworkObject](./Framework.Game/INetworkObject.md) | Required interface for network objects |
+| static class [INetworkObjectExtension](./Framework.Game/INetworkObjectExtension.md) |  |
 | interface [INetworkWorld](./Framework.Game/INetworkWorld.md) | The required interface for an game world |
 | class [NetworkCharacter](./Framework.Game/NetworkCharacter.md) | The general player class |
 | class [NetworkInput](./Framework.Game/NetworkInput.md) | The character or kinematic 3d body node for an network player |
