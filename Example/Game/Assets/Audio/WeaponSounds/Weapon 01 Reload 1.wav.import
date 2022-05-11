@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://bu2lofcftwcyt"
+path="res://.godot/imported/Weapon 01 Reload 1.wav-d2333639d2a5dbed36c057f7125fdf13.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/WeaponSounds/Weapon 01 Reload 1.wav"
+dest_files=["res://.godot/imported/Weapon 01 Reload 1.wav-d2333639d2a5dbed36c057f7125fdf13.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

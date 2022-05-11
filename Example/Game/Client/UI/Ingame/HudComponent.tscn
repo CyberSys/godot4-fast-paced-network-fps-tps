@@ -62,9 +62,9 @@ theme_override_font_sizes/font_size = 50
 text = "2"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="HudControl"]
-anchor_left = 0.3
+anchor_left = 0.03
 anchor_top = 0.9
-anchor_right = 0.7
+anchor_right = 0.97
 anchor_bottom = 0.9
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -94,14 +94,14 @@ text = "50"
 
 [node name="MarginContainer" type="MarginContainer" parent="HudControl/HBoxContainer4"]
 offset_left = 82.0
-offset_right = 451.0
+offset_right = 1142.0
 offset_bottom = 75.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="CenterContainer2" type="CenterContainer" parent="HudControl/HBoxContainer4"]
-offset_left = 455.0
-offset_right = 512.0
+offset_left = 1146.0
+offset_right = 1203.0
 offset_bottom = 75.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HudControl/HBoxContainer4/CenterContainer2"]

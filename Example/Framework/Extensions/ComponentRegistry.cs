@@ -88,16 +88,6 @@ namespace Framework
         public ComponentRegistry(T baseComponent)
         {
             this.baseComponent = baseComponent;
-            this.baseComponent.TreeEntered += () =>
-            {
-                foreach (var comp in All)
-                {
-                    if (!comp.IsInsideTree())
-                    {
-                        this.baseComponent.AddChild(comp);
-                    }
-                }
-            };
         }
 
         /// <summary>
@@ -248,7 +238,7 @@ namespace Framework
             var element = this.All.FirstOrDefault(df => df.GetType() == type);
             if (element == null)
             {
-                //  scene.ResourceLocalToScene = true;
+                //scene.ResourceLocalToScene = true;
                 var createdObject = scene.Instantiate();
                 if (createdObject is IChildComponent<T> && createdObject is Node)
                 {
@@ -292,7 +282,7 @@ namespace Framework
             }
 
             var scene = GD.Load<PackedScene>(resourcePath);
-            // scene.ResourceLocalToScene = true;
+            //  scene.ResourceLocalToScene = true;
             var component = scene.Instantiate<T2>();
             component.Name = typeof(T2).Name;
             component.BaseComponent = this.baseComponent;
@@ -317,6 +307,21 @@ namespace Framework
             if (element != null)
             {
                 return element as T2;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get an existing component of the base component
+        /// </summary>
+        /// <returns></returns>
+        public object Get(Type t)
+        {
+            var element = this.All.FirstOrDefault(df => df.GetType() == t);
+            if (element != null)
+            {
+                return element;
             }
 
             return null;

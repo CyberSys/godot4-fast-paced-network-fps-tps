@@ -95,6 +95,7 @@ namespace LiteNetLib
     /// </summary>
     public class NetManager : IEnumerable<NetPeer>
     {
+        public string DebugName { get; set; } = "[NM] LogicThread";
         private class IPEndPointComparer : IEqualityComparer<IPEndPoint>
         {
             public bool Equals(IPEndPoint x, IPEndPoint y)
@@ -713,7 +714,7 @@ namespace LiteNetLib
                 }
                 catch (Exception e)
                 {
-                    NetDebug.WriteError("[NM] LogicThread error: " + e);
+                    NetDebug.WriteError(this.DebugName + " => " + e);
                 }
             }
             stopwatch.Stop();

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://bbbfeu44f48j4"
+path="res://.godot/imported/Weapon 08 Loop (Laser).wav-b0550792caaccb431eef07d8c8d70800.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/WeaponSounds/Weapon 08 Loop (Laser).wav"
+dest_files=["res://.godot/imported/Weapon 08 Loop (Laser).wav-b0550792caaccb431eef07d8c8d70800.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

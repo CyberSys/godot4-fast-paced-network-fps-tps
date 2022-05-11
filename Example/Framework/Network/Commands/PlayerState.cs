@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -25,10 +23,38 @@ using Godot;
 using System.Reflection;
 using LiteNetLib.Utils;
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using Framework.Game;
 
 namespace Framework.Network.Commands
 {
+    public struct PlayerNetworkVarState : INetSerializable
+    {
+        public short Key;
+        public byte[] Data;
 
+        /// <inheritdoc />
+        public void Serialize(NetDataWriter writer)
+        {
+            writer.Put(Key);
+            writer.PutBytesWithLength(Data);
+        }
+
+        /// <inheritdoc />
+        public void Deserialize(NetDataReader reader)
+        {
+            this.Key = reader.GetShort();
+            this.Data = reader.GetBytesWithLength();
+        }
+    }
+
+
+    public enum PlayerStateVarType
+    {
+        Permanent,
+        Sync
+    }
 
     /// <summary>
     /// The player states structures
@@ -37,76 +63,226 @@ namespace Framework.Network.Commands
     public struct PlayerState : INetSerializable
     {
         /// <summary>
+        /// Current latency
+        /// </summary>
+        public short Latency;
+
+        /// <summary>
         /// The id of this player
         /// </summary>
-        public int Id;
+        public short NetworkId;
 
         /// <summary>
         /// Uncomposed list of components and component states
         /// </summary>
-        public Dictionary<int, byte[]> NetworkComponents;
+        public List<PlayerNetworkVarState> NetworkSyncedVars;
 
-        /// <summary>
-        /// The netword state for the body component
-        /// </summary>
-        public Framework.Physics.Commands.MovementNetworkCommand BodyComponent;
+
+        internal byte[] ParseAnyTypeToBytes(object value)
+        {
+            if (value == null)
+            {
+                throw new Exception("Cant be null");
+            }
+
+            var writer = new NetDataWriter();
+
+            if (value.GetType().IsEnum)
+                writer.Put((uint)value);
+            else if (value is float)
+                writer.Put((float)value);
+            else if (value is string)
+                writer.Put((string)value);
+            else if (value is int)
+                writer.Put((int)value);
+            else if (value is bool)
+                writer.Put((bool)value);
+            else if (value is short)
+                writer.Put((short)value);
+            else if (value is uint)
+                writer.Put((uint)value);
+            else if (value is Quaternion)
+                writer.Put((Quaternion)value);
+            else if (value is Vector3)
+                writer.Put((Vector3)value);
+            else if (value is Vector2)
+                writer.Put((Vector2)value);
+            else
+                throw new Exception(value.GetType() + " unknown parse type.");
+
+            var bytes = writer.CopyData();
+            return bytes;
+        }
+
+        internal object ParseBytesToAnyType(Type t, byte[] value)
+        {
+            var reader = new NetDataReader(value);
+            if (t.IsEnum)
+            {
+                return Enum.ToObject(t, reader.GetUInt());
+            }
+            else if (t == typeof(int))
+            {
+                return reader.GetInt();
+            }
+            else if (t == typeof(float))
+            {
+                return reader.GetFloat();
+            }
+            else if (t == typeof(string))
+            {
+                return reader.GetString();
+            }
+            else if (t == typeof(Vector3))
+            {
+                return reader.GetVector3();
+            }
+            else if (t == typeof(Vector2))
+            {
+                return reader.GetVector2();
+            }
+            else if (t == typeof(bool))
+            {
+                return reader.GetBool();
+            }
+            else if (t == typeof(short))
+            {
+                return reader.GetShort();
+            }
+            else if (t == typeof(uint))
+            {
+                return reader.GetUInt();
+            }
+            else if (t == typeof(Godot.Quaternion))
+            {
+                return reader.GetQuaternion();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public object GetVar(INetworkObject netObject, string key)
+        {
+            var checkCollection = new Dictionary<string, NetworkAttribute>();
+
+            var collection = this.NetworkSyncedVars != null ? this.NetworkSyncedVars : new List<PlayerNetworkVarState>();
+            checkCollection = netObject.NetworkSyncVars;
+
+            if (collection == null || checkCollection == null || netObject == null)
+            {
+                return null;
+            }
+
+            if (!checkCollection.ContainsKey(key))
+            {
+                Logger.LogDebug(this, "Key " + key + " not registered.");
+                return null;
+            }
+
+            var origNetVar = checkCollection[key];
+            if (collection.Count(df => df.Key == origNetVar.AttributeIndex) <= 0)
+            {
+                Logger.LogDebug(this, "Key " + key + " not in network package.");
+                return null;
+            }
+
+            PlayerNetworkVarState value = collection.First(df => df.Key == origNetVar.AttributeIndex);
+            if (value.Data == null)
+            {
+                return null;
+            }
+
+            var result = this.ParseBytesToAnyType(origNetVar.AttributeType, value.Data);
+            if (result == null)
+            {
+                throw new Exception("Result cant be null for " + key + "from type" + origNetVar.AttributeType + " with length of " + value.Data.Length);
+            }
+
+            return result;
+        }
+
+        public T GetVar<T>(INetworkObject netObject, string key, T fallback = default(T))
+        {
+            if (netObject == null)
+                return fallback;
+
+            var var = this.GetVar(netObject, key);
+            if (var == null)
+            {
+                return fallback;
+            }
+            else if (var is T)
+            {
+                return (T)var;
+            }
+            else
+            {
+                return fallback;
+            }
+        }
+
+        public void SetVar(INetworkObject netObject, string key, object value)
+        {
+            if (value == null)
+            {
+                throw new Exception("Cant be null);");
+            }
+
+            var collection = this.NetworkSyncedVars != null ? this.NetworkSyncedVars : new List<PlayerNetworkVarState>();
+            var checkCollection = new Dictionary<string, NetworkAttribute>();
+
+            collection = this.NetworkSyncedVars;
+            checkCollection = netObject.NetworkSyncVars;
+
+            if (!checkCollection.ContainsKey(key))
+            {
+                throw new Exception("PermanentNetworkVar with  " + key + " or from type  " + value.GetType() + " not found.");
+            }
+            else
+            {
+                var orig = checkCollection[key];
+                var bytes = this.ParseAnyTypeToBytes(value);
+                if (bytes.Length > 0)
+                {
+                    var newValue = new PlayerNetworkVarState { Key = orig.AttributeIndex, Data = bytes };
+                    var findIndex = collection.FindIndex(df => df.Key == orig.AttributeIndex);
+                    if (findIndex == -1)
+                    {
+                        collection.Add(newValue);
+                    }
+                    else
+                    {
+                        collection[findIndex] = newValue;
+                    }
+                }
+                else
+                {
+                    throw new Exception("Empty byte array??");
+                }
+            }
+        }
 
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
-            writer.Put(this.Id);
-            BodyComponent.Serialize(writer);
+            writer.Put(NetworkId);
+            writer.Put(Latency);
 
-            //needs to be at end
-            if (this.NetworkComponents != null)
-            {
-                writer.Put(NetworkComponents.Count);
-                foreach (var item in NetworkComponents)
-                {
-                    writer.Put(item.Key);
-                    writer.PutBytesWithLength(item.Value);
-                }
-            }
-            else
-            {
-                writer.Put(0);
-            }
+            if (NetworkSyncedVars == null)
+                NetworkSyncedVars = new List<PlayerNetworkVarState>();
+
+            writer.PutArray<PlayerNetworkVarState>(NetworkSyncedVars.ToArray());
         }
 
         /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
-            this.Id = reader.GetInt();
-            BodyComponent.Deserialize(reader);
+            this.NetworkId = reader.GetShort();
+            this.Latency = reader.GetShort();
 
-            //needs to be at end
-            var comps = new Dictionary<int, byte[]>();
-            var componentsCount = reader.GetInt();
-            for (int i = 0; i < componentsCount; i++)
-            {
-                int compId = reader.GetInt();
-                byte[] bytes = reader.GetBytesWithLength();
-                comps.Add(compId, bytes);
-            }
-
-            this.NetworkComponents = comps;
-        }
-
-        /// <inheritdoc />
-        public T Decompose<T>(int value) where T : INetSerializable
-        {
-            if (!this.NetworkComponents.ContainsKey(value))
-            {
-                return default(T);
-            }
-            else
-            {
-                T netcomponent = Activator.CreateInstance<T>();
-                var reader = new NetDataReader(this.NetworkComponents[value]);
-                netcomponent.Deserialize(reader);
-
-                return netcomponent;
-            }
+            this.NetworkSyncedVars = reader.GetArray<PlayerNetworkVarState>().ToList();
         }
     }
 }

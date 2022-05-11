@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://245i2jil4wm6"
+path="res://.godot/imported/Weapon 05 Foley 1 (Laser).wav-bdae740bd6f4801f9a2b3e2f797f6860.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/WeaponSounds/Weapon 05 Foley 1 (Laser).wav"
+dest_files=["res://.godot/imported/Weapon 05 Foley 1 (Laser).wav-bdae740bd6f4801f9a2b3e2f797f6860.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -107,22 +107,7 @@ namespace Framework.Physics
             set { _velocity = value; }
         }
 
-        /// <inheritdoc />
-        internal void Execute(float delta, Vector3 executeVelocity)
-        {
-            //set crouching
-            float couchLevel = 1.0f;
-            if (this.CanCrouch())
-            {
-                couchLevel = delta * (inputs.GetInput("Crouch") ?
-                    this.serverVars.Get<float>("sv_crouching_down_speed", 8.0f) :
-                    this.serverVars.Get<float>("sv_crouching_up_speed", 4.0f));
-            }
 
-            component.SetCrouchingLevel(inputs.GetInput("Crouch") ? couchLevel * -1 : couchLevel);
-            component.Velocity = executeVelocity;
-            component.Move(delta, executeVelocity);
-        }
 
         /// <inheritdoc />
         public void SetServerVars(VarsCollection vars)
@@ -138,8 +123,6 @@ namespace Framework.Physics
         /// <inheritdoc />
         public Vector3 Simulate(NetworkCharacter component, GeneralPlayerInput inputs, float dt)
         {
-            var processedVelocity = _velocity;
-
             if (component == null)
             {
                 return Vector3.Zero;
@@ -148,33 +131,33 @@ namespace Framework.Physics
             this.inputs = inputs;
             this.component = component;
 
-            // Set orientation based on the view direction.
-            if (inputs.ViewDirection == null || inputs.ViewDirection == new Quaternion(0, 0, 0, 0))
-            {
-                inputs.ViewDirection = Quaternion.Identity;
-
-            }
-
-            var euler = inputs.ViewDirection.GetEuler();
-
-            var gtRot = this.component.GlobalTransform;
-            gtRot.basis = new Basis(new Vector3(0, euler.y, 0));
-            this.component.GlobalTransform = gtRot;
+            //Set rotation
+            var comp = this.component.Transform;
+            comp.basis = new Basis(new Vector3(0, inputs.ViewDirection.y, 0));
+            this.component.Transform = comp;
 
             // Process movement.
             this.QueueJump();
 
             if (component.IsOnGround())
             {
-                processedVelocity = this.GroundMove(dt, processedVelocity);
+                _velocity = this.GroundMove(dt, _velocity);
             }
             else if (!component.IsOnGround())
             {
-                processedVelocity = this.AirMove(dt, processedVelocity);
+                _velocity = this.AirMove(dt, _velocity);
             }
 
-            // Apply the final velocity to the character controller.
-            this.Execute(dt, processedVelocity);
+            float couchLevel = 1.0f;
+            if (this.CanCrouch())
+            {
+                couchLevel = dt * (inputs.GetInput("Crouch") ?
+                    this.serverVars.Get<float>("sv_crouching_down_speed", 8.0f) :
+                    this.serverVars.Get<float>("sv_crouching_up_speed", 4.0f));
+            }
+
+            component.SetCrouchingLevel(inputs.GetInput("Crouch") ? couchLevel * -1 : couchLevel);
+            component.Move(dt, _velocity);
 
             // HACK: Reset to zero when falling off the edge for now.
             if (this.component.GlobalTransform.origin.y < -100)
@@ -182,18 +165,17 @@ namespace Framework.Physics
                 var gt = this.component.GlobalTransform;
                 gt.origin = Vector3.Zero;
                 this.component.GlobalTransform = gt;
-
-                processedVelocity = Vector3.Zero;
+                this.component.Velocity = Vector3.Zero;
+                _velocity = Vector3.Zero;
             }
 
-            _velocity = processedVelocity;
-            return processedVelocity;
+            return _velocity;
         }
 
         /// <inheritdoc />
-        internal Vector3 ApplyFriction(Vector3 processedVelocity, float t, float dt)
+        internal Vector3 ApplyFriction(Vector3 _velocity, float t, float dt)
         {
-            Vector3 vec = processedVelocity; // Equivalent to: VectorCopy();
+            Vector3 vec = _velocity; // Equivalent to: VectorCopy();
             float speed;
             float newspeed;
             float control;
@@ -219,10 +201,10 @@ namespace Framework.Physics
             if (speed > 0)
                 newspeed /= speed;
 
-            processedVelocity.x *= newspeed;
-            processedVelocity.z *= newspeed;
+            _velocity.x *= newspeed;
+            _velocity.z *= newspeed;
 
-            return processedVelocity;
+            return _velocity;
         }
 
         /// <inheritdoc />
@@ -232,7 +214,7 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        internal Vector3 AirControl(Vector3 processedVelocity, Vector3 wishdir, float wishspeed, float dt)
+        internal Vector3 AirControl(Vector3 _velocity, Vector3 wishdir, float wishspeed, float dt)
         {
             float zspeed;
             float speed;
@@ -241,53 +223,56 @@ namespace Framework.Physics
 
             // Can't control movement if not moving forward or backward
             if (Mathf.Abs(this.ForwardBackwardAxis) < 0.001 || Mathf.Abs(wishspeed) < 0.001)
-                return processedVelocity;
+                return _velocity;
 
-            zspeed = processedVelocity.y;
-            processedVelocity.y = 0;
+            zspeed = _velocity.y;
+            _velocity.y = 0;
             /* Next two lines are equivalent to idTech's VectorNormalize() */
-            speed = processedVelocity.Length();
-            processedVelocity = processedVelocity.Normalized();
+            speed = _velocity.Length();
+            _velocity = _velocity.Normalized();
 
-            dot = processedVelocity.Dot(wishdir);
+            dot = _velocity.Dot(wishdir);
             k = 32;
             k *= this.GetAirControl() * dot * dot * dt;
 
             // Change direction while slowing down
             if (dot > 0)
             {
-                processedVelocity.x = processedVelocity.x * speed + wishdir.x * k;
-                processedVelocity.y = processedVelocity.y * speed + wishdir.y * k;
-                processedVelocity.z = processedVelocity.z * speed + wishdir.z * k;
+                _velocity.x = _velocity.x * speed + wishdir.x * k;
+                _velocity.y = _velocity.y * speed + wishdir.y * k;
+                _velocity.z = _velocity.z * speed + wishdir.z * k;
 
-                processedVelocity = processedVelocity.Normalized();
+                _velocity = _velocity.Normalized();
             }
 
-            processedVelocity.x *= speed;
-            processedVelocity.y = zspeed; // Note this line
-            processedVelocity.z *= speed;
-            return processedVelocity;
+            _velocity.x *= speed;
+            _velocity.y = zspeed; // Note this line
+            _velocity.z *= speed;
+            return _velocity;
         }
 
         /// <inheritdoc />
-        internal Vector3 Accelerate(Vector3 processedVelocity, Vector3 wishdir, float wishspeed, float accel, float dt)
+        internal Vector3 Accelerate(Vector3 _velocity, Vector3 wishdir, float wishspeed, float accel, float dt)
         {
             float addspeed;
             float accelspeed;
             float currentspeed;
 
-            currentspeed = processedVelocity.Dot(wishdir);
+            currentspeed = _velocity.Dot(wishdir);
             addspeed = wishspeed - currentspeed;
+
             if (addspeed <= 0)
-                return processedVelocity;
+                return _velocity;
+
             accelspeed = accel * dt * wishspeed;
+
             if (accelspeed > addspeed)
                 accelspeed = addspeed;
 
-            processedVelocity.x += accelspeed * wishdir.x;
-            processedVelocity.z += accelspeed * wishdir.z;
+            _velocity.x += accelspeed * wishdir.x;
+            _velocity.z += accelspeed * wishdir.z;
 
-            return processedVelocity;
+            return _velocity;
         }
 
         /// <summary>
@@ -328,7 +313,7 @@ namespace Framework.Physics
         /// <returns></returns>
         public virtual float GetMovementSpeedFactor()
         {
-            var vel = this.Velocity;
+            var vel = this._velocity;
             vel.y = 0;
             return vel.Length() / this.GetWalkingSpeed();
         }
@@ -363,7 +348,7 @@ namespace Framework.Physics
         {
             return ((inputs.GetInput("Crouch") && this.CanCrouch())
                     || inputs.GetInput("Shifting"))
-                  ? this.serverVars.Get<float>("sv_crouching_accel", 20.0f) : this.serverVars.Get<float>("sv_walk_accel", 14f);
+                  ? this.serverVars.Get<float>("sv_crouching_accel", 20.0f) : this.serverVars.Get<float>("sv_walk_accel", 7.5f);
         }
 
         /// <summary>
@@ -392,6 +377,25 @@ namespace Framework.Physics
         {
             return this.serverVars.Get<float>("sv_gravity", 20f);
         }
+
+        /// <summary>
+        /// The maximum air speed
+        /// </summary>
+        /// <returns></returns>
+        public virtual float MaxAirSpeed()
+        {
+            return this.serverVars.Get<float>("sv_max_air_speed", 1.3f);
+        }
+
+        /// <summary>
+        /// Get the default gravity multiplier
+        /// </summary>
+        /// <returns></returns>
+        public virtual float GetGravityMultiplier()
+        {
+            return this.serverVars.Get<float>("sv_gravity_multiplier", 1.6f);
+        }
+
 
         /// <summary>
         /// Check if player is on ground
@@ -441,40 +445,39 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        internal Vector3 GroundMove(float dt, Vector3 processedVelocity)
+        internal Vector3 GroundMove(float dt, Vector3 _velocity)
         {
             Vector3 wishdir;
 
             // Do not apply friction if the player is queueing up the next jump
             if (!wishJump)
-                processedVelocity = ApplyFriction(processedVelocity, 1.0f, dt);
+                _velocity = ApplyFriction(_velocity, 1.0f, dt);
             else
-                processedVelocity = ApplyFriction(processedVelocity, 0, dt);
+                _velocity = ApplyFriction(_velocity, 0, dt);
 
-            wishdir = new Vector3(this.LeftRightAxis, 0, this.ForwardBackwardAxis * -1);
+            wishdir = new Vector3(this.LeftRightAxis / 10, 0, (this.ForwardBackwardAxis * -1) / 10);
             wishdir = (component as Node3D).GlobalTransform.basis.Xform(wishdir);
             wishdir = wishdir.Normalized();
 
             var wishspeed = wishdir.Length();
-            var moveSpeed = GetMovementSpeed();
+            wishspeed *= GetMovementSpeed();
 
-            wishspeed *= moveSpeed;
-            processedVelocity = Accelerate(processedVelocity, wishdir, wishspeed, this.GetGroundAccelerationFactor(), dt);
+            _velocity = Accelerate(_velocity, wishdir, wishspeed, this.GetGroundAccelerationFactor(), dt);
 
             // Reset the gravity velocity
-            processedVelocity.y = -this.GetGravity() * dt;
+            _velocity.y = -this.GetGravity() * dt;
 
             if (wishJump)
             {
-                processedVelocity.y = this.serverVars.Get<float>("sv_jumpspeed", 6.5f);
+                _velocity.y = this.serverVars.Get<float>("sv_jumpspeed", 6.5f);
                 wishJump = false;
             }
 
-            return processedVelocity;
+            return _velocity;
         }
 
         /// <inheritdoc />
-        internal Vector3 AirMove(float dt, Vector3 processedVelocity)
+        internal Vector3 AirMove(float dt, Vector3 _velocity)
         {
             Vector3 wishdir;
             float wishvel = this.GetAirAcceleration();
@@ -485,11 +488,15 @@ namespace Framework.Physics
 
             float wishspeed = wishdir.Length();
             wishspeed *= this.GetMovementSpeed();
+
+            if (wishspeed > this.MaxAirSpeed())
+                wishspeed = this.MaxAirSpeed();
+
             wishdir = wishdir.Normalized();
 
             // CPM: Aircontrol
             float wishspeed2 = wishspeed;
-            if (processedVelocity.Dot(wishdir) < 0)
+            if (_velocity.Dot(wishdir) < 0)
                 accel = this.GetAirDecceleration();
             else
                 accel = this.GetAirAcceleration();
@@ -503,16 +510,14 @@ namespace Framework.Physics
                 accel = this.serverVars.Get<float>("sv_strafe_accel", 50.0f);
             }
 
-            processedVelocity = Accelerate(processedVelocity, wishdir, wishspeed, accel, dt);
+            _velocity = Accelerate(_velocity, wishdir, wishspeed, accel, dt);
 
             if (this.GetAirControl() > 0)
-                processedVelocity = AirControl(processedVelocity, wishdir, wishspeed2, dt);
-            // !CPM: Aircontrol
+                _velocity = AirControl(_velocity, wishdir, wishspeed2, dt);
 
-            // Apply gravity
-            processedVelocity.y -= this.GetGravity() * dt;
+            _velocity.y -= this.GetGravity() * this.GetGravityMultiplier() * dt;
 
-            return processedVelocity;
+            return _velocity;
         }
 
     }

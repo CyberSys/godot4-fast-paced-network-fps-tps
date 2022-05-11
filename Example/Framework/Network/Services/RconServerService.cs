@@ -36,7 +36,11 @@ namespace Framework.Network.Services
 
         public delegate void ServerStartedHandler(CommandManager manager);
 
-        public const int RconPort = 27020;
+        /// <summary>
+        /// The rcon server port
+        /// </summary>
+        [Export]
+        public int RconPort = 27020;
 
         /// <inheritdoc />
         public void Update(float delta)
@@ -101,6 +105,7 @@ namespace Framework.Network.Services
         /// <inheritdoc />
         public virtual void Unregister()
         {
+            Logger.LogDebug(this, "Shutdown.");
             this.server?.StopListening();
         }
     }

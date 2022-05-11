@@ -82,7 +82,7 @@ namespace Framework.Game.Server
             { "sv_crouching_speed", "4.0" },
 
             // walking
-            { "sv_walk_accel", "8.0" },
+            { "sv_walk_accel", "5.0" },
             { "sv_walk_deaccel", "4.0" },
 
             { "sv_walk_speed", "7.0" },
@@ -95,7 +95,9 @@ namespace Framework.Game.Server
 
             // gravity and jump
             { "sv_gravity", "20.0" },
-            { "sv_jumpspeed", "6.5" },
+            { "sv_max_air_speed", "7.5" },
+            { "sv_gravity_multiplier", "1.6" },
+            { "sv_jumpspeed", "8.0" },
 
             // side movement
             { "sv_strafe_speed", "1.0" },
@@ -116,11 +118,17 @@ namespace Framework.Game.Server
         [Export]
         public int NetworkPort { get; set; } = 27015;
 
+        /// <summary>
+        /// If server can be visible (enable 3d)
+        /// </summary>
+        [Export]
+
+        public bool CanBeVisible = false;
 
         /// <inheritdoc />
         public NetworkServerLogic() : base()
         {
-            this.Disable3d = true;
+            this.Disable3d = !this.CanBeVisible;
         }
 
         /// <summary>
@@ -142,6 +150,7 @@ namespace Framework.Game.Server
 
             this.netService = this.Services.Create<ServerNetworkService>();
             this.rconService = this.Services.Create<RconServerService>();
+
             this.netService.ConnectionEstablished += () =>
             {
                 Logger.LogDebug(this, "Server was started.");

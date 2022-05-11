@@ -28,25 +28,12 @@ namespace Framework.Network.Commands
     /// <summary>
     /// Network command for updaing server vars on client side
     /// </summary>
-    public struct ServerVarUpdate : INetSerializable
+    public class ServerVarUpdate 
     {
         /// <summary>
         /// All server vars
         /// </summary>
-        public Vars ServerVars;
-
-        /// <inheritdoc />
-        public void Serialize(NetDataWriter writer)
-        {
-            this.ServerVars.Serialize(writer);
-        }
-
-
-        /// <inheritdoc />
-        public void Deserialize(NetDataReader reader)
-        {
-            this.ServerVars.Deserialize(reader);
-        }
+        public Vars ServerVars { get; set; }
 
     }
 }

@@ -29,7 +29,7 @@ namespace Shooter.Client.UI.Ingame
             {
                 var component = BaseComponent as MyClientLogic;
                 this.BaseComponent.Components.DeleteComponent<MenuComponent>();
-                component.Components.AddComponent<GameSettings>("res://Client/UI/Ingame/GameSettings.tscn");
+                component.Components.AddComponent<GameSettings>("res://Game/Client/UI/Ingame/GameSettings.tscn");
             };
 
             this.GetNode<Button>(this.ClosePath).Pressed += () =>

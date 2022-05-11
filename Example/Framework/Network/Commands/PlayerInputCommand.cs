@@ -56,6 +56,7 @@ namespace Framework.Network.Commands
             if (this.Inputs != null)
             {
                 writer.Put(this.Inputs.Length);
+                
                 for (int i = 0; i < this.Inputs.Length; i++)
                 {
                     writer.Put(this.ClientWorldTickDeltas[i]);

@@ -21,7 +21,7 @@ namespace Shooter.Server
             }
             else
             {
-                Logger.LogDebug(this, "Cant find free slot for player " + player.Id);
+                Logger.LogDebug(this, "Cant find free slot for player " + player.NetworkId);
                 this.playersWaitingForSlot.Enqueue(player);
             }
         }
@@ -33,20 +33,19 @@ namespace Shooter.Server
             Logger.LogDebug(this, "Player was joined to " + origin.ToString());
 
             this.AddComponentToServerPlayer<PlayerAnimationComponent>(player);
-            this.AddComponentToServerPlayer<PlayerCameraComponent>(player);
-            this.AddComponentToServerPlayer<PlayerFootstepComponent>(player);
-            this.AddComponentToServerPlayer<PlayerWeaponComponent>(player);
+            this.AddComponentToServerPlayer<CharacterCamera>(player);
+            //     this.AddComponentToServerPlayer<PlayerFootstepComponent>(player);
             this.AddComponentToServerPlayer<NetworkInput>(player);
 
             this.AddComponentToLocalPlayer<PlayerAnimationComponent>(player);
             this.AddComponentToLocalPlayer<NetworkInput>(player);
-            this.AddComponentToLocalPlayer<PlayerCameraComponent>(player);
+            this.AddComponentToLocalPlayer<CharacterCamera>(player);
             this.AddComponentToLocalPlayer<PlayerFootstepComponent>(player);
-            this.AddComponentToLocalPlayer<PlayerWeaponComponent>(player);
+            this.AddComponentToLocalPlayer<FPSWeaponAnimator>(player);
 
-            this.AddComponentToPuppetPlayer<PlayerWeaponComponent>(player);
+            this.AddComponentToPuppetPlayer<FPSWeaponAnimator>(player);
             this.AddComponentToPuppetPlayer<PlayerAnimationComponent>(player);
-            this.AddComponentToPuppetPlayer<PlayerFootstepComponent>(player);
+            // this.AddComponentToPuppetPlayer<PlayerFootstepComponent>(player);
 
             player.DoTeleport(origin);
         }

@@ -29,6 +29,7 @@ using Framework.Utils;
 using Framework.Extensions;
 using System.Diagnostics;
 using Framework.Game.Server;
+using System.Linq;
 
 namespace Framework.Game
 {
@@ -40,16 +41,16 @@ namespace Framework.Game
         /// <summary>
         /// The maximum possible ticks stored and managed by the client and server
         /// </summary>
-        public const int MaxTicks = 2048;
+        public const int MaxTicks = 1024;
 
         /// <inheritdoc />
         public uint WorldTick { get; protected set; } = 0;
 
         /// <inheritdoc />
-        internal readonly Dictionary<int, NetworkCharacter> _players = new Dictionary<int, NetworkCharacter>();
+        internal readonly Dictionary<short, NetworkCharacter> _players = new Dictionary<short, NetworkCharacter>();
 
         /// <inheritdoc />
-        public Dictionary<int, NetworkCharacter> Players => _players;
+        public Dictionary<short, NetworkCharacter> Players => _players;
 
         /// <inheritdoc />
         internal string _resourceWorldPath { get; set; }
@@ -177,6 +178,7 @@ namespace Framework.Game
         /// <inheritdoc />
         internal void InstanceLevel(PackedScene res)
         {
+            //res.ResourceLocalToScene = true;
             var node = res.Instantiate<NetworkLevel>();
             node.Name = "level";
             this.AddChild(node);
@@ -206,8 +208,18 @@ namespace Framework.Game
         /// <inheritdoc />
         internal virtual void InternalTick(float interval)
         {
-            ++this.WorldTick;
-            this.Tick(interval);
+
+        }
+
+        /// <inheritdoc />
+        internal void SimulateWorld(float dt)
+        {
+            foreach (var player in this._players.
+                Where(df => df.Value.State == PlayerConnectionState.Initialized).
+                Select(df => df.Value).ToArray())
+            {
+                player.InternalTick(dt);
+            }
         }
 
         /// <inheritdoc />

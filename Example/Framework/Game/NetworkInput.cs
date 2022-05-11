@@ -22,7 +22,6 @@
 using Framework.Physics;
 using Godot;
 using System;
-using Framework.Physics.Commands;
 using Framework.Game.Client;
 using Framework.Network.Commands;
 using System.Linq;
@@ -36,13 +35,14 @@ namespace Framework.Game
     /// <summary>
     /// The character or kinematic 3d body node for an network player
     /// </summary>
-    public partial class NetworkInput : Node, IPlayerComponent
+    public partial class NetworkInput : Node3D, IInputProcessor
     {
-        /// <summary>
-        /// Contains the input proecessor
-        /// </summary>
-        /// <returns></returns>
-        public IInputProcessor InputProcessor { get; set; } = new GeneralInputProcessor();
+        /// <inheritdoc />
+        [Export]
+        public bool IsEnabled { get; set; } = false;
+
+        /// <inheritdoc />
+        public short NetworkId { get; set; } = -7;
 
         /// <summary>
         /// The last player input
@@ -50,9 +50,29 @@ namespace Framework.Game
         /// <value></value>
         public GeneralPlayerInput LastInput { get; private set; }
 
-        internal void SetPlayerInputs(GeneralPlayerInput inputs)
+        public void SetPlayerInputs(GeneralPlayerInput inputs)
         {
             this.LastInput = inputs;
+        }
+
+        /// <summary>
+        /// Get the current player input
+        /// </summary>
+        /// <value></value>
+        public virtual GeneralPlayerInput GetInput()
+        {
+            var camera = this.BaseComponent.Components.Get<CharacterCamera>();
+            var input = new GeneralPlayerInput();
+            var activeKeys = new Dictionary<string, bool>();
+            if (Godot.Input.GetMouseMode() == Godot.Input.MouseMode.Captured && this.IsEnabled)
+            {
+                activeKeys = this.GetKeys();
+            }
+
+            input.ViewDirection = camera != null ? camera.GetViewRotation() : Vector3.Zero;
+            input.Apply(this.AvaiableInputs, activeKeys);
+
+            return input;
         }
 
         /// <inheritdoc />
@@ -63,5 +83,44 @@ namespace Framework.Game
         {
 
         }
+
+        private bool lastJump = false;
+
+        /// <inheritdoc />
+        public List<string> AvaiableInputs => this.GetKeys().Keys.ToList();
+
+        /// <inheritdoc />  
+        public virtual Dictionary<String, bool> GetKeys()
+        {
+            var newJump = Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_jump", Godot.Key.Space);
+
+            var canJump = false;
+            if (newJump == true && lastJump == false)
+            {
+                canJump = true;
+            }
+            else if (newJump == true && lastJump == true)
+            {
+                canJump = false;
+            }
+            else if (newJump == false && lastJump == true)
+            {
+                canJump = false;
+            }
+
+            lastJump = newJump;
+
+            return new Dictionary<string, bool>{
+                { "Forward", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_forward", Godot.Key.W)},
+                { "Back", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_backward", Godot.Key.S)},
+                { "Right", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_right", Godot.Key.D)},
+                { "Left", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_left", Godot.Key.A)},
+                { "Jump", canJump},
+                { "Crouch", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_crouch", Godot.Key.Ctrl)},
+                { "Shifting", Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_shift", Godot.Key.Shift)},
+                { "Fire",  Framework.Game.Client.ClientSettings.Variables.IsKeyValuePressed("key_attack", Godot.MouseButton.Left)},
+            };
+        }
+
     }
 }

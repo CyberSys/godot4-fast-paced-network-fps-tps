@@ -97,7 +97,6 @@ namespace Framework.Game.Client
         {
             NetworkClientWorld newWorld = this.CreateWorld();
             newWorld.Name = "world";
-
             this.AddChild(newWorld);
 
             newWorld.InstanceLevel(res);
@@ -175,15 +174,15 @@ namespace Framework.Game.Client
                     applyResolution(value);
                 }
 
-                if (name == "cl_window_mode")
-                {
-                    applyWindowMode(value);
-                }
+                /* Nicht gemergte Änderung aus Projekt "Framework"
+                Vor:
+                                    GD.Print(package.WorldName);
+                                    GD.Print(package.ScriptPath);
+                                    this.LoadWorldInternal(package.WorldName, package.ScriptPath, package.WorldTick);
+                Nach:
+                                    this.LoadWorldInternal(package.WorldName, package.ScriptPath, package.WorldTick);
+                */
 
-                if (name == "cl_draw_debug")
-                {
-                    applyDebug(value);
-                }
 
                 if (name == "cl_draw_aa")
                 {
@@ -227,8 +226,6 @@ namespace Framework.Game.Client
                 if (this.loadedWorldName != package.WorldName)
                 {
                     this.loadedWorldName = package.WorldName;
-                    GD.Print(package.WorldName);
-                    GD.Print(package.ScriptPath);
                     this.LoadWorldInternal(package.WorldName, package.ScriptPath, package.WorldTick);
                 }
             });
@@ -259,11 +256,11 @@ namespace Framework.Game.Client
         {
             if (isEnabled)
             {
-                //  DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Enabled, 0);
+                DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Enabled, 0);
             }
             else
             {
-                // DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled, 0);
+                DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled, 0);
             }
         }
 

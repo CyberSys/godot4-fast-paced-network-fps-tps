@@ -21,10 +21,8 @@ using System;
  */
 
 using Godot;
-using Framework.Utils;
 using Framework.Game.Client;
-using Framework.Network;
-using Framework.Game;
+using Framework.Utils;
 using Framework.Physics;
 namespace Framework.Game
 {
@@ -56,6 +54,14 @@ namespace Framework.Game
     /// </summary>
     public partial class CharacterCamera : Camera3D, IPlayerComponent
     {
+
+        [Export]
+        /// <inheritdoc />
+        public bool IsEnabled { get; set; } = false;
+
+        /// <inheritdoc />
+        public short NetworkId { get; set; } = -5;
+
         internal float tempRotX = 0.0f;
         internal float tempRotY = 0.0f;
         internal float tempRotZ = 0.0f;
@@ -72,14 +78,14 @@ namespace Framework.Game
         /// The current camera mode in use
         /// </summary>
         /// /// <value></value>
+        [Export(PropertyHint.Enum)]
         public CameraMode Mode { get; set; } = CameraMode.FPS;
 
         /// <summary>
         /// The Camera Distance from the character in TPS Mode
         /// </summary>
         [Export]
-        public float TPSCameraHeight = 0.5f;
-
+        public Vector3 TPSCameraOffset = new Vector3(0, 0.5f, 0);
 
         /// <summary>
         /// The Camera Radis
@@ -87,12 +93,8 @@ namespace Framework.Game
         [Export]
         public float TPSCameraRadius = 1.7f;
 
-        /// <summary>
-        /// The Camera Offset for the FPS Mode
-        /// </summary>
-        [Export]
-        public Godot.Vector3 FPSCameraOffset = new Godot.Vector3(0, 0.5f, 0.1f);
 
+        public Vector3 FPSCameraOffset = Vector3.Zero;
 
 
         /// <summary>
@@ -114,52 +116,49 @@ namespace Framework.Game
             this.tempRotY = rotation.y;
             this.tempRotZ = rotation.z;
 
-            this.Current = !this.IsPuppet();
+            this.Current = this.IsEnabled;
+            this.TopLevel = true;
+            this.FPSCameraOffset = this.Position;
         }
 
         /// <inheritdoc />
         public override void _Process(float delta)
         {
             base._Process(delta);
+
+            if (this.BaseComponent == null)
+                return;
+
+            this.Current = (!this.IsPuppet() && IsEnabled);
+
             if (this.IsServer())
             {
-                if (this.BaseComponent.CurrentPlayerInput.Inputs.ViewDirection != new Quaternion(0, 0, 0, 0))
-                {
-                    var transform = this.GlobalTransform;
-                    var targetPos = this.BaseComponent.GlobalTransform.origin + FPSCameraOffset + Vector3.Up * this.BaseComponent.GetShapeHeight();
-                    transform.origin = targetPos;
-                    var playerDirection = this.BaseComponent.GlobalTransform.basis.GetEuler();
-                    var ViewDirection = this.BaseComponent.CurrentPlayerInput.Inputs.ViewDirection.GetEuler();
-                    ViewDirection.y = playerDirection.y;
-                    transform.basis = new Basis(ViewDirection);
+                var transform = this.BaseComponent.GlobalTransform;
+                var targetPos = this.BaseComponent.GlobalTransform.origin + FPSCameraOffset + Vector3.Up * this.BaseComponent.GetShapeHeight();
+                transform.origin = targetPos;
+                transform.basis = new Basis(new Vector3(this.BaseComponent.CurrentPlayerInput.Inputs.ViewDirection.x, transform.basis.GetEuler().y, transform.basis.GetEuler().z));
+                this.GlobalTransform = transform;
 
-                    this.GlobalTransform = transform;
-                }
             }
             else if (this.Mode == CameraMode.TPS)
             {
-                var cam_pos = this.BaseComponent.GlobalTransform.origin;
+                var cam_pos = this.BaseComponent.GlobalTransform.origin + TPSCameraOffset;
                 if (!this.IsServer())
                 {
                     cam_pos.x += TPSCameraRadius * Mathf.Sin(Mathf.Deg2Rad(tempYaw)) * Mathf.Cos(Mathf.Deg2Rad(tempPitch));
                     cam_pos.y += TPSCameraRadius * Mathf.Sin(Mathf.Deg2Rad(tempPitch));
                     cam_pos.z += TPSCameraRadius * Mathf.Cos(Mathf.Deg2Rad(tempYaw)) * Mathf.Cos(Mathf.Deg2Rad(tempPitch));
 
-                    this.LookAtFromPosition(cam_pos, this.BaseComponent.GlobalTransform.origin, new Vector3(0, 1, 0));
-
-                    var pos = this.Position;
-                    pos.y += this.TPSCameraHeight;
-                    this.Position = pos;
+                    this.LookAtFromPosition(cam_pos, this.BaseComponent.GlobalTransform.origin + TPSCameraOffset, new Vector3(0, 1, 0));
                 }
             }
             else if (this.Mode == CameraMode.FPS)
             {
-                var transform = this.GlobalTransform;
+                var transform = this.BaseComponent.GlobalTransform;
 
                 var target = this.BaseComponent.GlobalTransform.origin + FPSCameraOffset + Vector3.Up * this.BaseComponent.GetShapeHeight();
                 transform.origin = target;
                 transform.basis = new Basis(new Vector3(tempRotX, tempRotY, 0));
-
                 this.GlobalTransform = transform;
             }
 
@@ -179,21 +178,24 @@ namespace Framework.Game
         /// Get the view rotation of an local player
         /// </summary>
         /// <returns></returns>
-        public virtual Godot.Quaternion GetViewRotation()
+        public virtual Godot.Vector3 GetViewRotation()
         {
-            return this.GlobalTransform.basis.GetRotationQuaternion();
+            return this.Transform.basis.GetEuler();
         }
 
         /// <inheritdoc />
         internal void HandleInput(InputEvent @event)
         {
+            if (this.BaseComponent == null)
+                return;
+
             if (this.IsLocal())
             {
                 var sensX = ClientSettings.Variables.Get<float>("cl_sensitivity_y", 2.0f);
                 var sensY = ClientSettings.Variables.Get<float>("cl_sensitivity_x", 2.0f);
 
                 var input = BaseComponent.Components.Get<NetworkInput>();
-                if (@event is InputEventMouseMotion && input != null && input.InputProcessor.InputEnabled)
+                if (@event is InputEventMouseMotion && input != null && input.IsEnabled)
                 {
                     // Handle cursor lock state
                     if (Godot.Input.GetMouseMode() == Godot.Input.MouseMode.Captured)

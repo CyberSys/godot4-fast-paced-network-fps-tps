@@ -89,11 +89,22 @@ namespace Framework
     public interface IPlayerComponent : IChildComponent<Framework.Game.NetworkCharacter>
     {
         /// <summary>
+        /// If the component is enabled or not
+        /// </summary>
+        /// <value></value>
+        public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// The component id for network transfer
+        /// </summary>
+        /// <value></value>
+        public short NetworkId { get; set; }
+
+        /// <summary>
         /// Called on each physics network tick for component
         /// </summary>
         /// <param name="delta"></param>
         public void Tick(float delta);
-
     }
 
 

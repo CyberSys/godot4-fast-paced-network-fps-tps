@@ -72,6 +72,12 @@ namespace Framework
         }
 
         /// <inheritdoc />
+        public static void Put(this NetDataWriter writer, Vector2 vector)
+        {
+            SerializeVector2(writer, vector);
+        }
+
+        /// <inheritdoc />
         public static void Put(this NetDataWriter writer, Dictionary<string, string> dic)
         {
             SerializeStringDictonary(writer, dic);
@@ -81,6 +87,13 @@ namespace Framework
         public static Vector3 GetVector3(this NetDataReader reader)
         {
             return DeserializeVector3(reader);
+        }
+
+
+        /// <inheritdoc />
+        public static Vector2 GetVector2(this NetDataReader reader)
+        {
+            return DeserializeVector2(reader);
         }
 
         /// <inheritdoc />
@@ -104,12 +117,29 @@ namespace Framework
         }
 
         /// <inheritdoc />
+        public static void SerializeVector2(NetDataWriter writer, Vector2 vector)
+        {
+            writer.Put(vector.x);
+            writer.Put(vector.y);
+        }
+
+        /// <inheritdoc />
         public static Vector3 DeserializeVector3(NetDataReader reader)
         {
             Vector3 v;
             v.x = reader.GetFloat();
             v.y = reader.GetFloat();
             v.z = reader.GetFloat();
+            return v;
+        }
+
+
+        /// <inheritdoc />
+        public static Vector2 DeserializeVector2(NetDataReader reader)
+        {
+            Vector2 v;
+            v.x = reader.GetFloat();
+            v.y = reader.GetFloat();
             return v;
         }
 

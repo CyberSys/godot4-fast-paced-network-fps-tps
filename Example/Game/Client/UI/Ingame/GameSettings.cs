@@ -178,7 +178,7 @@ namespace Shooter.Client.UI.Ingame
 
             this.closeButton.Pressed += () =>
             {
-                this.BaseComponent.Components.AddComponent<MenuComponent>("res://Client/UI/Ingame/MenuComponent.tscn");
+                this.BaseComponent.Components.AddComponent<MenuComponent>("res://Game/Client/UI/Ingame/MenuComponent.tscn");
                 this.BaseComponent.Components.DeleteComponent<GameSettings>();
 
                 ClientSettings.Variables.StoreConfig("client.cfg");
@@ -286,7 +286,7 @@ namespace Shooter.Client.UI.Ingame
         {
             foreach (var n in Framework.Game.Client.ClientSettings.Variables.Vars.AllVariables.Where(df => df.Key.Contains("key_")))
             {
-                var scene = (PackedScene)ResourceLoader.Load("res://Client/UI/Ingame/GameKeyRecord.tscn");
+                var scene = (PackedScene)ResourceLoader.Load("res://Game/Client/UI/Ingame/GameKeyRecord.tscn");
                 var record = (GameKeyRecord)scene.Instantiate();
 
                 record.currentKey = n.Value;

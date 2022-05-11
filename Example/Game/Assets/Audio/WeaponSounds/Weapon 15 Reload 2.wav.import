@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://cmdaq71rrohlm"
+path="res://.godot/imported/Weapon 15 Reload 2.wav-45d65323f3c8a6ff318f3b990f7ccc64.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/WeaponSounds/Weapon 15 Reload 2.wav"
+dest_files=["res://.godot/imported/Weapon 15 Reload 2.wav-45d65323f3c8a6ff318f3b990f7ccc64.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

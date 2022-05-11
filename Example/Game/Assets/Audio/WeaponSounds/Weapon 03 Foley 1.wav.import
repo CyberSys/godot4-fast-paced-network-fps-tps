@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://dljb8mhx5sn1h"
+path="res://.godot/imported/Weapon 03 Foley 1.wav-5888b87b19a7479e918df63d0644c72c.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/WeaponSounds/Weapon 03 Foley 1.wav"
+dest_files=["res://.godot/imported/Weapon 03 Foley 1.wav-5888b87b19a7479e918df63d0644c72c.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

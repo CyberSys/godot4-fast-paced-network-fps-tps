@@ -30,12 +30,6 @@ namespace Framework.Game
     public interface INetworkCharacter : IBaseComponent, INetworkObject
     {
         /// <summary>
-        /// Id of player
-        /// </summary>
-        /// <value></value>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Telport to a given position
         /// </summary>
         /// <param name="origin"></param>
@@ -59,25 +53,12 @@ namespace Framework.Game
         /// <value></value>
         public PlayerConnectionState State { get; set; }
 
-        /// <summary>
-        /// Contains possible components
-        /// </summary>
-        /// <value></value>
-        public List<AssignedComponent> AvaiablePlayerComponents { get; }
-
 
         /// <summary>
-        /// Add an avaiable component
+        /// Activate or disable an component by given id
         /// </summary>
-        /// <param name="ResourcePath"></param>
-        /// <param name="ScriptPath"></param>
-        /// <typeparam name="T"></typeparam>
-        public void AddAvaiableComponent<T>(string ResourcePath = null, string ScriptPath = null) where T : Godot.Node, IPlayerComponent, new();
-
-        /// <summary>
-        /// Add an assigned network component
-        /// </summary>
-        /// <param name="assignedComponent"></param>
-        public void AddAssignedComponent(AssignedComponent assignedComponent);
+        /// <param name="index"></param>
+        /// <param name="isEnabled"></param>
+        public void ActivateComponent(int index, bool isEnabled);
     }
 }

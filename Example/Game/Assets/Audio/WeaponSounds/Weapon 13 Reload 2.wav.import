@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+uid="uid://2gqr6sfwpdyw"
+path="res://.godot/imported/Weapon 13 Reload 2.wav-c80d6eadec13e30b6ed33b4c41133be2.sample"
+
+[deps]
+
+source_file="res://Game/Assets/Audio/WeaponSounds/Weapon 13 Reload 2.wav"
+dest_files=["res://.godot/imported/Weapon 13 Reload 2.wav-c80d6eadec13e30b6ed33b4c41133be2.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

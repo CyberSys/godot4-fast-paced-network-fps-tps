@@ -95,18 +95,11 @@ namespace Framework.Game
         {
             if (player is NetworkCharacter)
             {
-                var compIndex = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
-                if (compIndex > -1)
+                var hasComp = (player as NetworkCharacter).Components.Get(typeof(T));
+                if (hasComp != null && hasComp is IPlayerComponent)
                 {
-                    var component = player.AvaiablePlayerComponents[compIndex];
-
-                    Logger.LogDebug(this, "Found registry component: " + component.NodeType.ToString() + " => " + component.ResourcePath);
-
-                    var playerInstance = player as NetworkCharacter;
-                    var playerComponents = playerInstance.Components;
-
-                    player.AddAssignedComponent(component);
-
+                    Logger.LogDebug(this, "Active server component: " + typeof(T).ToString());
+                    player.ActivateComponent((hasComp as IPlayerComponent).NetworkId, true);
                 }
             }
         }
@@ -116,11 +109,18 @@ namespace Framework.Game
         {
             if (player.IsServer())
             {
-                var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
-                var list = (player as NetworkCharacter).RequiredComponents.ToList();
-                if (index > -1)
+                var hasComp = (player as NetworkCharacter).Components.Get(typeof(T));
+                if (hasComp != null && hasComp is IPlayerComponent)
                 {
-                    list.Add(index);
+                    var list = (player as NetworkCharacter).RequiredComponents.ToList();
+                    var component = (hasComp as IPlayerComponent);
+
+                    if (!list.Contains(component.NetworkId))
+                    {
+                        list.Add(component.NetworkId);
+                    }
+
+                    Logger.LogDebug(this, "Active local component: " + typeof(T).ToString());
                     (player as NetworkCharacter).RequiredComponents = list.ToArray();
                 }
             }
@@ -131,12 +131,19 @@ namespace Framework.Game
         {
             if (player.IsServer())
             {
-                var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
-                var list = (player as NetworkCharacter).RequiredPuppetComponents.ToList();
-                if (index > -1)
+                var hasComp = (player as NetworkCharacter).Components.Get(typeof(T));
+                if (hasComp != null && hasComp is IPlayerComponent)
                 {
-                    list.Add(index);
-                    (player as NetworkCharacter).RequiredPuppetComponents = list.ToArray();
+                    var list = (player as NetworkCharacter).RequiredComponents.ToList();
+                    var component = (hasComp as IPlayerComponent);
+
+                    if (!list.Contains(component.NetworkId))
+                    {
+                        list.Add(component.NetworkId);
+                    }
+
+                    Logger.LogDebug(this, "Active local component: " + typeof(T).ToString());
+                    (player as NetworkCharacter).RequiredComponents = list.ToArray();
                 }
             }
         }
@@ -146,12 +153,18 @@ namespace Framework.Game
         {
             if (player.IsServer())
             {
-                var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
-
-                var list = (player as NetworkCharacter).RequiredComponents.ToList();
-                if (index > -1)
+                var hasComp = (player as NetworkCharacter).Components.Get(typeof(T));
+                if (hasComp != null && hasComp is Godot.Node)
                 {
-                    list.Remove(index);
+                    var list = (player as NetworkCharacter).RequiredComponents.ToList();
+                    var index = (short) (player as NetworkCharacter).Components.All.ToList().IndexOf(hasComp as Godot.Node);
+
+                    if (list.Contains(index))
+                    {
+                        list.Remove(index);
+                    }
+
+                    Logger.LogDebug(this, "Deactive local component: " + typeof(T).ToString());
                     (player as NetworkCharacter).RequiredComponents = list.ToArray();
                 }
             }
@@ -162,12 +175,18 @@ namespace Framework.Game
         {
             if (player.IsServer())
             {
-                var index = player.AvaiablePlayerComponents.FindIndex(df => df.NodeType == typeof(T));
-
-                var list = (player as NetworkCharacter).RequiredPuppetComponents.ToList();
-                if (index > -1)
+                var hasComp = (player as NetworkCharacter).Components.Get(typeof(T));
+                if (hasComp != null && hasComp is Godot.Node)
                 {
-                    list.Remove(index);
+                    var list = (player as NetworkCharacter).RequiredPuppetComponents.ToList();
+                    var index = (short) (player as NetworkCharacter).Components.All.ToList().IndexOf(hasComp as Godot.Node);
+
+                    if (list.Contains(index))
+                    {
+                        list.Remove(index);
+                    }
+
+                    Logger.LogDebug(this, "Deactive puppet component: " + typeof(T).ToString());
                     (player as NetworkCharacter).RequiredPuppetComponents = list.ToArray();
                 }
             }

@@ -22,6 +22,24 @@
 using LiteNetLib.Utils;
 namespace Framework.Network.Commands
 {
+    public class PlayerDeletePackage 
+    {
+        /// <summary>
+        /// Current network id
+        /// </summary>
+        public short NetworkId { get; set; }
+    }
+
+    public class PlayerUpdateList 
+    {
+        public PlayerUpdate[] Updates { get; set; }
+
+        /// <summary>
+        /// Current network id
+        /// </summary>
+        public uint WorldTick  { get; set; }
+    }
+
     /// <summary>
     /// Contains all player relevant fields eg Latency, Team, Required Components
     /// </summary>
@@ -40,32 +58,17 @@ namespace Framework.Network.Commands
         /// <summary>
         /// Current network id
         /// </summary>
-        public int Id;
-
-        /// <summary>
-        /// Current latency
-        /// </summary>
-        public int Latency;
+        public short NetworkId;
 
         /// <summary>
         /// Required local player components
         /// </summary>
-        public int[] RequiredComponents;
+        public short[] RequiredComponents;
 
         /// <summary>
         /// Required puppet components
         /// </summary>
-        public int[] RequiredPuppetComponents;
-
-        /// <summary>
-        /// Time since player is disconnected
-        /// </summary>
-        public float DisconnectTime;
-
-        /// <summary>
-        /// Tick of latest input
-        /// </summary>
-        public uint LatestInputTick;
+        public short[] RequiredPuppetComponents;
 
         /// <summary>
         /// Resource path to the scene
@@ -75,18 +78,18 @@ namespace Framework.Network.Commands
         /// <summary>
         /// Script path of the scene
         /// </summary>
-        public string ScriptPath;
+        public string[] ScriptPaths;
 
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
+            writer.Put(this.NetworkId);
+            writer.Put((byte)this.State);
 
-            writer.Put(this.Id);
-            writer.Put((int)this.State);
             writer.Put(this.PlayerName);
-            writer.Put(this.Latency);
             writer.Put(this.ResourcePath);
-            writer.Put(this.ScriptPath);
+
+            writer.PutArray(this.ScriptPaths);
             writer.PutArray(this.RequiredComponents);
             writer.PutArray(this.RequiredPuppetComponents);
         }
@@ -94,15 +97,15 @@ namespace Framework.Network.Commands
         /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
-            this.Id = reader.GetInt();
-            this.State = (PlayerConnectionState)reader.GetInt();
-            this.PlayerName = reader.GetString();
-            this.Latency = reader.GetInt();
-            this.ResourcePath = reader.GetString();
-            this.ScriptPath = reader.GetString();
+            this.NetworkId = reader.GetShort();
+            this.State = (PlayerConnectionState)reader.GetByte();
 
-            this.RequiredComponents = reader.GetIntArray();
-            this.RequiredPuppetComponents = reader.GetIntArray();
+            this.PlayerName = reader.GetString();
+            this.ResourcePath = reader.GetString();
+
+            this.ScriptPaths = reader.GetStringArray();
+            this.RequiredComponents = reader.GetShortArray();
+            this.RequiredPuppetComponents = reader.GetShortArray();
         }
     }
 }

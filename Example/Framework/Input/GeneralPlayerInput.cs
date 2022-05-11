@@ -42,14 +42,13 @@ namespace Framework.Input
         /// The view direction or camera direction
         /// </summary>
         /// <value></value>
-        public Quaternion ViewDirection { get; set; }
+        public Vector3 ViewDirection { get; set; }
 
         /// <summary>
         /// The current activated input keys
         /// </summary>
         /// <value></value>
         public string[] CurrentInput { get; private set; }
-
 
         /// <summary>
         /// Get input by given string, related to booleans with PlayerInputAttribute
@@ -77,7 +76,7 @@ namespace Framework.Input
         public void Deserialize(NetDataReader reader)
         {
             this.Input = reader.GetByte();
-            this.ViewDirection = reader.GetQuaternion();
+            this.ViewDirection = reader.GetVector3();
         }
 
         /// <summary>
@@ -104,7 +103,6 @@ namespace Framework.Input
             }
 
             this.CurrentInput = listOfkeys.ToArray();
-
             return this;
         }
 

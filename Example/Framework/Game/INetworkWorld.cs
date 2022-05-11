@@ -71,8 +71,7 @@ namespace Framework.Game
         /// All players of the world
         /// </summary>
         /// <value></value>
-        public Dictionary<int, NetworkCharacter> Players { get; }
-
+        public Dictionary<short, NetworkCharacter> Players { get; }
 
         /// <summary>
         /// Calls when an player is initialized and the map was loaded sucessfulll

@@ -91,10 +91,12 @@ test={
 
 profiler/enabled=true
 
+[native_extensions]
+
+paths=["res://Extensions/example.gdextension"]
+
 [physics]
 
-2d/run_on_separate_thread=true
-3d/run_on_separate_thread=true
 common/physics_ticks_per_second=128
 common/physics_jitter_fix=0.0
 

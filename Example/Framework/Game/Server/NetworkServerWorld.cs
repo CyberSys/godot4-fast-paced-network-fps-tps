@@ -53,7 +53,7 @@ namespace Framework.Game.Server
         private FixedTimer worldStateBroadcastTimer;
 
         /// <inheritdoc />
-        private HashSet<int> unprocessedPlayerIds = new HashSet<int>();
+        private HashSet<short> unprocessedPlayerIds = new HashSet<short>();
 
         /// <inheritdoc />
         private PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
@@ -94,7 +94,7 @@ namespace Framework.Game.Server
         /// </summary>
         /// <param name="clientId">player id</param>
         /// <param name="withDelay">use an delay for deletion</param>
-        public void DeletePlayer(int clientId, bool withDelay = true)
+        public void DeletePlayer(short clientId, bool withDelay = true)
         {
             if (this._players.ContainsKey(clientId))
             {
@@ -113,6 +113,7 @@ namespace Framework.Game.Server
                     serverPlayer.QueueFree();
                     this._players.Remove(clientId);
                     this.ActiveGameRule?.OnPlayerLeave(serverPlayer);
+                    this.SendPlayerDelete(clientId);
                 }
             }
         }
@@ -123,21 +124,29 @@ namespace Framework.Game.Server
         /// </summary>
         /// <param name="clientId">The id of the new client</param>
         /// <param name="resourcePath">The resource path (.res) to the scene package</param>
-        /// <param name="scriptPath">The script path used by the scene</param>
-        public void AddPlayer(int clientId, string resourcePath, string scriptPath)
+        /// <param name="scriptPaths">The script paths used by the scene</param>
+        public void AddPlayer(short clientId, string resourcePath, string[] scriptPaths)
         {
-            GD.Load<CSharpScript>(scriptPath);
+            if (scriptPaths != null)
+            {
+                foreach (var path in scriptPaths)
+                {
+                    GD.Load<CSharpScript>(path);
+                }
+            }
 
             Framework.Utils.AsyncLoader.Loader.LoadResource(resourcePath, (res) =>
             {
                 if (!this._players.ContainsKey(clientId))
                 {
-                    NetworkCharacter serverPlayer = (res as PackedScene).Instantiate<NetworkCharacter>();
+                    var resource = (res as PackedScene);
+                    // resource.ResourceLocalToScene = true;
+                    NetworkCharacter serverPlayer = resource.Instantiate<NetworkCharacter>();
                     serverPlayer.Mode = NetworkMode.SERVER;
                     serverPlayer.Name = clientId.ToString();
                     serverPlayer.ResourcePath = resourcePath;
-                    serverPlayer.ScriptPath = scriptPath;
-                    serverPlayer.Id = clientId;
+                    serverPlayer.ScriptPaths = scriptPaths;
+                    serverPlayer.NetworkId = clientId;
                     serverPlayer.GameWorld = this;
                     serverPlayer.State = PlayerConnectionState.Connected;
 
@@ -145,6 +154,7 @@ namespace Framework.Game.Server
                     this._players.Add(clientId, serverPlayer);
 
                     this.ActiveGameRule?.OnNewPlayerJoined(serverPlayer);
+                    this.SendPlayerUpdate(serverPlayer);
                 }
                 else
                 {
@@ -152,6 +162,7 @@ namespace Framework.Game.Server
                     serverPlayer.State = serverPlayer.PreviousState;
 
                     this.ActiveGameRule?.OnPlayerRejoined(serverPlayer);
+                    this.SendPlayerUpdate(serverPlayer);
                 }
 
                 var message = new ClientWorldLoader();
@@ -167,11 +178,11 @@ namespace Framework.Game.Server
         /// Event called after client is connected to server
         /// </summary>
         /// <param name="clientId"></param>
-        public virtual void OnPlayerConnected(int clientId)
+        public virtual void OnPlayerConnected(short clientId)
         {
         }
 
-        internal void OnPlayerConnectedInternal(int clientId)
+        internal void OnPlayerConnectedInternal(short clientId)
         {
             Logger.LogDebug(this, "[" + clientId + "] Connected");
             this.OnPlayerConnected(clientId);
@@ -182,7 +193,7 @@ namespace Framework.Game.Server
         /// </summary>
         /// <param name="clientId">he client id of the network player</param>
         /// <param name="reason">The reason why the player are disconnted</param>
-        public virtual void OnPlayerDisconnect(int clientId, DisconnectReason reason)
+        public virtual void OnPlayerDisconnect(short clientId, DisconnectReason reason)
         {
             Logger.LogDebug(this, "[" + clientId + "] Disconnected");
             this.DeletePlayer(clientId, true);
@@ -195,19 +206,22 @@ namespace Framework.Game.Server
         /// <param name="peer"></param>
         private void OnPlayerInput(PlayerInputCommand package, NetPeer peer)
         {
-            var clientId = peer.Id;
+            var clientId = (short)peer.Id;
             if (this._players.ContainsKey(clientId))
             {
                 var player = this._players[clientId];
                 var input = player.Components.Get<NetworkInput>();
                 if (input != null)
                 {
-                    package.Inputs = package.Inputs.Select(df => df.DeserliazeWithInputKeys(input.InputProcessor.AvaiableInputs)).ToArray();
-                    playerInputProcessor.EnqueueInput(package, clientId, this.WorldTick);
-                    player.LatestInputTick = package.StartWorldTick + (uint)package.Inputs.Length - 1;
+                    package.Inputs = package.Inputs.Select(df => df.DeserliazeWithInputKeys(input.AvaiableInputs)).ToArray();
+                    var lastAckedInputTick = player.LatestInputTick;
+                    playerInputProcessor.EnqueueInput(package, clientId, lastAckedInputTick);
+                    player.LatestInputTick = playerInputProcessor.GetLatestPlayerInputTick(player.NetworkId);
                 }
             }
         }
+
+        private bool heartTest = true;
 
         /// <summary>
         /// Send an heartbeat to all players
@@ -217,23 +231,10 @@ namespace Framework.Game.Server
         {
             //get player states
             var states = new List<PlayerState>();
-            foreach (var client in this._players.Where(df => df.Value.IsServer()).Select(df => df.Value).ToArray())
+            foreach (var client in this._players.Where(df => df.Value.IsServer() && df.Value.State == PlayerConnectionState.Initialized).Select(df => df.Value).ToArray())
             {
                 states.Add(client.ToNetworkState());
             }
-
-            //get player updates
-            var heartbeatUpdateList = this._players.Where(df => df.Value.IsServer()).
-                                Select(df => new PlayerUpdate
-                                {
-                                    Id = df.Key,
-                                    State = df.Value.State,
-                                    ResourcePath = df.Value.ResourcePath,
-                                    ScriptPath = df.Value.ScriptPath,
-                                    RequiredComponents = (df.Value).RequiredComponents.ToArray(),
-                                    RequiredPuppetComponents = (df.Value).RequiredPuppetComponents.ToArray(),
-                                    Latency = df.Value.Latency
-                                }).ToArray();
 
             //send to each player data package
             foreach (var player in this._players.Where(df => df.Value.IsServer()).Select(df => df.Value).Where(df => df.State == PlayerConnectionState.Initialized).ToArray())
@@ -243,10 +244,48 @@ namespace Framework.Game.Server
                     WorldTick = WorldTick,
                     YourLatestInputTick = player.LatestInputTick,
                     PlayerStates = states.ToArray(),
-                    PlayerUpdates = heartbeatUpdateList.ToArray(),
                 };
 
-                this.netService.SendMessageSerialisable<WorldHeartbeat>(player.Id, cmd, LiteNetLib.DeliveryMethod.Sequenced);
+                this.netService.SendMessage<WorldHeartbeat>((int)player.NetworkId, cmd, LiteNetLib.DeliveryMethod.Sequenced);
+            }
+        }
+
+        private void SendPlayerUpdate(NetworkCharacter character)
+        {
+            var heartbeatUpdateList = this._players.Where(df => df.Value.IsServer()).
+                               Select(df => new PlayerUpdate
+                               {
+                                   NetworkId = df.Key,
+                                   State = df.Value.State,
+                                   ResourcePath = df.Value.ResourcePath,
+                                   ScriptPaths = df.Value.ScriptPaths,
+                                   RequiredComponents = df.Value.RequiredComponents.ToArray(),
+                                   RequiredPuppetComponents = df.Value.RequiredPuppetComponents.ToArray(),
+                               }).ToArray();
+
+            var update = new PlayerUpdateList
+            {
+                Updates = heartbeatUpdateList.ToArray(),
+                WorldTick = this.WorldTick
+            };
+
+            foreach (var player in this._players.Where(df => df.Value.IsServer()).Select(df => df.Value).Where(df => df.State == PlayerConnectionState.Initialized).ToArray())
+            {
+                this.netService.SendMessage<PlayerUpdateList>((int)player.NetworkId, update, LiteNetLib.DeliveryMethod.ReliableOrdered);
+            }
+        }
+
+
+        private void SendPlayerDelete(short playerId)
+        {
+            var delete = new PlayerDeletePackage
+            {
+                NetworkId = playerId
+            };
+
+            foreach (var player in this._players.Where(df => df.Value.IsServer()).Select(df => df.Value).Where(df => df.State == PlayerConnectionState.Initialized).ToArray())
+            {
+                this.netService.SendMessage<PlayerDeletePackage>((int)player.NetworkId, delete, LiteNetLib.DeliveryMethod.ReliableOrdered);
             }
         }
 
@@ -272,7 +311,7 @@ namespace Framework.Game.Server
 
         private void InitializeClient(ServerInitializer package, NetPeer peer)
         {
-            var clientId = peer.Id;
+            var clientId = (short)peer.Id;
 
             if (this._players.ContainsKey(clientId))
             {
@@ -286,13 +325,16 @@ namespace Framework.Game.Server
                     this.OnPlayerInitilaized(player);
                 }
 
-                this.netService.SendMessageSerialisable<ClientWorldInitializer>(clientId,
+                this.netService.SendMessage<ClientWorldInitializer>(clientId,
                             new ClientWorldInitializer
                             {
                                 PlayerId = clientId,
                                 ServerVars = this.ServerVars.Vars,
-                                GameTick = this.WorldTick
+                                GameTick = this.WorldTick,
+                                initState = player.ToNetworkState()
                             });
+
+                this.SendPlayerUpdate(player);
             }
         }
 
@@ -301,7 +343,7 @@ namespace Framework.Game.Server
             if (player.State != PlayerConnectionState.Initialized)
                 return;
 
-            Logger.LogDebug(this, "Get player attack for player " + player.Id);
+            Logger.LogDebug(this, "Get player attack for player " + player.NetworkId);
 
             // First, rollback the state of all attackable entities (for now just players).
             // The world is not rolled back to the tick the players input was for, but rather
@@ -342,12 +384,12 @@ namespace Framework.Game.Server
                 if (playerObjectHit.PlayerDestination != null
                     && playerObjectHit.PlayerDestination is NetworkCharacter)
                 {
-                    Logger.LogDebug(this, $"Player ${player.Id} for remote view tick ${remoteViewTick} was hit Player ${playerObjectHit.PlayerDestination.Id}");
+                    Logger.LogDebug(this, $"Player ${player.NetworkId} for remote view tick ${remoteViewTick} was hit Player ${playerObjectHit.PlayerDestination.NetworkId}");
                     (playerObjectHit.PlayerDestination as NetworkCharacter).OnHit(playerObjectHit);
                 }
                 else if (playerObjectHit.Collider != null)
                 {
-                    Logger.LogDebug(this, $"Player ${player.Id} for remote view tick ${remoteViewTick} was hit ${playerObjectHit.Collider.Name}");
+                    Logger.LogDebug(this, $"Player ${player.NetworkId} for remote view tick ${remoteViewTick} was hit ${playerObjectHit.Collider.Name}");
                 }
 
                 ActiveGameRule?.OnHit(playerObjectHit);
@@ -370,15 +412,9 @@ namespace Framework.Game.Server
             }
         }
 
-
-
         /// <inheritdoc />  
         internal override void InternalTick(float interval)
         {
-            this._activeGameRule?.Tick(interval);
-
-            var now = DateTime.Now;
-
             // Apply inputs to each player.
             unprocessedPlayerIds.Clear();
             unprocessedPlayerIds.UnionWith(this.Players.Where(df => df.Value.State ==
@@ -391,6 +427,10 @@ namespace Framework.Game.Server
                 if (this._players.ContainsKey(tickInput.PlayerId))
                 {
                     var serverPlayer = this._players[tickInput.PlayerId];
+                    if (serverPlayer.State != PlayerConnectionState.Initialized)
+                    {
+                        return;
+                    }
 
                     //decompose but with what?
                     var input = serverPlayer.Components.Get<NetworkInput>();
@@ -428,10 +468,7 @@ namespace Framework.Game.Server
                     if (playerInputProcessor.TryGetLatestInput(playerId, out latestInput))
                     {
                         var input = serverPlayer.Components.Get<NetworkInput>();
-                        if (input != null)
-                        {
-                            input.SetPlayerInputs(latestInput.Inputs);
-                        }
+                        input?.SetPlayerInputs(latestInput.Inputs);
                     }
                     else
                     {
@@ -459,6 +496,7 @@ namespace Framework.Game.Server
             worldStateBroadcastTimer.Update(interval);
 
             this.Tick(interval);
+            this._activeGameRule?.Tick(interval);
         }
 
         /// <inheritdoc />
@@ -470,17 +508,6 @@ namespace Framework.Game.Server
             applySSIL(false);
 
             base.OnLevelInternalAddToScene();
-        }
-
-        /// <inheritdoc />
-        private void SimulateWorld(float dt)
-        {
-            foreach (var player in this._players.
-                Where(df => df.Value.State == PlayerConnectionState.Initialized).
-                Select(df => df.Value).ToArray())
-            {
-                player.InternalTick(dt);
-            }
         }
 
         private IGameRule _activeGameRule = null;
@@ -525,7 +552,7 @@ namespace Framework.Game.Server
             {
                 foreach (var player in Players.Where(df => df.Value.State == PlayerConnectionState.Initialized))
                 {
-                    this.netService.SendMessageSerialisable<ServerVarUpdate>(player.Key,
+                    this.netService.SendMessage<ServerVarUpdate>((int)player.Key,
                                        new ServerVarUpdate
                                        {
                                            ServerVars = this.ServerVars.Vars
@@ -545,8 +572,8 @@ namespace Framework.Game.Server
                 //clear previous components
                 player.Components.Clear();
 
-                (player).RequiredPuppetComponents = new int[0];
-                (player).RequiredComponents = new int[0];
+                (player).RequiredPuppetComponents = new short[0];
+                (player).RequiredComponents = new short[0];
 
                 if (this._activeGameRule != null)
                 {

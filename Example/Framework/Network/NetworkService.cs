@@ -50,11 +50,12 @@ namespace Framework.Network
             this._netPacketProcessor.RegisterNestedType<PlayerInputCommand>();
             this._netPacketProcessor.RegisterNestedType<PlayerState>();
             this._netPacketProcessor.RegisterNestedType<PlayerUpdate>();
-            this._netPacketProcessor.RegisterNestedType<ServerVarUpdate>();
-            this._netPacketProcessor.RegisterNestedType<ClientWorldInitializer>();
+            this._netPacketProcessor.RegisterNestedType<Input.GeneralPlayerInput>();
+            this._netPacketProcessor.RegisterNestedType<Framework.Game.Vars>();
             this._netPacketProcessor.RegisterNestedType<ClientWorldLoader>();
             this._netPacketProcessor.RegisterNestedType<ServerInitializer>();
             this._netPacketProcessor.RegisterNestedType<RaycastTest>();
+            this._netPacketProcessor.RegisterNestedType<PlayerNetworkVarState>();
 
             this._netPacketProcessor.RegisterNestedType(
                 NetExtensions.SerializeVector3, NetExtensions.DeserializeVector3);
@@ -64,9 +65,6 @@ namespace Framework.Network
 
             this._netPacketProcessor.RegisterNestedType(
                NetExtensions.SerializeStringDictonary, NetExtensions.DeserializeStringDictonary);
-
-
-            this._netPacketProcessor.RegisterNestedType<WorldHeartbeat>();
         }
 
         /// <summary>
@@ -114,7 +112,7 @@ namespace Framework.Network
             var peer = this.netManager.GetPeerById(peerId);
             if (peer != null)
             {
-                this._netPacketProcessor.Send<T>(peer, obj, method);
+                this._netPacketProcessor.Send(peer, obj, method);
             }
         }
 

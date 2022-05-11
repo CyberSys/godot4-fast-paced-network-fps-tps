@@ -30,9 +30,8 @@ using Framework.Physics;
 using Godot;
 using Framework.Game.Server;
 using System;
-using Framework.Physics.Commands;
 using Framework.Game.Client;
-
+using System.Reflection;
 
 namespace Framework.Game
 {
@@ -45,13 +44,13 @@ namespace Framework.Game
         /// The mono script path of the player component
         /// </summary>
         /// <value></value>
-        public string ScriptPath { get; set; }
+        public string[] ScriptPaths { get; set; } = new string[0];
 
         /// <summary>
         /// The resource path of the player component
         /// </summary>
         /// <value></value>
-        public string ResourcePath { get; set; }
+        public string ResourcePath { get; set; } = "";
 
         /// <summary>
         /// Movement processor
@@ -63,7 +62,7 @@ namespace Framework.Game
         /// The network mode of the plaer
         /// </summary>
         /// <value></value>
-        [Export]
+        [Export(PropertyHint.Enum)]
         public NetworkMode Mode { get; set; }
 
         /// <summary>
@@ -78,12 +77,24 @@ namespace Framework.Game
         [Export]
         public float CrouchHeight = 1.3f;
 
+
+        [NetworkVar(NetworkSyncFrom.FromServer, NetworkSyncTo.ToClient | NetworkSyncTo.ToPuppet)]
+        public Vector3 NetworkVelocity = Vector3.Zero;
+
+        [NetworkVar(NetworkSyncFrom.FromServer, NetworkSyncTo.ToClient | NetworkSyncTo.ToPuppet)]
+        public float NetworkCrouchingLevel = 1.0f;
+
+        [NetworkVar(NetworkSyncFrom.FromServer, NetworkSyncTo.ToClient | NetworkSyncTo.ToPuppet)]
+        public Quaternion NetworkRotation = Quaternion.Identity;
+
+        [NetworkVar(NetworkSyncFrom.FromServer, NetworkSyncTo.ToClient | NetworkSyncTo.ToPuppet)]
+        public Vector3 NetworkPosition = Vector3.Zero;
+
         internal float originalHeight = 0f;
         internal CollisionShape3D shape;
         internal float originalYPosition = 0f;
         internal float shapeHeight = 0.0f;
         internal float previousCrouchLevel = 0f;
-        internal float currentCouchLevel = 0f;
 
         internal MeshInstance3D debugMesh;
         internal MeshInstance3D debugMeshLocal;
@@ -92,8 +103,7 @@ namespace Framework.Game
         internal PlayerState? lastState = null;
         internal float stateTimer = 0;
 
-        /// <inheritdoc />
-        internal int replayedStates;
+        private Queue<Vector3> teleportQueue = new Queue<Vector3>();
 
         /// <summary>
         /// Get the current shape height
@@ -106,6 +116,14 @@ namespace Framework.Game
             else
                 return 0;
         }
+
+        /// <summary>
+        /// Player sync attributes
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <typeparam name="NetworkAttribute"></typeparam>
+        /// <returns></returns>
+        public Dictionary<string, NetworkAttribute> NetworkSyncVars { get; private set; } = new Dictionary<string, NetworkAttribute>();
 
         private void CreateDebugMesh()
         {
@@ -158,26 +176,27 @@ namespace Framework.Game
             return this.GetNodeOrNull<CollisionShape3D>(ColliderPath); ;
         }
 
-        /// <summary>
-        /// Get the current physics state for the body component
-        /// </summary>
-        /// <returns></returns>
-        public MovementNetworkCommand GetNetworkState()
+        internal void SetNewComponent(Node child)
         {
-            return new MovementNetworkCommand
+            if (child is IPlayerComponent)
             {
-                Position = this.GlobalTransform.origin,
-                Rotation = this.GlobalTransform.basis.GetRotationQuaternion(),
-                Velocity = this.MovementProcessor.Velocity,
-                Grounded = this.IsOnGround(),
-            };
-        }
+                var node = child as IPlayerComponent;
+                this.ActivateComponent(node.NetworkId, false);
 
+                Logger.LogDebug(this, "Found component: " + node.GetType().Name);
+                (child as IPlayerComponent).BaseComponent = this;
+            }
+        }
 
         /// <inheritdoc />
         public override void _EnterTree()
         {
             base._EnterTree();
+
+            this.ChildEnteredTree += (Node n) =>
+            {
+                SetNewComponent(n);
+            };
 
             this.shape = this.GetShape();
             this.shape.Shape.ResourceLocalToScene = true;
@@ -204,13 +223,46 @@ namespace Framework.Game
             }
 
             this.shapeHeight = shapeHeight;
-            this.currentCouchLevel = shapeHeight;
+            //   this.NetworkCrouchingLevel = shapeHeight;
             this.previousCrouchLevel = shapeHeight;
 
             if (this.IsLocal())
             {
                 this.CreateDebugMesh();
             }
+        }
+
+        /// <summary>
+        /// Activate an component by given id
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="enable"></param>
+        public void ActivateComponent(int index, bool enable)
+        {
+            var node = this.Components.All.Where(df => df is IPlayerComponent && df is Node).Select(df => df as IPlayerComponent)
+            .FirstOrDefault(df => df.NetworkId == index);
+
+            if (node == null || !node.IsInsideTree())
+                return;
+
+            var child = node as Node;
+            child.ProcessMode = enable ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+
+            if (child is IPlayerComponent)
+            {
+                (child as IPlayerComponent).IsEnabled = enable;
+            }
+
+            if (child is Node3D)
+            {
+                (child as Node3D).Visible = enable;
+            }
+
+            child.SetPhysicsProcess(enable);
+            child.SetProcessInternal(enable);
+            child.SetProcess(enable);
+            child.SetProcessInput(enable);
+            child.SetPhysicsProcessInternal(enable);
         }
 
         /// <summary>
@@ -251,14 +303,12 @@ namespace Framework.Game
                     var state = this.IncomingLocalPlayerState;
                     if (!default(PlayerState).Equals(state))
                     {
-                        var incomingStateDecompose = state.BodyComponent;
                         this.debugMeshLocal.Visible = activated;
                         this.debugMesh.Visible = activated;
 
-                        var gt = this.debugMesh.GlobalTransform;
-                        gt.origin = incomingStateDecompose.Position;
-                        gt.basis = new Basis(incomingStateDecompose.Rotation);
-                        this.debugMesh.GlobalTransform = gt;
+                        this.debugMesh.GlobalTransform = new Transform3D(
+                            state.GetVar<Quaternion>(this, "NetworkRotation"),
+                            state.GetVar<Vector3>(this, "NetworkPosition"));
                     }
                 }
             }
@@ -270,8 +320,9 @@ namespace Framework.Game
         /// <param name="crouchInProcess">can be between 0 (crouching) and 1 (non crouching)</param>
         public virtual void SetCrouchingLevel(float crouchInProcess)
         {
-            this.currentCouchLevel += MathF.Round(crouchInProcess, 2);
-            this.currentCouchLevel = Mathf.Clamp(this.currentCouchLevel, CrouchHeight, this.shapeHeight);
+            // this.currentCouchLevel
+            this.NetworkCrouchingLevel += MathF.Round(crouchInProcess, 2);
+            this.NetworkCrouchingLevel = Mathf.Clamp(this.NetworkCrouchingLevel, CrouchHeight, this.shapeHeight);
         }
 
         /// <summary>
@@ -280,8 +331,8 @@ namespace Framework.Game
         /// <param name="origin">New position of the player</param>
         public void MoveToPosition(Godot.Vector3 origin)
         {
-            var data = this.GetNetworkState();
-            data.Position = origin;
+            var data = this.ToNetworkState();
+            data.SetVar(this, "NetworkPosition", origin);
             this.ApplyBodyState(data);
         }
 
@@ -290,11 +341,11 @@ namespace Framework.Game
         {
             base._PhysicsProcess(delta);
 
-            if (this.previousCrouchLevel != this.currentCouchLevel)
+            if (this.previousCrouchLevel != this.NetworkCrouchingLevel)
             {
                 if (this.shape != null && this.shape.Shape != null)
                 {
-                    var yPos = (this.shapeHeight - this.currentCouchLevel) / 2;
+                    var yPos = (this.shapeHeight - this.NetworkCrouchingLevel) / 2;
                     yPos = yPos * -1;
 
                     var transform = this.shape.Transform;
@@ -303,11 +354,16 @@ namespace Framework.Game
                     this.shape.Transform = transform;
 
                     var shape = this.shape.Shape as CapsuleShape3D;
-                    shape.Height = currentCouchLevel;
+                    shape.Height = NetworkCrouchingLevel;
                     this.shape.Shape = shape;
 
-                    this.previousCrouchLevel = this.currentCouchLevel;
+                    this.previousCrouchLevel = this.NetworkCrouchingLevel;
                 }
+            }
+
+            if (this.IsPuppet())
+            {
+                this.ProcessPuppetInput(delta);
             }
         }
 
@@ -365,15 +421,16 @@ namespace Framework.Game
         public TickInput CurrentPlayerInput { get; set; }
 
         /// <inheritdoc />
-        public int[] RequiredPuppetComponents { get; set; } = new int[0];
+        public short[] RequiredPuppetComponents { get; set; } = new short[0];
 
         /// <inheritdoc />
-        public int[] RequiredComponents { get; set; } = new int[0];
-        /// <inheritdoc />
-        public int Id { get; set; }
+        public short[] RequiredComponents { get; set; } = new short[0];
 
         /// <inheritdoc />
-        public string PlayerName { get; set; }
+        public short NetworkId { get; set; }
+
+        /// <inheritdoc />
+        public string PlayerName { get; set; } = "";
 
         /// <inheritdoc />
         public int Latency { get; set; }
@@ -397,7 +454,6 @@ namespace Framework.Game
         public PlayerConnectionState PreviousState { get; set; }
 
 
-
         /// <summary>
         /// The last incoming local player state
         /// </summary>
@@ -405,33 +461,12 @@ namespace Framework.Game
         public PlayerState IncomingLocalPlayerState = new PlayerState();
 
         /// <summary>
-        /// The local player input snapshots
-        /// </summary>
-        public GeneralPlayerInput[] localPlayerInputsSnapshots = new GeneralPlayerInput[NetworkWorld.MaxTicks];
-
-        /// <summary>
-        /// The local player states
-        /// </summary>
-        public PlayerState[] localPlayerStateSnapshots = new PlayerState[NetworkWorld.MaxTicks];
-
-        /// <summary>
-        /// The last world player ticks related to the state snapshots
-        /// </summary>
-        public uint[] localPlayerWorldTickSnapshots = new uint[NetworkWorld.MaxTicks];
-
-
-        /// <inheritdoc />
-        private readonly List<AssignedComponent> avaiableComponents = new List<AssignedComponent>();
-
-        /// <inheritdoc />
-        public List<AssignedComponent> AvaiablePlayerComponents => avaiableComponents;
-
-        /// <summary>
         /// Base player class
         /// </summary>
         /// <returns></returns>
         public NetworkCharacter() : base()
         {
+            this.NetworkSyncVars = this.GetNetworkAttributes();
             this._components = new ComponentRegistry<NetworkCharacter>(this);
         }
 
@@ -441,34 +476,29 @@ namespace Framework.Game
         }
 
         /// <summary>
-        /// Get the current network state
+        /// /// Get the current network state
         /// </summary>
         /// <returns></returns>
         public virtual PlayerState ToNetworkState()
         {
-            var netComps = new System.Collections.Generic.Dictionary<int, byte[]>();
-            foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
-                    x.IsGenericType &&
-                    x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
+            var state = new PlayerState
             {
-                var findIndex = this.AvaiablePlayerComponents.FindIndex(df => df.NodeType == component.GetType());
-                if (findIndex > -1)
-                {
-                    var instanceMethod = component.GetType().GetMethod("GetNetworkState");
-                    INetSerializable result = instanceMethod.Invoke(component, new object[] { }) as INetSerializable;
+                NetworkId = this.NetworkId,
+                Latency = (short)this.Latency
+            };
 
-                    var writer = new NetDataWriter();
-                    result.Serialize(writer);
-                    netComps.Add(findIndex, writer.Data);
-                }
+            state.NetworkSyncedVars = new List<PlayerNetworkVarState>();
+            foreach (var element in NetworkSyncVars)
+            {
+                state.SetVar(this, element.Key, this.Get(element.Key));
             }
 
-            return new PlayerState
-            {
-                Id = this.Id,
-                BodyComponent = this.GetNetworkState(),
-                NetworkComponents = netComps
-            };
+            state.SetVar(this, "NetworkRotation", this.GlobalTransform.basis.GetRotationQuaternion());
+            state.SetVar(this, "NetworkPosition", this.GlobalTransform.origin);
+            state.SetVar(this, "NetworkVelocity", this.MovementProcessor.Velocity);
+            state.SetVar(this, "NetworkCrouchingLevel", this.NetworkCrouchingLevel);
+
+            return state;
         }
 
         /// <summary>
@@ -489,12 +519,12 @@ namespace Framework.Game
             var headViewRotation = input.LastInput.ViewDirection;
             var basis = new Basis(headViewRotation);
 
-            var command = this.GetNetworkState();
-            var currentTransform = new Godot.Transform3D(basis, command.Position);
+            var command = this.ToNetworkState();
+            var currentTransform = new Godot.Transform3D(basis, command.GetVar<Vector3>(this, "NetworkPosition"));
 
             var attackPosition = camera.GlobalTransform.origin;
             var attackTransform = new Godot.Transform3D(basis, attackPosition);
-            var attackTransformFrom = new Godot.Transform3D(command.Rotation, attackPosition);
+            var attackTransformFrom = new Godot.Transform3D(command.GetVar<Quaternion>(this, "NetworkRotation"), attackPosition);
 
             var raycast = new PhysicsRayQueryParameters3D();
             raycast.From = attackTransformFrom.origin;
@@ -531,15 +561,16 @@ namespace Framework.Game
         /// Apply the network state for the body component
         /// </summary>
         /// <param name="state"></param>
-        public void ApplyBodyState(MovementNetworkCommand state)
+        public void ApplyBodyState(PlayerState state)
         {
-            var transform = this.GlobalTransform;
-            transform.origin = state.Position;
-            transform.basis = new Basis(state.Rotation);
-            this.GlobalTransform = transform;
+            this.GlobalTransform = new Transform3D(
+                state.GetVar<Quaternion>(this, "NetworkRotation"),
+            state.GetVar<Vector3>(this, "NetworkPosition"));
 
-            this.Velocity = state.Velocity;
-            this.MovementProcessor.Velocity = state.Velocity;
+            this.MovingPlatformApplyVelocityOnLeave = MovingPlatformApplyVelocityOnLeaveEnum.Never;
+
+            this.Velocity = state.GetVar<Vector3>(this, "NetworkVelocity");
+            this.MovementProcessor.Velocity = state.GetVar<Vector3>(this, "NetworkVelocity");
         }
 
 
@@ -550,7 +581,54 @@ namespace Framework.Game
         /// <param name="velocity">Vector3</param>
         public virtual void Move(float delta, Vector3 velocity)
         {
+            this.Velocity = velocity;
             this.MoveAndSlide();
+        }
+
+        public void ApplyVars(PlayerState state)
+        {
+            if (this.IsPuppet())
+            {
+                // check if the marked for local
+                foreach (var networkVar in this.NetworkSyncVars.Where(df => df.Value.From.HasFlag(NetworkSyncFrom.FromServer)
+                && df.Value.To.HasFlag(NetworkSyncTo.ToPuppet)))
+                {
+                    var value = state.GetVar(this, networkVar.Key);
+                    this.Set(networkVar.Key, value);
+                }
+            }
+
+            if (this.IsLocal())
+            {
+                // check if the marked for local
+                foreach (var networkVar in this.NetworkSyncVars.Where(df => df.Value.From.HasFlag(NetworkSyncFrom.FromServer)
+                && df.Value.To.HasFlag(NetworkSyncTo.ToClient)))
+                {
+                    var value = state.GetVar(this, networkVar.Key);
+                    this.Set(networkVar.Key, value);
+                }
+            }
+        }
+
+        public virtual PlayerState Interpolate(float theta, PlayerState lastState, PlayerState nextState)
+        {
+            //only for movement component (to interpolate)
+            var a = lastState.GetVar<Quaternion>(this, "NetworkRotation");
+            var b = nextState.GetVar<Quaternion>(this, "NetworkRotation");
+
+            var aPos = lastState.GetVar<Vector3>(this, "NetworkPosition");
+            var bPos = nextState.GetVar<Vector3>(this, "NetworkPosition");
+
+            var aCrouch = lastState.GetVar<float>(this, "NetworkCrouchingLevel");
+            var bCrouch = nextState.GetVar<float>(this, "NetworkCrouchingLevel");
+
+            var newState = this.ToNetworkState();
+
+            newState.SetVar(this, "NetworkPosition", aPos.Lerp(bPos, theta));
+            newState.SetVar(this, "NetworkRotation", a.Slerp(b, theta));
+            newState.SetVar(this, "NetworkCrouchingLevel", Mathf.Lerp(aCrouch, bCrouch, theta));
+
+            return newState;
         }
 
         /// <summary>
@@ -561,31 +639,10 @@ namespace Framework.Game
         {
             if (!this.IsPuppet() || !this.GameWorld.ServerVars.Get<bool>("sv_interpolate", true))
             {
-                this?.ApplyBodyState(state.BodyComponent);
-
-                foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
-                        x.IsGenericType &&
-                        x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
-                {
-                    var findIndex = this.AvaiablePlayerComponents.FindIndex(df => df.NodeType == component.GetType());
-                    if (findIndex > -1)
-                    {
-                        if (state.NetworkComponents != null && state.NetworkComponents.ContainsKey(findIndex))
-                        {
-                            //     var decompose = state.Decompose();
-                            var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
-                            var parameterType = instanceMethod.GetParameters().First().ParameterType;
-
-                            var methods = state.GetType().GetMethods();
-                            var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
-
-                            var decomposed = method.MakeGenericMethod(parameterType)
-                                  .Invoke(state, new object[] { findIndex });
-                            instanceMethod.Invoke(component, new object[] { decomposed });
-                        }
-                    }
-                }
+                this.ApplyVars(state);
+                this.ApplyBodyState(state);
             }
+            // only for puppet
             else
             {
                 while (stateQueue.Count >= 2)
@@ -594,66 +651,6 @@ namespace Framework.Game
                 }
                 stateQueue.Enqueue(state);
             }
-        }
-
-        internal void ProcessLocalInput()
-        {
-            float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
-            var serverSendRate = simTickRate / 2;
-
-            var MaxStaleServerStateTicks = (int)MathF.Ceiling(this.GameWorld.ServerVars.Get<int>("sv_max_stages_ms", 500) / serverSendRate);
-
-            var camera = this.Components.Get<CharacterCamera>();
-            var input = this.Components.Get<NetworkInput>();
-            GeneralPlayerInput inputs = new GeneralPlayerInput();
-
-            if (input != null && camera != null)
-            {
-                //set view rotation for input processor
-                if (input.InputProcessor.InputEnabled && this.GameWorld.GameInstance.GuiDisableInput)
-                    input.InputProcessor.InputEnabled = false;
-
-                input.InputProcessor.ViewRotation = camera.GetViewRotation();
-                inputs = input.InputProcessor.GetPlayerInput();
-            }
-
-            var lastTicks = GameWorld.WorldTick - (GameWorld as NetworkClientWorld).LastServerWorldTick;
-            if (this.GameWorld.ServerVars.Get<bool>("sv_freze_client", false) && lastTicks >= MaxStaleServerStateTicks)
-            {
-                Logger.LogDebug(this, "Server state is too old (is the network connection dead?) - max ticks " + MaxStaleServerStateTicks + " - currentTicks => " + lastTicks);
-                inputs = new GeneralPlayerInput();
-            }
-
-            // Update our snapshot buffers.
-            uint bufidx = GameWorld.WorldTick % NetworkWorld.MaxTicks;
-            this.localPlayerInputsSnapshots[bufidx] = inputs;
-            this.localPlayerStateSnapshots[bufidx] = this.ToNetworkState();
-            this.localPlayerWorldTickSnapshots[bufidx] = (GameWorld as NetworkClientWorld).LastServerWorldTick;
-
-            // Send a command for all inputs not yet acknowledged from the server.
-            var unackedInputs = new List<GeneralPlayerInput>();
-            var clientWorldTickDeltas = new List<short>();
-
-            // TODO: lastServerWorldTick is technically not the same as lastAckedInputTick, fix this.
-            for (uint tick = (GameWorld as NetworkClientWorld).LastServerWorldTick; tick <= GameWorld.WorldTick; ++tick)
-            {
-                unackedInputs.Add(this.localPlayerInputsSnapshots[tick % NetworkWorld.MaxTicks]);
-                clientWorldTickDeltas.Add((short)(tick - this.localPlayerWorldTickSnapshots[tick % NetworkWorld.MaxTicks]));
-            }
-
-            var command = new PlayerInputCommand
-            {
-                StartWorldTick = (GameWorld as NetworkClientWorld).LastServerWorldTick,
-                Inputs = unackedInputs.ToArray(),
-                ClientWorldTickDeltas = clientWorldTickDeltas.ToArray(),
-            };
-
-            // send to server => command
-            (this.GameWorld as NetworkClientWorld).SendInputCommand(command);
-
-            // SetPlayerInputs
-            if (input != null)
-                input.SetPlayerInputs(inputs);
         }
 
         internal void ProcessPuppetInput(float delta)
@@ -681,49 +678,23 @@ namespace Framework.Game
             // We can only interpolate if we have a previous and next world state.
             if (!lastState.HasValue || stateQueue.Count < 1)
             {
-                Logger.LogDebug(this, "RemotePlayer: not enough states to interp");
+                //Logger.LogDebug(this, "RemotePlayer: not enough states to interp");
                 return;
             }
 
             var nextState = stateQueue.Peek();
             float theta = stateTimer / ServerSendInterval;
 
-            //only for movement component (to interpolate)
-            var decomposedNextState = nextState.BodyComponent;
-            var decomposesLastState = lastState.Value.BodyComponent;
-
-            var a = decomposesLastState.Rotation;
-            var b = decomposedNextState.Rotation;
-
-            var newState = this.GetNetworkState();
-
-            newState.Position = decomposesLastState.Position.Lerp(decomposedNextState.Position, theta);
-            newState.Rotation = a.Slerp(b, theta);
-
-            this.ApplyBodyState(newState);
-
-            //for the rest -> just handle applying components
-            foreach (var component in this.Components.All.Where(df => df.GetType().GetInterfaces().Any(x =>
-                    x.IsGenericType &&
-                    x.GetGenericTypeDefinition() == typeof(IChildNetworkSyncComponent<>))))
+            if (this.GameWorld.ServerVars.Get<bool>("sv_interpolate", true))
             {
-
-                var index = this.AvaiablePlayerComponents.FindIndex(df => df.NodeType == component.GetType());
-                if (index < 0)
-                    continue;
-
-                if (nextState.NetworkComponents.ContainsKey(index))
-                {
-                    var instanceMethod = component.GetType().GetMethod("ApplyNetworkState");
-                    var parameterType = instanceMethod.GetParameters().First().ParameterType;
-
-                    var methods = nextState.GetType().GetMethods();
-                    var method = methods.Single(mi => mi.Name == "Decompose" && mi.GetParameters().Count() == 1);
-
-                    var decomposed = method.MakeGenericMethod(parameterType)
-                          .Invoke(nextState, new object[] { index });
-                    instanceMethod.Invoke(component, new object[] { decomposed });
-                }
+                var newState = this.Interpolate(theta, lastState.Value, nextState);
+                this.ApplyVars(newState);
+                this.ApplyBodyState(newState);
+            }
+            else
+            {
+                this.ApplyVars(nextState);
+                this.ApplyBodyState(nextState);
             }
         }
 
@@ -733,13 +704,9 @@ namespace Framework.Game
             {
                 var nextTeleport = this.teleportQueue.Dequeue();
                 Logger.LogDebug(this, "Execute teleport to " + nextTeleport + " -> " + this.IsServer());
-
                 this.MoveToPosition(nextTeleport);
-            }
 
-            if (this.IsLocal())
-            {
-                this.ProcessLocalInput();
+                Logger.LogDebug(this, "Finish teleport to " + nextTeleport + " -> " + this.IsServer());
             }
 
             //process server and client
@@ -748,16 +715,11 @@ namespace Framework.Game
                 var input = this.Components.Get<NetworkInput>();
                 if (input != null)
                 {
-                    //   this.MovementProcessor.Velocity = this.Velocity;
+                    // this.MovementProcessor.Velocity = this.Velocity;
                     this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
                     this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
                     this.MovementProcessor.Simulate(this, input.LastInput, delta);
                 }
-            }
-            //process puppet
-            else
-            {
-                this.ProcessPuppetInput(delta);
             }
 
             //process components
@@ -772,78 +734,6 @@ namespace Framework.Game
             this.Tick(delta);
         }
 
-
-        /// <summary>
-        /// Rewind to an given world tick
-        /// </summary>
-        /// <param name="incomingStateTick"></param>
-        /// <param name="headState"></param>
-        public void Rewind(uint incomingStateTick, bool headState)
-        {
-            if (default(PlayerState).Equals(this.IncomingLocalPlayerState))
-            {
-                Logger.LogDebug(this, "No local player state found!");
-            }
-
-            // Lookup the historical state for the world tick we got.
-            uint bufidx = incomingStateTick % NetworkWorld.MaxTicks;
-            var stateSnapshot = this.localPlayerStateSnapshots[bufidx];
-
-            // Compare the historical state to see how off it was.
-            var incomingStateDecompose = this.IncomingLocalPlayerState.BodyComponent;
-            var stateSnapshotDecompose = stateSnapshot.BodyComponent;
-
-            var error = incomingStateDecompose.Position - stateSnapshotDecompose.Position;
-            if (error.LengthSquared() > 0.0001f)
-            {
-                if (!headState)
-                {
-                    Logger.LogDebug(this, $"Rewind tick#{incomingStateTick}, Error: {error.Length()}, Range: {GameWorld.WorldTick - incomingStateTick} ClientPost: {incomingStateDecompose.Position.ToString()} ServerPos: {stateSnapshotDecompose.Position.ToString()} ");
-                    replayedStates++;
-                }
-
-                // Rewind local player state to the correct state from the server.
-                // TODO: Cleanup a lot of this when its merged with how rockets are spawned.
-                this.ApplyNetworkState(this.IncomingLocalPlayerState);
-
-                // Loop through and replay all captured input snapshots up to the current tick.
-                uint replayTick = incomingStateTick;
-                while (replayTick < GameWorld.WorldTick)
-                {
-                    // Grab the historical input.
-                    bufidx = replayTick % NetworkWorld.MaxTicks;
-                    var inputSnapshot = this.localPlayerInputsSnapshots[bufidx];
-
-                    // Rewrite the historical sate snapshot.
-                    this.localPlayerStateSnapshots[bufidx] = this.ToNetworkState();
-
-                    var input = this.Components.Get<NetworkInput>();
-
-                    // Apply inputs to the associated player controller and simulate the world.
-                    input?.SetPlayerInputs(inputSnapshot);
-                    this.InternalTick((float)this.GetPhysicsProcessDeltaTime());
-
-                    ++replayTick;
-                }
-            }
-        }
-
-        /// <inheritdoc /> 
-        public void AddAvaiableComponent<T>(string ResourcePath = null, string ScriptPath = null)
-        where T : Godot.Node, IPlayerComponent, new()
-        {
-            var element = new AssignedComponent(
-                                typeof(T), ResourcePath, ScriptPath
-                );
-
-
-            if (!this.avaiableComponents.Contains(element))
-            {
-                this.avaiableComponents.Add(element);
-            }
-        }
-        private Queue<Vector3> teleportQueue = new Queue<Vector3>();
-
         /// <summary>
         /// Teleport player to an given position
         /// </summary>
@@ -852,34 +742,6 @@ namespace Framework.Game
         {
             Logger.LogDebug(this, "Enquene teleport to " + origin);
             this.teleportQueue.Enqueue(origin);
-        }
-
-        /// <summary>
-        /// Add an assigned network component
-        /// </summary>
-        /// <param name="assignedComponent"></param>
-        public void AddAssignedComponent(AssignedComponent assignedComponent)
-        {
-            if (assignedComponent.ResourcePath != null)
-            {
-                Logger.LogDebug(this, "Try to load component from type " + assignedComponent.NodeType.Name);
-                //  this.Components.AddComponent(assignedComponent.NodeType, assignedComponent.ResourcePath);
-
-                if (assignedComponent.ScriptPath != null)
-                {
-                    Godot.GD.Load<Godot.CSharpScript>(assignedComponent.ScriptPath);
-                }
-
-                this.Components.AddComponentAsync(assignedComponent.NodeType, assignedComponent.ResourcePath, (Godot.Node res) =>
-                {
-                    Logger.LogDebug(this, "Add component from type " + assignedComponent.NodeType.Name);
-                });
-            }
-            else
-            {
-                this.Components.AddComponent(assignedComponent.NodeType);
-                Logger.LogDebug(this, "Add component from type " + assignedComponent.NodeType.Name);
-            }
         }
     }
 }

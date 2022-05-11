@@ -66,19 +66,41 @@ namespace Framework.Network.Services
         private long _bytesReceived = 0;
         private long _packageLossPercent = 0;
 
+        /// <summary>
+        /// Triggered when the client is connected.
+        /// </summary>
         [Signal]
         public event ConnectedHandler Connected;
+
+        /// <summary>
+        /// Connection handler for connect event
+        /// </summary>
         public delegate void ConnectedHandler();
 
+        /// <summary>
+        /// Triggered when the client is disconnected
+        /// </summary>
         [Signal]
         public event DisconnectHandler OnDisconnect;
+
+        /// <summary>
+        /// Disconnect handler for disconnect event
+        /// </summary>
+        /// <param name="reason"></param>
+        /// <param name="fullDisconnect"></param>
         public delegate void DisconnectHandler(DisconnectReason reason, bool fullDisconnect);
 
+        /// <summary>
+        /// Maximum of retries
+        /// </summary>
         [Export]
         public int MaxRetriesPerConnection = 10;
 
+        /// <summary>
+        /// Delay between reconnect
+        /// </summary>
         [Export]
-        public const int ConnectionRetryDelay = 2;
+        public int ConnectionRetryDelay = 2;
 
         private NetPeer currentPeer;
 
@@ -86,6 +108,9 @@ namespace Framework.Network.Services
 
         private NetPeer serverPeer;
 
+        /// <summary>
+        /// The network server peer
+        /// </summary>
         public NetPeer ServerPeer => serverPeer;
 
         private NetStatistics Statistics => this.netManager.Statistics;
@@ -134,11 +159,10 @@ namespace Framework.Network.Services
 
             EventBasedNetListener listener = new EventBasedNetListener();
             this.netManager = new NetManager(listener);
-            this.netManager.BroadcastReceiveEnabled = true;
+            this.netManager.DebugName = "ClientNetworkLayer";
             this.netManager.AutoRecycle = true;
             this.netManager.EnableStatistics = true;
             this.netManager.UnconnectedMessagesEnabled = true;
-
 
             listener.NetworkReceiveEvent += (peer, reader, channel, deliveryMethod) =>
             {

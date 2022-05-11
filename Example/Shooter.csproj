@@ -4,10 +4,13 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Framework\**" />
-    <EmbeddedResource Remove="Framework\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Framework\Framework.csproj" />
+    <Compile Remove="**\bin" />
+    <EmbeddedResource  Remove="**\bin" />
+    <Compile  Remove="**\obj"  />
+    <EmbeddedResource Remove="**\obj"/>
+    <Compile Remove="**\bin\**" />
+    <EmbeddedResource  Remove="**\bin\**" />
+    <Compile  Remove="**\obj\**"  />
+    <EmbeddedResource Remove="**\obj\**"/>
   </ItemGroup>
 </Project>

@@ -48,14 +48,11 @@ namespace Framework.Input
         /// <summary>
         /// The player id
         /// </summary>
-        public int PlayerId;
+        public short PlayerId;
 
         /// <summary>
         /// The input
         /// </summary>
         public GeneralPlayerInput Inputs;
     }
-
-
-
 }

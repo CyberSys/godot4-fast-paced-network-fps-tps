@@ -30,11 +30,20 @@ namespace NetworkingLib
             AddCustomType("CharacterCamera", "Camera3D",
                 GD.Load<Script>("res://Framework/Game/CharacterCamera.cs"),
                 GD.Load<Texture2D>("res://addons/networking/icons/logic.png"));
+
+            AddCustomType("NetworkInput", "Node3D",
+                GD.Load<Script>("res://Framework/Game/NetworkInput.cs"),
+                GD.Load<Texture2D>("res://addons/networking/icons/logic.png"));
         }
 
         public override void _ExitTree()
         {
-            // Clean-up of the plugin goes here.
+            this.RemoveCustomType("NetworkServerWorld");
+            this.RemoveCustomType("NetworkClientWorld");
+            this.RemoveCustomType("NetworkServerLogic");
+            this.RemoveCustomType("NetworkClientLogic");
+            this.RemoveCustomType("CharacterCamera");
+            this.RemoveCustomType("NetworkInput");
         }
     }
 #endif

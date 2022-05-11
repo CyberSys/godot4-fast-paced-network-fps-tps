@@ -29,38 +29,39 @@ namespace Framework.Network.Commands
     /// Network command for an client, after map was loaded sucessfull
     /// Contains all server relevated settings and vars
     /// </summary>
-    public struct ClientWorldInitializer : INetSerializable
+    public class ClientWorldInitializer
     {
         /// <summary>
         /// Current server world tick
         /// </summary>
-        public uint GameTick;
+        public uint GameTick { get; set; }
 
         /// <summary>
         /// Own player id on server
         /// </summary>
-        public int PlayerId;
+        public short PlayerId { get; set; }
 
         /// <summary>
         /// Server variables
         /// </summary>
-        public Vars ServerVars;
+        public Vars ServerVars { get; set; }
 
+        public PlayerState initState { get; set; }
 
         /// <inheritdoc />
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(this.GameTick);
             writer.Put(this.PlayerId);
-            this.ServerVars.Serialize(writer);
+            writer.Put<PlayerState>(this.initState);
         }
 
         /// <inheritdoc />
         public void Deserialize(NetDataReader reader)
         {
             this.GameTick = reader.GetUInt();
-            this.PlayerId = reader.GetInt();
-            this.ServerVars.Deserialize(reader);
+            this.PlayerId = reader.GetShort();
+            this.initState = reader.Get<PlayerState>();
         }
     }
 }

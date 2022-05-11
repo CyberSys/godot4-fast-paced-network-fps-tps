@@ -5,6 +5,7 @@ namespace LiteNetLib.Utils
 {
     public class NetPacketProcessor
     {
+        public bool Debug { get; set; } = false;
         private static class HashCache<T>
         {
             public static readonly ulong Id;
@@ -120,6 +121,8 @@ namespace LiteNetLib.Utils
 
         public void Send<T>(NetPeer peer, T packet, DeliveryMethod options) where T : class, new()
         {
+            if (Debug)
+                System.Diagnostics.Debug.WriteLine("Send: " + typeof(T).Name);
             _netDataWriter.Reset();
             Write(_netDataWriter, packet);
             peer.Send(_netDataWriter, options);
@@ -127,6 +130,9 @@ namespace LiteNetLib.Utils
 
         public void SendNetSerializable<T>(NetPeer peer, ref T packet, DeliveryMethod options) where T : INetSerializable
         {
+            if (Debug)
+                System.Diagnostics.Debug.WriteLine("Send: " + typeof(T).Name);
+
             _netDataWriter.Reset();
             WriteNetSerializable(_netDataWriter, ref packet);
             peer.Send(_netDataWriter, options);
@@ -134,6 +140,9 @@ namespace LiteNetLib.Utils
 
         public void Send<T>(NetManager manager, T packet, DeliveryMethod options) where T : class, new()
         {
+            if (Debug)
+                System.Diagnostics.Debug.WriteLine("Send: " + typeof(T).Name);
+
             _netDataWriter.Reset();
             Write(_netDataWriter, packet);
             manager.SendToAll(_netDataWriter, options);
@@ -141,6 +150,9 @@ namespace LiteNetLib.Utils
 
         public void SendNetSerializable<T>(NetManager manager, ref T packet, DeliveryMethod options) where T : INetSerializable
         {
+            if (Debug)
+                System.Diagnostics.Debug.WriteLine("Send: " + typeof(T).Name);
+
             _netDataWriter.Reset();
             WriteNetSerializable(_netDataWriter, ref packet);
             manager.SendToAll(_netDataWriter, options);

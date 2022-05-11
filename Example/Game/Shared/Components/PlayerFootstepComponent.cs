@@ -19,6 +19,7 @@ namespace Shooter.Shared.Components
     }
     public struct FootStepsPackage : INetSerializable, IEquatable<FootStepsPackage>
     {
+
         public int SoundIndex { get; set; }
         public GroundType GroundType { get; set; }
         public float CurrentTime { get; set; }
@@ -59,8 +60,10 @@ namespace Shooter.Shared.Components
         public AudioStreamSample AudioFile { get; set; }
     }
 
-    public partial class PlayerFootstepComponent : AudioStreamPlayer3D, IChildNetworkSyncComponent<FootStepsPackage>, IPlayerComponent
+    public partial class PlayerFootstepComponent : AudioStreamPlayer3D, /*IChildNetworkSyncComponent<FootStepsPackage>,*/ IPlayerComponent
     {
+        [Export]
+        public bool IsEnabled { get; set; } = false;
 
         /// <summary>
         /// The player body component
@@ -68,6 +71,7 @@ namespace Shooter.Shared.Components
         /// <value></value>
         public Framework.Game.NetworkCharacter BaseComponent { get; set; } = null;
 
+        public short NetworkId { get; set; } = 5;
 
         [Export(PropertyHint.Dir)]
         public string FootStepsSoundPathFolder = "res://Game/Assets/Audio/Footsteps/";
@@ -87,12 +91,24 @@ namespace Shooter.Shared.Components
         public override void _EnterTree()
         {
             base._EnterTree();
-            this.Bus = "PlayerFoorSteps";
+            // this.Bus = "PlayerFoorSteps";
         }
 
         public void Tick(float delta)
         {
-            if (!this.BaseComponent.IsPuppet())
+
+        }
+
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+
+            if (this.BaseComponent == null || this.IsEnabled == false)
+            {
+                return;
+            }
+
+            if (this.BaseComponent.IsLocal())
             {
                 if (this.BaseComponent.IsOnGround())
                 {
@@ -113,13 +129,12 @@ namespace Shooter.Shared.Components
                         try
                         {
                             this.CurrentGround = (GroundType)Enum.Parse(typeof(GroundType), footstepSet.ToString());
+                            this.CheckFootstep(this.BaseComponent);
                         }
                         catch
                         {
                             this.CurrentGround = GroundType.None;
                         }
-
-                        this.CheckFootstep(this.BaseComponent);
                     }
                 }
             }
@@ -127,37 +142,38 @@ namespace Shooter.Shared.Components
 
 
         private FootStepsPackage LastFootStep;
-
-        public void ApplyNetworkState(FootStepsPackage package)
-        {
-            if (this.IsPuppet())
-            {
-                //stop directly for syncronisation
-                if (package.Equals(default(FootStepsPackage)))
+        /*
+                public void ApplyNetworkState(FootStepsPackage package)
                 {
-                    this.Stop();
-                }
-                else
-                {
-                    if (!LastFootStep.Equals(default(FootStepsPackage)))
+                    if (this.IsPuppet())
                     {
-                        if (!LastFootStep.Equals(package))
+                        //stop directly for syncronisation
+                        if (package.Equals(default(FootStepsPackage)))
                         {
-                            this.Play(package);
+                            this.Stop();
                         }
-                    }
-                    else
-                    {
-                        this.Play(package);
+                        else
+                        {
+                            if (!LastFootStep.Equals(default(FootStepsPackage)))
+                            {
+                                if (!LastFootStep.Equals(package))
+                                {
+                                    this.Play(package);
+                                }
+                            }
+                            else
+                            {
+                                this.Play(package);
+                            }
+                        }
+
+                        this.LastFootStep = package;
                     }
                 }
-
-                this.LastFootStep = package;
-            }
-        }
-
+        */
         private void Play(FootStepsPackage package)
         {
+            GD.Print("PLAY STEP");
             if (!package.Equals(default(FootStepsPackage)))
             {
                 this.CacheFiles(package.GroundType);
@@ -177,30 +193,30 @@ namespace Shooter.Shared.Components
                             pos.z = package.ZPos;
                             this.Position = pos;
 
-                            this.Play(package.CurrentTime);
+                            //  this.Play(package.CurrentTime);
                         }
                     }
                 }
             }
         }
-
-        public FootStepsPackage GetNetworkState()
-        {
-            if (!this.Playing)
-            {
-                return new FootStepsPackage();
-            }
-            else
-            {
-                var step = CurrentFootstep;
-                step.CurrentTime = this.GetPlaybackPosition();
-                return step;
-            }
-        }
-
+        /*
+                public FootStepsPackage GetNetworkState()
+                {
+                    if (!this.Playing)
+                    {
+                        return new FootStepsPackage();
+                    }
+                    else
+                    {
+                        var step = CurrentFootstep;
+                        step.CurrentTime = this.GetPlaybackPosition();
+                        return step;
+                    }
+                }
+        */
         private void CheckFootstep(NetworkCharacter body)
         {
-            if (!this.BaseComponent.IsPuppet())
+            if (this.BaseComponent.IsLocal())
             {
                 var speed = (body.MovementProcessor as DefaultMovementProcessor).GetMovementSpeedFactor();
                 var minSpeed = (body.MovementProcessor as DefaultMovementProcessor).GetWalkingSpeed();
@@ -210,6 +226,7 @@ namespace Shooter.Shared.Components
                 {
                     if (velocity.Length() >= minSpeed && this.nextStepSound <= 0.0f)
                     {
+                        GD.Print("PLAY FOOTSTEP");
                         this.playFootstep();
                         this.nextStepSound = 1.0f;
                     }
@@ -268,14 +285,9 @@ namespace Shooter.Shared.Components
         }
 
 
-        public override void _Process(float delta)
-        {
-            base._Process(delta);
-        }
-
         private void playFootstep()
         {
-            if (CurrentGround != GroundType.None)
+            if (CurrentGround == GroundType.None)
                 return;
 
             System.Random rnd = new System.Random();

@@ -34,7 +34,7 @@ namespace Framework.Input
     public class PlayerInputProcessor
     {
         private SimplePriorityQueue<TickInput> queue = new SimplePriorityQueue<TickInput>();
-        private Dictionary<int, TickInput> latestPlayerInput = new Dictionary<int, TickInput>();
+        private Dictionary<short, TickInput> latestPlayerInput = new Dictionary<short, TickInput>();
 
         // Monitoring.
         private MovingAverage averageInputQueueSize = new MovingAverage(10);
@@ -58,17 +58,6 @@ namespace Framework.Input
             }
             averageInputQueueSize.Push(count);
             Logger.SetDebugUI("sv_avg_input_queue", averageInputQueueSize.ToString());
-        }
-
-        /// <summary>
-        /// Try to get the last input
-        /// </summary>
-        /// <param name="playerId"></param>
-        /// <param name="ret"></param>
-        /// <returns></returns>
-        public bool TryGetLatestInput(int playerId, out TickInput ret)
-        {
-            return latestPlayerInput.TryGetValue(playerId, out ret);
         }
 
         /// <summary>
@@ -100,44 +89,64 @@ namespace Framework.Input
         }
 
         /// <summary>
+        /// Get the last player input tick
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public uint GetLatestPlayerInputTick(short playerId)
+        {
+            TickInput input;
+            if (!TryGetLatestInput(playerId, out input))
+            {
+                return 0;
+            }
+            return input.WorldTick;
+        }
+
+        /// <summary>
+        /// Try to get the last input
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="ret"></param>
+        /// <returns></returns>
+        public bool TryGetLatestInput(short playerId, out TickInput ret)
+        {
+            return latestPlayerInput.TryGetValue(playerId, out ret);
+        }
+
+        /// <summary>
         /// Add new input to input queue
         /// </summary>
         /// <param name="command"></param>
         /// <param name="playerId"></param>
-        /// <param name="serverWorldTick"></param>
-        public void EnqueueInput(PlayerInputCommand command, int playerId, uint serverWorldTick)
+        /// <param name="lastAckedInputTick"></param>
+        public void EnqueueInput(PlayerInputCommand command, short playerId, uint lastAckedInputTick)
         {
             // Monitoring.
             // Logger.LogDebug(this, "sv stale inputs => " + staleInputs);
 
             // Calculate the last tick in the incoming command.
             uint maxTick = command.StartWorldTick + (uint)command.Inputs.Length - 1;
+            uint startIndex = lastAckedInputTick >= command.StartWorldTick
+               ? lastAckedInputTick - command.StartWorldTick + 1
+               : 0;
 
             // Scan for inputs which haven't been handled yet.
-            if (maxTick >= serverWorldTick)
+            for (int i = (int)startIndex; i < command.Inputs.Length; ++i)
             {
-                uint start = serverWorldTick > command.StartWorldTick
-                    ? serverWorldTick - command.StartWorldTick : 0;
-                for (int i = (int)start; i < command.Inputs.Length; ++i)
+                // Apply inputs to the associated player controller and simulate the world.
+                var worldTick = command.StartWorldTick + i;
+                var tickInput = new TickInput
                 {
-                    // Apply inputs to the associated player controller and simulate the world.
-                    var worldTick = command.StartWorldTick + i;
-                    var tickInput = new TickInput
-                    {
-                        WorldTick = (uint)worldTick,
-                        RemoteViewTick = (uint)(worldTick - command.ClientWorldTickDeltas[i]),
-                        PlayerId = playerId,
-                        Inputs = command.Inputs[i],
-                    };
-                    queue.Enqueue(tickInput, worldTick);
+                    WorldTick = (uint)worldTick,
+                    RemoteViewTick = (uint)(worldTick - command.ClientWorldTickDeltas[i]),
+                    PlayerId = playerId,
+                    Inputs = command.Inputs[i],
+                };
+                queue.Enqueue(tickInput, worldTick);
 
-                    // Store the latest input in case the simulation needs to repeat missed frames.
-                    latestPlayerInput[playerId] = tickInput;
-                }
-            }
-            else
-            {
-                staleInputs++;
+                // Store the latest input in case the simulation needs to repeat missed frames.
+                latestPlayerInput[playerId] = tickInput;
             }
         }
     }

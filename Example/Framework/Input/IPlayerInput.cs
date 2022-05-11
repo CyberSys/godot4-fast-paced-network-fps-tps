@@ -35,7 +35,7 @@ namespace Framework.Input
         /// The current view direction / camera direction
         /// </summary>
         /// <value></value>
-        public Quaternion ViewDirection { get; set; }
+        public Vector3 ViewDirection { get; set; }
 
         /// <summary>
         /// Get input by given string, related to booleans with PlayerInputAttribute

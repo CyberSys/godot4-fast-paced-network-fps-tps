@@ -1,9 +1,11 @@
+
 using System;
 using System.Linq;
 using Godot;
 using Shooter.Client;
 using Shooter.Server;
 using Framework.Game;
+
 using Framework;
 using System.Collections.Generic;
 
@@ -33,7 +35,7 @@ public partial class BootloaderMultiView : Bootloader
         this.rootContainer = this.GetNode<VSplitContainer>(rootContainerPath);
         this.ProcessMode = ProcessModeEnum.Always;
 
-        this.CreateSlot(ServerLogicScenePath, false);
+        this.CreateSlot(ServerLogicScenePath);
         this.CreateSlot(ClientLogicScenePath);
     }
 
@@ -51,7 +53,7 @@ public partial class BootloaderMultiView : Bootloader
         return container;
     }
 
-    private GameLogic CreateSlot(string resourcePath, bool isVisible = true)
+    private GameLogic CreateSlot(string resourcePath)
     {
         var container = this.containers.LastOrDefault();
         if (container == null)
@@ -82,48 +84,42 @@ public partial class BootloaderMultiView : Bootloader
 
         var slot = new SubViewportContainer();
         slot.Stretch = true;
-        slot.Visible = isVisible;
         slot.SizeFlagsHorizontal = (int)Control.SizeFlags.ExpandFill;
         slot.SizeFlagsVertical = (int)Control.SizeFlags.ExpandFill;
+        slot.ProcessMode = ProcessModeEnum.Always;
 
         container.AddChild(slot);
 
-        GD.Print(resourcePath);
-
         var viewport = GD.Load<PackedScene>(resourcePath).Instantiate<GameLogic>();
         viewport.GuiDisableInput = true;
-
+        viewport.ProcessMode = ProcessModeEnum.Always;
         slot.AddChild(viewport);
 
         this.logics.Add(viewport);
         this.ActivateGui(viewport);
 
+        if (viewport is Framework.Game.Server.NetworkServerLogic)
+        {
+            var visible = (viewport as Framework.Game.Server.NetworkServerLogic).CanBeVisible;
+            slot.Visible = visible;
+        }
+
         return viewport;
     }
 
-    private void ActivateGui(GameLogic logic)
+    public override void _PhysicsProcess(float delta)
     {
-        Input.SetMouseMode(Input.MouseMode.Visible);
+        base._PhysicsProcess(delta);
 
-        foreach (var item in this.logics)
+        if (this.createNewSlot)
         {
-            item.GuiDisableInput = !(item == logic);
-        }
-
-        this.currentLogic = logic;
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        base._Input(@event);
-
-        if (@event.IsActionReleased("view_add"))
-        {
+            this.createNewSlot = false;
             this.CreateSlot(ClientLogicScenePath);
         }
 
-        if (@event.IsActionReleased("switch_view"))
+        if (this.switchToNext)
         {
+            this.switchToNext = false;
             var currentLogicID = this.logics.IndexOf(this.currentLogic);
             if (currentLogicID == -1)
             {
@@ -154,6 +150,38 @@ public partial class BootloaderMultiView : Bootloader
                     this.ActivateGui(found);
                 }
             }
+        }
+    }
+
+    private void ActivateGui(GameLogic logic)
+    {
+        Input.SetMouseMode(Input.MouseMode.Visible);
+
+        foreach (var item in this.logics)
+        {
+            item.GuiDisableInput = !(item == logic);
+            item.AudioListenerEnable2d = (item == logic);
+            item.AudioListenerEnable3d = (item == logic);
+        }
+
+        this.currentLogic = logic;
+    }
+
+    private bool createNewSlot = false;
+    private bool switchToNext = false;
+
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+
+        if (@event.IsActionReleased("view_add"))
+        {
+            this.createNewSlot = true;
+        }
+
+        if (@event.IsActionReleased("switch_view"))
+        {
+            this.switchToNext = true;
         }
 
         @event.Dispose();

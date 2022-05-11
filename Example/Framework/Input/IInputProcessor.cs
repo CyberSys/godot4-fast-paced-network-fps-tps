@@ -25,13 +25,16 @@ namespace Framework.Input
     /// <summary>
     /// Required interface for local players with input eg. shifting, crouching, moving, etc.
     /// </summary>
-    public interface IInputProcessor
+    public interface IInputProcessor : IPlayerComponent
     {
         /// <summary>
-        /// The current player input for the actualy local tick
+        /// Last input storage
         /// </summary>
-        /// <returns></returns>
-        public GeneralPlayerInput GetPlayerInput();
+        /// <value></value>
+        public GeneralPlayerInput LastInput { get; }
+
+        public void SetPlayerInputs(GeneralPlayerInput inputs);
+
 
         /// <summary>
         /// List of avaiable input keys
@@ -40,21 +43,18 @@ namespace Framework.Input
         public List<string> AvaiableInputs { get; }
 
         /// <summary>
-        /// The current view rotation
-        /// </summary>
-        /// <value></value>
-        public Quaternion ViewRotation { get; set; }
-
-        /// <summary>
         /// List of all pressed or unpressed keys
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, bool> GetKeys();
+        /// public Dictionary<string, bool> GetKeys();
+
 
         /// <summary>
-        /// Check if input is enabled
+        /// The current player input for the actualy local tick
         /// </summary>
-        /// <value></value>
-        public bool InputEnabled { get; set; }
+        /// <returns></returns>
+        public GeneralPlayerInput GetInput();
+
+
     }
 }
