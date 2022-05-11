@@ -8,6 +8,9 @@ Totaly written in c#. No gdscript, because its sucks hard for oop.
 
 Check [documentation here](Docs/Manual/Framework.md)
 
+# Next steps
+- Weapon System
+
 # Usage Keys
 - F1 -> Switch between TPS and FPS View
 - F5 -> (Switch and enable the gui and input for the next client window)
@@ -22,6 +25,7 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Client-side interpolation of remote entities
 - Backwards reconciliation and replay
 - Server standalone
+- Network Sync Vars
 - Real-time adjustment of client simulation speed to optimize server's input buffer (Overwatch's method).
 - Server-side lag compensation
 - Full godot server implementation with disabled 3d
@@ -45,7 +49,7 @@ Check [documentation here](Docs/Manual/Framework.md)
 - Full implemented TPS and FPS Movement (Quake style)
 - Crouching
 - Customizeable and extendable movement
-- (WIP) Animation network sync
+- Animation network sync
 
 # Extensions
 - Hitscan weapons
