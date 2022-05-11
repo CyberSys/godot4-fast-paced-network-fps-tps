@@ -31,10 +31,8 @@ namespace Framework.Network
     /// </summary>
     public class ClientSimulationAdjuster : ISimulationAdjuster
     {
-
         /// <inheritdoc />
         public float AdjustedInterval { get; private set; } = 1.0f;
-
 
         /// <inheritdoc />
         private MovingAverage actualTickLeadAvg;
