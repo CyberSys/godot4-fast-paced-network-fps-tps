@@ -1,7 +1,9 @@
 # ClientNetworkService.ConnectionRetryDelay field
 
+Delay between reconnect
+
 ```csharp
-public const int ConnectionRetryDelay;
+public int ConnectionRetryDelay;
 ```
 
 ## See Also

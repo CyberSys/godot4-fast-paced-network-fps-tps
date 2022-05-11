@@ -3,7 +3,7 @@
 Event called after client is connected to server
 
 ```csharp
-public virtual void OnPlayerConnected(int clientId)
+public virtual void OnPlayerConnected(short clientId)
 ```
 
 | parameter | description |

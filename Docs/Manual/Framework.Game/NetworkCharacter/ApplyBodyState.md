@@ -3,7 +3,7 @@
 Apply the network state for the body component
 
 ```csharp
-public void ApplyBodyState(MovementNetworkCommand state)
+public void ApplyBodyState(PlayerState state)
 ```
 
 | parameter | description |
@@ -12,7 +12,7 @@ public void ApplyBodyState(MovementNetworkCommand state)
 
 ## See Also
 
-* struct [MovementNetworkCommand](../../Framework.Physics.Commands/MovementNetworkCommand.md)
+* struct [PlayerState](../../Framework.Network.Commands/PlayerState.md)
 * class [NetworkCharacter](../NetworkCharacter.md)
 * namespace [Framework.Game](../../Framework.md)
 

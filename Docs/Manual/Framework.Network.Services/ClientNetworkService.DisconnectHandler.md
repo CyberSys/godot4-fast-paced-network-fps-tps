@@ -1,8 +1,15 @@
 # ClientNetworkService.DisconnectHandler delegate
 
+Disconnect handler for disconnect event
+
 ```csharp
 public delegate void DisconnectHandler(DisconnectReason reason, bool fullDisconnect);
 ```
+
+| parameter | description |
+| --- | --- |
+| reason |  |
+| fullDisconnect |  |
 
 ## See Also
 

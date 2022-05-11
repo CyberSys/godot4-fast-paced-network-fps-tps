@@ -1,21 +1,19 @@
-# WorldHeartbeat structure
+# WorldHeartbeat class
 
 The world heartbeat structure for network syncronisation
 
 ```csharp
-public struct WorldHeartbeat : INetSerializable
+public class WorldHeartbeat
 ```
 
 ## Public Members
 
 | name | description |
 | --- | --- |
-| [PlayerStates](WorldHeartbeat/PlayerStates.md) | States of all players |
-| [PlayerUpdates](WorldHeartbeat/PlayerUpdates.md) | Contains all player related informations as eg. name, team, etc |
-| [WorldTick](WorldHeartbeat/WorldTick.md) | The world tick this data represents. |
-| [YourLatestInputTick](WorldHeartbeat/YourLatestInputTick.md) | The last world tick the server acknowledged for you. The client should use this to determine the last acked input, as well as to compute its relative simulation offset. |
-| [Deserialize](WorldHeartbeat/Deserialize.md)(…) |  |
-| [Serialize](WorldHeartbeat/Serialize.md)(…) |  |
+| [WorldHeartbeat](WorldHeartbeat/WorldHeartbeat.md)() | The default constructor. |
+| [PlayerStates](WorldHeartbeat/PlayerStates.md) { get; set; } | States of all players |
+| [WorldTick](WorldHeartbeat/WorldTick.md) { get; set; } | The world tick this data represents. |
+| [YourLatestInputTick](WorldHeartbeat/YourLatestInputTick.md) { get; set; } | The last world tick the server acknowledged for you. The client should use this to determine the last acked input, as well as to compute its relative simulation offset. |
 
 ## See Also
 

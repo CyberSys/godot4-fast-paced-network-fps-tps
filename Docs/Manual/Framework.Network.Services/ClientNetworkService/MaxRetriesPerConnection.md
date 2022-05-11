@@ -1,5 +1,7 @@
 # ClientNetworkService.MaxRetriesPerConnection field
 
+Maximum of retries
+
 ```csharp
 public int MaxRetriesPerConnection;
 ```

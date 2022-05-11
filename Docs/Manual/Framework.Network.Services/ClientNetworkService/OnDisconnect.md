@@ -1,5 +1,7 @@
 # ClientNetworkService.OnDisconnect event
 
+Triggered when the client is disconnected
+
 ```csharp
 public event DisconnectHandler OnDisconnect;
 ```

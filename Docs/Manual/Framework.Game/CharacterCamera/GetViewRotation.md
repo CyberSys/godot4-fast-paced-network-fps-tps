@@ -3,7 +3,7 @@
 Get the view rotation of an local player
 
 ```csharp
-public virtual Quaternion GetViewRotation()
+public virtual Vector3 GetViewRotation()
 ```
 
 ## See Also

@@ -1,4 +1,19 @@
-# ComponentRegistry&lt;T&gt;.Get&lt;T2&gt; method
+# ComponentRegistry&lt;T&gt;.Get method (1 of 2)
+
+Get an existing component of the base component
+
+```csharp
+public object Get(Type t)
+```
+
+## See Also
+
+* class [ComponentRegistry&lt;T&gt;](../ComponentRegistry-1.md)
+* namespace [Framework](../../Framework.md)
+
+---
+
+# ComponentRegistry&lt;T&gt;.Get&lt;T2&gt; method (2 of 2)
 
 Get an existing component of the base component
 

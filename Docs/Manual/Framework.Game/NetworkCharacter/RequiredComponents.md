@@ -1,7 +1,7 @@
 # NetworkCharacter.RequiredComponents property
 
 ```csharp
-public int[] RequiredComponents { get; set; }
+public short[] RequiredComponents { get; set; }
 ```
 
 ## See Also

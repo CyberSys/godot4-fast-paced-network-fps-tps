@@ -11,10 +11,14 @@ public class NetworkClientWorld : NetworkWorld
 | name | description |
 | --- | --- |
 | [NetworkClientWorld](NetworkClientWorld/NetworkClientWorld.md)() | The default constructor. |
+| [LastAckedInputTick](NetworkClientWorld/LastAckedInputTick.md) { get; } |  |
 | [LastServerWorldTick](NetworkClientWorld/LastServerWorldTick.md) { get; } |  |
+| [LocalPlayer](NetworkClientWorld/LocalPlayer.md) { get; set; } | The local character of the client world |
 | [MyServerId](NetworkClientWorld/MyServerId.md) { get; } | The current client player id the server |
 | [clientSimulationAdjuster](NetworkClientWorld/clientSimulationAdjuster.md) | Client adjuster Handles server ticks and make them accuracy |
-| [SendInputCommand](NetworkClientWorld/SendInputCommand.md)(…) | Send an input command to server |
+| [LocalPlayerInputsSnapshots](NetworkClientWorld/LocalPlayerInputsSnapshots.md) | The local player input snapshots |
+| [LocalPlayerStateSnapshots](NetworkClientWorld/LocalPlayerStateSnapshots.md) | The local player states |
+| [LocalPlayerWorldTickSnapshots](NetworkClientWorld/LocalPlayerWorldTickSnapshots.md) | The last world player ticks related to the state snapshots |
 
 ## See Also
 

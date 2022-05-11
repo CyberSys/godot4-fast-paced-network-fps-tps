@@ -3,7 +3,7 @@
 Delete an player from the server world
 
 ```csharp
-public void DeletePlayer(int clientId, bool withDelay = true)
+public void DeletePlayer(short clientId, bool withDelay = true)
 ```
 
 | parameter | description |

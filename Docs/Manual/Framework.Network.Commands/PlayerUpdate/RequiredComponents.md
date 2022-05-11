@@ -3,7 +3,7 @@
 Required local player components
 
 ```csharp
-public int[] RequiredComponents;
+public short[] RequiredComponents;
 ```
 
 ## See Also

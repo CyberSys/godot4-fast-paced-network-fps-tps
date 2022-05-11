@@ -1,7 +1,7 @@
 # ServerNetworkService.ClientDisconnectHandler delegate
 
 ```csharp
-public delegate void ClientDisconnectHandler(int clientId, DisconnectReason reason);
+public delegate void ClientDisconnectHandler(short clientId, DisconnectReason reason);
 ```
 
 ## See Also

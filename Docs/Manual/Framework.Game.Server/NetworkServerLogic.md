@@ -15,6 +15,7 @@ public class NetworkServerLogic : GameLogic
 | [MaxConnections](NetworkServerLogic/MaxConnections.md) { get; set; } | maximal possible connections |
 | [NetworkPort](NetworkServerLogic/NetworkPort.md) { get; set; } | Network server port |
 | [Variables](NetworkServerLogic/Variables.md) { get; } | Contains the server vars |
+| [CanBeVisible](NetworkServerLogic/CanBeVisible.md) | If server can be visible (enable 3d) |
 | [DefaultVars](NetworkServerLogic/DefaultVars.md) | The dictonary with all server settings (vars); |
 | virtual [CreateWorld](NetworkServerLogic/CreateWorld.md)() | Create an server world |
 | virtual [InitRconServer](NetworkServerLogic/InitRconServer.md)(…) | Initialized the rcon server, eg attaching commands |

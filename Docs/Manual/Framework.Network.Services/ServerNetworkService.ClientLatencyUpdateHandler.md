@@ -1,7 +1,7 @@
 # ServerNetworkService.ClientLatencyUpdateHandler delegate
 
 ```csharp
-public delegate void ClientLatencyUpdateHandler(int clientId, int latency);
+public delegate void ClientLatencyUpdateHandler(short clientId, int latency);
 ```
 
 ## See Also

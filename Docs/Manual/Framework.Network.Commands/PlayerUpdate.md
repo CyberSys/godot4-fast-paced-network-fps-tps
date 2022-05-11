@@ -10,15 +10,12 @@ public struct PlayerUpdate : INetSerializable
 
 | name | description |
 | --- | --- |
-| [DisconnectTime](PlayerUpdate/DisconnectTime.md) | Time since player is disconnected |
-| [Id](PlayerUpdate/Id.md) | Current network id |
-| [Latency](PlayerUpdate/Latency.md) | Current latency |
-| [LatestInputTick](PlayerUpdate/LatestInputTick.md) | Tick of latest input |
+| [NetworkId](PlayerUpdate/NetworkId.md) | Current network id |
 | [PlayerName](PlayerUpdate/PlayerName.md) | Current player name |
 | [RequiredComponents](PlayerUpdate/RequiredComponents.md) | Required local player components |
 | [RequiredPuppetComponents](PlayerUpdate/RequiredPuppetComponents.md) | Required puppet components |
 | [ResourcePath](PlayerUpdate/ResourcePath.md) | Resource path to the scene |
-| [ScriptPath](PlayerUpdate/ScriptPath.md) | Script path of the scene |
+| [ScriptPaths](PlayerUpdate/ScriptPaths.md) | Script path of the scene |
 | [State](PlayerUpdate/State.md) | Current network connection state |
 | [Deserialize](PlayerUpdate/Deserialize.md)(…) |  |
 | [Serialize](PlayerUpdate/Serialize.md)(…) |  |

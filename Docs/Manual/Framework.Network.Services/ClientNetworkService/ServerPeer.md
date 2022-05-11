@@ -1,5 +1,7 @@
 # ClientNetworkService.ServerPeer property
 
+The network server peer
+
 ```csharp
 public NetPeer ServerPeer { get; }
 ```

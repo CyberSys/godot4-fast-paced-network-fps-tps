@@ -1,5 +1,7 @@
 # ClientNetworkService.Connected event
 
+Triggered when the client is connected.
+
 ```csharp
 public event ConnectedHandler Connected;
 ```

@@ -19,6 +19,7 @@ public class DefaultMovementProcessor : IMovementProcessor
 | virtual [GetAirControl](DefaultMovementProcessor/GetAirControl.md)() | Get the current air control value |
 | virtual [GetAirDecceleration](DefaultMovementProcessor/GetAirDecceleration.md)() | Get the default air deaccel factor |
 | virtual [GetGravity](DefaultMovementProcessor/GetGravity.md)() | Get the default gravity |
+| virtual [GetGravityMultiplier](DefaultMovementProcessor/GetGravityMultiplier.md)() | Get the default gravity multiplier |
 | virtual [GetGroundAccelerationFactor](DefaultMovementProcessor/GetGroundAccelerationFactor.md)() | Get the default ground accel factor |
 | virtual [GetGroundDeaccelerationFactor](DefaultMovementProcessor/GetGroundDeaccelerationFactor.md)() | Get the default ground deaccel factor |
 | virtual [GetGroundFriction](DefaultMovementProcessor/GetGroundFriction.md)() | Get the friction for crouching |
@@ -26,6 +27,7 @@ public class DefaultMovementProcessor : IMovementProcessor
 | virtual [GetMovementSpeedFactor](DefaultMovementProcessor/GetMovementSpeedFactor.md)() | Get the movement speed factor (current speed / walking speed) |
 | virtual [GetWalkingSpeed](DefaultMovementProcessor/GetWalkingSpeed.md)() | Get the default walking speed |
 | [isOnGround](DefaultMovementProcessor/isOnGround.md)() | Check if player is on ground |
+| virtual [MaxAirSpeed](DefaultMovementProcessor/MaxAirSpeed.md)() | The maximum air speed |
 | [SetClientVars](DefaultMovementProcessor/SetClientVars.md)(…) |  |
 | [SetServerVars](DefaultMovementProcessor/SetServerVars.md)(…) |  |
 | [Simulate](DefaultMovementProcessor/Simulate.md)(…) |  |

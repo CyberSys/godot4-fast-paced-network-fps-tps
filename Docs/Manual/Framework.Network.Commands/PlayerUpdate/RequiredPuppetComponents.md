@@ -3,7 +3,7 @@
 Required puppet components
 
 ```csharp
-public int[] RequiredPuppetComponents;
+public short[] RequiredPuppetComponents;
 ```
 
 ## See Also

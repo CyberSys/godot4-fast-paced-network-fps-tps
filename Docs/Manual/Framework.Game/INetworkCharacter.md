@@ -10,13 +10,10 @@ public interface INetworkCharacter : INetworkObject
 
 | name | description |
 | --- | --- |
-| [AvaiablePlayerComponents](INetworkCharacter/AvaiablePlayerComponents.md) { get; } | Contains possible components |
-| [Id](INetworkCharacter/Id.md) { get; set; } | Id of player |
 | [Latency](INetworkCharacter/Latency.md) { get; set; } | Current latency (ping) |
 | [PlayerName](INetworkCharacter/PlayerName.md) { get; set; } | Name of player |
 | [State](INetworkCharacter/State.md) { get; set; } | Current connection state |
-| [AddAssignedComponent](INetworkCharacter/AddAssignedComponent.md)(…) | Add an assigned network component |
-| [AddAvaiableComponent&lt;T&gt;](INetworkCharacter/AddAvaiableComponent.md)(…) | Add an avaiable component |
+| [ActivateComponent](INetworkCharacter/ActivateComponent.md)(…) | Activate or disable an component by given id |
 | [DoTeleport](INetworkCharacter/DoTeleport.md)(…) | Telport to a given position |
 
 ## See Also

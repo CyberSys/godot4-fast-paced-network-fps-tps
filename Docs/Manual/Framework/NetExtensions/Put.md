@@ -1,4 +1,4 @@
-# NetExtensions.Put method (1 of 3)
+# NetExtensions.Put method (1 of 4)
 
 ```csharp
 public static void Put(this NetDataWriter writer, Dictionary<string, string> dic)
@@ -11,7 +11,7 @@ public static void Put(this NetDataWriter writer, Dictionary<string, string> dic
 
 ---
 
-# NetExtensions.Put method (2 of 3)
+# NetExtensions.Put method (2 of 4)
 
 ```csharp
 public static void Put(this NetDataWriter writer, Quaternion quaternion)
@@ -24,7 +24,20 @@ public static void Put(this NetDataWriter writer, Quaternion quaternion)
 
 ---
 
-# NetExtensions.Put method (3 of 3)
+# NetExtensions.Put method (3 of 4)
+
+```csharp
+public static void Put(this NetDataWriter writer, Vector2 vector)
+```
+
+## See Also
+
+* class [NetExtensions](../NetExtensions.md)
+* namespace [Framework](../../Framework.md)
+
+---
+
+# NetExtensions.Put method (4 of 4)
 
 ```csharp
 public static void Put(this NetDataWriter writer, Vector3 vector)

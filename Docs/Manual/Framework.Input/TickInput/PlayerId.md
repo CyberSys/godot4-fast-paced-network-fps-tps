@@ -3,7 +3,7 @@
 The player id
 
 ```csharp
-public int PlayerId;
+public short PlayerId;
 ```
 
 ## See Also

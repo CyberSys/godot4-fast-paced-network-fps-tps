@@ -12,9 +12,11 @@ public class CharacterCamera : Camera3D, IPlayerComponent
 | --- | --- |
 | [CharacterCamera](CharacterCamera/CharacterCamera.md)() | The default constructor. |
 | [BaseComponent](CharacterCamera/BaseComponent.md) { get; set; } | The base component of the child component |
+| [IsEnabled](CharacterCamera/IsEnabled.md) { get; set; } |  |
 | [Mode](CharacterCamera/Mode.md) { get; set; } | The current camera mode in use |
-| [FPSCameraOffset](CharacterCamera/FPSCameraOffset.md) | The Camera Offset for the FPS Mode |
-| [TPSCameraHeight](CharacterCamera/TPSCameraHeight.md) | The Camera Distance from the character in TPS Mode |
+| [NetworkId](CharacterCamera/NetworkId.md) { get; set; } |  |
+| [FPSCameraOffset](CharacterCamera/FPSCameraOffset.md) |  |
+| [TPSCameraOffset](CharacterCamera/TPSCameraOffset.md) | The Camera Distance from the character in TPS Mode |
 | [TPSCameraRadius](CharacterCamera/TPSCameraRadius.md) | The Camera Radis |
 | virtual [GetViewRotation](CharacterCamera/GetViewRotation.md)() | Get the view rotation of an local player |
 | virtual [Tick](CharacterCamera/Tick.md)(…) | Called on each physics network tick for component |

@@ -10,12 +10,14 @@ public struct PlayerState : INetSerializable
 
 | name | description |
 | --- | --- |
-| [BodyComponent](PlayerState/BodyComponent.md) | The netword state for the body component |
-| [Id](PlayerState/Id.md) | The id of this player |
-| [NetworkComponents](PlayerState/NetworkComponents.md) | Uncomposed list of components and component states |
-| [Decompose&lt;T&gt;](PlayerState/Decompose.md)(…) |  |
+| [Latency](PlayerState/Latency.md) | Current latency |
+| [NetworkId](PlayerState/NetworkId.md) | The id of this player |
+| [NetworkSyncedVars](PlayerState/NetworkSyncedVars.md) | Uncomposed list of components and component states |
 | [Deserialize](PlayerState/Deserialize.md)(…) |  |
+| [GetVar](PlayerState/GetVar.md)(…) |  |
+| [GetVar&lt;T&gt;](PlayerState/GetVar.md)(…) |  |
 | [Serialize](PlayerState/Serialize.md)(…) |  |
+| [SetVar](PlayerState/SetVar.md)(…) |  |
 
 ## See Also
 

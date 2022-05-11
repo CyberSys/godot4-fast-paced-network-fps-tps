@@ -1,7 +1,7 @@
 # ServerNetworkService.ClientConnectedHandler delegate
 
 ```csharp
-public delegate void ClientConnectedHandler(int clientId);
+public delegate void ClientConnectedHandler(short clientId);
 ```
 
 ## See Also

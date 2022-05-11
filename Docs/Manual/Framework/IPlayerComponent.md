@@ -10,6 +10,8 @@ public interface IPlayerComponent : IChildComponent<NetworkCharacter>
 
 | name | description |
 | --- | --- |
+| [IsEnabled](IPlayerComponent/IsEnabled.md) { get; set; } | If the component is enabled or not |
+| [NetworkId](IPlayerComponent/NetworkId.md) { get; set; } | The component id for network transfer |
 | [Tick](IPlayerComponent/Tick.md)(…) | Called on each physics network tick for component |
 
 ## See Also

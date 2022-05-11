@@ -1,7 +1,7 @@
 # NetworkCharacter.RequiredPuppetComponents property
 
 ```csharp
-public int[] RequiredPuppetComponents { get; set; }
+public short[] RequiredPuppetComponents { get; set; }
 ```
 
 ## See Also

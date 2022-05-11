@@ -24,7 +24,6 @@
 
 | public type | description |
 | --- | --- |
-| struct [AssignedComponent](./Framework.Game/AssignedComponent.md) | An assignable component for remote component injection |
 | enum [CameraMode](./Framework.Game/CameraMode.md) | The camera mode for the player camera |
 | class [CharacterCamera](./Framework.Game/CharacterCamera.md) | The player camera for an physics player |
 | class [GameLogic](./Framework.Game/GameLogic.md) | Basic game logic component |
@@ -36,6 +35,7 @@
 | interface [INetworkObject](./Framework.Game/INetworkObject.md) | Required interface for network objects |
 | static class [INetworkObjectExtension](./Framework.Game/INetworkObjectExtension.md) |  |
 | interface [INetworkWorld](./Framework.Game/INetworkWorld.md) | The required interface for an game world |
+| struct [NetworkAttribute](./Framework.Game/NetworkAttribute.md) | Network attribute |
 | class [NetworkCharacter](./Framework.Game/NetworkCharacter.md) | The general player class |
 | class [NetworkInput](./Framework.Game/NetworkInput.md) | The character or kinematic 3d body node for an network player |
 | class [NetworkLevel](./Framework.Game/NetworkLevel.md) | A basic class for an game level |
@@ -50,6 +50,7 @@
 | public type | description |
 | --- | --- |
 | static class [ClientSettings](./Framework.Game.Client/ClientSettings.md) | Static class for client settings |
+| static class [MiscExtensions](./Framework.Game.Client/MiscExtensions.md) |  |
 | class [NetworkClientLogic](./Framework.Game.Client/NetworkClientLogic.md) | Is the base class for any client (SubViewport) |
 | class [NetworkClientWorld](./Framework.Game.Client/NetworkClientWorld.md) | Base class for the client world |
 
@@ -64,8 +65,6 @@
 
 | public type | description |
 | --- | --- |
-| class [BaseInputProcessor](./Framework.Input/BaseInputProcessor.md) | The base input processor abstract class |
-| class [GeneralInputProcessor](./Framework.Input/GeneralInputProcessor.md) | An default input procsessor |
 | struct [GeneralPlayerInput](./Framework.Input/GeneralPlayerInput.md) | Default class for player input |
 | interface [IInputProcessor](./Framework.Input/IInputProcessor.md) | Required interface for local players with input eg. shifting, crouching, moving, etc. |
 | interface [IPlayerInput](./Framework.Input/IPlayerInput.md) | The network package required for sending inputs |
@@ -77,9 +76,11 @@
 | public type | description |
 | --- | --- |
 | class [ClientSimulationAdjuster](./Framework.Network/ClientSimulationAdjuster.md) | Helps predict player simulation based on latency. (Only client-sided) |
-| interface [IChildNetworkSyncComponent&lt;T&gt;](./Framework.Network/IChildNetworkSyncComponent-1.md) | The child component interface for childs of an base component |
 | interface [ISimulationAdjuster](./Framework.Network/ISimulationAdjuster.md) | Adjust the server or client tickrate |
 | abstract class [NetworkService](./Framework.Network/NetworkService.md) | Base network service class |
+| [Flags] enum [NetworkSyncFrom](./Framework.Network/NetworkSyncFrom.md) |  |
+| [Flags] enum [NetworkSyncTo](./Framework.Network/NetworkSyncTo.md) |  |
+| class [NetworkVar](./Framework.Network/NetworkVar.md) |  |
 | enum [PlayerConnectionState](./Framework.Network/PlayerConnectionState.md) | Connection states of the player |
 | class [ServerSimulationAdjuster](./Framework.Network/ServerSimulationAdjuster.md) | The default simulation adapter for a server instance |
 
@@ -87,15 +88,19 @@
 
 | public type | description |
 | --- | --- |
-| struct [ClientWorldInitializer](./Framework.Network.Commands/ClientWorldInitializer.md) | Network command for an client, after map was loaded sucessfull Contains all server relevated settings and vars |
+| class [ClientWorldInitializer](./Framework.Network.Commands/ClientWorldInitializer.md) | Network command for an client, after map was loaded sucessfull Contains all server relevated settings and vars |
 | struct [ClientWorldLoader](./Framework.Network.Commands/ClientWorldLoader.md) | Network package for initialize game level and client side |
+| class [PlayerDeletePackage](./Framework.Network.Commands/PlayerDeletePackage.md) |  |
 | struct [PlayerInputCommand](./Framework.Network.Commands/PlayerInputCommand.md) | Network command to send client input to server |
+| struct [PlayerNetworkVarState](./Framework.Network.Commands/PlayerNetworkVarState.md) |  |
 | struct [PlayerState](./Framework.Network.Commands/PlayerState.md) | The player states structures Contains all player realted informations eg. position, rotation, velocity |
+| enum [PlayerStateVarType](./Framework.Network.Commands/PlayerStateVarType.md) |  |
 | struct [PlayerUpdate](./Framework.Network.Commands/PlayerUpdate.md) | Contains all player relevant fields eg Latency, Team, Required Components |
+| class [PlayerUpdateList](./Framework.Network.Commands/PlayerUpdateList.md) |  |
 | struct [RaycastTest](./Framework.Network.Commands/RaycastTest.md) | Network command to tell the server that the client world is initalized |
 | struct [ServerInitializer](./Framework.Network.Commands/ServerInitializer.md) | Network command to tell the server that the client world is initalized |
-| struct [ServerVarUpdate](./Framework.Network.Commands/ServerVarUpdate.md) | Network command for updaing server vars on client side |
-| struct [WorldHeartbeat](./Framework.Network.Commands/WorldHeartbeat.md) | The world heartbeat structure for network syncronisation |
+| class [ServerVarUpdate](./Framework.Network.Commands/ServerVarUpdate.md) | Network command for updaing server vars on client side |
+| class [WorldHeartbeat](./Framework.Network.Commands/WorldHeartbeat.md) | The world heartbeat structure for network syncronisation |
 
 ## Framework.Network.Services namespace
 
@@ -115,12 +120,6 @@
 | interface [IMovementProcessor](./Framework.Physics/IMovementProcessor.md) | The required interface for movement processors |
 | class [InterpolationController](./Framework.Physics/InterpolationController.md) | Helper class for interpolations by ticks |
 | class [RayCastHit](./Framework.Physics/RayCastHit.md) | The hit result of an ray cast |
-
-## Framework.Physics.Commands namespace
-
-| public type | description |
-| --- | --- |
-| struct [MovementNetworkCommand](./Framework.Physics.Commands/MovementNetworkCommand.md) | The default network command for moving bodies |
 
 ## Framework.Utils namespace
 

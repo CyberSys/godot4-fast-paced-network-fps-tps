@@ -11,49 +11,49 @@ public class NetworkCharacter : CharacterBody3D, INetworkCharacter
 | name | description |
 | --- | --- |
 | [NetworkCharacter](NetworkCharacter/NetworkCharacter.md)() | Base player class |
-| [AvaiablePlayerComponents](NetworkCharacter/AvaiablePlayerComponents.md) { get; } |  |
 | [Components](NetworkCharacter/Components.md) { get; } |  |
 | [CurrentPlayerInput](NetworkCharacter/CurrentPlayerInput.md) { get; set; } | The active tick based input |
 | [DisconnectTime](NetworkCharacter/DisconnectTime.md) { get; set; } | Time since last disconnect |
 | [GameWorld](NetworkCharacter/GameWorld.md) { get; set; } |  |
-| [Id](NetworkCharacter/Id.md) { get; set; } |  |
 | [IsSynchronized](NetworkCharacter/IsSynchronized.md) { get; set; } | Return if the player is syncronized with server. |
 | [Latency](NetworkCharacter/Latency.md) { get; set; } |  |
 | [LatestInputTick](NetworkCharacter/LatestInputTick.md) { get; set; } | Get the last tick of the last input |
 | [Mode](NetworkCharacter/Mode.md) { get; set; } | The network mode of the plaer |
 | [MovementProcessor](NetworkCharacter/MovementProcessor.md) { get; set; } | Movement processor |
+| [NetworkId](NetworkCharacter/NetworkId.md) { get; set; } |  |
+| [NetworkSyncVars](NetworkCharacter/NetworkSyncVars.md) { get; } | Player sync attributes |
 | [PlayerName](NetworkCharacter/PlayerName.md) { get; set; } |  |
 | [PreviousState](NetworkCharacter/PreviousState.md) { get; set; } | Previous state since last tick |
 | [RequiredComponents](NetworkCharacter/RequiredComponents.md) { get; set; } |  |
 | [RequiredPuppetComponents](NetworkCharacter/RequiredPuppetComponents.md) { get; set; } |  |
 | [ResourcePath](NetworkCharacter/ResourcePath.md) { get; set; } | The resource path of the player component |
-| [ScriptPath](NetworkCharacter/ScriptPath.md) { get; set; } | The mono script path of the player component |
+| [ScriptPaths](NetworkCharacter/ScriptPaths.md) { get; set; } | The mono script path of the player component |
 | [State](NetworkCharacter/State.md) { get; set; } |  |
 | [ColliderPath](NetworkCharacter/ColliderPath.md) | Node path to collider |
 | [CrouchHeight](NetworkCharacter/CrouchHeight.md) | The height on crouching |
 | [IncomingLocalPlayerState](NetworkCharacter/IncomingLocalPlayerState.md) | The last incoming local player state |
-| [localPlayerInputsSnapshots](NetworkCharacter/localPlayerInputsSnapshots.md) | The local player input snapshots |
-| [localPlayerStateSnapshots](NetworkCharacter/localPlayerStateSnapshots.md) | The local player states |
-| [localPlayerWorldTickSnapshots](NetworkCharacter/localPlayerWorldTickSnapshots.md) | The last world player ticks related to the state snapshots |
+| [NetworkCrouchingLevel](NetworkCharacter/NetworkCrouchingLevel.md) |  |
+| [NetworkPosition](NetworkCharacter/NetworkPosition.md) |  |
+| [NetworkRotation](NetworkCharacter/NetworkRotation.md) |  |
+| [NetworkVelocity](NetworkCharacter/NetworkVelocity.md) |  |
 | [States](NetworkCharacter/States.md) | Archived player states |
-| [AddAssignedComponent](NetworkCharacter/AddAssignedComponent.md)(…) | Add an assigned network component |
-| [AddAvaiableComponent&lt;T&gt;](NetworkCharacter/AddAvaiableComponent.md)(…) |  |
+| [ActivateComponent](NetworkCharacter/ActivateComponent.md)(…) | Activate an component by given id |
 | [ApplyBodyState](NetworkCharacter/ApplyBodyState.md)(…) | Apply the network state for the body component |
 | virtual [ApplyNetworkState](NetworkCharacter/ApplyNetworkState.md)(…) | Apply an network state |
+| [ApplyVars](NetworkCharacter/ApplyVars.md)(…) |  |
 | virtual [DetechtHit](NetworkCharacter/DetechtHit.md)(…) | Detect an hit by given camera view |
 | [DoAttack](NetworkCharacter/DoAttack.md)(…) | Trigger an attack on server side |
 | [DoTeleport](NetworkCharacter/DoTeleport.md)(…) | Teleport player to an given position |
-| [GetNetworkState](NetworkCharacter/GetNetworkState.md)() | Get the current physics state for the body component |
 | [GetShape](NetworkCharacter/GetShape.md)() | Get the shape of the player body |
 | [GetShapeHeight](NetworkCharacter/GetShapeHeight.md)() | Get the current shape height |
+| virtual [Interpolate](NetworkCharacter/Interpolate.md)(…) |  |
 | virtual [IsOnGround](NetworkCharacter/IsOnGround.md)() | Is player on ground |
 | virtual [Move](NetworkCharacter/Move.md)(…) | Moving the character |
 | [MoveToPosition](NetworkCharacter/MoveToPosition.md)(…) | Teleport player to an given position |
 | virtual [OnHit](NetworkCharacter/OnHit.md)(…) | Trigger when an player got an hit |
-| [Rewind](NetworkCharacter/Rewind.md)(…) | Rewind to an given world tick |
 | virtual [SetCrouchingLevel](NetworkCharacter/SetCrouchingLevel.md)(…) | Set the shape height by a given process value |
 | virtual [Tick](NetworkCharacter/Tick.md)(…) |  |
-| virtual [ToNetworkState](NetworkCharacter/ToNetworkState.md)() | Get the current network state |
+| virtual [ToNetworkState](NetworkCharacter/ToNetworkState.md)() | /// Get the current network state |
 | override [_EnterTree](NetworkCharacter/_EnterTree.md)() |  |
 | override [_PhysicsProcess](NetworkCharacter/_PhysicsProcess.md)(…) |  |
 | override [_Process](NetworkCharacter/_Process.md)(…) |  |

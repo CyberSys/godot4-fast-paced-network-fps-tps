@@ -1,18 +1,20 @@
-# ClientWorldInitializer structure
+# ClientWorldInitializer class
 
 Network command for an client, after map was loaded sucessfull Contains all server relevated settings and vars
 
 ```csharp
-public struct ClientWorldInitializer : INetSerializable
+public class ClientWorldInitializer
 ```
 
 ## Public Members
 
 | name | description |
 | --- | --- |
-| [GameTick](ClientWorldInitializer/GameTick.md) | Current server world tick |
-| [PlayerId](ClientWorldInitializer/PlayerId.md) | Own player id on server |
-| [ServerVars](ClientWorldInitializer/ServerVars.md) | Server variables |
+| [ClientWorldInitializer](ClientWorldInitializer/ClientWorldInitializer.md)() | The default constructor. |
+| [GameTick](ClientWorldInitializer/GameTick.md) { get; set; } | Current server world tick |
+| [initState](ClientWorldInitializer/initState.md) { get; set; } |  |
+| [PlayerId](ClientWorldInitializer/PlayerId.md) { get; set; } | Own player id on server |
+| [ServerVars](ClientWorldInitializer/ServerVars.md) { get; set; } | Server variables |
 | [Deserialize](ClientWorldInitializer/Deserialize.md)(…) |  |
 | [Serialize](ClientWorldInitializer/Serialize.md)(…) |  |
 

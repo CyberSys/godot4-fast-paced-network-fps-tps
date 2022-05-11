@@ -16,18 +16,18 @@ public class ClientNetworkService : NetworkService
 | [PackageLoss](ClientNetworkService/PackageLoss.md) { get; } | Lossing packages since last 1 second |
 | [PackageLossPercent](ClientNetworkService/PackageLossPercent.md) { get; } | Package loose in percent (avg) since last 1 second |
 | [Ping](ClientNetworkService/Ping.md) { get; } | Get the current latency between server and client |
-| [ServerPeer](ClientNetworkService/ServerPeer.md) { get; } |  |
-| [MaxRetriesPerConnection](ClientNetworkService/MaxRetriesPerConnection.md) |  |
-| event [Connected](ClientNetworkService/Connected.md) |  |
-| event [OnDisconnect](ClientNetworkService/OnDisconnect.md) |  |
+| [ServerPeer](ClientNetworkService/ServerPeer.md) { get; } | The network server peer |
+| [ConnectionRetryDelay](ClientNetworkService/ConnectionRetryDelay.md) | Delay between reconnect |
+| [MaxRetriesPerConnection](ClientNetworkService/MaxRetriesPerConnection.md) | Maximum of retries |
+| event [Connected](ClientNetworkService/Connected.md) | Triggered when the client is connected. |
+| event [OnDisconnect](ClientNetworkService/OnDisconnect.md) | Triggered when the client is disconnected |
 | [Connect](ClientNetworkService/Connect.md)(…) | Connect to an server |
 | [Disconnect](ClientNetworkService/Disconnect.md)() | Disconnect from server |
 | override [Register](ClientNetworkService/Register.md)() |  |
 | override [Unregister](ClientNetworkService/Unregister.md)() |  |
 | override [Update](ClientNetworkService/Update.md)(…) |  |
-| const [ConnectionRetryDelay](ClientNetworkService/ConnectionRetryDelay.md) |  |
-| delegate [ConnectedHandler](ClientNetworkService.ConnectedHandler.md) |  |
-| delegate [DisconnectHandler](ClientNetworkService.DisconnectHandler.md) |  |
+| delegate [ConnectedHandler](ClientNetworkService.ConnectedHandler.md) | Connection handler for connect event |
+| delegate [DisconnectHandler](ClientNetworkService.DisconnectHandler.md) | Disconnect handler for disconnect event |
 
 ## See Also
 

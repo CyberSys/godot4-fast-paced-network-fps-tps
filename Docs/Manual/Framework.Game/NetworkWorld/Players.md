@@ -1,7 +1,7 @@
 # NetworkWorld.Players property
 
 ```csharp
-public Dictionary<int, NetworkCharacter> Players { get; }
+public Dictionary<short, NetworkCharacter> Players { get; }
 ```
 
 ## See Also

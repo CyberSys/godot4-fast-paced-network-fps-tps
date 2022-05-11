@@ -3,14 +3,14 @@
 Add new input to input queue
 
 ```csharp
-public void EnqueueInput(PlayerInputCommand command, int playerId, uint serverWorldTick)
+public void EnqueueInput(PlayerInputCommand command, short playerId, uint lastAckedInputTick)
 ```
 
 | parameter | description |
 | --- | --- |
 | command |  |
 | playerId |  |
-| serverWorldTick |  |
+| lastAckedInputTick |  |
 
 ## See Also
 

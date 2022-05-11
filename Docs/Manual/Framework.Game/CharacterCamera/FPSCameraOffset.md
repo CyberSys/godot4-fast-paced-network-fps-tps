@@ -1,7 +1,5 @@
 # CharacterCamera.FPSCameraOffset field
 
-The Camera Offset for the FPS Mode
-
 ```csharp
 public Vector3 FPSCameraOffset;
 ```

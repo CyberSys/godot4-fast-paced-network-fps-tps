@@ -3,7 +3,7 @@
 The current view direction / camera direction
 
 ```csharp
-public Quaternion ViewDirection { get; set; }
+public Vector3 ViewDirection { get; set; }
 ```
 
 ## See Also

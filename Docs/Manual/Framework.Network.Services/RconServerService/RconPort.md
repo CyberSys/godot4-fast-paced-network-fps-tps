@@ -1,7 +1,9 @@
 # RconServerService.RconPort field
 
+The rcon server port
+
 ```csharp
-public const int RconPort;
+public int RconPort;
 ```
 
 ## See Also

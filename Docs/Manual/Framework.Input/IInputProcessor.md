@@ -3,7 +3,7 @@
 Required interface for local players with input eg. shifting, crouching, moving, etc.
 
 ```csharp
-public interface IInputProcessor
+public interface IInputProcessor : IPlayerComponent
 ```
 
 ## Members
@@ -11,13 +11,13 @@ public interface IInputProcessor
 | name | description |
 | --- | --- |
 | [AvaiableInputs](IInputProcessor/AvaiableInputs.md) { get; } | List of avaiable input keys |
-| [InputEnabled](IInputProcessor/InputEnabled.md) { get; set; } | Check if input is enabled |
-| [ViewRotation](IInputProcessor/ViewRotation.md) { get; set; } | The current view rotation |
-| [GetKeys](IInputProcessor/GetKeys.md)() | List of all pressed or unpressed keys |
-| [GetPlayerInput](IInputProcessor/GetPlayerInput.md)() | The current player input for the actualy local tick |
+| [LastInput](IInputProcessor/LastInput.md) { get; } | Last input storage |
+| [GetInput](IInputProcessor/GetInput.md)() |  |
+| [SetPlayerInputs](IInputProcessor/SetPlayerInputs.md)(…) |  |
 
 ## See Also
 
+* interface [IPlayerComponent](../Framework/IPlayerComponent.md)
 * namespace [Framework.Input](../Framework.md)
 * [IInputProcessor.cs](https://github.com/TeamStriked/godot4-fast-paced-network-fps-tps/blob/master/Example/Framework/Input/IInputProcessor.cs)
 

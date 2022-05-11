@@ -13,6 +13,7 @@ public class PlayerInputProcessor
 | [PlayerInputProcessor](PlayerInputProcessor/PlayerInputProcessor.md)() | The default constructor. |
 | [DequeueInputsForTick](PlayerInputProcessor/DequeueInputsForTick.md)(…) | Get an collection of the last inputs since an given tick and dequeue them |
 | [EnqueueInput](PlayerInputProcessor/EnqueueInput.md)(…) | Add new input to input queue |
+| [GetLatestPlayerInputTick](PlayerInputProcessor/GetLatestPlayerInputTick.md)(…) | Get the last player input tick |
 | [LogQueueStatsForPlayer](PlayerInputProcessor/LogQueueStatsForPlayer.md)(…) | Log stats for queue input |
 | [TryGetLatestInput](PlayerInputProcessor/TryGetLatestInput.md)(…) | Try to get the last input |
 

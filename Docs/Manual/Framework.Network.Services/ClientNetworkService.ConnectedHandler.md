@@ -1,5 +1,7 @@
 # ClientNetworkService.ConnectedHandler delegate
 
+Connection handler for connect event
+
 ```csharp
 public delegate void ConnectedHandler();
 ```

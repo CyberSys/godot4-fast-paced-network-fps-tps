@@ -21,6 +21,7 @@ public class ComponentRegistry<T>
 | [Clear](ComponentRegistry-1/Clear.md)() | Delete all exist components and remove them from base component |
 | [DeleteComponent](ComponentRegistry-1/DeleteComponent.md)(…) | Delete a given componentn from base component by given type |
 | [DeleteComponent&lt;T2&gt;](ComponentRegistry-1/DeleteComponent.md)() | Delete a given componentn from base component |
+| [Get](ComponentRegistry-1/Get.md)(…) | Get an existing component of the base component |
 | [Get&lt;T2&gt;](ComponentRegistry-1/Get.md)() | Get an existing component of the base component |
 | [HasComponent](ComponentRegistry-1/HasComponent.md)(…) | Check if component exist |
 | delegate [OnComponentAddedHandler&lt;T&gt;](ComponentRegistry-1.OnComponentAddedHandler-1.md) | The event handler for adding components |

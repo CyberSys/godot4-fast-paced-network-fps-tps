@@ -8,6 +8,7 @@ public static class INetworkObjectExtension
 
 | name | description |
 | --- | --- |
+| static [GetNetworkAttributes](INetworkObjectExtension/GetNetworkAttributes.md)(…) | Get the player network attributes |
 | static [IsLocal](INetworkObjectExtension/IsLocal.md)(…) |  |
 | static [IsPuppet](INetworkObjectExtension/IsPuppet.md)(…) |  |
 | static [IsServer](INetworkObjectExtension/IsServer.md)(…) |  |

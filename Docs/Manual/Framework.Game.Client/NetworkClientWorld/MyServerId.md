@@ -3,7 +3,7 @@
 The current client player id the server
 
 ```csharp
-public int MyServerId { get; }
+public short MyServerId { get; }
 ```
 
 ## See Also

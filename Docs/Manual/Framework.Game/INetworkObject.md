@@ -11,8 +11,12 @@ public interface INetworkObject : IBaseComponent
 | name | description |
 | --- | --- |
 | [Mode](INetworkObject/Mode.md) { get; set; } | The network mode for the game object |
+| [NetworkId](INetworkObject/NetworkId.md) { get; set; } | Id of game object |
+| [NetworkSyncVars](INetworkObject/NetworkSyncVars.md) { get; } |  |
 | [ResourcePath](INetworkObject/ResourcePath.md) { get; set; } | The resource path of the component |
-| [ScriptPath](INetworkObject/ScriptPath.md) { get; set; } | The script path (mono) of the component |
+| [ScriptPaths](INetworkObject/ScriptPaths.md) { get; set; } | The script path (mono) of the component |
+| [Get](INetworkObject/Get.md)(…) |  |
+| [Set](INetworkObject/Set.md)(…) |  |
 
 ## See Also
 

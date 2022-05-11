@@ -3,7 +3,7 @@
 The character or kinematic 3d body node for an network player
 
 ```csharp
-public class NetworkInput : Node, IPlayerComponent
+public class NetworkInput : Node3D, IInputProcessor
 ```
 
 ## Public Members
@@ -11,14 +11,19 @@ public class NetworkInput : Node, IPlayerComponent
 | name | description |
 | --- | --- |
 | [NetworkInput](NetworkInput/NetworkInput.md)() | The default constructor. |
+| [AvaiableInputs](NetworkInput/AvaiableInputs.md) { get; } |  |
 | [BaseComponent](NetworkInput/BaseComponent.md) { get; set; } |  |
-| [InputProcessor](NetworkInput/InputProcessor.md) { get; set; } | Contains the input proecessor |
+| [IsEnabled](NetworkInput/IsEnabled.md) { get; set; } |  |
 | [LastInput](NetworkInput/LastInput.md) { get; } | The last player input |
+| [NetworkId](NetworkInput/NetworkId.md) { get; set; } |  |
+| virtual [GetInput](NetworkInput/GetInput.md)() | Get the current player input |
+| virtual [GetKeys](NetworkInput/GetKeys.md)() |  |
+| [SetPlayerInputs](NetworkInput/SetPlayerInputs.md)(…) |  |
 | [Tick](NetworkInput/Tick.md)(…) |  |
 
 ## See Also
 
-* interface [IPlayerComponent](../Framework/IPlayerComponent.md)
+* interface [IInputProcessor](../Framework.Input/IInputProcessor.md)
 * namespace [Framework.Game](../Framework.md)
 * [NetworkInput.cs](https://github.com/TeamStriked/godot4-fast-paced-network-fps-tps/blob/master/Example/Framework/Game/NetworkInput.cs)
 

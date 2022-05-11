@@ -3,7 +3,7 @@
 Try to get the last input
 
 ```csharp
-public bool TryGetLatestInput(int playerId, out TickInput ret)
+public bool TryGetLatestInput(short playerId, out TickInput ret)
 ```
 
 | parameter | description |

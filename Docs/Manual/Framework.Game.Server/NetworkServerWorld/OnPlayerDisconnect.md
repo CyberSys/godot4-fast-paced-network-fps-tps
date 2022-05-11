@@ -3,7 +3,7 @@
 Event called after client is disconnected from server
 
 ```csharp
-public virtual void OnPlayerDisconnect(int clientId, DisconnectReason reason)
+public virtual void OnPlayerDisconnect(short clientId, DisconnectReason reason)
 ```
 
 | parameter | description |

@@ -3,7 +3,7 @@
 All players of the world
 
 ```csharp
-public Dictionary<int, NetworkCharacter> Players { get; }
+public Dictionary<short, NetworkCharacter> Players { get; }
 ```
 
 ## See Also
