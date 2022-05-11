@@ -51,9 +51,6 @@ namespace Framework.Network
         /// <inheritdoc />
         private int estimatedMissedInputs;
 
-        /// <inheritdoc />
-        private Stopwatch droppedInputTimer = new Stopwatch();
-
         /// <summary>
         /// Extrapolate based on latency what our client tick should be.
         /// </summary>
@@ -86,31 +83,28 @@ namespace Framework.Network
             if (actualTickLead < 0)
             {
                 //Logger.LogDebug(this, "Dropped an input, got an actual tick lead of " + actualTickLead);
-                droppedInputTimer.Restart();
+                actualTickLeadAvg.ForceSet(actualTickLead);
                 estimatedMissedInputs++;
             }
 
             var avg = actualTickLeadAvg.Average();
-            if (droppedInputTimer.IsRunning && droppedInputTimer.ElapsedMilliseconds < 1000 || isDebug)
+            if (avg <= -16)
             {
-                if (avg <= -16)
-                {
-                    AdjustedInterval = 0.875f;
-                }
-                else if (avg <= -8)
-                {
-                    AdjustedInterval = 0.9375f;
-                }
-                else
-                {
-                    AdjustedInterval = 0.96875f;
-                }
-
-                return;
+                AdjustedInterval = 0.875f;
             }
-
-            // Check for a steady average of a healthy connection before backing off the simulation.
-            if (avg >= 16)
+            else if (avg <= -8)
+            {
+                AdjustedInterval = 0.9375f;
+            }
+            else if (avg < 0)
+            {
+                AdjustedInterval = 0.75f;
+            }
+            else if (avg < 0)
+            {
+                AdjustedInterval = 0.96875f;
+            }
+            else if (avg >= 16)
             {
                 AdjustedInterval = 1.125f;
             }

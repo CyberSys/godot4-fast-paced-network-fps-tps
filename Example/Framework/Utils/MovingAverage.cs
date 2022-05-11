@@ -39,6 +39,14 @@ namespace Framework.Utils
             buffer.PushFront(value);
         }
 
+        public void ForceSet(float value)
+        {
+            for (int i = 0; i < buffer.Size; i++)
+            {
+                Push(value);
+            }
+        }
+
         public float Average()
         {
             return buffer.Sum() / buffer.Count();
