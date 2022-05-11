@@ -3,7 +3,7 @@
 Add new input to input queue
 
 ```csharp
-public void EnqueueInput(PlayerInputCommand command, short playerId, uint lastAckedInputTick)
+public void EnqueueInput(PlayerInput command, short playerId, uint lastAckedInputTick)
 ```
 
 | parameter | description |
@@ -14,7 +14,7 @@ public void EnqueueInput(PlayerInputCommand command, short playerId, uint lastAc
 
 ## See Also
 
-* struct [PlayerInputCommand](../../Framework.Network.Commands/PlayerInputCommand.md)
+* struct [PlayerInput](../PlayerInput.md)
 * class [PlayerInputProcessor](../PlayerInputProcessor.md)
 * namespace [Framework.Input](../../Framework.md)
 

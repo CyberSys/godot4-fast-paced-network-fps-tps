@@ -68,6 +68,7 @@
 | struct [GeneralPlayerInput](./Framework.Input/GeneralPlayerInput.md) | Default class for player input |
 | interface [IInputProcessor](./Framework.Input/IInputProcessor.md) | Required interface for local players with input eg. shifting, crouching, moving, etc. |
 | interface [IPlayerInput](./Framework.Input/IPlayerInput.md) | The network package required for sending inputs |
+| struct [PlayerInput](./Framework.Input/PlayerInput.md) | Network command to send client input to server |
 | class [PlayerInputProcessor](./Framework.Input/PlayerInputProcessor.md) | Processing inputs from an given queue |
 | struct [TickInput](./Framework.Input/TickInput.md) | The input for an given world tick of on specfic player (server-sided) |
 
@@ -75,6 +76,8 @@
 
 | public type | description |
 | --- | --- |
+| struct [ClientConnectionSettings](./Framework.Network/ClientConnectionSettings.md) | Settings for the client connection |
+| class [ClientNetworkService](./Framework.Network/ClientNetworkService.md) | The client network service |
 | class [ClientSimulationAdjuster](./Framework.Network/ClientSimulationAdjuster.md) | Helps predict player simulation based on latency. (Only client-sided) |
 | interface [ISimulationAdjuster](./Framework.Network/ISimulationAdjuster.md) | Adjust the server or client tickrate |
 | abstract class [NetworkService](./Framework.Network/NetworkService.md) | Base network service class |
@@ -82,6 +85,8 @@
 | [Flags] enum [NetworkSyncTo](./Framework.Network/NetworkSyncTo.md) |  |
 | class [NetworkVar](./Framework.Network/NetworkVar.md) |  |
 | enum [PlayerConnectionState](./Framework.Network/PlayerConnectionState.md) | Connection states of the player |
+| class [RconServerService](./Framework.Network/RconServerService.md) | The rcon network service |
+| class [ServerNetworkService](./Framework.Network/ServerNetworkService.md) | The server network service |
 | class [ServerSimulationAdjuster](./Framework.Network/ServerSimulationAdjuster.md) | The default simulation adapter for a server instance |
 
 ## Framework.Network.Commands namespace
@@ -90,26 +95,15 @@
 | --- | --- |
 | class [ClientWorldInitializer](./Framework.Network.Commands/ClientWorldInitializer.md) | Network command for an client, after map was loaded sucessfull Contains all server relevated settings and vars |
 | struct [ClientWorldLoader](./Framework.Network.Commands/ClientWorldLoader.md) | Network package for initialize game level and client side |
-| class [PlayerDeletePackage](./Framework.Network.Commands/PlayerDeletePackage.md) |  |
-| struct [PlayerInputCommand](./Framework.Network.Commands/PlayerInputCommand.md) | Network command to send client input to server |
+| class [PlayerCollection](./Framework.Network.Commands/PlayerCollection.md) | Network package for notification of new players or players changes over all players. |
+| struct [PlayerInfo](./Framework.Network.Commands/PlayerInfo.md) | Network package for notification of new players or players changes. |
+| class [PlayerLeave](./Framework.Network.Commands/PlayerLeave.md) | Network package for notification when player leaves the game. |
 | struct [PlayerNetworkVarState](./Framework.Network.Commands/PlayerNetworkVarState.md) |  |
 | struct [PlayerState](./Framework.Network.Commands/PlayerState.md) | The player states structures Contains all player realted informations eg. position, rotation, velocity |
 | enum [PlayerStateVarType](./Framework.Network.Commands/PlayerStateVarType.md) |  |
-| struct [PlayerUpdate](./Framework.Network.Commands/PlayerUpdate.md) | Contains all player relevant fields eg Latency, Team, Required Components |
-| class [PlayerUpdateList](./Framework.Network.Commands/PlayerUpdateList.md) |  |
-| struct [RaycastTest](./Framework.Network.Commands/RaycastTest.md) | Network command to tell the server that the client world is initalized |
 | struct [ServerInitializer](./Framework.Network.Commands/ServerInitializer.md) | Network command to tell the server that the client world is initalized |
 | class [ServerVarUpdate](./Framework.Network.Commands/ServerVarUpdate.md) | Network command for updaing server vars on client side |
 | class [WorldHeartbeat](./Framework.Network.Commands/WorldHeartbeat.md) | The world heartbeat structure for network syncronisation |
-
-## Framework.Network.Services namespace
-
-| public type | description |
-| --- | --- |
-| struct [ClientConnectionSettings](./Framework.Network.Services/ClientConnectionSettings.md) | Settings for the client connection |
-| class [ClientNetworkService](./Framework.Network.Services/ClientNetworkService.md) | The client network service |
-| class [RconServerService](./Framework.Network.Services/RconServerService.md) | The rcon network service |
-| class [ServerNetworkService](./Framework.Network.Services/ServerNetworkService.md) | The server network service |
 
 ## Framework.Physics namespace
 
@@ -120,6 +114,7 @@
 | interface [IMovementProcessor](./Framework.Physics/IMovementProcessor.md) | The required interface for movement processors |
 | class [InterpolationController](./Framework.Physics/InterpolationController.md) | Helper class for interpolations by ticks |
 | class [RayCastHit](./Framework.Physics/RayCastHit.md) | The hit result of an ray cast |
+| struct [RaycastTest](./Framework.Physics/RaycastTest.md) | Network command for debugging raycasts between server nd client |
 
 ## Framework.Utils namespace
 

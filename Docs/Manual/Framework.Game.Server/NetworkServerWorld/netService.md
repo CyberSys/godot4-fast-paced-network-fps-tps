@@ -8,7 +8,7 @@ public ServerNetworkService netService { get; set; }
 
 ## See Also
 
-* class [ServerNetworkService](../../Framework.Network.Services/ServerNetworkService.md)
+* class [ServerNetworkService](../../Framework.Network/ServerNetworkService.md)
 * class [NetworkServerWorld](../NetworkServerWorld.md)
 * namespace [Framework.Game.Server](../../Framework.md)
 

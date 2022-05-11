@@ -1,4 +1,3 @@
-using System.ComponentModel;
 /*
  * Created on Mon Mar 28 2022
  *
@@ -21,20 +20,15 @@ using System.ComponentModel;
  */
 
 using Godot;
-using Framework;
 using System;
 using System.Collections.Generic;
 using LiteNetLib;
-using System.Diagnostics;
 using System.Linq;
-using Framework.Game;
+using Framework.Physics;
 using Framework.Network.Commands;
 using Framework.Input;
 using Framework.Utils;
 using Framework.Network;
-using Framework.Network.Services;
-using Framework.Physics;
-using Framework.Game.Server;
 
 namespace Framework.Game.Client
 {
@@ -103,9 +97,9 @@ namespace Framework.Game.Client
 
             this.netService = this.GameInstance.Services.Get<ClientNetworkService>();
             this.netService.Subscribe<WorldHeartbeat>(HandleWorldState);
-            this.netService.Subscribe<PlayerUpdateList>(OnPlayerUpdate);
+            this.netService.Subscribe<PlayerCollection>(OnPlayerUpdate);
 
-            this.netService.Subscribe<PlayerDeletePackage>(OnPlayerDelete);
+            this.netService.Subscribe<PlayerLeave>(OnPlayerDelete);
             this.netService.Subscribe<ClientWorldInitializer>(InitWorld);
             this.netService.Subscribe<ServerVarUpdate>(UpdateWorld);
             this.netService.SubscribeSerialisable<RaycastTest>(RayCastTest);
@@ -222,7 +216,7 @@ namespace Framework.Game.Client
 
         private List<short> playerCreationInProcess = new List<short>();
 
-        private void OnPlayerDelete(PlayerDeletePackage playerDelete, NetPeer peer)
+        private void OnPlayerDelete(PlayerLeave playerDelete, NetPeer peer)
         {
             if (this._players.ContainsKey(playerDelete.NetworkId))
             {
@@ -239,7 +233,7 @@ namespace Framework.Game.Client
             }
         }
 
-        private void OnPlayerUpdate(PlayerUpdateList playerUpdateList, NetPeer peer)
+        private void OnPlayerUpdate(PlayerCollection playerUpdateList, NetPeer peer)
         {
             if (playerUpdateList.Updates == null)
                 return;
@@ -306,7 +300,7 @@ namespace Framework.Game.Client
             }
         }
 
-        private void updatePlayerValues(PlayerUpdate playerUpdate, NetworkCharacter player)
+        private void updatePlayerValues(PlayerInfo playerUpdate, NetworkCharacter player)
         {
             player.NetworkId = playerUpdate.NetworkId;
             player.PlayerName = playerUpdate.PlayerName;
@@ -500,7 +494,7 @@ namespace Framework.Game.Client
                 clientWorldTickDeltas.Add((short)(tick - this.LocalPlayerWorldTickSnapshots[tick % NetworkWorld.MaxTicks]));
             }
 
-            var command = new PlayerInputCommand
+            var command = new PlayerInput
             {
                 StartWorldTick = this.LastServerWorldTick,
                 Inputs = unackedInputs.ToArray(),

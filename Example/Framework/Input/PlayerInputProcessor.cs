@@ -120,7 +120,7 @@ namespace Framework.Input
         /// <param name="command"></param>
         /// <param name="playerId"></param>
         /// <param name="lastAckedInputTick"></param>
-        public void EnqueueInput(PlayerInputCommand command, short playerId, uint lastAckedInputTick)
+        public void EnqueueInput(PlayerInput command, short playerId, uint lastAckedInputTick)
         {
             // Monitoring.
             // Logger.LogDebug(this, "sv stale inputs => " + staleInputs);

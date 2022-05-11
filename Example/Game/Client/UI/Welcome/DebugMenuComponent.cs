@@ -2,7 +2,7 @@ using System;
 using Godot;
 using Framework;
 using Framework.Game;
-using Framework.Network.Services;
+using Framework.Network;
 namespace Shooter.Client.UI.Welcome
 {
     public partial class DebugMenuComponent : CanvasLayer, IChildComponent<GameLogic>

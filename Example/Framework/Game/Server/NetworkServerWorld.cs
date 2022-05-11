@@ -26,9 +26,9 @@ using LiteNetLib;
 using Framework.Utils;
 using Framework.Network.Commands;
 using Framework.Network;
-using Framework.Network.Services;
 using Framework.Input;
 using Godot;
+using Framework.Physics;
 
 namespace Framework.Game.Server
 {
@@ -71,7 +71,7 @@ namespace Framework.Game.Server
             this.netService.ClientDisconnect += this.OnPlayerDisconnect;
 
             this.netService.SubscribeSerialisable<ServerInitializer>(this.InitializeClient);
-            this.netService.SubscribeSerialisable<PlayerInputCommand>(this.OnPlayerInput);
+            this.netService.SubscribeSerialisable<PlayerInput>(this.OnPlayerInput);
 
             this.netService.ClientLatencyUpdate += (clientId, latency) =>
             {
@@ -204,7 +204,7 @@ namespace Framework.Game.Server
         /// </summary>
         /// <param name="package"></param>
         /// <param name="peer"></param>
-        private void OnPlayerInput(PlayerInputCommand package, NetPeer peer)
+        private void OnPlayerInput(PlayerInput package, NetPeer peer)
         {
             var clientId = (short)peer.Id;
             if (this._players.ContainsKey(clientId))
@@ -253,7 +253,7 @@ namespace Framework.Game.Server
         private void SendPlayerUpdate(NetworkCharacter character)
         {
             var heartbeatUpdateList = this._players.Where(df => df.Value.IsServer()).
-                               Select(df => new PlayerUpdate
+                               Select(df => new PlayerInfo
                                {
                                    NetworkId = df.Key,
                                    State = df.Value.State,
@@ -263,7 +263,7 @@ namespace Framework.Game.Server
                                    RequiredPuppetComponents = df.Value.RequiredPuppetComponents.ToArray(),
                                }).ToArray();
 
-            var update = new PlayerUpdateList
+            var update = new PlayerCollection
             {
                 Updates = heartbeatUpdateList.ToArray(),
                 WorldTick = this.WorldTick
@@ -271,21 +271,21 @@ namespace Framework.Game.Server
 
             foreach (var player in this._players.Where(df => df.Value.IsServer()).Select(df => df.Value).Where(df => df.State == PlayerConnectionState.Initialized).ToArray())
             {
-                this.netService.SendMessage<PlayerUpdateList>((int)player.NetworkId, update, LiteNetLib.DeliveryMethod.ReliableOrdered);
+                this.netService.SendMessage<PlayerCollection>((int)player.NetworkId, update, LiteNetLib.DeliveryMethod.ReliableOrdered);
             }
         }
 
 
         private void SendPlayerDelete(short playerId)
         {
-            var delete = new PlayerDeletePackage
+            var delete = new PlayerLeave
             {
                 NetworkId = playerId
             };
 
             foreach (var player in this._players.Where(df => df.Value.IsServer()).Select(df => df.Value).Where(df => df.State == PlayerConnectionState.Initialized).ToArray())
             {
-                this.netService.SendMessage<PlayerDeletePackage>((int)player.NetworkId, delete, LiteNetLib.DeliveryMethod.ReliableOrdered);
+                this.netService.SendMessage<PlayerLeave>((int)player.NetworkId, delete, LiteNetLib.DeliveryMethod.ReliableOrdered);
             }
         }
 

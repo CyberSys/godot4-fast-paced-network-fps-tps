@@ -1,4 +1,3 @@
-
 /*
  * Created on Mon Mar 28 2022
  *
@@ -28,7 +27,7 @@ namespace Framework.Network.Commands
     /// <summary>
     /// Network command for updaing server vars on client side
     /// </summary>
-    public class ServerVarUpdate 
+    public class ServerVarUpdate
     {
         /// <summary>
         /// All server vars

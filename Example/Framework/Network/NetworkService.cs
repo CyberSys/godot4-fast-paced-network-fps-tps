@@ -24,7 +24,8 @@ using System.Collections.Generic;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Framework.Network.Commands;
-using Framework;
+using Framework.Input;
+using Framework.Physics;
 
 namespace Framework.Network
 {
@@ -47,9 +48,9 @@ namespace Framework.Network
         /// <inheritdoc />
         public NetworkService()
         {
-            this._netPacketProcessor.RegisterNestedType<PlayerInputCommand>();
+            this._netPacketProcessor.RegisterNestedType<PlayerInput>();
             this._netPacketProcessor.RegisterNestedType<PlayerState>();
-            this._netPacketProcessor.RegisterNestedType<PlayerUpdate>();
+            this._netPacketProcessor.RegisterNestedType<PlayerInfo>();
             this._netPacketProcessor.RegisterNestedType<Input.GeneralPlayerInput>();
             this._netPacketProcessor.RegisterNestedType<Framework.Game.Vars>();
             this._netPacketProcessor.RegisterNestedType<ClientWorldLoader>();
