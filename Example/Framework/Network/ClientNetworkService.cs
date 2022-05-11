@@ -151,59 +151,64 @@ namespace Framework.Network
             this.canRetry = false;
             this.currentPeer?.Disconnect();
         }
+        private EventBasedNetListener listener = null;
         /// <inheritdoc />
         public override void Register()
         {
             base.Register();
             this.Disconnect();
 
-            EventBasedNetListener listener = new EventBasedNetListener();
+            this.listener = new EventBasedNetListener();
+
             this.netManager = new NetManager(listener);
             this.netManager.DebugName = "ClientNetworkLayer";
             this.netManager.AutoRecycle = true;
             this.netManager.EnableStatistics = true;
             this.netManager.UnconnectedMessagesEnabled = true;
 
-            listener.NetworkReceiveEvent += (peer, reader, channel, deliveryMethod) =>
-            {
-                //after last receive increase max retries
-                this.currentRetries = MaxRetriesPerConnection;
-                _netPacketProcessor.ReadAllPackets(reader, peer);
-            };
-
-            listener.PeerDisconnectedEvent += (peer, disconnectInfo) =>
-            {
-                Logger.LogDebug(this, "Disconnected with reason " + disconnectInfo.Reason);
-
-                currentRetries++;
-                if (currentRetries <= MaxRetriesPerConnection && disconnectInfo.Reason == DisconnectReason.RemoteConnectionClose)
-                {
-                    this.canRetry = true;
-                    this.OnDisconnect?.Invoke(disconnectInfo.Reason, false);
-                }
-                else
-                {
-                    this.canRetry = false;
-                    this.OnDisconnect?.Invoke(disconnectInfo.Reason, true);
-                }
-            };
-
-            listener.PeerConnectedEvent += (peer) =>
-            {
-                this.serverPeer = peer;
-            };
-
-            listener.NetworkLatencyUpdateEvent += (peer, latency) =>
-            {
-                if (peer == this.ServerPeer)
-                {
-                    _ping = latency;
-                }
-
-                PeerLatency[peer] = latency;
-            };
+            listener.NetworkReceiveEvent += HandleReceive;
+            listener.PeerDisconnectedEvent += HandlePeerDisconnect;
+            listener.PeerConnectedEvent += HandlePeerConnect;
+            listener.NetworkLatencyUpdateEvent += HandleLatency;
 
             this.netManager.Start();
+        }
+        private void HandleReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
+        {
+            //after last receive increase max retries
+            this.currentRetries = MaxRetriesPerConnection;
+            _netPacketProcessor.ReadAllPackets(reader, peer);
+        }
+
+        private void HandlePeerConnect(NetPeer peer)
+        {
+            this.serverPeer = peer;
+        }
+        private void HandlePeerDisconnect(NetPeer peer, DisconnectInfo disconnectInfo)
+        {
+            Logger.LogDebug(this, "Disconnected with reason " + disconnectInfo.Reason);
+
+            currentRetries++;
+            if (currentRetries <= MaxRetriesPerConnection && disconnectInfo.Reason == DisconnectReason.RemoteConnectionClose)
+            {
+                this.canRetry = true;
+                this.OnDisconnect?.Invoke(disconnectInfo.Reason, false);
+            }
+            else
+            {
+                this.canRetry = false;
+                this.OnDisconnect?.Invoke(disconnectInfo.Reason, true);
+            }
+        }
+
+        private void HandleLatency(NetPeer peer, int latency)
+        {
+            if (peer == this.ServerPeer)
+            {
+                _ping = latency;
+            }
+
+            PeerLatency[peer] = latency;
         }
 
         /// <inheritdoc />
@@ -265,6 +270,11 @@ namespace Framework.Network
         /// <inheritdoc />
         public override void Unregister()
         {
+            listener.NetworkReceiveEvent -= HandleReceive;
+            listener.PeerDisconnectedEvent -= HandlePeerDisconnect;
+            listener.PeerConnectedEvent -= HandlePeerConnect;
+            listener.NetworkLatencyUpdateEvent -= HandleLatency;
+
             base.Unregister();
         }
     }

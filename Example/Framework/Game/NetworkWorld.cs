@@ -104,6 +104,10 @@ namespace Framework.Game
             {
                 this.InternalTreeEntered();
             }
+            if (what == (int)Godot.Node.NotificationExitTree)
+            {
+                this.InternalTreeExit();
+            }
         }
 
         /// <inheritdoc />
@@ -163,6 +167,11 @@ namespace Framework.Game
             var env = this.NetworkLevel?.Environment;
             if (env != null)
                 env.SsilEnabled = isEnabled;
+        }
+
+        internal virtual void InternalTreeExit()
+        {
+
         }
 
         /// <inheritdoc />

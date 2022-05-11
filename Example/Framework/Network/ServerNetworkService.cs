@@ -21,6 +21,8 @@
 
 using System.Collections.Generic;
 using Godot;
+using System.Net;
+using System.Net.Sockets;
 using LiteNetLib;
 
 namespace Framework.Network
@@ -79,51 +81,27 @@ namespace Framework.Network
             base.Register();
         }
 
+        private EventBasedNetListener listener = null;
+
         /// <summary>
         /// Bind server on specific port
         /// </summary>
         /// <param name="port"></param>
         public void Bind(int port)
         {
-            EventBasedNetListener listener = new EventBasedNetListener();
+            this.listener = new EventBasedNetListener();
             this.netManager = new NetManager(listener);
             this.netManager.DebugName = "ServerNetworkLayer";
             this.netManager.AutoRecycle = true;
             this.netManager.EnableStatistics = true;
             this.netManager.UnconnectedMessagesEnabled = true;
 
-            listener.NetworkErrorEvent += (endPoint, socketErrorCode) =>
-            {
-                Logger.LogDebug(this, "Issue on " + endPoint.Address + ":" + endPoint.Port + " with error " + socketErrorCode.ToString());
-            };
-
-            listener.ConnectionRequestEvent += (request) =>
-            {
-                ConnectionRequest?.Invoke(request);
-            };
-
-            listener.PeerConnectedEvent += peer =>
-            {
-                Logger.LogDebug(this, peer.Id + " => " + peer.EndPoint.Address + ":" + peer.EndPoint.Port + " conected.");
-                ClientConnected?.Invoke((short)peer.Id);
-            };
-
-            listener.NetworkReceiveEvent += (peer, reader, channel, deliveryMethod) =>
-            {
-                _netPacketProcessor.ReadAllPackets(reader, peer);
-            };
-
-            listener.PeerDisconnectedEvent += (peer, disconnectInfo) =>
-            {
-                Logger.LogDebug(this, peer.Id + " => " + peer.EndPoint.Address + ":" + peer.EndPoint.Port + " disconnect with reason " + disconnectInfo.Reason);
-                ClientDisconnect?.Invoke((short)peer.Id, disconnectInfo.Reason);
-            };
-
-            listener.NetworkLatencyUpdateEvent += (peer, latency) =>
-            {
-                PeerLatency[peer] = latency;
-                this.ClientLatencyUpdate?.Invoke((short)peer.Id, latency);
-            };
+            listener.NetworkErrorEvent += HandleNetworkError;
+            listener.ConnectionRequestEvent += HandleRequest;
+            listener.PeerConnectedEvent += HandlePeerConnect;
+            listener.NetworkReceiveEvent += HandleReceive;
+            listener.PeerDisconnectedEvent += HandlePeerDisconnect;
+            listener.NetworkLatencyUpdateEvent += HandleLatency;
 
             Logger.LogDebug(this, "Try to start on port " + port);
 
@@ -135,9 +113,48 @@ namespace Framework.Network
             }
         }
 
+        private void HandleRequest(LiteNetLib.ConnectionRequest request)
+        {
+            ConnectionRequest?.Invoke(request);
+        }
+
+        private void HandleNetworkError(IPEndPoint endPoint, SocketError socketErrorCode)
+        {
+            Logger.LogDebug(this, "Issue on " + endPoint.Address + ":" + endPoint.Port + " with error " + socketErrorCode.ToString());
+        }
+
+        private void HandleLatency(NetPeer peer, int latency)
+        {
+            PeerLatency[peer] = latency;
+            this.ClientLatencyUpdate?.Invoke((short)peer.Id, latency);
+        }
+
+        private void HandlePeerDisconnect(NetPeer peer, DisconnectInfo disconnectInfo)
+        {
+            Logger.LogDebug(this, peer.Id + " => " + peer.EndPoint.Address + ":" + peer.EndPoint.Port + " disconnect with reason " + disconnectInfo.Reason);
+            ClientDisconnect?.Invoke((short)peer.Id, disconnectInfo.Reason);
+        }
+
+        private void HandleReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
+        {
+            _netPacketProcessor.ReadAllPackets(reader, peer);
+        }
+
+        private void HandlePeerConnect(NetPeer peer)
+        {
+            Logger.LogDebug(this, peer.Id + " => " + peer.EndPoint.Address + ":" + peer.EndPoint.Port + " conected.");
+            ClientConnected?.Invoke((short)peer.Id);
+        }
+
         /// <inheritdoc />
         public override void Unregister()
         {
+            listener.NetworkErrorEvent += HandleNetworkError;
+            listener.ConnectionRequestEvent += HandleRequest;
+            listener.PeerConnectedEvent += HandlePeerConnect;
+            listener.NetworkReceiveEvent += HandleReceive;
+            listener.PeerDisconnectedEvent += HandlePeerDisconnect;
+            listener.NetworkLatencyUpdateEvent += HandleLatency;
 
             base.Unregister();
             ConnectionShutdown?.Invoke();

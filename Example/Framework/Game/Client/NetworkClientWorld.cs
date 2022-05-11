@@ -107,6 +107,15 @@ namespace Framework.Game.Client
             this.AddChild(this.rayCastTester);
         }
 
+
+        internal override void InternalTreeExit()
+        {
+            base.InternalTreeExit();
+            ClientSettings.Variables.OnChange -= HandleConfigUpdates;
+        }
+
+
+
         internal void RayCastTest(RaycastTest cmd, NetPeer peed)
         {
             this.rayCastTester.AddLine(cmd.from, cmd.to);
@@ -120,27 +129,29 @@ namespace Framework.Game.Client
             applySSAO(ClientSettings.Variables.Get<bool>("cl_draw_ssao", false));
             applySSIL(ClientSettings.Variables.Get<bool>("cl_draw_ssil", false));
 
-            ClientSettings.Variables.OnChange += (state, name, value) =>
-            {
-                if (name == "cl_draw_glow")
-                {
-                    applyGlow(ClientSettings.Variables.Get<bool>("cl_draw_glow"));
-                }
-                if (name == "cl_draw_sdfgi")
-                {
-                    applySDFGI(ClientSettings.Variables.Get<bool>("cl_draw_sdfgi"));
-                }
-                if (name == "cl_draw_ssao")
-                {
-                    applySSAO(ClientSettings.Variables.Get<bool>("cl_draw_ssao"));
-                }
-                if (name == "cl_draw_ssil")
-                {
-                    applySSIL(ClientSettings.Variables.Get<bool>("cl_draw_ssil"));
-                }
-            };
+            ClientSettings.Variables.OnChange += HandleConfigUpdates;
 
             base.OnLevelInternalAddToScene();
+        }
+
+        internal void HandleConfigUpdates(VarsCollection.KeyChangeEnum state, string name, string value)
+        {
+            if (name == "cl_draw_glow")
+            {
+                applyGlow(ClientSettings.Variables.Get<bool>("cl_draw_glow"));
+            }
+            if (name == "cl_draw_sdfgi")
+            {
+                applySDFGI(ClientSettings.Variables.Get<bool>("cl_draw_sdfgi"));
+            }
+            if (name == "cl_draw_ssao")
+            {
+                applySSAO(ClientSettings.Variables.Get<bool>("cl_draw_ssao"));
+            }
+            if (name == "cl_draw_ssil")
+            {
+                applySSIL(ClientSettings.Variables.Get<bool>("cl_draw_ssil"));
+            }
         }
 
         private void UpdateWorld(ServerVarUpdate cmd, NetPeer peer)
@@ -218,6 +229,9 @@ namespace Framework.Game.Client
 
         private void OnPlayerDelete(PlayerLeave playerDelete, NetPeer peer)
         {
+            if (!this.IsInsideTree())
+                return;
+
             if (this._players.ContainsKey(playerDelete.NetworkId))
             {
                 var networkPlayer = this._players[playerDelete.NetworkId];

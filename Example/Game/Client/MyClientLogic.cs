@@ -23,7 +23,6 @@ namespace Shooter.Client
         public override void AfterMapLoaded()
         {
             this.Components.DeleteComponent<MapLoadingComponent>();
-            this.Components.DeleteComponent<PreConnectComponent>();
             this.Components.AddComponent<HudComponent>("res://Game/Client/UI/Ingame/HudComponent.tscn");
 
             Input.SetMouseMode(Input.MouseMode.Captured);
@@ -33,12 +32,18 @@ namespace Shooter.Client
         {
             this.Components.DeleteComponent<MenuComponent>();
             this.Components.DeleteComponent<MapLoadingComponent>();
-            this.Components.AddComponent<PreConnectComponent>("res://Game/Client/UI/Welcome/PreConnectComponent.tscn");
         }
 
         public override void OnDisconnect()
         {
             this.Components.DeleteComponent<PreConnectComponent>();
+            this.Components.AddComponent<PreConnectComponent>("res://Game/Client/UI/Welcome/PreConnectComponent.tscn");
+        }
+
+        public override void OnConnected()
+        {
+            this.Components.DeleteComponent<PreConnectComponent>();
+            this.Components.AddComponent<MapLoadingComponent>("res://Game/Client/UI/Welcome/MapLoadingComponent.tscn");
         }
 
         public override void _Input(InputEvent @event)

@@ -92,9 +92,10 @@ namespace Framework.Game.Server
 
             // gravity and jump
             { "sv_gravity", "20.0" },
+            { "sv_gravity_multiplier", "1.3" },
+
             { "sv_max_air_speed", "7.5" },
-            { "sv_gravity_multiplier", "1.6" },
-            { "sv_jumpspeed", "8.0" },
+            { "sv_jumpspeed", "9" },
 
             // side movement
             { "sv_strafe_speed", "1.0" },

@@ -108,7 +108,12 @@ namespace Framework.Game.Client
         /// <inheritdoc />        
         internal override void DestroyMapInternal()
         {
-            this.currentWorld?.Destroy();
+            Logger.LogDebug(this, "Destroy map");
+            if (this.currentWorld != null)
+            {
+                this.RemoveChild(this.currentWorld as Node);
+                this.currentWorld?.Destroy();
+            }
             this.currentWorld = null;
             this.loadedWorldName = null;
 
@@ -170,16 +175,14 @@ namespace Framework.Game.Client
                 {
                     applyResolution(value);
                 }
-
-                /* Nicht gemergte Änderung aus Projekt "Framework"
-                Vor:
-                                    GD.Print(package.WorldName);
-                                    GD.Print(package.ScriptPath);
-                                    this.LoadWorldInternal(package.WorldName, package.ScriptPath, package.WorldTick);
-                Nach:
-                                    this.LoadWorldInternal(package.WorldName, package.ScriptPath, package.WorldTick);
-                */
-
+                if (name == "cl_window_mode")
+                {
+                    applyWindowMode(value);
+                }
+                if (name == "cl_draw_debug")
+                {
+                    applyDebug(value);
+                }
 
                 if (name == "cl_draw_aa")
                 {
@@ -220,6 +223,8 @@ namespace Framework.Game.Client
 
             this.netService.SubscribeSerialisable<ClientWorldLoader>((package, peer) =>
             {
+                this.OnConnected();
+
                 if (this.loadedWorldName != package.WorldName)
                 {
                     this.loadedWorldName = package.WorldName;
@@ -350,7 +355,6 @@ namespace Framework.Game.Client
                 Logger.LogDebug(this, "Full disconnected");
                 this.OnDisconnect();
                 this.DestroyMapInternal();
-
             }
         }
     }

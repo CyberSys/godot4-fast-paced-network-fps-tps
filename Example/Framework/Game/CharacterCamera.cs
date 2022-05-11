@@ -162,7 +162,10 @@ namespace Framework.Game
                 this.GlobalTransform = transform;
             }
 
-            this.Fov = ClientSettings.Variables.Get<int>("cl_fov");
+            if (this.IsLocal())
+            {
+                this.Fov = ClientSettings.Variables.Get<int>("cl_fov");
+            }
         }
 
         /// <inheritdoc />

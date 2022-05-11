@@ -1,0 +1,303 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cynod1u056ii1"
+path="res://.godot/imported/Level.gltf-11d17fae2d7295632139f094a2450f37.scn"
+
+[deps]
+
+source_file="res://Game/Assets/Maps/TrainingPlace/Import/Level.gltf"
+dest_files=["res://.godot/imported/Level.gltf-11d17fae2d7295632139f094a2450f37.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+import_script/path=""
+_subresources={
+"meshes": {
+"Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4005": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4005.res"
+},
+"Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4007": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4007.res"
+},
+"Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4008": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4008.res"
+},
+"Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4009": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4009.res"
+},
+"Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4010": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4010.res"
+},
+"Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4011": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4011.res"
+},
+"Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4012": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_nature_rock_S_vcljbb1iw_03_LOD4012.res"
+},
+"Level_Aset_other_barrier_M_udqjbg1qx_LOD4": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_other_barrier_M_udqjbg1qx_LOD4.res"
+},
+"Level_Aset_props_storage_M_vidkbhz_LOD4": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_props_storage_M_vidkbhz_LOD4.res"
+},
+"Level_Aset_street_barrier_L_udtvegsfa_LOD4": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Aset_street_barrier_L_udtvegsfa_LOD4.res"
+},
+"Level_Cube001": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube001.res"
+},
+"Level_Cube002": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube002.res"
+},
+"Level_Cube003": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube003.res"
+},
+"Level_Cube004": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube004.res"
+},
+"Level_Cube005": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube005.res"
+},
+"Level_Cube006": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube006.res"
+},
+"Level_Cube009": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube009.res"
+},
+"Level_Cube010": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube010.res"
+},
+"Level_Cube011": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube011.res"
+},
+"Level_Cube012": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube012.res"
+},
+"Level_Cube013": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube013.res"
+},
+"Level_Cube014": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube014.res"
+},
+"Level_Cube015": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube015.res"
+},
+"Level_Cube016": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube016.res"
+},
+"Level_Cube017": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube017.res"
+},
+"Level_Cube020": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube020.res"
+},
+"Level_Cube022": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube022.res"
+},
+"Level_Cube027": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube027.res"
+},
+"Level_Cube030": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube030.res"
+},
+"Level_Cube042": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube042.res"
+},
+"Level_Cube049": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube049.res"
+},
+"Level_Cube050": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube050.res"
+},
+"Level_Cube103": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube103.res"
+},
+"Level_Cube119": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cube119.res"
+},
+"Level_Cylinder001": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cylinder001.res"
+},
+"Level_Cylinder004": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cylinder004.res"
+},
+"Level_Cylinder005": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Cylinder005.res"
+},
+"Level_Círculo001": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Círculo001.res"
+},
+"Level_Círculo002": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Círculo002.res"
+},
+"Level_Círculo003": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Círculo003.res"
+},
+"Level_Círculo004": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Círculo004.res"
+},
+"Level_Círculo007": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Círculo007.res"
+},
+"Level_Círculo016": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Círculo016.res"
+},
+"Level_Círculo020": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Círculo020.res"
+},
+"Level_Mesh": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Mesh.res"
+},
+"Level_Mesh001": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Mesh001.res"
+},
+"Level_Mesh002": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Mesh002.res"
+},
+"Level_Mesh003": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Mesh003.res"
+},
+"Level_Mesh004": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Mesh004.res"
+},
+"Level_Mesh013": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Mesh013.res"
+},
+"Level_Mesh014": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Mesh014.res"
+},
+"Level_Mesh070": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Mesh070.res"
+},
+"Level_Plane": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Plane.res"
+},
+"Level_Plane010": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Plane010.res"
+},
+"Level_Plane022": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Plane022.res"
+},
+"Level_Plane033": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Plane033.res"
+},
+"Level_Plane036": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Plane036.res"
+},
+"Level_Plane037": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_Plane037.res"
+},
+"Level_colon2_2colons_and_floor_low001": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_colon2_2colons_and_floor_low001.res"
+},
+"Level_colon2_2colons_and_floor_low021": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_colon2_2colons_and_floor_low021.res"
+},
+"Level_meshId0_name": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_meshId0_name.res"
+},
+"Level_meshId0_name001": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_meshId0_name001.res"
+},
+"Level_meshId3_name": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_meshId3_name.res"
+},
+"Level_meshId7_name": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_meshId7_name.res"
+},
+"Level_meshId7_name001": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_meshId7_name001.res"
+},
+"Level_meshId7_name002": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_meshId7_name002.res"
+},
+"Level_meshId7_name003": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_meshId7_name003.res"
+},
+"Level_meshId7_name004": {
+"save_to_file/enabled": true,
+"save_to_file/path": "res://Game/Assets/Maps/TrainingPlace/Import/Meshes/Level_meshId7_name004.res"
+}
+}
+}

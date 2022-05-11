@@ -717,7 +717,6 @@ namespace Framework.Game
                 {
                     // this.MovementProcessor.Velocity = this.Velocity;
                     this.MovementProcessor.SetServerVars(this.GameWorld.ServerVars);
-                    this.MovementProcessor.SetClientVars(Framework.Game.Client.ClientSettings.Variables);
                     this.MovementProcessor.Simulate(this, input.LastInput, delta);
                 }
             }

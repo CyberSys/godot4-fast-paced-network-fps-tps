@@ -99,10 +99,7 @@ namespace Framework
             var element = this.All.FirstOrDefault(df => df.GetType() == typeof(T2));
             if (element != null)
             {
-                if (element.IsInsideTree())
-                {
-                    this.baseComponent.RemoveChild(element);
-                }
+                element.QueueFree();
             }
         }
 

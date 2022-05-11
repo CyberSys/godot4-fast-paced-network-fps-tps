@@ -45,11 +45,7 @@ namespace Framework.Physics
         /// <value></value>
         public Vector3 Velocity { get; set; }
 
-        /// <summary>
-        /// Set client related vars
-        /// </summary>
-        /// <param name="vars"></param>
-        public void SetClientVars(VarsCollection vars);
+
 
         /// <summary>
         /// Set server related vars
@@ -114,11 +110,7 @@ namespace Framework.Physics
         {
             serverVars = vars;
         }
-        /// <inheritdoc />
-        public void SetClientVars(VarsCollection vars)
-        {
-            clientVars = vars;
-        }
+
 
         /// <inheritdoc />
         public Vector3 Simulate(NetworkCharacter component, GeneralPlayerInput inputs, float dt)
@@ -469,7 +461,7 @@ namespace Framework.Physics
 
             if (wishJump)
             {
-                _velocity.y = this.serverVars.Get<float>("sv_jumpspeed", 6.5f);
+                _velocity.y = this.serverVars.Get<float>("sv_jumpspeed", 9f);
                 wishJump = false;
             }
 
