@@ -3,38 +3,18 @@
     "tasks": [
         {
             "label": "build",
-            "command": "dotnet",
-            "type": "process",
+            "type": "shell",
+            "command": "msbuild",
             "args": [
-                "build",
-                "${workspaceFolder}/Thirdparty/Rcon/RCONSimpleClient/RCONSimpleClient/RCONSimpleClient.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "./Example/Shooter.sln",
+                "/p:GodotTargetPlatform=windows",
+                "/t:Build",
+                "/m:6"
             ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/Thirdparty/Rcon/RCONSimpleClient/RCONSimpleClient/RCONSimpleClient.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watch",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "run",
-                "--project",
-                "${workspaceFolder}/Thirdparty/Rcon/RCONSimpleClient/RCONSimpleClient/RCONSimpleClient.csproj"
-            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
             "problemMatcher": "$msCompile"
         }
     ]

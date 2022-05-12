@@ -83,7 +83,9 @@ namespace Framework.Game.Server
 
 
             float SimulationTickRate = 1 / (float)this.GetPhysicsProcessDeltaTime();
-            float ServerSendRate = SimulationTickRate / 2;
+            float ServerSendRate = SimulationTickRate;
+
+            Logger.LogDebug(this, "Set server send rate to " + ServerSendRate);
 
             worldStateBroadcastTimer = new FixedTimer(ServerSendRate, BroadcastWorldHearbeat);
             worldStateBroadcastTimer.Start();

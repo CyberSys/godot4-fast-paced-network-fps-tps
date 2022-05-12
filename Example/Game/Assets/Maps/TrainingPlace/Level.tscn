@@ -146,8 +146,6 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.002
 adjustment_enabled = true
 adjustment_brightness = 1.08
-adjustment_contrast = 1.14
-adjustment_saturation = 0.83
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7qmy4"]
 resource_local_to_scene = true
@@ -679,7 +677,7 @@ script = ExtResource( "59_pelb8" )
 shape = SubResource( "BoxShape3D_bcv4s" )
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.861283, 0.508125, 0, -0.508125, 0.861283, 0, 15.5859, 23.3216)
+transform = Transform3D(0.98876, 0.0873837, -0.121319, 0.120026, -0.947749, 0.295577, -0.0891511, -0.306816, -0.947584, -6.21268, 26.7351, -39.1893)
 light_color = Color(1, 0.968627, 0.882353, 1)
 light_energy = 2.0
 shadow_enabled = true

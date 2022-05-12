@@ -33,11 +33,7 @@ namespace Shooter.Shared
         public override void _EnterTree()
         {
             base._EnterTree();
-
-            if (this.IsPuppet())
-            {
-                this.GetNode<Node3D>(this.FPSPath).Visible = false;
-            }
+            this.GetNode<Node3D>(this.FPSPath).Visible = false;
         }
 
         public override PlayerState Interpolate(float theta, PlayerState lastState, PlayerState nextState)

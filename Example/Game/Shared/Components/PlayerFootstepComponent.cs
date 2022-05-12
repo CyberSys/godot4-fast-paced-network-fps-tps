@@ -96,7 +96,6 @@ namespace Shooter.Shared.Components
 
         public void Tick(float delta)
         {
-
         }
 
         public override void _Process(float delta)

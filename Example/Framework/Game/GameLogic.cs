@@ -22,6 +22,8 @@
 using Godot;
 using Framework.Utils;
 using Framework.Extensions;
+using System;
+using System.Diagnostics;
 
 namespace Framework.Game
 {
@@ -103,10 +105,17 @@ namespace Framework.Game
         /// <inheritdoc />
         public GameLogic() : base()
         {
+            Process.GetCurrentProcess().PriorityBoostEnabled = true;
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
+
+            // Of course this only affects the main thread rather than child threads.
+            System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
+
             this.OwnWorld3d = true;
             this.RenderTargetUpdateMode = UpdateMode.Always;
             this.RenderTargetClearMode = ClearMode.Always;
             this.ProcessMode = ProcessModeEnum.Always;
+            this.Scaling3dMode = Scaling3DMode.Fsr;
 
             this._components = new ComponentRegistry<GameLogic>(this);
 

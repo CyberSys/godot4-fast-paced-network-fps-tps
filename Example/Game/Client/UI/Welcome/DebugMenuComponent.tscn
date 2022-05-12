@@ -15,6 +15,7 @@ PackageLoosePath = NodePath("VBoxContainer/HBoxContainer/PackageLooseContainer/P
 PackageDataPath = NodePath("VBoxContainer/HBoxContainer/PackageData/PackageData")
 IdleTimePath = NodePath("VBoxContainer/HBoxContainer/IdleTimeContainer/IdleTime")
 PhysicsTimePath = NodePath("VBoxContainer/HBoxContainer/PhysicsTimeContainer/PhysicsTime")
+TimerPath = NodePath("Timer")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 40.0
@@ -128,3 +129,7 @@ offset_bottom = 35.0
 [node name="LogMessage" type="Label" parent="VBoxContainer/LogMessageContainer"]
 offset_right = 1.0
 offset_bottom = 14.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true

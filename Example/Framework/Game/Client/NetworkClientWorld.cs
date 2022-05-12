@@ -369,7 +369,6 @@ namespace Framework.Game.Client
             // processed.
             if (incomingState.YourLatestInputTick > 0)
             {
-
                 LastAckedInputTick = incomingState.YourLatestInputTick;
 
                 int actualTickLead = (int)LastAckedInputTick - (int)LastServerWorldTick + 1;
@@ -388,12 +387,15 @@ namespace Framework.Game.Client
                     if (playerState.NetworkId == this.LocalPlayer.NetworkId)
                     {
                         incomingLocalPlayerState = playerState;
+                        this.LocalPlayer.IncomingLocalPlayerState = incomingLocalPlayerState;
                     }
                     else
                     {
                         if (this._players.ContainsKey(playerState.NetworkId))
                         {
                             var puppet = this._players[playerState.NetworkId];
+                            puppet.IncomingLocalPlayerState = playerState;
+
                             puppet.ApplyNetworkState(playerState);
                         }
                     }
@@ -467,6 +469,7 @@ namespace Framework.Game.Client
             float simTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
             var serverSendRate = simTickRate / 2;
 
+            // The maximum age of the last server state in milliseconds the client will continue simulating.
             var MaxStaleServerStateTicks = (int)MathF.Ceiling(this.ServerVars.Get<int>("sv_max_stages_ms", 500) / serverSendRate);
 
             GeneralPlayerInput inputs = new GeneralPlayerInput();

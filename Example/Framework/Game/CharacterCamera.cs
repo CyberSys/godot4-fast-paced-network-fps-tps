@@ -129,7 +129,10 @@ namespace Framework.Game
             if (this.BaseComponent == null)
                 return;
 
-            this.Current = (!this.IsPuppet() && IsEnabled);
+            if (this.Current != IsEnabled)
+            {
+                this.Current = (!this.IsPuppet() && IsEnabled);
+            }
 
             if (this.IsServer())
             {
@@ -183,7 +186,7 @@ namespace Framework.Game
         /// <returns></returns>
         public virtual Godot.Vector3 GetViewRotation()
         {
-            return this.Transform.basis.GetEuler();
+            return this.GlobalTransform.basis.GetEuler();
         }
 
         /// <inheritdoc />
@@ -197,8 +200,7 @@ namespace Framework.Game
                 var sensX = ClientSettings.Variables.Get<float>("cl_sensitivity_y", 2.0f);
                 var sensY = ClientSettings.Variables.Get<float>("cl_sensitivity_x", 2.0f);
 
-                var input = BaseComponent.Components.Get<NetworkInput>();
-                if (@event is InputEventMouseMotion && input != null && input.IsEnabled)
+                if (@event is InputEventMouseMotion && this.IsEnabled)
                 {
                     // Handle cursor lock state
                     if (Godot.Input.GetMouseMode() == Godot.Input.MouseMode.Captured)

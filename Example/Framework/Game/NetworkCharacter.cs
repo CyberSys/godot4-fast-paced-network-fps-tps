@@ -105,6 +105,8 @@ namespace Framework.Game
 
         private Queue<Vector3> teleportQueue = new Queue<Vector3>();
 
+
+
         /// <summary>
         /// Get the current shape height
         /// </summary>
@@ -152,6 +154,7 @@ namespace Framework.Game
                 mesh.MaterialOverride = mat;
                 mesh.Name = "DebugMesh";
                 mesh.Visible = false;
+                mesh.TopLevel = true;
 
                 var meshLocal = new MeshInstance3D();
                 meshLocal.Mesh = cpsule;
@@ -274,23 +277,22 @@ namespace Framework.Game
             return this.IsOnFloor();
         }
 
+        private CharacterCamera detectCamera;
+
         /// <inheritdoc />
         public override void _Process(float delta)
         {
-            if (Godot.Input.IsActionJustPressed("test") && this.IsLocal() && !this.GameWorld.GameInstance.GuiDisableInput)
-            {
-                var vel = this.GlobalTransform;
-                vel.origin.x += 5;
-                this.GlobalTransform = vel;
-            }
-
             base._Process(delta);
 
-            var camera = this.Components.Get<CharacterCamera>();
-            if (this.IsLocal() && this.debugMesh != null && this.debugMeshLocal != null && camera != null)
+            if (detectCamera == null)
+            {
+                this.detectCamera = this.Components.Get<CharacterCamera>();
+            }
+
+            if (this.IsLocal() && this.debugMesh != null && this.debugMeshLocal != null && detectCamera != null)
             {
                 var activated = ClientSettings.Variables.Get<bool>("cl_debug_server", false);
-                if (activated == true && camera.Mode == CameraMode.FPS)
+                if (activated == true && detectCamera.Mode == CameraMode.FPS)
                     activated = false;
 
                 if (!activated)
@@ -512,8 +514,7 @@ namespace Framework.Game
             if (input == null)
                 return null;
 
-            var camera = this.Components.Get<CharacterCamera>();
-            if (camera == null)
+            if (this.detectCamera == null)
                 return null;
 
             var headViewRotation = input.LastInput.ViewDirection;
@@ -522,7 +523,7 @@ namespace Framework.Game
             var command = this.ToNetworkState();
             var currentTransform = new Godot.Transform3D(basis, command.GetVar<Vector3>(this, "NetworkPosition"));
 
-            var attackPosition = camera.GlobalTransform.origin;
+            var attackPosition = detectCamera.GlobalTransform.origin;
             var attackTransform = new Godot.Transform3D(basis, attackPosition);
             var attackTransformFrom = new Godot.Transform3D(command.GetVar<Quaternion>(this, "NetworkRotation"), attackPosition);
 
@@ -579,7 +580,7 @@ namespace Framework.Game
         /// </summary>
         /// <param name="delta">float</param>
         /// <param name="velocity">Vector3</param>
-        public virtual void Move(float delta, Vector3 velocity)
+        public virtual void Move(Vector3 velocity)
         {
             this.Velocity = velocity;
             this.MoveAndSlide();
@@ -663,7 +664,7 @@ namespace Framework.Game
             stateTimer += delta;
 
             float SimulationTickRate = 1f / (float)this.GetPhysicsProcessDeltaTime();
-            float ServerSendRate = SimulationTickRate / 2;
+            float ServerSendRate = SimulationTickRate;
             float ServerSendInterval = 1f / ServerSendRate;
 
             if (stateTimer > ServerSendInterval)

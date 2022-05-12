@@ -7,7 +7,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_43hdw"]
 shader = ExtResource( "2_vkji5" )
-shader_param/matrixColor = Color(0, 0.996078, 1, 1)
+shader_param/matrixColor = Color(0, 1, 0.713726, 1)
 shader_param/chars = ExtResource( "3_vqc02" )
 shader_param/noise_tex = ExtResource( "4_5eohl" )
 

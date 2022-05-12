@@ -233,7 +233,7 @@ namespace Framework.Network
             {
                 nextStaticsUpdate = 0f;
                 this._bytesSended = this.Statistics.BytesSent;
-                this._bytesReceived = this.Statistics.BytesSent;
+                this._bytesReceived = this.Statistics.BytesReceived;
                 this._packageLoss = this.Statistics.PacketLoss;
                 this._packageLossPercent = this.Statistics.PacketLossPercent;
 

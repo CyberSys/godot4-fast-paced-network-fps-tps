@@ -128,28 +128,5 @@ namespace Shooter.Shared.Components
                 }
             }
         }
-
-        public void ApplyNetworkState(PlayerWeaponPackage package)
-        {
-            if (this.IsPuppet() && package.IsFired)
-            {
-                GD.Print("PUPPET FIRE:");
-            }
-        }
-
-        public PlayerWeaponPackage GetNetworkState()
-        {
-            if (this.IsServer())
-            {
-                return new PlayerWeaponPackage
-                {
-                    IsFired = this.shootTemporary
-                };
-            }
-            return new PlayerWeaponPackage
-            {
-
-            };
-        }
     }
 }

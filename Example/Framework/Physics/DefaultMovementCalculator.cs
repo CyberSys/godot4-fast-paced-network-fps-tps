@@ -103,14 +103,11 @@ namespace Framework.Physics
             set { _velocity = value; }
         }
 
-
-
         /// <inheritdoc />
         public void SetServerVars(VarsCollection vars)
         {
             serverVars = vars;
         }
-
 
         /// <inheritdoc />
         public Vector3 Simulate(NetworkCharacter component, GeneralPlayerInput inputs, float dt)
@@ -149,7 +146,7 @@ namespace Framework.Physics
             }
 
             component.SetCrouchingLevel(inputs.GetInput("Crouch") ? couchLevel * -1 : couchLevel);
-            component.Move(dt, _velocity);
+            component.Move(_velocity);
 
             // HACK: Reset to zero when falling off the edge for now.
             if (this.component.GlobalTransform.origin.y < -100)
@@ -165,7 +162,7 @@ namespace Framework.Physics
         }
 
         /// <inheritdoc />
-        internal Vector3 ApplyFriction(Vector3 _velocity, float t, float dt)
+        internal Vector3 ApplyFriction(Vector3 _velocity, float t, float dt, bool yAffected = true)
         {
             Vector3 vec = _velocity; // Equivalent to: VectorCopy();
             float speed;
@@ -181,19 +178,17 @@ namespace Framework.Physics
             if (this.component.IsOnGround())
             {
                 var deaccl = this.GetGroundDeaccelerationFactor();
-
                 control = speed < deaccl ? deaccl : speed;
                 var friction = this.GetGroundFriction();
                 drop = control * friction * dt * t;
             }
 
-            newspeed = speed - drop;
-            if (newspeed < 0)
-                newspeed = 0;
-            if (speed > 0)
+            newspeed = Mathf.Max(speed - drop, 0f);
+            if (speed > 0.0f)
                 newspeed /= speed;
 
             _velocity.x *= newspeed;
+            if (yAffected == true) { _velocity.y *= newspeed; }
             _velocity.z *= newspeed;
 
             return _velocity;
@@ -256,7 +251,7 @@ namespace Framework.Physics
             if (addspeed <= 0)
                 return _velocity;
 
-            accelspeed = accel * dt * wishspeed;
+            accelspeed = Mathf.Min(accel * dt * wishspeed, addspeed);
 
             if (accelspeed > addspeed)
                 accelspeed = addspeed;
@@ -349,7 +344,7 @@ namespace Framework.Physics
         /// <returns></returns>
         public virtual float GetAirAcceleration()
         {
-            return this.serverVars.Get<float>("sv_air_accel", 12f);
+            return this.serverVars.Get<float>("sv_air_accel", 2f);
         }
 
         /// <summary>
@@ -377,15 +372,6 @@ namespace Framework.Physics
         public virtual float MaxAirSpeed()
         {
             return this.serverVars.Get<float>("sv_max_air_speed", 1.3f);
-        }
-
-        /// <summary>
-        /// Get the default gravity multiplier
-        /// </summary>
-        /// <returns></returns>
-        public virtual float GetGravityMultiplier()
-        {
-            return this.serverVars.Get<float>("sv_gravity_multiplier", 1.6f);
         }
 
 
@@ -432,14 +418,14 @@ namespace Framework.Physics
                 if (this.inputs == null)
                     return 0;
 
-                return this.inputs.GetInput("Back") ? -1f : this.inputs.GetInput("Forward") ? 1f : 0f;
+                return this.inputs.GetInput("Back") ? 1f : this.inputs.GetInput("Forward") ? -1f : 0f;
             }
         }
 
         /// <inheritdoc />
         internal Vector3 GroundMove(float dt, Vector3 _velocity)
         {
-            Vector3 wishdir;
+            Vector3 wishdir = Vector3.Zero;
 
             // Do not apply friction if the player is queueing up the next jump
             if (!wishJump)
@@ -447,9 +433,10 @@ namespace Framework.Physics
             else
                 _velocity = ApplyFriction(_velocity, 0, dt);
 
-            wishdir = new Vector3(this.LeftRightAxis / 10, 0, (this.ForwardBackwardAxis * -1) / 10);
-            wishdir = (component as Node3D).GlobalTransform.basis.Xform(wishdir);
+            wishdir = (component as Node3D).GlobalTransform.basis.x * this.LeftRightAxis;
+            wishdir += (component as Node3D).GlobalTransform.basis.z * this.ForwardBackwardAxis;
             wishdir = wishdir.Normalized();
+
 
             var wishspeed = wishdir.Length();
             wishspeed *= GetMovementSpeed();
@@ -461,22 +448,24 @@ namespace Framework.Physics
 
             if (wishJump)
             {
-                _velocity.y = this.serverVars.Get<float>("sv_jumpspeed", 9f);
+                _velocity.y = this.serverVars.Get<float>("sv_jumpspeed", 8f);
                 wishJump = false;
             }
 
             return _velocity;
         }
 
+        private float wishspeed2;
+
         /// <inheritdoc />
         internal Vector3 AirMove(float dt, Vector3 _velocity)
         {
-            Vector3 wishdir;
+            Vector3 wishdir = Vector3.Zero;
             float wishvel = this.GetAirAcceleration();
             float accel;
 
-            wishdir = new Vector3(this.LeftRightAxis, 0, this.ForwardBackwardAxis * -1);
-            wishdir = (component as Node3D).GlobalTransform.basis.Xform(wishdir);
+            wishdir = (component as Node3D).GlobalTransform.basis.x * this.LeftRightAxis;
+            wishdir += (component as Node3D).GlobalTransform.basis.z * this.ForwardBackwardAxis;
 
             float wishspeed = wishdir.Length();
             wishspeed *= this.GetMovementSpeed();
@@ -487,7 +476,7 @@ namespace Framework.Physics
             wishdir = wishdir.Normalized();
 
             // CPM: Aircontrol
-            float wishspeed2 = wishspeed;
+            wishspeed2 = wishspeed;
             if (_velocity.Dot(wishdir) < 0)
                 accel = this.GetAirDecceleration();
             else
@@ -507,7 +496,7 @@ namespace Framework.Physics
             if (this.GetAirControl() > 0)
                 _velocity = AirControl(_velocity, wishdir, wishspeed2, dt);
 
-            _velocity.y -= this.GetGravity() * this.GetGravityMultiplier() * dt;
+            _velocity.y -= this.GetGravity() * dt;
 
             return _velocity;
         }

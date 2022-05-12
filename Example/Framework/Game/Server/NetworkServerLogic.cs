@@ -73,32 +73,38 @@ namespace Framework.Game.Server
             { "sv_crouching_down_speed", "9.0" },
             { "sv_crouching_up_speed", "4.0" },
 
-            { "sv_crouching_accel", "20.0" },
-            { "sv_crouching_deaccel", "15.0" },
+            { "sv_crouching_accel", "8.0" },
+            { "sv_crouching_deaccel", "4.0" },
             { "sv_crouching_friction", "3.0" },
             { "sv_crouching_speed", "4.0" },
+            { "sv_max_speed", "6.0" },
 
             // walking
-            { "sv_walk_accel", "5.0" },
+            { "sv_walk_accel", "8.0" },
             { "sv_walk_deaccel", "4.0" },
 
             { "sv_walk_speed", "7.0" },
             { "sv_walk_friction", "6.0" },
 
             // air control
-            { "sv_air_control", "0.4" },
-            { "sv_air_accel", "12.0" },
+            { "sv_air_control", "0.3" },
+            { "sv_air_accel", "2.0" },
             { "sv_air_deaccel", "2.0" },
+            { "sv_air_friction", "0.4" },
 
             // gravity and jump
             { "sv_gravity", "20.0" },
-            { "sv_gravity_multiplier", "1.3" },
 
             { "sv_max_air_speed", "7.5" },
-            { "sv_jumpspeed", "9" },
+            { "sv_jumpspeed", "7" },
 
             // side movement
+            { "sv_strafe_min_speed", "9" },
+            { "sv_strafe_max_speed", "18" },
+
             { "sv_strafe_speed", "1.0" },
+            { "sv_strafe_friction", "14.0" },
+            { "sv_strafe_delay", "0.4" },
             { "sv_strafe_accel", "50.0" },
         };
 
@@ -147,7 +153,6 @@ namespace Framework.Game.Server
             this.HandleInputLocally = false;
 
             this.netService = this.Services.Create<ServerNetworkService>();
-            this.rconService = this.Services.Create<RconServerService>();
 
             this.netService.ConnectionEstablished += () =>
             {
@@ -175,8 +180,9 @@ namespace Framework.Game.Server
                     }
                 }
             };
+            // this.rconService = this.Services.Create<RconServerService>();
+            //this.rconService.ServerStarted += InitRconServer;
 
-            this.rconService.ServerStarted += InitRconServer;
 
             base.InternalTreeEntered();
             this.netService.Bind(NetworkPort);

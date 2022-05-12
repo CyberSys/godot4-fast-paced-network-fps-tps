@@ -234,6 +234,7 @@ namespace Framework.Game
         /// <inheritdoc />
         internal virtual void InternalProcess(float delta)
         {
+            interpController.ExplicitUpdate(delta);
         }
 
         /// <inheritdoc />
@@ -252,11 +253,9 @@ namespace Framework.Game
 
                     InternalTick(tickInterval);
                 }
-
-                interpController.ExplicitUpdate(delta);
-                PostUpdate();
             }
         }
+
 
         /// <inheritdoc />
         public void Destroy()

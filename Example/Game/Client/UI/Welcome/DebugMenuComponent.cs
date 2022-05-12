@@ -32,45 +32,53 @@ namespace Shooter.Client.UI.Welcome
         public NodePath PhysicsTimePath { get; set; }
 
         [Export]
-        public float updateTimeLabel = 0.5f;
+        public NodePath TimerPath { get; set; }
 
-        private float currentUpdateTime = 0f;
+        private ClientNetworkService netService;
+        private Timer timer;
+
+        private Label packageData, packageLosse, Ping, Fps, IdleTime, PhysicsTime;
 
         public override void _EnterTree()
         {
             Logger.OnLogMessage += (string message) =>
-        {
-            this.GetNode<Label>(this.LogMessagePath).Text = message;
-        };
+            {
+                this.GetNode<Label>(this.LogMessagePath).Text = message;
+            };
+
+            var componnent = this.BaseComponent as IGameLogic;
+            netService = componnent.Services.Get<ClientNetworkService>();
+
+            this.packageData = this.GetNode<Label>(this.PackageDataPath);
+            this.packageLosse = this.GetNode<Label>(this.PackageLoosePath);
+            this.Ping = this.GetNode<Label>(this.PingPath);
+            this.Fps = this.GetNode<Label>(this.FPSPath);
+            this.IdleTime = this.GetNode<Label>(this.IdleTimePath);
+            this.PhysicsTime = this.GetNode<Label>(this.PhysicsTimePath);
+
+            timer = this.GetNode<Timer>(TimerPath);
         }
 
-
-        public override void _Process(float delta)
+        public override void _Ready()
         {
-            base._Process(delta);
+            base._Ready();
+            timer.Timeout += processStats;
+            timer.Autostart = true;
+            timer.Start();
+        }
 
-            if (currentUpdateTime >= updateTimeLabel)
+        public void processStats()
+        {
+            if (netService != null)
             {
-                var componnent = this.BaseComponent as IGameLogic;
-                var netService = componnent.Services.Get<ClientNetworkService>();
-                if (netService != null)
-                {
-                    this.GetNode<Label>(this.PackageDataPath).Text = "Send: " + (netService.BytesSended / 1000) + "kB/s, " + "Rec: " + (netService.BytesReceived / 1000) + "kB/s";
-                    this.GetNode<Label>(this.PackageLoosePath).Text = netService.PackageLoss + " (" + netService.PackageLossPercent + "%" + ")";
-                    this.GetNode<Label>(this.PingPath).Text = netService.Ping.ToString() + "ms";
-                }
-
-                this.GetNode<Label>(this.FPSPath).Text = Engine.GetFramesPerSecond().ToString();
-
-                this.GetNode<Label>(this.IdleTimePath).Text = Math.Round(this.GetProcessDeltaTime() * 1000, 6) + "ms";
-                this.GetNode<Label>(this.PhysicsTimePath).Text = Math.Round(this.GetPhysicsProcessDeltaTime() * 1000, 6) + "ms";
-
-                currentUpdateTime = 0f;
+                this.packageData.Text = "Send: " + (netService.BytesSended / 1000) + "kB/s, " + "Rec: " + (netService.BytesReceived / 1000) + "kB/s";
+                this.packageLosse.Text = netService.PackageLoss + " (" + netService.PackageLossPercent + "%" + ")";
+                this.Ping.Text = netService.Ping.ToString() + "ms";
             }
-            else
-            {
-                currentUpdateTime += delta;
-            }
+
+            this.Fps.Text = Engine.GetFramesPerSecond().ToString();
+            this.IdleTime.Text = Math.Round(this.GetProcessDeltaTime() * 1000, 6) + "ms";
+            this.PhysicsTime.Text = Math.Round(this.GetPhysicsProcessDeltaTime() * 1000, 6) + "ms";
         }
     }
 }
