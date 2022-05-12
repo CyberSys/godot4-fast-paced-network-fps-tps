@@ -30,9 +30,6 @@ https://discord.gg/HW2Mr7Vcep
 - F6 -> Add another client window to the split screen
 - ESC -> In game settings menu
 
-## Known Bugs
-- Issue with colliding characters or colliding with an wall / edges of an wall (server and client have not the same position, im on research, mby velocity issue..)
-
 ## Network features
 - Client-side prediction of player entities
 - Client-side interpolation of remote entities
