@@ -1,4 +1,7 @@
-# 🤫 The game framework your mother warned you about. 
+# ATTENTION: PROJECT MOVE TO
+https://git.join-striked.com/striked-gaming/open-source-shooter
+
+## 🤫 The game framework your mother warned you about. 
 
 Godot 4 Fast-Paced (Authoritative Server) Game + Network Framework for FPS and TPS Games
 
