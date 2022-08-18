@@ -1,5 +1,4 @@
-# ATTENTION: PROJECT MOVES TO
-https://git.join-striked.com/striked-gaming/open-source-shooter
+# ATTENTION: PROJECT MOVES TO https://git.join-striked.com/striked-gaming/open-source-shooter
 
 ## 🤫 The game framework your mother warned you about. 
 
