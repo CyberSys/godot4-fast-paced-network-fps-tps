@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c7bk424dwhf05"]
-
-[ext_resource type="Script" path="res://Game/Client/MyClientLogic.cs" id="1_lcdea"]
-
-[node name="NetworkClientLogic" type="SubViewport"]
-script = ExtResource( "1_lcdea" )

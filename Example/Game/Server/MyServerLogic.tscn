@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjrt8hyaw0osm"]
-
-[ext_resource type="Script" path="res://Game/Server/MyServerLogic.cs" id="1_p563x"]
-
-[node name="NetworkServerLogic" type="SubViewport"]
-disable_3d = true
-script = ExtResource( "1_p563x" )
-DefaultMapName = "res://Game/Assets/Maps/TrainingPlace/Level.tscn"
